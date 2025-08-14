@@ -1,0 +1,48 @@
+<header class="govuk-header {{ params.classes if params.classes }}" role="banner" data-module="govuk-header"
+{%- for attribute, value in params.attributes %} {{attribute}}="{{value}}"{% endfor %}>
+    <div class="govuk-header__container {{ params.containerClasses | default('govuk-width-container') }}">
+        <div style="display:flex">
+            <div class="govuk-header__logo">
+                <a href="{{ params.homepageUrl | default('/') }}" class="govuk-header__link govuk-header__link--homepage">
+                    <span class="govuk-header__logotype">
+                        <span class="govuk-header__logotype-text">Crown Prosecution Service</span>
+                    </span>
+                    {% if (params.productName) %}
+                        <span class="govuk-header__product-name">{{ params.productName }}</span>
+                    {% endif %}
+                </a>
+            </div>
+            <div class="govuk-header__logo rumpoleText">
+                <a href="{{ params.homepageUrl | default('/') }}" class="govuk-header__link govuk-header__link--homepage">
+                    <span class="govuk-header__logotype">
+                        <span class="govuk-header__logotype-text caseReviewHeader">Casework App</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div style="" class="makeBannerMiddle">
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <span class="govuk-phase-banner__text">
+                Your <a href="">feedback (opens in a new tab)</a> will help us to improve this service.
+            </span>
+        </p>
+    </div>
+</div>
+
+<style>body {visibility: hidden}</style>
+<script>
+    $(document).ready(function () {
+        $("body")
+            .contents()
+            .filter(function () {
+            return this.nodeType == Node.TEXT_NODE;
+        })
+        .remove();
+        $("body").css("visibility", "visible");
+    });
+</script>
+

@@ -1,0 +1,471 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row" id="">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+        <div class="wrapper gov-pages">
+
+            <h1 class="govuk-heading-xl" style="">Personal details</h1>
+
+            <form method="get" action="5-case-overview#witnessesTab" id="addWitness_Form-B">  
+
+                <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+
+                    {% if '(V) - Victim' in data['addWitness_Details-Type'] %}
+                        <!-- OPTION 1 - START -->
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-label">VPS/ISB Status</legend>
+                                <div class="govuk-radios govuk-radios--small govuk-radios--inline" data-module="govuk-radios">
+                                    <div class="govuk-radios__item">
+                                        {% if data['addWitness_Form-VPS'] == 'Awaited' %}
+                                            <input class="govuk-radios__input" id="addWitness_Form-VPS-Awaited" name="addWitness_Form-VPS" type="radio" value="Awaited" checked>
+                                        {% else %}
+                                            <input class="govuk-radios__input" id="addWitness_Form-VPS-Awaited" name="addWitness_Form-VPS" type="radio" value="Awaited">
+                                        {% endif %}
+                                        <label class="govuk-label govuk-radios__label" for="addWitness_Form-VPS-Awaited">Awaited</label>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        {% if data['addWitness_Form-VPS'] == 'Declined' %}
+                                            <input class="govuk-radios__input" id="addWitness_Form-VPS-Declined" name="addWitness_Form-VPS" type="radio" value="Declined" checked>
+                                        {% else %}
+                                            <input class="govuk-radios__input" id="addWitness_Form-VPS-Declined" name="addWitness_Form-VPS" type="radio" value="Declined">
+                                        {% endif %}
+                                        <label class="govuk-label govuk-radios__label" for="addWitness_Form-VPS-Declined">Declined</label>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        {% if data['addWitness_Form-VPS'] == 'Received' %}
+                                            <input class="govuk-radios__input" id="addWitness_Form-VPS-Received" name="addWitness_Form-VPS" type="radio" value="Received" checked>
+                                        {% else %}
+                                            <input class="govuk-radios__input" id="addWitness_Form-VPS-Received" name="addWitness_Form-VPS" type="radio" value="Received">
+                                        {% endif %}
+                                        <label class="govuk-label govuk-radios__label" for="addWitness_Form-VPS-Received">Received</label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <!-- OPTION 1 - END -->
+                    {% else %}
+
+                    {% endif %}
+
+
+                    {% if '(P) - Police' in data['addWitness_Details-Type'] %}
+                        <!-- OPTION 5 - START -->
+                        <div class="govuk-form-group">
+                            <label class="govuk-label" for="addWitness_Form-Number">Shoulder number</label>
+                            {% if data['addWitness_Form-Number'] %}
+                                <input class="govuk-input govuk-input--width-5" id="addWitness_Form-Number" name="addWitness_Form-Number" type="text" value="{{ data['addWitness_Form-Number'] }}">
+                            {% else %}
+                                <input class="govuk-input govuk-input--width-5" id="addWitness_Form-Number" name="addWitness_Form-Number" type="text">
+                            {% endif %}
+                        </div>                    
+                        <!-- OPTION 5 - END -->
+                    {% else %}
+
+                    {% endif %}
+
+                    {% if data['addSuspectStarted'] == 'true' %}
+                        <div class="govuk-form-group" id="single_Suspects_Selection">
+                            <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+                                <legend class="govuk-fieldset__legend"><h1 class="govuk-fieldset__heading">Are the witnesses details the same as the suspects?</h1></legend>
+                                <div class="govuk-radios  govuk-radios--small" data-module="govuk-radios">
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="addWitness_Form-Same-Yes" name="addWitness_Form-Same" type="radio" value="Yes" data-aria-controls="conditional-sameAsSuspect">
+                                        <label class="govuk-label govuk-radios__label" for="addWitness_Form-Same-Yes">Yes</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-sameAsSuspect">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label" for="addWitness_Form-Same">Select the suspect</label>
+                                            <select class="govuk-select" id="addWitness_Form-Same" name="addWitness_Form-Same">
+                                                {% if data['addSuspect_Details'] == 'Individual' %}
+                                                    {% if data['addSuspect_Form-Surname'] or data['addSuspect_Form-Forename'] %}
+                                                        <option value="{{ data['addSuspect_Form-Surname'] }}, {{ data['addSuspect_Form-Forename'] }}" selected>{{ data['addSuspect_Form-Surname'] }}, {{ data['addSuspect_Form-Forename'] }}</option>
+                                                    {% else %}
+                                                        <option value="Individual" selected>Individual</option>
+                                                    {% endif %}
+                                                {% elseif data['addSuspect_Details'] == 'Company' %}
+                                                    <option value="{{ data['addSuspect_CompanyName'] }}" selected>{{ data['addSuspect_CompanyName'] }}</option>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="addWitness_Form-Same-No" name="addWitness_Form-Same" type="radio" value="email" data-aria-controls="conditional-contact">
+                                        <label class="govuk-label govuk-radios__label" for="addWitness_Form-Same-No">No</label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    {% else %}
+
+                    {% endif %}
+
+                    <div class="govuk-form-group" id="multiple_Suspects_Selection">
+                        <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+                            <legend class="govuk-fieldset__legend"><h1 class="govuk-fieldset__heading">Are the witnesses details the same as the suspects?</h1></legend>
+                            <div class="govuk-radios  govuk-radios--small" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="addWitness_Form-Same-Yes" name="addWitness_Form-Same" type="radio" value="Yes" data-aria-controls="conditional-sameAsSuspect">
+                                    <label class="govuk-label govuk-radios__label" for="addWitness_Form-Same-Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-sameAsSuspect">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="addWitness_Form-Same">Select the suspect</label>
+                                        <select class="govuk-select" id="addWitness_Form-Same" name="addWitness_Form-Same">
+                                            {% if data['addSuspect_Details'] == 'Individual' %}
+                                                {% if data['addSuspect_Form-Surname'] or data['addSuspect_Form-Forename'] %}
+                                                    <option value="{{ data['addSuspect_Form-Surname'] }}, {{ data['addSuspect_Form-Forename'] }}" selected>{{ data['addSuspect_Form-Surname'] }}, {{ data['addSuspect_Form-Forename'] }}</option>
+                                                {% else %}
+                                                    <option value="Individual" selected>Individual</option>
+                                                {% endif %}
+                                            {% elseif data['addSuspect_Details'] == 'Company' %}
+                                                <option value="{{ data['addSuspect_CompanyName'] }}" selected>{{ data['addSuspect_CompanyName'] }}</option>
+                                            {% endif %}
+                                            <option value="CHAVEZ, Zahra">CHAVEZ, Zahra</option>
+                                            <option value="TERRY, Jayson">TERRY, Jayson</option>
+                                            <option value="SINGH, Mateo">SINGH, Mateo</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="addWitness_Form-Same-No" name="addWitness_Form-Same" type="radio" value="email" data-aria-controls="conditional-contact">
+                                    <label class="govuk-label govuk-radios__label" for="addWitness_Form-Same-No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <!-- OPTION 4 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-label">Gender</legend>
+                            <div class="govuk-radios govuk-radios--small govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addWitness_Form-Gender'] == 'Male' %}
+                                        <input class="govuk-radios__input" id="addWitness_Form-Gender-Male" name="addWitness_Form-Gender" type="radio" value="Male" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addWitness_Form-Gender-Male" name="addWitness_Form-Gender" type="radio" value="Male">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addWitness_Form-Gender-Male">Male</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addWitness_Form-Gender'] == 'Female' %}
+                                        <input class="govuk-radios__input" id="addWitness_Form-Gender-Female" name="addWitness_Form-Gender" type="radio" value="Female" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addWitness_Form-Gender-Female" name="addWitness_Form-Gender" type="radio" value="Female">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addWitness_Form-Gender-Female">Female</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addWitness_Form-Gender'] == 'Unknown' %}
+                                        <input class="govuk-radios__input" id="addWitness_Form-Gender-Unknown" name="addWitness_Form-Gender" type="radio" value="Unknown" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addWitness_Form-Gender-Unknown" name="addWitness_Form-Gender" type="radio" value="Unknown">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addWitness_Form-Gender-Unknown">Unknown</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 4 - END -->
+
+                    <!-- OPTION 5 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addWitness_Form-Ethnicity">Ethnicity</label>
+                        <select class="govuk-select" id="addWitness_Form-Ethnicity" name="addWitness_Form-Ethnicity">
+                            {% if data['addWitness_Form-Ethnicity'] == 'NP - Not provided' %}
+                                <option value="NP - Not provided" selected>NP - Not provided</option>
+                            {% else %}
+                                <option value="NP - Not provided">NP - Not provided</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'W1 - British' %}
+                                <option value="W1 - British" selected>W1 - British</option>
+                            {% else %}
+                                <option value="W1 - British">W1 - British</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'W2 - Irish' %}
+                                <option value="W2 - Irish" selected>W2 - Irish</option>
+                            {% else %}
+                                <option value="W2 - Irish">W2 - Irish</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'W3 - Gypsy or Irish Traveller' %}
+                                <option value="W3 - Gypsy or Irish Traveller" selected>W3 - Gypsy or Irish Traveller</option>
+                            {% else %}
+                                <option value="W3 - Gypsy or Irish Traveller">W3 - Gypsy or Irish Traveller</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'W9 - Any other white background' %}
+                                <option value="W9 - Any other white background" selected>W9 - Any other white background</option>
+                            {% else %}
+                                <option value="W9 - Any other white background">W9 - Any other white background</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'M1 - White and Black Caribbean' %}
+                                <option value="M1 - White and Black Caribbean" selected>M1 - White and Black Caribbean</option>
+                            {% else %}
+                                <option value="M1 - White and Black Caribbean">M1 - White and Black Caribbean</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'M2 - White and Black African' %}
+                                <option value="M2 - White and Black African" selected>M2 - White and Black African</option>
+                            {% else %}
+                                <option value="M2 - White and Black African">M2 - White and Black African</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'M3 - White and Asian' %}
+                                <option value="M3 - White and Asian" selected>M3 - White and Asian</option>
+                            {% else %}
+                                <option value="M3 - White and Asian">M3 - White and Asian</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'M9 - Any other mixed background' %}
+                                <option value="M9 - Any other mixed background" selected>M9 - Any other mixed background</option>
+                            {% else %}
+                                <option value="M9 - Any other mixed background">M9 - Any other mixed background</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'A1 - Indian' %}
+                                <option value="A1 - Indian" selected>A1 - Indian</option>
+                            {% else %}
+                                <option value="A1 - Indian">A1 - Indian</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'A2 - Pakistani' %}
+                                <option value="A2 - Pakistani" selected>A2 - Pakistani</option>
+                            {% else %}
+                                <option value="A2 - Pakistani">A2 - Pakistani</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'A3 - Bangladeshi' %}
+                                <option value="A3 - Bangladeshi" selected>A3 - Bangladeshi</option>
+                            {% else %}
+                                <option value="A3 - Bangladeshi">A3 - Bangladeshi</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'A4 - Chinese' %}
+                                <option value="A4 - Chinese" selected>A4 - Chinese</option>
+                            {% else %}
+                                <option value="A4 - Chinese">A4 - Chinese</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'A9 - Any other Asian background' %}
+                                <option value="A9 - Any other Asian background" selected>A9 - Any other Asian background</option>
+                            {% else %}
+                                <option value="A9 - Any other Asian background">A9 - Any other Asian background</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'B1 - Caribbean' %}
+                                <option value="B1 - Caribbean" selected>B1 - Caribbean</option>
+                            {% else %}
+                                <option value="B1 - Caribbean">B1 - Caribbean</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'B2 - African' %}
+                                <option value="B2 - African" selected>B2 - African</option>
+                            {% else %}
+                                <option value="B2 - African">B2 - African</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'B9 - Any other Black background' %}
+                                <option value="B9 - Any other Black background" selected>B9 - Any other Black background</option>
+                            {% else %}
+                                <option value="B9 - Any other Black background">B9 - Any other Black background</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'O2 - Arab' %}
+                                <option value="O2 - Arab" selected>O2 - Arab</option>
+                            {% else %}
+                                <option value="O2 - Arab">O2 - Arab</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'O9 - Any other ethnic group' %}
+                                <option value="O9 - Any other ethnic group" selected>O9 - Any other ethnic group</option>
+                            {% else %}
+                                <option value="O9 - Any other ethnic group">O9 - Any other ethnic group</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Ethnicity'] == 'NS - Not stated' %}
+                                <option value="NS - Stated" selected>NS - Not stated</option>
+                            {% else %}
+                                <option value="NS - Stated">NS - Not stated</option>
+                            {% endif %}
+                        </select>
+                    </div>                    
+                    <!-- OPTION 5 - END -->
+
+                    <!-- OPTION 6 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addWitness_Form-Religion">Religion/Belief</label>
+                        <select class="govuk-select" id="addWitness_Form-Religion" name="addWitness_Form-Religion">
+                            {% if data['addWitness_Form-Religion'] == 'NS - Stated' %}
+                                <option value="Not stated" selected>Not stated</option>
+                            {% else %}
+                                <option value="Not stated">Not stated</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Religion'] == 'Not provided' %}
+                                <option value="Not provided" selected>Not provided</option>
+                            {% else %}
+                                <option value="Not provided">Not provided</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Religion'] == 'No Religion' %}
+                                <option value="No Religion" selected>No Religion</option>
+                            {% else %}
+                                <option value="No Religion">No Religion</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Religion'] == 'Other Religion' %}
+                                <option value="Other Religion" selected>Other Religion</option>
+                            {% else %}
+                                <option value="Other Religion">Other Religion</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Religion'] == 'Buddhist' %}
+                                <option value="Buddhist" selected>Buddhist</option>
+                            {% else %}
+                                <option value="Buddhist">Buddhist</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Religion'] == 'Christian' %}
+                                <option value="Christian" selected>Christian</option>
+                            {% else %}
+                                <option value="Christian">Christian</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Religion'] == 'Hindu' %}
+                                <option value="Hindu" selected>Hindu</option>
+                            {% else %}
+                                <option value="Hindu">Hindu</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Religion'] == 'Jewish' %}
+                                <option value="Jewish" selected>Jewish</option>
+                            {% else %}
+                                <option value="Jewish">Jewish</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Religion'] == 'Muslim' %}
+                                <option value="Muslim" selected>Muslim</option>
+                            {% else %}
+                                <option value="Muslim">Muslim</option>
+                            {% endif %}
+                            {% if data['addWitness_Form-Religion'] == 'Sikh' %}
+                                <option value="Sikh" selected>Sikh</option>
+                            {% else %}
+                                <option value="Sikh">Sikh</option>
+                            {% endif %}
+                        </select>
+                    </div>   
+                    <!-- OPTION 6 - END -->
+
+                    <!-- OPTION 7 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="addWitness_Form-DOB-hint">
+                            <legend class="govuk-fieldset__legend">Date of Birth</legend>
+                            <div id="addWitness_Form-DOB-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="addWitness_Form-DOB">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addWitness_Form-DOB-Day">Day</label>
+                                        {% if data['addWitness_Form-DOB-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addWitness_Form-DOB-Day" name="addWitness_Form-DOB-Day" type="text" inputmode="numeric" value="{{ data['addWitness_Form-DOB-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addWitness_Form-DOB-Day" name="addWitness_Form-DOB-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addWitness_Form-DOB-Month">Month</label>
+                                        {% if data['addWitness_Form-DOB-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addWitness_Form-DOB-Month" name="addWitness_Form-DOB-Month" type="text" inputmode="numeric" value="{{ data['addWitness_Form-DOB-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addWitness_Form-DOB-Month" name="addWitness_Form-DOB-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addWitness_Form-DOB-Year">Year</label>
+                                        {% if data['addWitness_Form-DOB-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addWitness_Form-DOB-Year" name="addWitness_Form-DOB-Year" type="text" inputmode="numeric" value="{{ data['addWitness_Form-DOB-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addWitness_Form-DOB-Year" name="addWitness_Form-DOB-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 7 - END -->
+
+                    <!-- OPTION 8 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-label">Disability</legend>
+                            <div class="govuk-radios govuk-radios--small govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addWitness_Form-Disability'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addWitness_Form-Disability-Yes" name="addWitness_Form-Disability" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addWitness_Form-Disability-Yes" name="addWitness_Form-Disability" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addWitness_Form-Disability-Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addWitness_Form-Disability'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addWitness_Form-Disability-No" name="addWitness_Form-Disability" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addWitness_Form-Disability-No" name="addWitness_Form-Disability" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addWitness_Form-Disability-No">No</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addWitness_Form-Disability'] == 'Unknown' %}
+                                        <input class="govuk-radios__input" id="addWitness_Form-Disability-Unknown" name="addWitness_Form-Disability" type="radio" value="Unknown" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addWitness_Form-Disability-Unknown" name="addWitness_Form-Disability" type="radio" value="Unknown">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addWitness_Form-Disability-Unknown">Unknown</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 8 - END -->
+
+                    <!-- OPTION 10 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addWitness_Form-Postcode">Postcode</label>
+                        {% if data['addWitness_Form-Postcode'] %}
+                            <input class="govuk-input govuk-input--width-10" id="addWitness_Form-Postcode" name="addWitness_Form-Postcode" type="text" value="{{ data['addWitness_Form-Postcode'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-10" id="addWitness_Form-Postcode" name="addWitness_Form-Postcode" type="text">
+                        {% endif %}
+                        <button class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddress">Find address</button>
+                        <details class="govuk-details" id="witnessAddress">
+                            <summary class="govuk-details__summary">
+                                <span class="govuk-details__summary-text">Enter address manually</span>
+                            </summary>
+                            <div class="govuk-details__text">
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label govuk-visually-hidden" for="addWitness_Form-Address_1">Address line 1</label>
+                                    <input class="govuk-input govuk-input--width-20" id="addWitness_Form-Address_1" name="addWitness_Form-Address_1" type="text">
+                                </div>                            
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label govuk-visually-hidden" for="addWitness_Form-Address_2">Address line 2</label>
+                                    <input class="govuk-input govuk-input--width-20" id="addWitness_Form-Address_2" name="addWitness_Form-Address_2" type="text">
+                                </div>                            
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label govuk-visually-hidden" for="addWitness_Form-Address_3">Address line 3</label>
+                                    <input class="govuk-input govuk-input--width-20" id="addWitness_Form-Address_3" name="addWitness_Form-Address_3" type="text">
+                                </div>   
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label govuk-visually-hidden" for="addWitness_Form-Address_4">Address line 4</label>
+                                    <input class="govuk-input govuk-input--width-20" id="addWitness_Form-Address_4" name="addWitness_Form-Address_4" type="text">
+                                </div>       
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label govuk-visually-hidden" for="addWitness_Form-Address_5">Address line 5</label>
+                                    <input class="govuk-input govuk-input--width-20" id="addWitness_Form-Address_5" name="addWitness_Form-Address_5" type="text">
+                                </div>                            
+                            </div>
+                        </details>                    
+                    </div>                    
+                    <!-- OPTION 10 - END -->
+
+                </fieldset>
+
+                <button type="submit" class="govuk-button" style="">Continue</button>
+                <button type="button" onclick="location.href='5-case-overview#witnessesTab';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

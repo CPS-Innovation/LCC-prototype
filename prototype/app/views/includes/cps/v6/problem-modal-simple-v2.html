@@ -1,0 +1,77 @@
+<!-- search-banner-modal-simple-v2.html -->
+<div aria-label="problem banner" class="das-cookie-banner__wrap das-cookie-banner__modal rj-dont-display" id="problemModal">
+    <div class="das-cookie-banner" style="width:50%; margin-top:200xpx; height:550px" id="openMe">
+        <div class="das-cookie-banner__wrapper ">
+            <div class="govuk-modal-dialogue__header" style="height:42px; ">
+                <button aria-label="Close modal dialogue" class="govuk-button govuk-modal-dialogue__close" data-module="govuk-button" type="button" onClick="closeProblemModal()">×</button>
+            </div>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full" style="">
+                    <div class="innerPanel simpleModelTwo" style="margin:0 auto">
+                        <div class="govuk-grid-row">
+                           <!--  <h1 class="govuk-heading-l"> Tell us what went wrong</h1>
+                            <p>Don’t include personal or sensitive information about the case. </p> -->
+                          <div class="govuk-form-group">
+  <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h1 class="govuk-fieldset__heading">
+        What is the problem?
+      </h1>
+    </legend>
+    <div id="contact-hint" class="govuk-hint">
+      Select one option.
+    </div>
+    <div class="govuk-radios" data-module="govuk-radios">
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="contact" name="contact" type="radio" value="email" data-aria-controls="conditional-contact">
+        <label class="govuk-label govuk-radios__label" for="contact">
+          Document formatting
+        </label>
+      </div>
+
+                  <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="contact-2" name="contact" type="radio" value="phone" data-aria-controls="conditional-contact-2">
+        <label class="govuk-label govuk-radios__label" for="contact-2">
+          Document wouldn't open
+        </label>
+      </div>
+
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="contact-2" name="contact" type="radio" value="phone" data-aria-controls="conditional-contact-2">
+        <label class="govuk-label govuk-radios__label" for="contact-2">
+          Redacting content
+        </label>
+      </div>
+
+
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="contact-3" name="contact" type="radio" value="text" data-aria-controls="conditional-contact-3">
+        <label class="govuk-label govuk-radios__label" for="contact-3">
+          Other
+        </label>
+      </div>
+      <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-3">
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="contact-by-text">
+            Other reason
+          </label>
+          <input class="govuk-input " id="contact-by-text" name="contact-by-text" type="tel" autocomplete="tel">
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</div>
+                            <div class="govuk-button-group">
+                                <button class="govuk-button" data-module="govuk-button" onClick="closeProblemModal()">
+                                    Send and return
+                                </button>
+                                <a class="govuk-link" style="color:#0000EE" onClick="closeProblemModal()">Cancel</a>
+                            </div>
+                        </div>
+                        <!--  end of inner panel div above -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,303 @@
+{% extends "layoutCPS-OFF.html" %}
+{% block header %}
+    {% include "../../includes/banner-OFF-V5.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+<div class="govuk-grid-row" id="create-case-journey">
+
+    <div class="govuk-grid-column-two-thirds">
+        <div class="gov-pages">
+
+            <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-4" style="">Add people working on the case</h1>
+
+            <p class="govuk-hint govuk-!-margin-bottom-6">Adding this information is optional. You can continue without adding any details.</p>
+
+            <form method="get" action="07-egress-shared-drive" id="newCase_Form-F">  
+
+                <fieldset class="govuk-fieldset">
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="newCase_People-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Do you want to add people working on the case?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['newCase_People_YesNo'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="newCase_People_Yes" name="newCase_People_YesNo" type="radio" value="Yes" data-aria-controls="conditional-newCase_People" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="newCase_People_Yes" name="newCase_People_YesNo" type="radio" value="Yes" data-aria-controls="conditional-newCase_People">
+                                    {% endif %}  
+                                    <label class="govuk-label govuk-radios__label" for="newCase_People_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['newCase_People_YesNo'] == 'No' %}
+                                        <input class="govuk-radios__input" id="newCase_People_No" name="newCase_People_YesNo" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="newCase_People_No" name="newCase_People_YesNo" type="radio" value="No">
+                                    {% endif %}  
+                                    <label class="govuk-label govuk-radios__label" for="newCase_People_No">No</label>
+                                </div>
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-newCase_People">
+
+                                    <div class="govuk-form-group">
+                                        <fieldset class="govuk-fieldset" aria-describedby="newCase_Prosecutor-hint">
+                                            <div class="govuk-form-group">
+                                                <label class="govuk-label" for="newCase_Prosecutor">Prosecutor</label>
+                                                <select class="govuk-select" id="newCase_Prosecutor" name="newCase_Prosecutor">
+                                                    {% if data['newCase_Prosecutor'] == 'Not yet assigned' %}
+                                                        <option value="Not yet assigned" selected>Not yet assigned</option>
+                                                    {% else %}
+                                                        <option value="Not yet assigned">Not yet assigned</option>
+                                                    {% endif %}
+                                                    {% if data['newCase_Prosecutor'] == 'jim.halpert@cps.gov.uk' %}
+                                                        <option value="jim.halpert@cps.gov.uk" selected>jim.halpert@cps.gov.uk</option>
+                                                    {% else %}
+                                                        <option value="jim.halpert@cps.gov.uk">jim.halpert@cps.gov.uk</option>
+                                                    {% endif %}
+                                                    {% if data['newCase_Prosecutor'] == 'pam.beesly@cps.gov.uk' %}
+                                                        <option value="pam.beesly@cps.gov.uk" selected>pam.beesly@cps.gov.uk</option>
+                                                    {% else %}
+                                                        <option value="pam.beesly@cps.gov.uk">pam.beesly@cps.gov.uk</option>
+                                                    {% endif %}
+                                                    {% if data['newCase_Prosecutor'] == 'erin.hannon@cps.gov.uk' %}
+                                                        <option value="erin.hannon@cps.gov.uk" selected>erin.hannon@cps.gov.uk</option>
+                                                    {% else %}
+                                                        <option value="erin.hannon@cps.gov.uk">erin.hannon@cps.gov.uk</option>
+                                                    {% endif %}
+                                                    {% if data['newCase_Prosecutor'] == 'jan.levinson@cps.gov.uk' %}
+                                                        <option value="jan.levinson@cps.gov.uk" selected>jan.levinson@cps.gov.uk</option>
+                                                    {% else %}
+                                                        <option value="jan.levinson@cps.gov.uk">jan.levinson@cps.gov.uk</option>
+                                                    {% endif %}
+                                                    {% if data['newCase_Prosecutor'] == 'michael.scott@cps.gov.uk' %}
+                                                        <option value="michael.scott@cps.gov.uk" selected>michael.scott@cps.gov.uk</option>
+                                                    {% else %}
+                                                        <option value="michael.scott@cps.gov.uk">michael.scott@cps.gov.uk</option>
+                                                    {% endif %}
+                                                    {% if data['newCase_Prosecutor'] == 'andy.bernard@cps.gov.uk' %}
+                                                        <option value="andy.bernard@cps.gov.uk" selected>andy.bernard@cps.gov.uk</option>
+                                                    {% else %}
+                                                        <option value="andy.bernard@cps.gov.uk">andy.bernard@cps.gov.uk</option>
+                                                    {% endif %}
+                                                    {% if data['newCase_Prosecutor'] == 'dwight.schrute@cps.gov.uk' %}
+                                                        <option value="dwight.schrute@cps.gov.uk" selected>dwight.schrute@cps.gov.uk</option>
+                                                    {% else %}
+                                                        <option value="dwight.schrute@cps.gov.uk">dwight.schrute@cps.gov.uk</option>
+                                                    {% endif %}
+                                                </select>
+                                            </div>                        
+                                        </fieldset>
+                                    </div>                    
+
+                                    <div class="govuk-form-group">
+                                        <fieldset class="govuk-fieldset" aria-describedby="newCase_Caseworker-hint">
+                                            <div class="govuk-form-group">
+                                                <label class="govuk-label" for="newCase_Caseworker">Caseworker</label>
+                                                <select class="govuk-select" id="newCase_Caseworker" name="newCase_Caseworker">
+                                                    {% if data['newCase_Caseworker'] == 'Not yet assigned' %}
+                                                        <option value="Not yet assigned" selected>Not yet assigned</option>
+                                                    {% else %}
+                                                        <option value="Not yet assigned">Not yet assigned</option>
+                                                    {% endif %}
+                                                    {% if data['newCase_Caseworker'] == 'jim.halpert@cps.gov.uk' %}
+                                                        <option value="jim.halpert@cps.gov.uk" selected>jim.halpert@cps.gov.uk</option>
+                                                    {% else %}
+                                                        <option value="jim.halpert@cps.gov.uk">jim.halpert@cps.gov.uk</option>
+                                                    {% endif %}
+                                                    {% if data['newCase_Caseworker'] == 'pam.beesly@cps.gov.uk' %}
+                                                        <option value="pam.beesly@cps.gov.uk" selected>pam.beesly@cps.gov.uk</option>
+                                                    {% else %}
+                                                        <option value="pam.beesly@cps.gov.uk">pam.beesly@cps.gov.uk</option>
+                                                    {% endif %}
+                                                    {% if data['newCase_Caseworker'] == 'erin.hannon@cps.gov.uk' %}
+                                                        <option value="erin.hannon@cps.gov.uk" selected>erin.hannon@cps.gov.uk</option>
+                                                    {% else %}
+                                                        <option value="erin.hannon@cps.gov.uk">erin.hannon@cps.gov.uk</option>
+                                                    {% endif %}
+                                                    {% if data['newCase_Caseworker'] == 'jan.levinson@cps.gov.uk' %}
+                                                        <option value="jan.levinson@cps.gov.uk" selected>jan.levinson@cps.gov.uk</option>
+                                                    {% else %}
+                                                        <option value="jan.levinson@cps.gov.uk">jan.levinson@cps.gov.uk</option>
+                                                    {% endif %}
+                                                    {% if data['newCase_Caseworker'] == 'michael.scott@cps.gov.uk' %}
+                                                        <option value="michael.scott@cps.gov.uk" selected>michael.scott@cps.gov.uk</option>
+                                                    {% else %}
+                                                        <option value="michael.scott@cps.gov.uk">michael.scott@cps.gov.uk</option>
+                                                    {% endif %}
+                                                    {% if data['newCase_Caseworker'] == 'andy.bernard@cps.gov.uk' %}
+                                                        <option value="andy.bernard@cps.gov.uk" selected>andy.bernard@cps.gov.uk</option>
+                                                    {% else %}
+                                                        <option value="andy.bernard@cps.gov.uk">andy.bernard@cps.gov.uk</option>
+                                                    {% endif %}
+                                                    {% if data['newCase_Caseworker'] == 'dwight.schrute@cps.gov.uk' %}
+                                                        <option value="dwight.schrute@cps.gov.uk" selected>dwight.schrute@cps.gov.uk</option>
+                                                    {% else %}
+                                                        <option value="dwight.schrute@cps.gov.uk">dwight.schrute@cps.gov.uk</option>
+                                                    {% endif %}
+                                                </select>
+                                            </div>                        
+                                        </fieldset>
+                                    </div>                    
+
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="newCase_Police-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Police officer or investigator</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['newCase_Police_YesNo'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="newCase_Police_Yes" name="newCase_Police_YesNo" type="radio" value="Yes" data-aria-controls="conditional-newCase_Police" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="newCase_Police_Yes" name="newCase_Police_YesNo" type="radio" value="Yes" data-aria-controls="conditional-newCase_Police">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="newCase_Police_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['newCase_Police_YesNo'] == 'No' %}
+                                        <input class="govuk-radios__input" id="newCase_Police_No" name="newCase_Police_YesNo" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="newCase_Police_No" name="newCase_Police_YesNo" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="newCase_Police_No">No</label>
+                                </div>
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-newCase_Police">
+
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Police_Rank">Rank (optional)</label>
+                                        <select class="govuk-select" id="newCase_Police_Rank" name="newCase_Police_Rank">
+                                            {% if data['newCase_Police_Rank'] == '' %}
+                                                <option value="-- Select --" disabled selected>-- Select --</option>
+                                            {% else %}
+                                                <option value="-- Select --" disabled>-- Select --</option>
+                                            {% endif %}
+                                            {% if data['newCase_Police_Rank'] == 'PC' %}
+                                                <option value="PC" selected>PC</option>
+                                            {% else %}
+                                                <option value="PC">PC</option>
+                                            {% endif %}
+                                            {% if data['newCase_Police_Rank'] == 'DC' %}
+                                                <option value="DC" selected>DC</option>
+                                            {% else %}
+                                                <option value="DC">DC</option>
+                                            {% endif %}
+                                            {% if data['newCase_Police_Rank'] == 'PS' %}
+                                                <option value="PS" selected>PS</option>
+                                            {% else %}
+                                                <option value="PS">PS</option>
+                                            {% endif %}
+                                            {% if data['newCase_Police_Rank'] == 'DS' %}
+                                                <option value="DS" selected>DS</option>
+                                            {% else %}
+                                                <option value="DS">DS</option>
+                                            {% endif %}
+                                            {% if data['newCase_Police_Rank'] == 'INS' %}
+                                                <option value="INS" selected>INS</option>
+                                            {% else %}
+                                                <option value="INS">INS</option>
+                                            {% endif %}
+                                            {% if data['newCase_Police_Rank'] == 'DI' %}
+                                                <option value="DI" selected>DI</option>
+                                            {% else %}
+                                                <option value="DI">DI</option>
+                                            {% endif %}
+                                            {% if data['newCase_Police_Rank'] == 'PCSO' %}
+                                                <option value="PCSO" selected>PCSO</option>
+                                            {% else %}
+                                                <option value="PCSO">PCSO</option>
+                                            {% endif %}
+                                            {% if data['newCase_Police_Rank'] == 'CI' %}
+                                                <option value="CI" selected>CI</option>
+                                            {% else %}
+                                                <option value="CI">CI</option>
+                                            {% endif %}
+                                            {% if data['newCase_Police_Rank'] == 'SC' %}
+                                                <option value="SC" selected>SC</option>
+                                            {% else %}
+                                                <option value="SC">SC</option>
+                                            {% endif %}
+                                            {% if data['newCase_Police_Rank'] == 'None' %}
+                                                <option value="None" selected>None</option>
+                                            {% else %}
+                                                <option value="None">None</option>
+                                            {% endif %}
+                                        </select>
+                                    </div>  
+
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Police_FirstName">First name (optional)</label>
+                                        {% if data['newCase_Police_FirstName'] %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Police_FirstName" name="newCase_Police_FirstName" type="text" value="{{ data['newCase_Police_FirstName'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Police_FirstName" name="newCase_Police_FirstName" type="text">
+                                        {% endif %}
+                                    </div>   
+
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Police_LastName">Last name (optional)</label>
+                                        {% if data['newCase_Police_LastName'] %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Police_LastName" name="newCase_Police_LastName" type="text" value="{{ data['newCase_Police_LastName'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Police_LastName" name="newCase_Police_LastName" type="text">
+                                        {% endif %}
+                                    </div>  
+
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Police_Number">Shoulder number (optional)</label>
+                                        {% if data['newCase_Police_Number'] %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Police_Number" name="newCase_Police_Number" type="text" value="{{ data['newCase_Police_Number'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-input--width-10" id="newCase_Police_Number" name="newCase_Police_Number" type="text">
+                                        {% endif %}
+                                    </div>  
+
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Police_Unit">Police unit (optional)</label>
+                                        {% if data['newCase_Police_Unit'] %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Police_Unit" name="newCase_Police_Unit" type="text" value="{{ data['newCase_Police_Unit'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Police_Unit" name="newCase_Police_Unit" type="text">
+                                        {% endif %}
+                                    </div>   
+
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 2 - END -->
+
+                </fieldset>
+
+                <input id="createCase_F_Complete" name="createCase_F_Complete" type="text" value="true" style="display: none;">
+                <button type="submit" class="govuk-button" style="">Continue</button>
+                <button type="button" onclick="location.href='01-search';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}

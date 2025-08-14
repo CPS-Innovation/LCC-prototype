@@ -1,0 +1,512 @@
+<script src="/public/javascripts/jquery.cookie.js"></script>
+<script src="/public/javascripts/accordion.js"></script>
+<script src="/public/javascripts/cookie.js"></script>
+<script src="/public/javascripts/draggable-tabs.js"></script>
+<script src="/public/javascripts/jquery.autocomplete.min.js"></script>
+<link href="/public/css/pdf.css" rel="stylesheet" />
+
+<!-- Auto complete - START -->
+<script src="/public/javascripts/autocomplete/docType-Reviews.js"></script>
+<script src="/public/javascripts/autocomplete/docType-CaseOverview.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Statements.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Exhibits.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Forensics.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Unused.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Defendant.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Court.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Communications.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Uncategorised.js"></script>
+
+<script src="/public/javascripts/autocomplete/offCMS-users.js"></script>
+
+<script src="/public/javascripts/notifications.js"></script>
+<script src="/public/javascripts/tasks-and-email.js"></script>
+<script src="/public/javascripts/unused-evidential.js"></script>
+<script src="/public/javascripts/notes.js"></script>
+<script src="/public/javascripts/sorttable-V2.js"></script>
+<script src="/public/javascripts/remove-rotate.js"></script>
+<script src="/public/javascripts/OFF-CMS-cases.js"></script>
+<script src="/public/javascripts/OFF-CMS-cases_COOKIES.js"></script>
+
+<script src="/public/javascripts/OFF-CMS-cases-MVP.js"></script>
+<!-- Auto complete - END -->
+
+<script src="https://unpkg.com/drag-on-drop@3.6.1/dist/dragon-drop.js"></script>
+<script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
+
+<script type="text/javascript">
+
+
+    // Scroll effect - PART 1
+    var yourNavigation = $(".navbar");
+    stickyDiv = "sticky";
+    yourHeader = $('.header-wrapper-height').height();
+    sideBar = $('#left-column');
+
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > yourHeader) {
+            yourNavigation.addClass(stickyDiv);
+            sideBar.addClass(stickyDiv);
+            $('.searchForm-inner.left-column-top').addClass(stickyDiv);
+        } else {
+            yourNavigation.removeClass(stickyDiv);
+            sideBar.removeClass(stickyDiv);
+            $('.searchForm-inner.left-column-top').removeClass(stickyDiv);
+        }
+        // if ($(this).scrollTop()) {
+        //     sideBar.addClass(stickyDiv);
+        // } else {
+        //     sideBar.removeClass(stickyDiv);
+        // }
+    });
+
+    // Scroll effect - PART 2
+    // var yourNavigation2 = $(".sticky-tabs");
+    // stickyDiv2 = "sticky";
+    // yourHeader2 = $('.govuk-header').height();
+
+    // $(window).scroll(function() {
+    //   if( $(this).scrollTop() > yourHeader2 ) {
+    //     yourNavigation2.addClass(stickyDiv2);
+    //   } else {
+    //     yourNavigation2.removeClass(stickyDiv2);
+    //   }
+    // });
+
+    //window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {};
+    $(document).ready(function () {
+        let tabCount = 0;
+
+        const SPECIAL_CASE_SEARCH_TAB_HEADING = "Search results";
+
+        const // each document link in the left hand list
+            $menuLinks = $(".openMe a"),
+            // the root of the tabs control
+            $tabList = $(".govuk-tabs .govuk-tabs__list"),
+            // links appearing in the modal-style search results
+            $modalLinks = $("#searchModal .mb5 a"),
+            // search field
+            $inpSearchUrn = $("#inpSearchURN"),
+            // search field button
+            $btnSearchUrn = $("#btnSearchURN");
+
+
+            // =================================== OPEN ALL DOCUMENTS =================================== //
+
+            const $openAllLinks = $(".open-all");
+            $openAllLinks.each(function (_,link) {
+                $(link).click(function (event) {
+                    event.preventDefault()
+                    const $anchorLinks = $(link)
+                        .closest(".accordion-section-body")
+                        .find(".openMe a")
+
+                        $anchorLinks.parent().parent().removeClass('unreadDocument')
+
+                        $anchorLinks.each(function (index,link ) {
+                        setTimeout(()=>{
+                            handleMenuLinkClick($(this).text())
+                        },750 * index);
+                    })
+                })
+            })
+
+        $menuLinks.each(function (_, link) {
+            $(link).click(function (event) {
+                event.preventDefault();
+                handleMenuLinkClick($(this).text());
+            });
+        });
+
+        $modalLinks.each(function (_, link) {
+            $(link).click(function (event) {
+                event.preventDefault();
+                handleMenuLinkClick($(this).text(), true);
+            });
+        });
+
+        $inpSearchUrn.keyup(function (e) {
+            if (e.key !== "Enter") return;
+            handleMenuLinkClick(SPECIAL_CASE_SEARCH_TAB_HEADING);
+        });
+
+        $btnSearchUrn.click(function (e) {
+            handleMenuLinkClick(SPECIAL_CASE_SEARCH_TAB_HEADING);
+        });
+
+        function handleMenuLinkClick(label, showSearchSummary) {
+            const tabId = encodeURI(label);
+            ensureTabExists(tabId, label, showSearchSummary);
+            highlightMenuLink(label, true);
+            console.log(showSearchSummary);
+            showTab(tabId, showSearchSummary);
+            $("#searchModal").addClass("rj-dont-display");
+        }
+
+        function highlightMenuLink(label, isHighlighted) {
+            const $link = $(`.openMe a:contains('${label}')`);
+
+            if (isHighlighted) {
+                $link.parent("td").addClass("documentSelected");
+            } else {
+                $link.parent("td").removeClass("documentSelected");
+            }
+        }
+
+        function getTabHtml(src) {
+            return `<div id="pdf-root" data-pdf-url="${src}" style="height: calc(100vh)"></div>`;
+        }
+
+        function ensureTabExists(tabId, label, isSearched) {
+            const existingTab = $(`li[data-tab-id='${tabId}']`);
+            if (existingTab.length) return;
+
+            const newTab = $(`
+            <li class="govuk-tabs__list-item tooltip" data-tab-id="${tabId}" onclick="return documentTitle()" draggable="true">
+
+                <svg class="closeButtonOnCPS">
+                    <circle cx="12" cy="12" r="13" stroke="white" stroke-width="1" fill="white" />
+                    <path stroke="white" stroke-width="3" fill="none" d="M6.25,6.25,17.75,17.75" />
+                    <path stroke="white" stroke-width="3" fill="none" d="M6.25,17.75,17.75,6.25" />
+                </svg>
+
+                <a class="govuk-tabs__tab" id="tabHeadingss" href="" onclick="documentTarget()">${label}</a>  <span class="tooltiptext">${label}</span>
+            </li>`).appendTo($tabList);
+
+            if (label === SPECIAL_CASE_SEARCH_TAB_HEADING) {
+                const text = $("script[data-template='searchTab']").text();
+                const $searchTabContent = $(text);
+
+                $searchTabContent.attr("data-tab-id", `${tabId}-content`);
+                $searchTabContent.find(".openMe a").each(function (_, link) {
+                    $(link).click(function (event) {
+                        event.preventDefault();
+                        handleMenuLinkClick($(this).text(), true);
+                    });
+                });
+                $searchTabContent.insertAfter($tabList);
+                // document.getElementById("tabHeadingss").style.fontWeight = "700";
+                // document.getElementById("tabHeadingss").style.fontSize = "19px";
+            } else {
+                // search field button from the blue bar
+
+                const document = $(`.openMe a:contains("${label}")`).attr("data-doc");
+                const count = $(`.openMe a:contains("${label}")`).attr("data-count") || 3;
+                const content = `
+                    <div class="govuk-tabs__panel govuk-tabs__panel--hidden document-panel" data-tab-id="${tabId}-content" data-is-searched="${isSearched}">  
+
+                        <button onclick="windowSizeChange(), windowSizeChangeText()" class="window-size" id="window-size"><span>View full screen</span></button>
+                         
+                        <!-- start of search results -->
+                        <div  class="searchedDocumentSummary rj-dont-display" id="searchHeaderDisplay">
+                            <div class="title">
+                                <a id="btnSearchURNTwo" class="govuk-body-s inPageSearchMargins">Back to search results </a>
+                                <p class="govuk-body-s inPageSearchMargins">${count} matchs for "assault" in ${label} </p>
+                            </div>
+                            <div class="dropdown">
+                                <button onclick="myFunction(), toggleClass()" class="dropbtn">Document actions</button>
+                                <div id="myDropdown1" class="dropdown-content">
+                                    <button onclick="openModalOver(), documentTitle()" class="">Log an Under/Over redaction</button>
+                                    <button onclick="window.open('https://as-web-redaction-log-dev.azurewebsites.net','_blank')" class="">View redaction log history</button>
+                                    <button onclick="suggestedRedactions()" class="suggested-redactions" id="suggestedRedactions">Turn <strong>ON</strong> Potential redactions</button>
+                                    <!-- <button onclick="" class="">Remove document pages</button>-->
+                                    <button onclick="openHistoryModal(), documentTitle()" class="notes-trigger">View previous document version(s) (<strong><span class="document-number">1</span></strong>)</button>
+                                    <button onclick="openRotatePagesModal(), documentTitle()" class="remove-rotate-pages-modal">Rotate document pages</button>
+                                    <button onclick="openEmailModal(), documentTitle()" class="">Email document</button>
+                                    <button onclick="printDocument('pdf-root')" class="">Print document</button>
+                                    <!-- <button onclick="openNotesModal(), documentTitle()" class="notes-trigger">Add a note (<span>4</span>)</button> -->
+                                    <hr>
+                                    <button onclick="openModalProblem(), documentTitle()" class="openNewDoc">Report a technical problem</button>
+                                </div>
+                            </div>
+
+                            <!-- start Zoom - Select -->
+                            <div class="govuk-form-group" id="zoom-wrapper">
+                                <label class="govuk-label govuk-visually-hidden" for="zoomPercentage-V2">Zoom</label>
+                                <select class="govuk-select" id="zoomPercentage-V2" name="zoomPercentage-V2" onclick="" onchange="zoom1(event)">
+                                    <option value="800">800%</option>
+                                    <option value="400">400%</option>
+                                    <option value="300">300%</option>
+                                    <option value="200">200%</option>
+                                    <option value="175">175%</option>
+                                    <option value="150">150%</option>
+                                    <option value="125">125%</option>
+                                    <option value="100" selected>100%</option>
+                                    <option value="75">75%</option>
+                                    <option value="50">50%</option>
+                                    <option value="25">25%</option>
+                                    <option value="10">10%</option>
+                                </select>
+                            </div>                                    
+                            <!-- end Zoom - Select -->
+
+                            <!-- start Zoom in and out --> 
+                            <button onclick="zoomOut()" class="zoom zoomOut"><span>Zoom out of document</span></button>
+                            <button onclick="zoomIn()" class="zoom zoomIn"><span>Zoom in to document</span></button>
+                            <!-- end Zoom in and out -->
+
+                            <!-- start Select Tool --> 
+                            <button onclick="marqueeOn()" class="marquee" id="marquee"><span>Redact area tool</span></button>
+                            <!-- end Select Tool --> 
+
+                            <!-- start Search Tool --> 
+                            <div class="search-document-wrapper">
+                                <button onclick="return searchDocument()" class="search-document" id="search-document"><span>Search document</span></button>
+                                <div class="searchForm-inner-wrapper">
+                                    <input class="govuk-input" id="searchDocument" name="searchDocument" type="text" value="" placeholder="Search document...">
+                                    <div class="bba"><button class="search-document-button" type="submit" id="openSearchDocument" onclick="return searchDocumentResult()">Search</button></div>
+                                </div>                            
+                            </div>
+                            <!-- end Search Tool --> 
+
+                            <div class="buttons">
+                                <p class="govuk-body-s inPageSearchMargins deactivatedPrevious">Previous</p>
+                                <p class="govuk-body-s inPageSearchMargins">1/${count}</p>
+                                <p class="govuk-body-s inPageSearchMargins looks-like-a-link-underline">Next</p>
+                            </div>  
+                        </div> 
+                        <!-- end of search results -->
+
+                        <!-- Non search heading -->
+                        <div class="docSummaryTopPage rj-dont-display" id="documentNameHeader">
+                            <p class="govuk-body-s inPageSearchMargins2">${label}</p>
+                            <div class="dropdown">
+                                <button onclick="myFunction(), toggleClass()" class="dropbtn">Document actions</button>
+                                <div id="" class="dropdown-content myDropdown2">
+                                    <button onclick="openModalOver(), documentTitle()" class="">Log an Under/Over redaction</button>
+                                    <button onclick="window.open('https://as-web-redaction-log-dev.azurewebsites.net','_blank')" class="">View redaction log history</button>
+                                    <button onclick="suggestedRedactions()" class="suggested-redactions" id="suggestedRedactions">Turn <strong>ON</strong> Potential redactions</button>
+                                    <!-- <button onclick="" class="">Remove document pages</button>-->
+                                    <button onclick="openHistoryModal(), documentTitle()" class="notes-trigger">View previous document version(s) (<strong><span class="document-number">1</span></strong>)</button>
+                                    <button onclick="openRotatePagesModal(), documentTitle()" class="remove-rotate-pages-modal">Rotate document pages</button>
+                                    <button onclick="openEmailModal(), documentTitle()" class="">Email document</button>
+                                    <button onclick="printDocument('pdf-root')" class="">Print document</button>
+                                    <!-- <button onclick="openNotesModal(), documentTitle()" class="notes-trigger">Add a note (<span>4</span>)</button> -->
+                                    <hr>
+                                    <button onclick="openModalProblem(), documentTitle()" class="openNewDoc">Report a technical problem</button>
+                                </div>
+                            </div>
+
+                            <!-- start Zoom - Select -->
+                            <div class="govuk-form-group" id="zoom-wrapper">
+                                <label class="govuk-label govuk-visually-hidden" for="zoomPercentage-V1">Zoom</label>
+                                <select class="govuk-select" id="zoomPercentage-V1" name="zoomPercentage-V1" onclick="" onchange="zoom1(event)">
+                                    <option value="800">800%</option>
+                                    <option value="400">400%</option>
+                                    <option value="300">300%</option>
+                                    <option value="200">200%</option>
+                                    <option value="175">175%</option>
+                                    <option value="150">150%</option>
+                                    <option value="125">125%</option>
+                                    <option value="100" selected>100%</option>
+                                    <option value="75">75%</option>
+                                    <option value="50">50%</option>
+                                    <option value="25">25%</option>
+                                    <option value="10">10%</option>
+                                </select>
+                            </div>                                    
+                            <!-- end Zoom - Select -->
+
+                            <!-- start Zoom in and out -->
+                            <button onclick="zoomOut()" class="zoom zoomOut"><span>Zoom out of document</span></button>
+                            <button onclick="zoomIn()" class="zoom zoomIn"><span>Zoom in to document</span></button>
+                            <!-- end Zoom in and out -->
+
+                            <!-- start Select Tool --> 
+                            <button onclick="marqueeOn()" class="marquee" id="marquee"><span>Redact area tool</span></button>
+                            <!-- end Select Tool --> 
+
+                            <!-- start Search Tool --> 
+                            <div class="search-document-wrapper">
+                                <button onclick="return searchDocument()" class="search-document" id="search-document"><span>Search document</span></button>
+                                <div class="searchForm-inner-wrapper">
+                                    <input class="govuk-input" id="searchDocument" name="searchDocument" type="text" value="" placeholder="Search document...">
+                                    <div class="bba"><button class="search-document-button" type="submit" id="openSearchDocument" onclick="return searchDocumentResult()">Search</button></div>
+                                </div>                            
+                            </div>
+                            <!-- end Search Tool --> 
+
+                        </div>
+                        <!-- End of non search heading -->
+
+                        <div class="error-message">
+                            <div class="govuk-warning-text">
+                                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                                <strong class="govuk-warning-text__text">
+                                    <span class="govuk-warning-text__assistive">Warning</span>
+                                    There is a technical problem reported with this document
+                                </strong>
+                                <p>If this is an urgent issue please contact the Casework App team in our <a href="">Teams Channel</a></p>
+                                <details class="govuk-details" data-module="govuk-details">
+                                    <summary class="govuk-details__summary">
+                                        <span class="govuk-details__summary-text">View details</span>
+                                    </summary>
+                                    <div class="govuk-details__text" id="error-details"></div>
+                                </details>
+                            </div>
+                        </div> 
+
+                        <div class="updated-message">
+                            <h3>Success</h3>
+                            <div>
+                                <h4>This document has been updated</h4>
+                                <p>Document has been renamed <strong>????</strong></p>
+                            </div>
+                        </div> 
+
+                        <div class="discarded-message">
+                            <div class="govuk-warning-text">
+                                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                                <strong class="govuk-warning-text__text">
+                                    <span class="govuk-warning-text__assistive">Warning</span>
+                                    This document has been discarded
+                                </strong>
+                            </div>
+                        </div> 
+
+                        <div class="suggested-redactions-panel">
+                            <h3 class="govuk-heading-s">Potential redactions</h3>
+                            <p>The following terms are items that could potentially be redacted in this document:</p>
+                            <p><span id="SRNumber">(25)</span> Named individuals, <span>(2)</span> Email addresses, <span>(2)</span> Previous convictions, <span>(1)</span> Date of birth</p>
+                        </div> 
+
+                        <div class="email-message">
+                            <h3 class="govuk-heading-s">Document emailed</h3>
+                            <p>This document has been emailed to: <a href="" id="emailRecipients-Content">Name</a>, <span id="email-date-stamp">date</span></p>
+                            <details class="govuk-details" data-module="govuk-details">
+                                <summary class="govuk-details__summary">
+                                    <span class="govuk-details__summary-text">View details</span>
+                                </summary>
+                                <div class="govuk-details__text" id="">
+                                    <p>Title: <strong id="emailTitle-Content">Title text</strong></p>
+                                    <p>Text: <strong id="emailText-Content">Text text</strong></p>
+                                </div>
+                            </details>
+                        </div> 
+
+
+                        <!-- <embed class="embedSize" src="/public/files/${document}#toolbar=0&view=FitH" /> -->
+                            
+                        ${getTabHtml(`/public/files/${document}`)}
+                            
+                    </div>`;
+
+                var $content = $(content);
+
+                $content.find("#btnSearchURNTwo").click(function () {
+                    event.preventDefault();
+                    $("#searchModal").removeClass("rj-dont-display");
+                });
+
+                $content.insertAfter($tabList);
+            }
+
+            newTab.find("li").off("click");
+            newTab.find("a.govuk-tabs__tab").click(function () {
+                event.preventDefault();
+                showTab(tabId);
+            });
+
+            newTab.find(".closeButtonOnCPS").click(function () {
+                destroyTab(tabId);
+                highlightMenuLink(tabId, false);
+            });
+
+            $.getScript(window.location.origin + "/public/javascripts/pdf.js");
+            tabCount += 1;
+            showHideStaticText();
+        }
+
+        function destroyTab(tabId) {
+            const $tabs = $(`li[data-tab-id`);
+            const $thisTab = $(`li[data-tab-id='${tabId}']`);
+            const thisTabIndex = $tabs.index($thisTab);
+            const tabIndexToLeaveOpen = thisTabIndex
+                ? thisTabIndex - 1 // if not first tab, go to the left
+                : 0; // otherwise if first tab, then go to the tab that is now first
+            $(`li[data-tab-id='${tabId}']`).remove();
+            $(`div[data-tab-id='${tabId}-content']`).remove();
+
+            const idOfTabToOpen = $(
+                $(`li[data-tab-id`)[tabIndexToLeaveOpen]
+            ).attr("data-tab-id");
+
+            showTab(idOfTabToOpen);
+
+            tabCount -= 1;
+            showHideStaticText();
+        }
+
+        function showTab(tabId, showSummary) {
+            $tabList.find("li").removeAttr("id", "selectedTab");
+            $tabList.find("li").removeClass("govuk-tabs__list-item--selected");
+
+            $(`li[data-tab-id='${tabId}']`).addClass(
+                "govuk-tabs__list-item--selected"
+            );
+            $(`li[data-tab-id='${tabId}']`).attr("id", "selectedTab");
+
+            $(".govuk-tabs__panel").addClass("govuk-tabs__panel--hidden");
+
+            var $tabContent = $(`div[data-tab-id='${tabId}-content']`);
+            $tabContent.removeClass("govuk-tabs__panel--hidden");
+
+            const $selectedTab = $("#selectedTab");
+            if ($selectedTab.length) {
+                $selectedTab[0].scrollIntoView();
+            }
+
+            const wasPreviouslySearched =
+                $(`div[data-tab-id='${tabId}-content']`).attr(
+                    "data-is-searched"
+                ) === "true";
+
+            if (showSummary || wasPreviouslySearched) {
+                $(`div[data-tab-id='${tabId}-content']`).attr(
+                    "data-is-searched",
+                    "true"
+                );
+
+                $tabContent.find("#documentNameHeader").css("display", "none");
+                $tabContent.find("#searchHeaderDisplay").css("display", "inline-block");
+                // $("#documentNameHeader").css("display", "none");
+                // $("#searchHeaderDisplay").css("display", "flex");
+
+                const pdfViewer = $(
+                    `div[data-tab-id='${tabId}-content'] > #pdf-root`
+                );
+                const src = pdfViewer.attr("data-pdf-url");
+                if (!src.includes("/searchResults/")) {
+                    pdfViewer.remove();
+                    $(`div[data-tab-id='${tabId}-content']`).append(
+                        getTabHtml(
+                            src.replace("/files/", "/files/searchResults/")
+                        )
+                    );
+                }
+                $.getScript(
+                    window.location.origin + "/public/javascripts/pdf.js"
+                );
+            } else {
+                $tabContent.find("#documentNameHeader").css("display", "inline-block");
+                $tabContent.find("#searchHeaderDisplay").css("display", "none");
+                // $("#documentNameHeader").css("display", "flex");
+                // $("#searchHeaderDisplay").css("display", "none");
+            }
+        }
+
+        function showHideStaticText() {
+            if (tabCount) {
+                console.log($("#docCopy").length, "hiding");
+                $("#docCopy").hide();
+            } else {
+                console.log($("#docCopy").length, "showing");
+                $("#docCopy").show();
+            }
+        }
+    });
+
+
+
+</script>
+

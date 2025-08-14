@@ -1,0 +1,201 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V4.html" %}
+{% endblock %}
+{% block beforeContent %}
+    {% include "../includes/off-system-MVP/modalConfirmation-Transfer_Complete.html" %}
+    {% include "../includes/off-system-MVP/modalConfirmation-Transfer.html" %}
+    {% include "../includes/off-system-MVP/modalConfirmation-Delete.html" %}
+    {% include "../includes/off-system-MVP/modalConfirmation-NewFolder.html" %}
+    {% include "../includes/off-system-MVP/modalConfirmation-Move.html" %}
+
+    {% if data['searchOFF_URN_VALUE'] %}
+        <div class="hods-status-message case-file-page large_and_complex">
+            <div class="govuk-width-container">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-full">
+                        <div class="hods-status-message__status">
+                            <span class="hods-status-message__extra">
+                                <strong>Liam Davies</strong> and <strong>Michael Scott</strong> are also working on this case
+                            </span>
+                            <span class="hods-status-message__extra">
+                                Last active: <strong>Now</strong>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+
+    {% endif %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+
+    <div class="govuk-grid-column-full main_Case_Title">
+
+        <div class="title-wrapper"> 
+            <!-- //////////// NEW CASE CREATED //////////// -->
+            {% if data['createCaseStarted'] == 'true' %}
+                {% if data['newCase_OperationName'] %}
+                    <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['newCase_OperationName'] }}</h1>
+                {% elseif data['newCase_DefendantName-Surname'] or data['newCase_DefendantName-Forename'] %}
+                    <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">
+                        <span class="uppercase">{{ data['newCase_DefendantName-Surname'] }}</span>, {{ data['newCase_DefendantName-Forename'] }}
+                    </h1>
+                {% elseif data['newCase_DefendantName-CompanyName'] %}
+                    <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['newCase_DefendantName-CompanyName'] }}</h1>
+                {% endif %}
+                <span class="govuk-caption-m govuk-!-margin-bottom-4">
+                    {% if data['newCase_URN-Compass_ID'] %}
+                        842620982/25
+                    {% else %}
+                        {{ data['newCase_URN-A'] }}{{ data['newCase_URN-B'] }}{{ data['newCase_URN-C'] }}/{{ data['newCase_URN-D'] }}
+                    {% endif %}        
+                </span>
+            <!-- //////////// EXISTING CASE //////////// -->
+            {% else %}
+                {% if data['searchOFF_Operation_VALUE'] == 'Dumper Truck' or data['searchOFF_Operation_VALUE'] == 'Dumper truck'  or data['searchOFF_Operation_VALUE'] == 'dumper truck'  or data['searchOFF_Operation_VALUE'] == 'Dumpertruck' %}
+                    <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['searchOFF_Operation_VALUE'] }}</h1>
+                    <span class="govuk-caption-m govuk-!-margin-bottom-4">88794548421</span>
+                {% elseif data['searchOFF_Defendant_VALUE'] == 'Dumper Truck' or data['searchOFF_Defendant_VALUE'] == 'Dumper truck'  or data['searchOFF_Defendant_VALUE'] == 'dumper truck'  or data['searchOFF_Defendant_VALUE'] == 'Dumpertruck' %}
+                    <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['searchOFF_Defendant_VALUE'] }}</h1>
+                    <span class="govuk-caption-m govuk-!-margin-bottom-4">88794548421</span>
+                {% elseif data['searchOFF_URN_VALUE'] %}
+                    <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">Dumper Truck</h1>
+                    <span class="govuk-caption-m govuk-!-margin-bottom-4">{{ data['searchOFF_URN_VALUE'] }}</span>
+                {% elseif data['searchOFF_Operation_VALUE'] %}
+                    {% if data['mvp_Case_1'] == 'true' %}
+                        {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['searchOFF_Operation_VALUE'] }}struck</h1>
+                        {% else %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['searchOFF_Operation_VALUE'] }}</h1>
+                        {% endif %}
+                        <span class="govuk-caption-m govuk-!-margin-bottom-4">45AA2098221</span>
+                    {% elseif data['mvp_Case_2'] == 'true' %}
+                        {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['searchOFF_Operation_VALUE'] }}struck Traffic</h1>
+                        {% else %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['searchOFF_Operation_VALUE'] }} Traffic</h1>
+                        {% endif %}
+                        <span class="govuk-caption-m govuk-!-margin-bottom-4">89AV6784522</span>
+                    {% elseif data['mvp_Case_3'] == 'true' %}
+                        {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['searchOFF_Operation_VALUE'] }}struck Office</h1>
+                        {% else %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['searchOFF_Operation_VALUE'] }} Office</h1>
+                        {% endif %}
+                        <span class="govuk-caption-m govuk-!-margin-bottom-4">64GB2457624</span>
+                    {% elseif data['mvp_Case_4'] == 'true' %}
+                        {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">Captain {{ data['searchOFF_Operation_VALUE'] }}struck</h1>
+                        {% else %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">Captain {{ data['searchOFF_Operation_VALUE'] }}</h1>
+                        {% endif %}
+                        <span class="govuk-caption-m govuk-!-margin-bottom-4">68975426824</span>
+                    {% endif %}
+                {% elseif data['searchOFF_Defendant_VALUE'] %}
+                    {% if data['mvp_Case_1'] == 'true' %}
+                        {% if data['searchOFF_Defendant_VALUE'] == 'Thunder' or data['searchOFF_Defendant_VALUE'] == 'thunder' %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['searchOFF_Defendant_VALUE'] }}struck</h1>
+                        {% else %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['searchOFF_Defendant_VALUE'] }}</h1>
+                        {% endif %}
+                        <span class="govuk-caption-m govuk-!-margin-bottom-4">45AA2098221</span>
+                    {% elseif data['mvp_Case_2'] == 'true' %}
+                        {% if data['searchOFF_Defendant_VALUE'] == 'Thunder' or data['searchOFF_Defendant_VALUE'] == 'thunder' %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['searchOFF_Defendant_VALUE'] }}struck Traffic</h1>
+                        {% else %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['searchOFF_Defendant_VALUE'] }} Traffic</h1>
+                        {% endif %}
+                        <span class="govuk-caption-m govuk-!-margin-bottom-4">89AV6784522</span>
+                    {% elseif data['mvp_Case_3'] == 'true' %}
+                        {% if data['searchOFF_Defendant_VALUE'] == 'Thunder' or data['searchOFF_Defendant_VALUE'] == 'thunder' %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['searchOFF_Defendant_VALUE'] }}struck Office</h1>
+                        {% else %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['searchOFF_Defendant_VALUE'] }} Office</h1>
+                        {% endif %}
+                        <span class="govuk-caption-m govuk-!-margin-bottom-4">64GB2457624</span>
+                    {% elseif data['mvp_Case_4'] == 'true' %}
+                        {% if data['searchOFF_Defendant_VALUE'] == 'Thunder' or data['searchOFF_Defendant_VALUE'] == 'thunder' %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">Captain {{ data['searchOFF_Defendant_VALUE'] }}struck</h1>
+                        {% else %}
+                            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">Captain {{ data['searchOFF_Defendant_VALUE'] }}</h1>
+                        {% endif %}
+                        <span class="govuk-caption-m govuk-!-margin-bottom-4">68975426824</span>
+                    {% endif %}
+                {% else %}
+                    <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">Thunderstruck</h1>
+                    <span class="govuk-caption-m govuk-!-margin-bottom-4">45AA2098221</span>
+                {% endif %}
+            {% endif %}
+        </div>
+
+    </div>
+
+    <div class="govuk-grid-column-full">
+
+        <div class="govuk-tabs off-cms-overview" id="new-tabs">
+
+            <ul class="govuk-tabs__list">
+                {% if data['shared_drive_NewFolder'] %}
+                    <li class="govuk-tabs__list-item" id="tab-1"><a class="tab-link tab-1-content">Transfer materials</a></li>
+                    <li class="govuk-tabs__list-item govuk-tabs__list-item--selected" id="tab-2"><a class="tab-link tab-2-content">Manage materials</a></li>
+                {% else %}
+                    <li class="govuk-tabs__list-item govuk-tabs__list-item--selected" id="tab-1"><a class="tab-link tab-1-content">Transfer materials</a></li>
+                    <li class="govuk-tabs__list-item" id="tab-2"><a class="tab-link tab-2-content">Manage materials</a></li>
+                {% endif %}
+                <li class="govuk-tabs__list-item" id="tab-3"><a class="tab-link tab-3-content">Bundles (1)</a></li>
+                <li class="govuk-tabs__list-item" id="tab-4"><a class="tab-link tab-4-content">Activity log</a></li>
+            </ul>
+
+            <!-- /////////////// TAB CONTENT 1 - START /////////////// -->
+            {% if data['shared_drive_NewFolder'] %}
+                <div class="panel" id="tab-1-content" style="display: none;">
+            {% else %}
+                <div class="panel" id="tab-1-content">
+            {% endif %}
+            {% if data['shared_Drive_Indexing'] == 'true' or data['shared_Drive_Transferring'] == 'true' or data['shared_Drive_Copying'] == 'true' %}
+                {% include "../includes/off-system-MVP/overview-materials_SD.html" %}
+            {% else %}
+                {% include "../includes/off-system-MVP/overview-materials.html" %}
+            {% endif %}
+            </div>
+            <!-- /////////////// TAB CONTENT 1 - END /////////////// -->
+
+            <!-- /////////////// TAB CONTENT 2 - START /////////////// -->
+            {% if data['shared_drive_NewFolder'] %}
+                <div class="panel" id="tab-2-content">
+            {% else %}
+                <div class="panel" id="tab-2-content" style="display: none;">
+            {% endif %}
+            {% if data['shared_Drive_Indexing'] == 'true' or data['shared_Drive_Transferring'] == 'true' or data['shared_Drive_Copying'] == 'true' %}
+                {% include "../includes/off-system-MVP/overview-manage_SD.html" %}
+            {% else %}
+                {% include "../includes/off-system-MVP/overview-manage.html" %}
+            {% endif %}
+            </div>
+            <!-- /////////////// TAB CONTENT 2 - END /////////////// -->
+
+            <!-- /////////////// TAB CONTENT 3 - START /////////////// -->
+            <div class="panel" id="tab-3-content" style="display: none;">
+                {% include "../includes/off-system-MVP/overview-bundles.html" %}
+            </div>
+            <!-- /////////////// TAB CONTENT 3 - END /////////////// -->
+
+            <!-- /////////////// TAB CONTENT 4 - START /////////////// -->
+            <div class="panel" id="tab-4-content" style="display: none;">
+                {% include "../includes/off-system-MVP/overview-audit.html" %}
+            </div>
+            <!-- /////////////// TAB CONTENT 4 - END /////////////// -->
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

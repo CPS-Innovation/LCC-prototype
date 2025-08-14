@@ -1,0 +1,117 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+
+        <div class="ea-title-wrapper">
+            {% if data['existing_Case'] == 'true' %}
+                <h1 class="govuk-heading-l govuk-!-margin-bottom-0" style="">Groundhog day</h1>
+                <span class="govuk-caption-m">920620952/24</span>
+            {% else %}
+                {% if data['caseName_Type'] == 'Operation name' %}
+                    <h1 class="govuk-heading-l govuk-!-margin-bottom-0" style="">{{ data['newCase_OperationName'] }}</h1>
+                {% else %}
+                    <h1 class="govuk-heading-l govuk-!-margin-bottom-0" style=""><span class="uppercase">{{ data['newCase_DefendantName-Surname'] }}, </span>{{ data['newCase_DefendantName-Forename'] }}</h1>
+                {% endif %}                               
+                <span class="govuk-caption-m">
+                    {{ data['newCase_URN-A'] }}
+                    {{ data['newCase_URN-B'] }}
+                    {{ data['newCase_URN-C'] }}
+                    /
+                    {{ data['newCase_URN-D'] }}
+                </span>
+            {% endif %} 
+            <p>Autosave is on. Last saved <span id="auto-save">10:24:53</span></p>
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible govuk-!-margin-top-0 govuk-!-margin-bottom-10">
+        </div>
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="wrapper gov-pages">
+
+            <form method="get" action="5-case-overview#suspectsTab" id="newChargeCode_C">  
+
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-10" style="">Charge details (optional)</h2>
+
+                <!-- OPTION 1 - START -->
+                <div class="govuk-form-group inline-form" id="">
+                    <label class="govuk-label" for="addCharge_Form-Location">On <span class="dateOffence">{{ data['addCharge_Form_Date-Day'] }}/{{ data['addCharge_Form_Date-Month'] }}/{{ data['addCharge_Form_Date-Year'] }}</span> at </label>
+                    {% if data['addCharge_Form-Address_1'] %}
+                        <input class="govuk-input govuk-input--width-20" id="addCharge_Form-Location" name="addCharge_Form-Location" type="text" value="{{ data['addCharge_Form-Address_1'] }}">
+                    {% else %}
+                        <input class="govuk-input govuk-input--width-20" id="addCharge_Form-Location" name="addCharge_Form-Location" type="text" value="Location">
+                    {% endif %}
+                </div>                            
+                <!-- OPTION 1 - END -->
+
+                <!-- OPTION 2 - START -->
+                <div class="govuk-form-group inline-form" id="">
+                    <label class="govuk-label" for="addCharge_Form-Property">without lawful excuse, </label>
+                    <select class="govuk-select" id="addCharge_Form-Type" name="addCharge_Form-Type">
+                        <option value="Destroyed" selected>Destroyed</option>
+                        <option value="Destroyed">Damaged</option>
+                    </select>
+                    <input class="govuk-input govuk-input--width-20" id="addCharge_Form-Property" name="addCharge_Form-Property" type="text" value="Property">
+                </div>                            
+                <!-- OPTION 2 - END -->
+
+                <!-- OPTION 3 - START -->
+                <div class="govuk-form-group inline-form" id="">
+                    <label class="govuk-label" for="addCharge_Form-Property">to the value of</label>
+                    {% if data['addCharge_Form-Value'] %}
+                        <input class="govuk-input govuk-input--width-20" id="addCharge_Form-Value" name="addCharge_Form-Value" type="text" value="{{ data['addCharge_Form-Value'] }}">
+                    {% else %}
+                        <input class="govuk-input govuk-input--width-20" id="addCharge_Form-Value" name="addCharge_Form-Value" type="text" value="Value under £5000 pounds">
+                    {% endif %}
+                    <label class="govuk-label last-of-type">belonging to</label>
+                </div>                            
+                <!-- OPTION 3 - END -->
+
+                <!-- OPTION 4 - START -->
+                <div class="govuk-form-group inline-form" id="">
+                    {% if data['addCharge_Form-Owner'] %}
+                        <input class="govuk-input govuk-input--width-20" id="addCharge_Form-Owner" name="addCharge_Form-Owner" type="text" value="{{ data['addCharge_Form-Owner'] }}">
+                    {% else %}
+                        <input class="govuk-input govuk-input--width-20" id="addCharge_Form-Owner" name="addCharge_Form-Owner" type="text" value="Name">
+                    {% endif %}            
+                    <label class="govuk-label last-of-type" for="addCharge_Form-Owner">intending to destroy or damage such</label>
+                </div>                            
+                <!-- OPTION 4 - START -->
+
+                <p>property or being reckless as to whether such property would be destroyed or damaged.</p>
+
+                <p><br></p>
+
+                <button type="button" onclick="return generateSummary();" class="govuk-button govuk-button--secondary" data-module="govuk-button">Generate summary of charge particulars</button>
+
+                <!-- OPTION 5 - START -->
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-label--m" for="addCharge_Form-Particulars">Summary of charge particulars (optional)</label>
+                    <textarea class="govuk-textarea" id="addCharge_Form-Particulars" name="addCharge_Form-Particulars" rows="5"></textarea>
+                </div>
+                <!-- OPTION 5 - START -->
+
+                <input id="chargeAddedComplete" name="chargeAddedComplete" type="text" value="true" style="display: none;">
+                <button type="submit" class="govuk-button" style="">Save and continue</button>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}

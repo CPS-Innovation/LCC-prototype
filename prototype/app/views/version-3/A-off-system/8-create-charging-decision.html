@@ -1,0 +1,937 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<script>
+// sets the time in the last saved bit
+ $(document).ready(function() {
+    function updateTime() {
+        const now = new Date();
+        now.setSeconds(now.getSeconds() - 10); // Subtract 10 seconds
+        const timeString = now.toLocaleTimeString();
+        document.getElementById('auto-save').textContent = timeString;
+    }
+
+    updateTime(); // Initial call to display time immediately
+    setInterval(updateTime, 11000); // Update every 11 seconds
+});
+
+// this is for the editor buttons - no idea how it works
+document.querySelectorAll('.toolbar button').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        execCmd(this.dataset.command, this.dataset.value || null);
+    });
+});
+
+function execCmd(command, value = null) {
+    document.execCommand(command, false, value);
+}
+
+// document.getElementById('editor').addEventListener('input', function() {
+//     console.log(this.innerHTML); 
+// });
+
+$(document).ready(function() {
+// Function to add days to the current date
+     // Function to add days to the current date
+    function addDays(date, days) {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    }
+
+    // Get today's date
+    const today = new Date();
+
+    // Add 2 days to today's date
+    const newDate = addDays(today, -6);
+
+    // Format the new date as a string
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const newDateString = newDate.toLocaleDateString(undefined, options);
+
+    // Insert the new date into the HTML
+    document.getElementById('date').textContent = newDateString;
+});
+</script>
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+
+        <div class="ea-title-wrapper">
+            {% if data['newCase_OperationName'] or data['newCase_DefendantName-Surname'] or data['newCase_DefendantName-Forename'] %}
+                {% if data['newCase_OperationName'] %}
+                    <h1 class="govuk-heading-l govuk-!-margin-bottom-0" style="">{{ data['newCase_OperationName'] }}</h1>
+                {% else %}
+                    <h1 class="govuk-heading-l govuk-!-margin-bottom-0" style=""><span class="uppercase">{{ data['newCase_DefendantName-Surname'] }}, </span>{{ data['newCase_DefendantName-Forename'] }}</h1>
+                {% endif %}
+                <span class="govuk-caption-m">
+                    {{ data['newCase_URN-A'] }}
+                    {{ data['newCase_URN-B'] }}
+                    {{ data['newCase_URN-C'] }}
+                    /
+                    {{ data['newCase_URN-D'] }}
+                </span>
+            {% elseif data['existing_Case'] == 'true' %}
+                <h1 class="govuk-heading-l govuk-!-margin-bottom-0" style="">Groundhog day</h1>
+                <span class="govuk-caption-m">920620952/24</span>
+            {% endif %}
+            <p>Autosave is on. Last saved <span id="auto-save"></span></p>
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible govuk-!-margin-top-0 govuk-!-margin-bottom-10">
+        </div>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-4" style="">Charging decision</h2>
+        <nav class="tube-map-ea">
+            <ul>
+                <li class="eaCaseSummary selected">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return eaCaseSummary();">Case summary</a>
+                </li>
+                <li class="eaEvidentialAanalysis">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return eaEvidentialAanalysis();">Evidential analysis</a>
+                </li>
+                <li class="eaPublicInterestAssesment">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return eaPublicInterestAssesment();">Public Interest Assessment</a>
+                </li>
+                <li class="eaWitnessVictim">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return eaWitnessVictim();">Witness and Victim strategy</a>
+                </li>
+                <li class="eaTrialStrategy">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return eaTrialStrategy();">Trial Strategy</a>
+                </li>
+                <li class="eaAllocation">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return eaAllocation();">Allocation</a>
+                </li>
+                <li class="eaDisclosureActions">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return eaDisclosureActions();">Disclosure</a>
+                </li>
+                <li class="eaHumanRights">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return eaHumanRights();">Human rights factors</a>
+                </li>
+                <li class="eaCaseAdvocate">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return eaCaseAdvocate();">Advocate and op.delivery instructions</a>
+                </li>
+                <li class="eaCaseMonitoring">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return eaCaseMonitoring();">Monitoring codes</a>
+                </li>
+                <li class="eaCaseRelationship">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return eaCaseRelationship();">Victim-suspect relationship</a>
+                </li>
+                <li class="eaPreview">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return eaPreview();">Preview</a>
+                </li>
+<!--                 <li class="eaCaseCharging">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return eaCaseCharging();">Charging decision</a>
+                </li>
+                <li class="eaActionPlan">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return eaActionPlan();">Action plan</a>
+                </li>
+ -->            </ul>
+        </nav>
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+
+        <!-- //////////////////////////////// 1 - Case summary - START //////////////////////////////// -->
+        <div class="ea-content-panel show-panel" id="eaCaseSummary">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Case summary</h2>
+            <p>Provide a brief overview of the charges and facts in a case and the current bail or remand status of the suspect(s). You should also outline your rationale for applying the Threshold Test. </p>
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Notes for completing this section</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p>You must be confident that all 5 conditions of the threshold test have been met. These are:</p>
+                    <ol class="govuk-list govuk-list--number">
+                        <li>there are reasonable ground to suspect that the person to be charged has committed the offence</li>
+                        <li>further evidence can be obtained to provide a realistic prospect of conviction</li>
+                        <li>the seriousness or the circumstances of the case justifies the making of an immediate charging decision</li>
+                        <li>there are continuing substantial grounds to object to bail in accordance with the Bail Act 1976 and in all the circumstances of the case it is proper to do so </li>
+                        <li>it is in the public interest to charge the suspect </li>
+                    </ol>
+                    <p>Where any of the conditions are not met, the Threshold Test cannot be applied and the suspect cannot be charged. </p>
+                </div>
+            </details>
+            <div class="govuk-form-group">
+                
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="eaCaseSummary-Editor" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return eaEvidentialAanalysis();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="completeAndExit-1" name="completeAndExit" type="text" value="true" style="display: none;">
+                    <button type="submit" data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCR();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 1 - Case summary - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 2 - Evidential analysis - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="eaEvidentialAanalysis">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Evidential analysis</h2>
+            <p>Provide your analysis of whether or not, and in what ways, the evidence proves all elements of the offence or offences in accordance with the Threshold Test. Your assessment should anticipate any likely issues for trial and suggest ways to overcome potential challenges to the prosecution case. </p>            
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Notes for completing this section</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p>Ensure you have considered:</p>
+                    <ul class="govuk-list govuk-list--bullet ">
+                        <li>whether the evidence is reliable, credible and admissible</li>
+                        <li>any evidence that could be used by the defence to undermine the case and what can be done to counter that</li>
+                        <li>the strength of the evidence if a victim is unwilling to testify or withdraws their support </li>
+                        <li>if any alternative lines of enquiry should be explored or additional evidence sought that would strengthen the case </li>
+                        <li>whether any further evidence will become available and how to deal with this - and what to do if it does not become available within a clear time frame </li>
+                    </ul>  
+                    <p>Reference any points of law or CPS policy in your assessment that may be relevant. </p>
+                    <a href="">View detailed guidance on evidential analysis in the case strategy hub (opens in new tab)</a>              
+                </div>
+            </details>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="eaEvidentialAanalysis-Editor" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return eaPublicInterestAssesment();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="completeAndExit-2" name="completeAndExit" type="text" value="true" style="display: none;">
+                    <button type="submit"  data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCR();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 2 - Evidential analysis - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 3 - Public interest assessment - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="eaPublicInterestAssesment">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Public interest assessment</h2>
+            <p>Based on your analysis of the case, explain if and how a prosecution is required in the public interest, referencing relevant parts of the code to support your rationale.</p>            
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Help with public interest assessment</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p>Your assessment should consider and balance:</p>
+                    <ul class="govuk-list govuk-list--bullet ">
+                        <li>the seriousness of the offence</li>
+                        <li>the level of culpability of the suspect</li>
+                        <li>the circumstances of and the harm caused to the victim</li>
+                        <li>the suspect’s age and maturity at the time of the offence and whether this is a mitigating factor</li>
+                        <li>the impact on the victim or the wider community</li>
+                        <li>whether the prosecution is a proportionate response</li>
+                        <li>whether sources of information require protecting</li>
+                    </ul>  
+                    <p>You should distinguish between factors that may be considered a mitigating feature and those which, taken together or alone, outweigh the need for a prosecution</p>
+                    <p>Where appropriate, you should consider whether an out-of-court disposal is a suitable response to the offender and the seriousness of the crime.</p>
+                    <a href="">View detailed guidance on assessing public interest in the case strategy hub (opens in new tab) </a>              
+                </div>
+            </details>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="eaPublicInterestAssesment-Editor" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return eaWitnessVictim();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="completeAndExit-3" name="completeAndExit" type="text" value="true" style="display: none;">
+                    <button type="submit"  data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCR();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 3 - Public interest assessment - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 4 - Witness and victim strategy - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="eaWitnessVictim">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Witness and victim strategy</h2>
+            <p>Where possible at this stage of the case, highlight key witness and victim information and actions required so that they can support the case. </p>            
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Help with witness and victim strategy</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p>Your considerations of witness and victim strategy should include: </p>
+                    <ul class="govuk-list govuk-list--bullet ">
+                        <li>identifying the crucial witness or witnesses in the case</li>
+                        <li>whether a Standard or Enhanced level of service is needed</li>
+                        <li>if there are any likely attendance issues or a risk of withdrawal. You should consider how to manage this, particularly for evidence-led prosecutions in domestic abuse (DA) cases.</li>
+                        <li>any special measures required for vulnerable or intimidated witnesses</li>
+                        <li>how intermediaries or the use of an interpreter may help and which language they must be able to speak</li>
+                    </ul>  
+                </div>
+            </details>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="eaWitnessVictim-Editor" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return eaTrialStrategy();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="completeAndExit-4" name="completeAndExit" type="text" value="true" style="display: none;">
+                    <button type="submit"  data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCR();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 4 - Witness and victim strategy - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 5 - Trial strategy - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="eaTrialStrategy">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Trial strategy</h2>
+            <p>Outline the trial strategy you’ve identified to best support a successful prosecution.</p>            
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Help with trial strategy</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p>Depending on the progression of the case, you should consider.</p>
+                    <p>Trial practicalities:</p>
+                    <ul class="govuk-list govuk-list--bullet ">
+                        <li>s.10 admissions to be sought</li>
+                        <li>witnesses to be agreed (s.9) and called</li>
+                        <li>media exhibits, such as CCTV, body-worn vide or 999 call recordings, that should be presented in court</li>
+                        <li>Res gestae or other issues with admissibility of evidence</li>
+                        <li>applications that my be made, such as Hearsay or Bad character</li>
+                    </ul>
+                    <p>You should also specify any sentencing issues or ancillary orders such as:</p>
+                    <ul class="govuk-list govuk-list--bullet ">
+                        <li>whether protective orders are required</li>
+                        <li>forfeiture and destructive order applications (for indecent images, drugs and paraphernalia, weapons.)</li>
+                        <li>reporting restrictions</li>
+                        <li>whether Victim Personal Statements or Community Impact Statements would be of benefit</li>
+                    </ul> 
+                    <p>Defence engagement such as:</p>
+                    <ul class="govuk-list govuk-list--bullet ">
+                        <li>whether there been any defence pre-charge engagement</li>
+                        <li>any requests for early disclosure</li>
+                        <li>any defence indications on allocation or offers of pleas</li>
+                    </ul>  
+                </div>
+            </details>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="eaTrialStrategy-Editor" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return eaAllocation();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="completeAndExit-5" name="completeAndExit" type="text" value="true" style="display: none;">
+                    <button type="submit"  data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCR();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 5 - Trial strategy - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 6 - Allocation - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="eaAllocation">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Allocation</h2>
+            <p>With reference to the allocation guidelines and offence specific sentencing guidelines, make your recommendation for how the case should be allocated.</p>            
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Help with allocation</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p>You should consider whether:</p>
+                    <ul class="govuk-list govuk-list--bullet ">
+                        <li>the offence is summary only or indictable, with awareness that mandatory sentences apply for indictable-only offences</li>
+                        <li>it is an either way offence</li>
+                        <li>there are aggravating or mitigating factors in the case</li>
+                        <li>the case is suitable for summary trial</li>
+                    </ul>
+                    <p><a href="">View guidance on allocation, sending and committal for sentence on CPS SharePoint (opens in new tab)</a></p>
+                    <a href="">View current sentencing guidelines on the Sentencing Council website (opens in new tab)</a>
+                </div>
+            </details>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="eaAllocation-Editor" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return eaDisclosureActions();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="completeAndExit-6" name="completeAndExit" type="text" value="true" style="display: none;">
+                    <button type="submit"  data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCR();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 6 - Allocation - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 7 - Disclosure - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="eaDisclosureActions">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Disclosure</h2>
+            <p>Consider appropriate actions that can be take around disclosure at this stage and pre-empt disclosure issues that may be important as the case progresses.</p>            
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Help with disclosure</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p>Where possible, consider:</p>
+                    <ul class="govuk-list govuk-list--bullet ">
+                        <li>whether any early common law disclosure is required</li>
+                        <li>whether all relevant evidence identified by the police is likely to be disclosable material</li>
+                        <li>police compliance with requirement for completed MG3 insert on RASSO and CCU cases</li>
+                        <li>whether a Disclosure Management Document is required</li>
+                        <li>whether police have complied with the requirement to supply an Information Management Document (IMD) or equivalent, outlining information about reasonable lines of enquiry</li>
+                    </ul>
+                </div>
+            </details>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="eaDisclosureActions-Editor" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return eaHumanRights();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="completeAndExit-7" name="completeAndExit" type="text" value="true" style="display: none;">
+                    <button type="submit"  data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCR();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 7 - Disclosure - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 8 - Human rights factors - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="eaHumanRights">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Human rights factors</h2>
+            <p>Human rights issues, with specific reference to the European Convention on Human Rights (ECHR), may affect the right to a fair trial or give rise to an abuse argument.</p>
+            <p><a href="">View CPS guidance on human rights factors affecting a fair trial (opens in new tab)</a></p>    
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m"><h1 class="govuk-fieldset__heading">Are there human rights issues that may affect the case?</h1></legend>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="eaHumanRightsRadio-No" name="eaHumanRightsRadio" type="radio" value="Not at this time">
+                            <label class="govuk-label govuk-radios__label" for="eaHumanRightsRadio-No">Not at this time</label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="eaHumanRightsRadio-Yes" name="eaHumanRightsRadio" type="radio" value="Yes">
+                            <label class="govuk-label govuk-radios__label" for="eaHumanRightsRadio-Yes">Yes</label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="eaHumanRights-Panel">
+                <h3 class="govuk-heading-m govuk-!-margin-top-2">Describe the human rights issues are and how they impact the case</h3>
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <div class="editor-container">
+                            <div class="toolbar">
+                                <button onclick="execCmd('bold')"><b>B</b></button>
+                                <button onclick="execCmd('italic')"><i>I</i></button>
+                                <button onclick="execCmd('underline')"><u>U</u></button>
+                                <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                                <button onclick="execCmd('insertOrderedList')">1.</button>
+                                <button onclick="execCmd('insertUnorderedList')">•</button>
+                            </div>
+                            <div id="eaHumanRights-Editor" contenteditable="true" class="editor"></div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return eaCaseAdvocate();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="completeAndExit-8" name="completeAndExit" type="text" value="true" style="display: none;">
+                    <button type="submit"  data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCR();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 8 - Human rights factors - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 9 - Advocate and op.delivery instructions - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="eaCaseAdvocate">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Advocate and op.delivery instructions</h2>
+            <p>Provide a summary of notes and actions for a prosecuting advocate and operational delivery staff.</p>   
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Help with advocate and operational delivery notes</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p>Depending on the progression of the case, you should provide instruction on:</p>
+                    <p>The remand or bail status of the suspect including</p>
+                    <ul class="govuk-list govuk-list--bullet ">
+                        <li>details of the remand application and the grounds</li>
+                        <li>confirmation that the MG7 is adequate</li>
+                        <li>whether BAA is appropriate in this case</li>
+                        <li>suitable bail conditions, where bail is considered appropriate</li>
+                    </ul>
+                    <p>Matter for the advocate to address in court, for example</p>
+                    <ul class="govuk-list govuk-list--bullet ">
+                        <li>acceptable pleas</li>
+                        <li>protective orders required, such as a restraining order</li>
+                        <li>is compensation required</li>
+                        <li>sentencing uplift requests for hate crimes or assaults on emergency workers</li>
+                    </ul>
+                    <p>You should also include any relevant actions for operational delivery staff administering the case. </p>
+                </div>
+            </details>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="eaCaseAdvocate-Editor" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return eaCaseMonitoring();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="completeAndExit-9" name="completeAndExit" type="text" value="true" style="display: none;">
+                    <button type="submit"  data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCR();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 9 - Advocate and op.delivery instructions - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 10A - Monitoring codes - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="eaCaseMonitoring">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Monitoring codes</h2>
+
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m"><h1 class="govuk-fieldset__heading">Global monitoring codes</h1> </legend>
+                    <div id="eaCaseMonitoring_Checkboxes-hint" class="govuk-hint">Select all that apply</div>
+
+                    <div class="govuk-grid-row">
+
+                        <div class="govuk-grid-column-one-half">
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-1" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Asset recovery">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-1">Asset recovery</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-2" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Child abuse">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-2">Child abuse</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-3" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Crime against an older person">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-3">Crime against an older person</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-4" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Disability hate crime">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-4">Disability hate crime</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-5" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Domestic abuse">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-5">Domestic abuse</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-6" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="DA specialist court">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-6">DA specialist court</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-7" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Extraordinary event">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-7">Extraordinary event</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-8" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Fatality">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-8">Fatality</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-9" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Forced marriage">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-9">Forced marriage</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-10" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="GAP">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-10">GAP</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-11" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Homophobic">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-11">Homophobic</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-12" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Honour crime">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-12">Honour crime</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-13" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Human trafficking">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-13">Human trafficking</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-14" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Identified victim">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-14">Identified victim</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-15" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Joint enterprise">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-15">Joint enterprise</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-16" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Media interest">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-16">Media interest</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="govuk-grid-column-one-half">
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-17" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Mental health">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-17">Mental health</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-18" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Nationality bar">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-18">Nationality bar</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-19" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="NGAP">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-19">NGAP</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-20" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Op Venetic">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-20">Op Venetic</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-21" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Police complaints">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-21">Police complaints</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-22" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Pre-charge decision" checked disabled>
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-22">Pre-charge decision</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-23" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Prohibited weapons">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-23">Prohibited weapons</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-24" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="PTWI referral">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-24">PTWI referral</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-25" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Racist crime">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-25">Racist crime</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-26" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Racist/religious incident" disabled>
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-26">Racist/religious incident</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-27" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Rape">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-27">Rape</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-28" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Religious crime">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-28">Religious crime</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-29" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Substantial charge alteration">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-29">Substantial charge alteration</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-30" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Transphobic">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-30">Transphobic</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-31" name="eaCaseMonitoring_Checkboxes" type="checkbox" value="Vulnerable/intimidated victim">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-31">Vulnerable/intimidated victim</label>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m"><h1 class="govuk-fieldset__heading">Local monitoring codes</h1></legend>
+                    <div id="eaCaseMonitoring_Checkboxes-hint" class="govuk-hint">Select all that apply</div>
+
+                    <div class="govuk-grid-row">
+
+                        <div class="govuk-grid-column-one-half">
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-A" name="eaCaseMonitoring_Checkboxes-V2" type="checkbox" value="Drug confiscation">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-A">Drug confiscation</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-B" name="eaCaseMonitoring_Checkboxes-V2" type="checkbox" value="Football hooliganism">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-B">Football hooliganism</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-C" name="eaCaseMonitoring_Checkboxes-V2" type="checkbox" value="Hoax bomb phone calls">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-C">Hoax bomb phone calls</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-D" name="eaCaseMonitoring_Checkboxes-V2" type="checkbox" value="Infanticide">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-D">Infanticide</label>
+                                </div>
+                           </div>
+                        </div>
+
+                        <div class="govuk-grid-column-one-half">
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-E" name="eaCaseMonitoring_Checkboxes-V2" type="checkbox" value="Medicinal cannabis">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-E">Medicinal cannabis</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-F" name="eaCaseMonitoring_Checkboxes-V2" type="checkbox" value="Murder">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-F">Murder</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-G" name="eaCaseMonitoring_Checkboxes-V2" type="checkbox" value="RTA fatality">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-G">RTA fatality</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="eaCaseMonitoring_Checkboxes-H" name="eaCaseMonitoring_Checkboxes-V2" type="checkbox" value="Victim focus">
+                                    <label class="govuk-label govuk-checkboxes__label" for="eaCaseMonitoring_Checkboxes-H">Victim focus</label>
+                                </div>
+                          </div>
+                        </div>
+
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return eaPreview();" id="eaCaseMonitoring-Continue">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="completeAndExit-10" name="completeAndExit" type="text" value="true" style="display: none;">
+                    <button type="submit"  data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCR();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 10A - Advocate and op.delivery instructions - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 10B - Victim-suspect relationship - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="eaCaseRelationship">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">What was the relationship between Eoin McLove and victim at the time of the offence?</h2>
+            <p>This information is required because a domestic abuse monitoring code has been selected. </p>   
+
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m"><h1 class="govuk-fieldset__heading">Relationship type</h1></legend>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="eaCaseRelationship-Type-1" name="eaCaseRelationship-Type" type="radio" value="Partner">
+                            <label class="govuk-label govuk-radios__label" for="eaCaseRelationship-Type-1">Partner</label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="eaCaseRelationship-Type-2" name="eaCaseRelationship-Type" type="radio" value="Ex partner">
+                            <label class="govuk-label govuk-radios__label" for="eaCaseRelationship-Type-2">Ex partner</label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="eaCaseRelationship-Type-3" name="eaCaseRelationship-Type" type="radio" value="Family member">
+                            <label class="govuk-label govuk-radios__label" for="eaCaseRelationship-Type-3">Family member</label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="eaCaseRelationship-Type-4" name="eaCaseRelationship-Type" type="radio" value="Extended family member">
+                            <label class="govuk-label govuk-radios__label" for="eaCaseRelationship-Type-4">Extended family member</label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="eaCaseRelationship-Type-5" name="eaCaseRelationship-Type" type="radio" value="Spouse or civil partner">
+                            <label class="govuk-label govuk-radios__label" for="eaCaseRelationship-Type-5">Spouse or civil partner</label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="eaCaseRelationship-Type-6" name="eaCaseRelationship-Type" type="radio" value="Former spouse or civil partner">
+                            <label class="govuk-label govuk-radios__label" for="eaCaseRelationship-Type-6">Former spouse or civil partner</label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="govuk-form-group" id="eaCaseRelationship-Sex">
+                <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s"><h1 class="govuk-fieldset__heading">Was the relationship same sex?</h1></legend>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="eaCaseRelationship-Sex-A" name="eaCaseRelationship-Sex" type="radio" value="No">
+                            <label class="govuk-label govuk-radios__label" for="eaCaseRelationship-Sex-A">No</label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="eaCaseRelationship-Sex-B" name="eaCaseRelationship-Sex" type="radio" value="Yes">
+                            <label class="govuk-label govuk-radios__label" for="eaCaseRelationship-Sex-B">Yes</label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return eaPreview();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="completeAndExit-9" name="completeAndExit" type="text" value="true" style="display: none;">
+                    <button type="submit"  data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCR();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 10B - Victim-suspect relationship - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 11 - PREVIEW - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="eaPreview">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Preview</h2>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="eaCaseSummary-Preview" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="monitoringCodes">    
+                <table class="govuk-table">
+                    <tbody class="govuk-table__body">
+
+                        <!-- SECTION 1 - START -->
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">Monitoring codes</th>
+                            <td class="govuk-table__cell">
+                                <p class="global-codes">
+                                    <strong>Global monitoring codes</strong>
+                                    <br>
+                                </p>
+                                <p class="local-codes govuk-!-margin-bottom-0">
+                                    <strong>Local monitoring codes</strong>
+                                    <br>
+                                </p>
+                            </td>
+                            <td class="govuk-table__cell"><a onclick="">Edit</a></td>
+                        </tr>
+                        <!-- SECTION 1 - END -->
+
+                        <!-- SECTION 2 - START -->
+                        <tr class="govuk-table__row" id="domesticAbuse">
+                            <th scope="row" class="govuk-table__header">Victim-suspect relationship</th>
+                            <td class="govuk-table__cell"><span class="relationship"></span></td>
+                            <td class="govuk-table__cell"><a onclick="">Edit</a></td>
+                        </tr>
+                        <!-- SECTION 2 - END -->
+
+                        <!-- SECTION 3 - START -->
+                        <tr class="govuk-table__row" id="domesticAbuse-Relationship">
+                            <th scope="row" class="govuk-table__header">Same sex relationship</th>
+                            <td class="govuk-table__cell"><span class="sexRelationship"></span></td>
+                            <td class="govuk-table__cell"><a onclick="">Edit</a></td>
+                        </tr>
+                        <!-- SECTION 3 - END -->
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="ea-panel-cta">
+                <form action="5-case-overview#eaTab#eaTab" method="get" class="form" style="">
+                    <input id="completeAndExit-11" name="completeAndExit" type="text" value="true" style="display: none;">
+                    <button type="submit"  data-module="govuk-button" class="govuk-button" onclick="return saveCR();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 11 - PREVIEW - END //////////////////////////////// -->
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,356 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row" id="">
+    <div class="govuk-grid-column-two-thirds">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+        <div class="wrapper gov-pages">
+
+            <form method="get" action="5-case-overview#witnessesTab" id="addWitness_Form-A">  
+
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl"><h1 class="govuk-fieldset__heading">Witness/Complainant personal details</h1></legend>
+
+                <!-- OPTION 1 - START -->
+                <div class="govuk-form-group no-float">
+                    <label class="govuk-label" for="addWitness_Form-Title">Title</label>
+                    <select class="govuk-select" id="addWitness_Form-Title" name="addWitness_Form-Title">
+                        <option selected disabled>-- Select title --</option>
+                        {% if data['addWitness_Form-Title'] == 'Dr' %}
+                            <option value="Dr" selected>Dr</option>
+                        {% else %}
+                            <option value="Dr">Dr</option>
+                        {% endif %}
+                        {% if data['addWitness_Form-Title'] == 'Miss' %}
+                            <option value="Miss" selected>Miss</option>
+                        {% else %}
+                            <option value="Miss">Miss</option>
+                        {% endif %}
+                        {% if data['addWitness_Form-Title'] == 'Mr' %}
+                            <option value="Mr" selected>Mr</option>
+                        {% else %}
+                            <option value="Mr">Mr</option>
+                        {% endif %}
+                        {% if data['addWitness_Form-Title'] == 'Mrs' %}
+                            <option value="Mrs" selected>Mrs</option>
+                        {% else %}
+                            <option value="Mrs">Mrs</option>
+                        {% endif %}
+                        {% if data['addWitness_Form-Title'] == 'Ms' %}
+                            <option value="Ms" selected>Ms</option>
+                        {% else %}
+                            <option value="Ms">Ms</option>
+                        {% endif %}
+                        {% if data['addWitness_Form-Title'] == 'Prof' %}
+                            <option value="Prof" selected>Prof</option>
+                        {% else %}
+                            <option value="Prof">Prof</option>
+                        {% endif %}
+                        {% if data['addWitness_Form-Title'] == 'Rev' %}
+                            <option value="Rev" selected>Rev</option>
+                        {% else %}
+                            <option value="Rev">Rev</option>
+                        {% endif %}
+                        {% if data['addWitness_Form-Title'] == 'PC' %}
+                            <option value="PC" selected>PC</option>
+                        {% else %}
+                            <option value="PC">PC</option>
+                        {% endif %}
+                        {% if data['addWitness_Form-Title'] == 'DC' %}
+                            <option value="DC" selected>DC</option>
+                        {% else %}
+                            <option value="DC">DC</option>
+                        {% endif %}
+                        {% if data['addWitness_Form-Title'] == 'PS' %}
+                            <option value="PS" selected>PS</option>
+                        {% else %}
+                            <option value="PS">PS</option>
+                        {% endif %}
+                        {% if data['addWitness_Form-Title'] == 'DS' %}
+                            <option value="DS" selected>DS</option>
+                        {% else %}
+                            <option value="DS">DS</option>
+                        {% endif %}
+                        {% if data['addWitness_Form-Title'] == 'INS' %}
+                            <option value="INS" selected>INS</option>
+                        {% else %}
+                            <option value="INS">INS</option>
+                        {% endif %}
+                        {% if data['addWitness_Form-Title'] == 'DI' %}
+                            <option value="DI" selected>DI</option>
+                        {% else %}
+                            <option value="DI">DI</option>
+                        {% endif %}
+                        {% if data['addWitness_Form-Title'] == 'PCSO' %}
+                            <option value="PCSO" selected>PCSO</option>
+                        {% else %}
+                            <option value="PCSO">PCSO</option>
+                        {% endif %}
+                        {% if data['addWitness_Form-Title'] == 'CI' %}
+                            <option value="CI" selected>CI</option>
+                        {% else %}
+                            <option value="CI">CI</option>
+                        {% endif %}
+                        {% if data['addWitness_Form-Title'] == 'SC' %}
+                            <option value="SC" selected>SC</option>
+                        {% else %}
+                            <option value="SC">SC</option>
+                        {% endif %}
+                    </select>
+                </div>
+                <!-- OPTION 1 - END -->
+
+                <!-- OPTION 2 - START -->
+                <div class="govuk-form-group">
+                    <label class="govuk-label" for="addWitness_Form-Surname">Surname</label>
+                    {% if data['addWitness_Form-Surname'] %}
+                        <input class="govuk-input govuk-input--width-20" id="addWitness_Form-Surname" name="addWitness_Form-Surname" type="text" value="{{ data['addWitness_Form-Surname'] }}">
+                    {% else %}
+                        <input class="govuk-input govuk-input--width-20" id="addWitness_Form-Surname" name="addWitness_Form-Surname" type="text">
+                    {% endif %}
+                </div>                    
+                <!-- OPTION 2 - END -->
+
+                <!-- OPTION 3 - START -->
+                <div class="govuk-form-group">
+                    <label class="govuk-label" for="addWitness_Form-Forename">Forename</label>
+                    {% if data['addWitness_Form-Forename'] %}
+                        <input class="govuk-input govuk-input--width-20" id="addWitness_Form-Forename" name="addWitness_Form-Forename" type="text" value="{{ data['addWitness_Form-Forename'] }}">
+                    {% else %}
+                        <input class="govuk-input govuk-input--width-20" id="addWitness_Form-Forename" name="addWitness_Form-Forename" type="text">
+                    {% endif %}
+                </div>                    
+                <!-- OPTION 3 - END -->
+
+                <!-- OPTION 4 - START -->
+                <div class="govuk-form-group" id="witness_Police">
+                    <label class="govuk-label" for="addWitness_Form-Number">Shoulder number</label>
+                    {% if data['addWitness_Form-Number'] %}
+                        <input class="govuk-input govuk-input--width-5" id="addWitness_Form-Number" name="addWitness_Form-Number" type="text" value="{{ data['addWitness_Form-Number'] }}">
+                    {% else %}
+                        <input class="govuk-input govuk-input--width-5" id="addWitness_Form-Number" name="addWitness_Form-Number" type="text">
+                    {% endif %}
+                </div>                    
+                <!-- OPTION 4 - END -->
+
+                <!-- OPTION 5 & 6 - START -->
+                <div class="govuk-inset-text">
+                    <div class="govuk-form-group govuk-!-margin-bottom-0">
+                        <fieldset class="govuk-fieldset">
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    {% if data['addWitness_Details_Complainant'] %}
+                                        <input class="govuk-checkboxes__input" id="addWitness_Details_Complainant" name="addWitness_Details_Complainant" type="checkbox" value="Complainant" checked>
+                                    {% else %}
+                                        <input class="govuk-checkboxes__input" id="addWitness_Details_Complainant" name="addWitness_Details_Complainant" type="checkbox" value="Complainant">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details_Complainant">This witness is the complainant</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    {% if data['addWitness_Details_Key'] %}
+                                        <input class="govuk-checkboxes__input" id="addWitness_Details_Key" name="addWitness_Details_Key" type="checkbox" value="Complainant" checked>
+                                    {% else %}
+                                        <input class="govuk-checkboxes__input" id="addWitness_Details_Key" name="addWitness_Details_Key" type="checkbox" value="Complainant">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details_Key">This witness is Key</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <!-- OPTION 5 & 6 - END -->
+
+                <!-- OPTION 7 - START -->
+<!--                 <div class="govuk-form-group govuk-!-margin-bottom-2">
+                    <fieldset class="govuk-fieldset">
+                        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="addWitness_Details_Vulnerable" name="addWitness_Details_Vulnerable" type="checkbox" value="Vulnerable">
+                                <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details_Vulnerable">Vulnerable</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+ -->                <!-- OPTION 7 - END -->
+
+                <!-- OPTION 8 - START -->
+                <div class="govuk-form-group govuk-!-margin-bottom-2">
+                    <fieldset class="govuk-fieldset">
+                        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                            <div class="govuk-checkboxes__item">
+                                {% if data['addWitness_Details_Neurodivergent'] %}
+                                    <input class="govuk-checkboxes__input" id="addWitness_Details_Neurodivergent" name="addWitness_Details_Neurodivergent" type="checkbox" value="Neurodivergent" checked>
+                                {% else %}
+                                    <input class="govuk-checkboxes__input" id="addWitness_Details_Neurodivergent" name="addWitness_Details_Neurodivergent" type="checkbox" value="Neurodivergent">
+                                {% endif %}
+                                <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details_Neurodivergent">Neurodivergent</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <details class="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">Help with neurodivergent</span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            The witness will be neurodivergent if they have a developmental or learning disorder, such as autism, ADHD, dyslexia, or Tourette's syndrome.
+                        </div>
+                    </details>
+                </div>
+                <!-- OPTION 8 - END -->
+
+                <!-- OPTION 9 - START -->
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                            <div class="govuk-checkboxes__item">
+                                {% if data['addWitness_Details_Vulnerable'] %}
+                                    <input class="govuk-checkboxes__input" id="addWitness_Details_Vulnerable" name="addWitness_Details_Vulnerable" type="checkbox" value="Vulnerable" checked>
+                                {% else %}
+                                    <input class="govuk-checkboxes__input" id="addWitness_Details_Vulnerable" name="addWitness_Details_Vulnerable" type="checkbox" value="Vulnerable">
+                                {% endif %}
+                                <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details_Vulnerable">Vulnerable</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <!-- OPTION 9 - END -->
+
+                <!-- OPTION 10 - START -->
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                            <div class="govuk-checkboxes__item">
+                                {% if data['addWitness_Details_Statement'] %}
+                                    <input class="govuk-checkboxes__input" id="addWitness_Details_Statement" name="addWitness_Details_Statement" type="checkbox" value="Statement" data-aria-controls="conditional-addWitness_Details_Statement" checked>
+                                {% else %}
+                                    <input class="govuk-checkboxes__input" id="addWitness_Details_Statement" name="addWitness_Details_Statement" type="checkbox" value="Statement" data-aria-controls="conditional-addWitness_Details_Statement">
+                                {% endif %}
+                                <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details_Statement">They have a statement</label>
+                            </div>
+                            <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-addWitness_Details_Statement">
+                                <div class="govuk-form-group">
+                                    <fieldset class="govuk-fieldset" role="group" aria-describedby="addWitness_Details_Date-hint">
+                                        <legend class="govuk-fieldset__legend">Statement date</legend>
+                                        <div id="addWitness_Details_Date-hint" class="govuk-hint">For example, 27 3 2007</div>
+                                        <div class="govuk-date-input" id="addWitness_Details_Date">
+                                            <div class="govuk-date-input__item">
+                                                <div class="govuk-form-group">
+                                                    <label class="govuk-label govuk-date-input__label" for="addWitness_Details_Date-Day">Day</label>
+                                                    {% if data['addWitness_Details_Date-Day'] %}
+                                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addWitness_Details_Date-Day" name="addWitness_Details_Date-Day" type="text" inputmode="numeric" value="{{ data['addWitness_Details_Date-Day'] }}">
+                                                    {% else %}
+                                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addWitness_Details_Date-Day" name="addWitness_Details_Date-Day" type="text" inputmode="numeric">
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="govuk-date-input__item">
+                                                <div class="govuk-form-group">
+                                                    <label class="govuk-label govuk-date-input__label" for="addWitness_Details_Date-Month">Month</label>
+                                                    {% if data['addWitness_Details_Date-Month'] %}
+                                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addWitness_Details_Date-Month" name="addWitness_Details_Date-Month" type="text" inputmode="numeric" value="{{ data['addWitness_Details_Date-Month'] }}">
+                                                    {% else %}
+                                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addWitness_Details_Date-Month" name="addWitness_Details_Date-Month" type="text" inputmode="numeric">
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="govuk-date-input__item">
+                                                <div class="govuk-form-group">
+                                                    <label class="govuk-label govuk-date-input__label" for="addWitness_Details_Date-Year">Year</label>
+                                                    {% if data['addWitness_Details_Date-Year'] %}
+                                                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addWitness_Details_Date-Year" name="addWitness_Details_Date-Year" type="text" inputmode="numeric" value="{{ data['addWitness_Details_Date-Year'] }}">
+                                                    {% else %}
+                                                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addWitness_Details_Date-Year" name="addWitness_Details_Date-Year" type="text" inputmode="numeric">
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <!-- OPTION 10 - END -->
+
+                <!-- OPTION 11 - START -->
+                <div class="govuk-form-group">
+
+                    <fieldset class="govuk-fieldset" aria-describedby="addWitness_Details-Type-hint">
+                        <legend class="govuk-fieldset__legend">Type of witness</legend>
+                        <div id="addWitness_Details-Type-hint" class="govuk-hint">Select all that apply</div>
+                        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes" id="type_Of_Witness">
+
+<!--                             <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="addWitness_Details-Type-Police" name="addWitness_Details-Type" type="checkbox" value="(P) - Police">
+                                <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details-Type-Police">(P) - Police</label>
+                            </div>
+ -->                            
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="addWitness_Details-Type-Child" name="addWitness_Details-Type" type="checkbox" value="(C) - Child">
+                                <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details-Type-Child">(C) - Child</label>
+                            </div>
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="addWitness_Details-Type-Professional" name="addWitness_Details-Type" type="checkbox" value="(F) - Professional">
+                                <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details-Type-Professional">(F) - Professional</label>
+                            </div>
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="addWitness_Details-Type-Expert" name="addWitness_Details-Type" type="checkbox" value="(X) - Expert">
+                                <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details-Type-Expert">(X) - Expert</label>
+                            </div>
+
+<!--                             <div class="govuk-checkboxes__item" id="witnessType-Vulnerable">
+                                <input class="govuk-checkboxes__input" id="addWitness_Details-Type-Vulnerable" name="addWitness_Details-Type" type="checkbox" value="(L) - Vulnerable">
+                                <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details-Type-Vulnerable">(L) - Vulnerable</label>
+                            </div>
+ -->                            
+                            <div class="govuk-checkboxes__item" id="witnessType-Intimidated">
+                                <input class="govuk-checkboxes__input" id="addWitness_Details-Type-Intimidated" name="addWitness_Details-Type" type="checkbox" value="(T) - Intimidated">
+                                <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details-Type-Intimidated">(T) - Intimidated</label>
+                            </div>
+                            <div class="govuk-checkboxes__item" id="witnessType-Need">
+                                <input class="govuk-checkboxes__input" id="addWitness_Details-Type-Need" name="addWitness_Details-Type" type="checkbox" value="(G) - Greatest need">
+                                <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details-Type-Need">(G) - Greatest need</label>
+                            </div>
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="addWitness_Details-Type-Special" name="addWitness_Details-Type" type="checkbox" value="(S) - Special">
+                                <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details-Type-Special">(S) - Special</label>
+                            </div>
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="addWitness_Details-Type-Prisoner" name="addWitness_Details-Type" type="checkbox" value="(H) - Prisoner">
+                                <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details-Type-Prisoner">(H) - Prisoner</label>
+                            </div>
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="addWitness_Details-Type-Interpreter" name="addWitness_Details-Type" type="checkbox" value="(I) - This person is an interpreter">
+                                <label class="govuk-label govuk-checkboxes__label" for="addWitness_Details-Type-Interpreter">(I) - This person is an interpreter</label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </div>
+                <!-- OPTION 11 - END -->
+
+                <input id="addWitnessStarted" name="addWitnessStarted" type="text" value="true" style="display: none;">
+                <button type="submit" class="govuk-button" style="">Continue</button>
+                <button type="button" onclick="location.href='5-case-overview#witnessesTab';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}

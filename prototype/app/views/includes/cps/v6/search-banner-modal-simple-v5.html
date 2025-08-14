@@ -1,0 +1,671 @@
+<div aria-label="cookie banner" class="das-cookie-banner__wrap das-cookie-banner__modal rj-dont-display" id="searchModal">
+    <div class="das-cookie-banner" id="openMe">
+        <div class="das-cookie-banner__wrapper">
+
+            <div class="govuk-modal-dialogue__header">
+                <button aria-label="Close modal dialogue" class="govuk-button govuk-modal-dialogue__close" data-module="govuk-button" type="button" onClick="closeModal()">×</button>
+            </div>
+
+            <!-- ///////////////////////////// SEARCH MODAL - START ///////////////////////////// -->
+            <div class="govuk-grid-row">
+
+                <div class="innerPanel simpleModelTwo">
+
+                    <div class="search-bar-wrapper">
+                        <div class="govuk-form-group">
+                            <label class="govuk-label govuk-label--s" for="searchURNModal-result">Search <span>McLove, {{ data['searchURN'] }}/1</span></label>
+                            <div class="wrapper">
+                                <input class="govuk-input govuk-!-width-one-half" id="searchURNModal-result" name="searchURNModal-result" type="text" aria-describedby="search-result" value="" />
+                                <div class="bba"><button class="search" type="submit"> </button></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="govuk-grid-row">
+
+                        <div class="govuk-grid-column-one-quarter">
+                            <div class="notOnMobile">
+                                <div class="filter-form filtering">
+                                    <div id="finder-frontend" class="inner-block">
+                                        <h3 class="govuk-heading-m">Filter</h3>
+                                        <div class="filter text-filter">
+                                            <div class="govuk-form-group">
+                                                <label class="govuk-label govuk-label--s legend" for="partialCost">Document type</label>
+                                                {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+                                                {{ govukCheckboxes({
+                                                    classes: "govuk-checkboxes--small",
+                                                    idPrefix: "caseStatus",
+                                                    name: "case-status",
+                                                    fieldset: {
+                                                        legend: {
+                                                            text: "",
+                                                            isPageHeading: true,
+                                                            classes: "govuk-fieldset__legend--l"
+                                                        }
+                                                    },
+                                                    items: [
+                                                        {
+                                                            value: "all",
+                                                            text: "MG3/MG3A (1)"
+                                                        },
+                                                        {
+                                                            value: "mg11",
+                                                            text: "MG11 (4)"
+                                                        },
+                                                        {
+                                                            value: "mg00",
+                                                            text: "MG00 (1)"
+                                                        },
+                                                        {
+                                                            value: "pre-cons",
+                                                            text: "Pre cons (1)"
+                                                        },
+                                                        {
+                                                            value: "DA",
+                                                            text: "DA Checklist (1)"
+                                                        },
+                                                        {
+                                                            value: "storm-log",
+                                                            text: "Storm log (1)"
+                                                        }
+                                                    ]
+                                                }) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="filter text-filter">
+                                            <div class="govuk-form-group">
+                                                <label class="govuk-label   govuk-label--s legend" for="partialCost">Category</label>
+                                                {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+                                                {{ govukCheckboxes({
+                                                    classes: "govuk-checkboxes--small",
+                                                    idPrefix: "caseStatus",
+                                                    name: "case-status",
+                                                    fieldset: {
+                                                        legend: {
+                                                            text: "",
+                                                            isPageHeading: true,
+                                                            classes: "govuk-fieldset__legend--l"
+                                                        }
+                                                    },
+                                                    items: [
+                                                        {
+                                                            value: "all",
+                                                            text: "Case overview (2)"
+                                                        },
+                                                        {
+                                                            value: "mg11",
+                                                            text: "Statements (4)"
+                                                        },
+                                                        {
+                                                            value: "mg00",
+                                                            text: "Exhibits (0)"
+                                                        },
+                                                        {
+                                                            value: "pre-cons",
+                                                            text: "Unused materials (2)"
+                                                        },
+                                                        {
+                                                            value: "Defendent",
+                                                            text: "Defendant (1)"
+                                                        },
+                                                        {
+                                                            value: "Courtpreperation",
+                                                            text: "Court preperation (0)"
+                                                        },
+                                                        {
+                                                            value: "comms",
+                                                            text: "Communications (0)"
+                                                        }
+                                                    ]
+                                                }) }}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="govuk-grid-column-three-quarters">
+                            <div class="search-results">
+                                <p>
+                                    <strong>27</strong> results in <strong>9</strong> documents <br />Search may not have found all instances of '<strong class="searchModalResults">assault</strong>' in this case
+                                </p>
+
+                                <div class="govuk-form-group">
+                                    <select class="govuk-select" id="sort" name="sort">
+                                        <option value="Best match" selected>Date added</option>
+                                        <option value="Closing date">Results per document</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="tech-issues">
+                                <p>Technical problems stopped us from searching these documents:</p>
+                                <p class="files">MG06 3 June, MG06 10 june, MG20 5 June, MG20 10 June, MG06 13 June</p>
+                            </div>
+
+                            <div class="column details">
+
+                                <!-- RESULT 1 - START -->
+                                <div id="resultsOne">
+                                    <div class="twoFlexContainer">
+                                        <div class="twoFlexItem">
+                                            <h2 class="govuk-heading-s results-header mb5"><a href="">MCLOVE MG3</a></h2>
+                                        </div>
+                                    </div>
+                                    <div class="support-text">
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Uploaded:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">2 June 2020</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Type:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">MG3</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="govuk-inset-text cpsInsetChange">
+                                        <p class="searchResultsHighlights govuk-body-s">
+                                            ...Proposed charges:COMMON <strong class="searchModalResults">assault</strong>, DRIVE OPL...
+                                        </p>
+                                    </div>
+                                    <details class="govuk-details" data-module="govuk-details">
+                                        <summary class="govuk-details__summary">
+                                            <span class="govuk-details__summary-text ">View 2 more</span>
+                                        </summary>
+                                        <div class="">
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ..Offences: Common <strong class="searchModalResults">assault</strong>, DRIVE OPL...
+                                                </p>
+                                            </div>
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    There appears to be enough evidence for the offence of common <span class="searchFound ">assault</span> and an offence of driving whilst over the proscribed limit...
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </details>
+                                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                                </div>
+                                <!-- RESULT 1 - END -->
+
+                                <!-- RESULT 2 - START -->
+                                <div id="resultsTwo">
+                                    <div class="twoFlexContainer">
+                                        <div class="twoFlexItem">
+                                            <h2 class="govuk-heading-s results-header mb5">
+                                                <a href="">MG00</a>
+                                                <span>
+                                                    <div class="flex-support-meta">
+
+                                                    </div>
+                                                </span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="support-text">
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Uploaded:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">5 June 2020</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex-support-meta">
+                                            <div class=" " >
+                                                <p class="govuk-body-s">Type:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">MG00</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="govuk-inset-text cpsInsetChange">
+                                        <p class="searchResultsHighlights govuk-body-s">
+                                            ... - BWV of victims injuries following the <strong class="searchModalResults">assault</strong> described.
+                                        </p>
+                                    </div>
+                                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                                </div>
+                                <!-- RESULT 2 - END -->
+
+                                <!-- RESULT 3 - START -->
+                                <div id="resultsThree">
+                                    <div class="twoFlexContainer">
+                                        <div class="twoFlexItem">
+                                            <h2 class="govuk-heading-s results-header mb5">
+                                                <a href="">PRE CONS D</a>
+                                                <span>
+                                                    <div class="flex-support-meta">
+
+                                                    </div>
+                                                </span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="support-text">
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Uploaded:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">5 June 2020</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Type:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">Pre cons</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="govuk-inset-text cpsInsetChange">
+                                        <p class="searchResultsHighlights govuk-body-s">
+                                            ...07/04/17 COMMON <strong class="searchModalResults">assault</strong> (PLEA GUILTY). BATLEY AND DEWSBURY MAGISTRATES CONVICTION OF 06/04/17....
+                                        </p>
+                                    </div>
+                                    <details class="govuk-details" data-module="govuk-details">
+                                        <summary class="govuk-details__summary">
+                                            <span class="govuk-details__summary-text">View 1 more</span>
+                                        </summary>
+                                        <div class="">
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...ARRESTED ON 28/08/19 FOR THE FOLLOWING OFFENCE(S) 1 <strong class="searchModalResults">assault</strong> OCCASIONING ACTUAL BODILY HARM ON 28/08/19 OFFENCES AGAINST THE PERSON ACT 1861 s.47...
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </details>
+                                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                                </div>
+                                <!-- RESULT 3 - END -->
+
+                                <!-- RESULT 4 - START -->
+                                <div id="resultsFour">
+                                    <div class="twoFlexContainer">
+                                        <div class="twoFlexItem">
+                                            <h2 class="govuk-heading-s results-header mb5">
+                                                <a href="">Shelagh McLove VPS mg11</a>
+                                                <span>
+                                                    <div class="flex-support-meta">
+
+                                                    </div>
+                                                </span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="support-text">
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Uploaded:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">5 June 2020</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Type:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">MG11</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="govuk-inset-text cpsInsetChange">
+                                        <p class="searchResultsHighlights govuk-body-s">
+                                            ...I am writing this Victim Personal Statement (VPS) in relation to an <strong class="searchModalResults">assault</strong> on my by my partner Eoin McLove on the 1st June 2020....
+                                        </p>
+                                    </div>
+                                    <details class="govuk-details" data-module="govuk-details">
+                                        <summary class="govuk-details__summary">
+                                            <span class="govuk-details__summary-text">View 2 more</span>
+                                        </summary>
+                                        <div class="">
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...This was one of several <strong class="searchModalResults">assault</strong>s Eoin has subjected me to. As a result of my relation with Eoin and the abuse he has subjected me to I have lost custody of my only child....
+                                                </p>
+                                            </div>
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...I decided on the 4th June to attend the hospital as a result of this <strong class="searchModalResults">assault</strong>. The hospital as a result of my description decided to x-ray me...
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </details>
+                                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                                </div>
+                                <!-- RESULT 4 - END -->
+
+                                <!-- RESULT 5 - START -->
+                                <div id="resultsFive">
+                                    <div class="twoFlexContainer">
+                                        <div class="twoFlexItem">
+                                            <h2 class="govuk-heading-s results-header mb5">
+                                                <a href="">stmt BLAYNEE 2034 1 JUNE mg11</a>
+                                                <span>
+                                                    <div class="flex-support-meta">
+
+                                                    </div>
+                                                </span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="support-text">
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Uploaded:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">5 June 2020</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Type:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">MG11</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="govuk-inset-text cpsInsetChange">
+                                        <p class="searchResultsHighlights govuk-body-s">
+                                            ...I was further informed via radio that EOIN MCLOVE was also wanted for an <strong class="searchModalResults">assault</strong> on Shelagh MCLOVE and as such...
+                                        </p>
+                                    </div>
+                                    <details class="govuk-details" data-module="govuk-details">
+                                        <summary class="govuk-details__summary">
+                                            <span class="govuk-details__summary-text">View 1 more</span>
+                                        </summary>
+                                        <div class="">
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...arrested EOIN MCLOVE for a s47 <strong class="searchModalResults">assault</strong> Occasioning Actual Bodily harm, MCLOVE was informed that his arrest was necessary to conduct a prompt...
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </details>
+                                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                                </div>
+                                <!-- RESULT 5 - END -->
+
+                                <!-- RESULT 6 - START -->
+                                <div id="resultsSix">
+                                    <div class="twoFlexContainer">
+                                        <div class="twoFlexItem">
+                                            <h2 class="govuk-heading-s results-header mb5">
+                                                <a href="">stmt JONES 1989 1 JUNE mg11</a>
+                                                <span>
+                                                    <div class="flex-support-meta">
+
+                                                    </div>
+                                                </span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="support-text">
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Uploaded:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">5 June 2020</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Type:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">MG11</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="govuk-inset-text cpsInsetChange">
+                                        <p class="searchResultsHighlights govuk-body-s">
+                                            ...SHELAGH MCLOVE detailed to me that she had been <strong class="searchModalResults">assault</strong>ed by her partner Eoin MCLOVE who had left the scene in her Nissan car. Ms...
+                                        </p>
+                                    </div>
+                                    <details class="govuk-details" data-module="govuk-details">
+                                        <summary class="govuk-details__summary">
+                                            <span class="govuk-details__summary-text">View 1 more</span>
+                                        </summary>
+                                        <div class="">
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...EOIN MCLOVE had returned after 9pm and an argument had ensued which resulted in the <strong class="searchModalResults">assault</strong>. Eoin MCLOVE was described...
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </details>
+                                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                                </div>
+                                <!-- RESULT 6 - END -->
+
+                                <!-- RESULT 7 - START -->
+                                <div id="resultsSeven">
+                                    <div class="twoFlexContainer">
+                                        <div class="twoFlexItem">
+                                            <h2 class="govuk-heading-s results-header mb5">
+                                                <a href="">stmt Shelagh McLove MG11</a>
+                                                <span>
+                                                    <div class="flex-support-meta">
+
+                                                    </div>
+                                                </span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="support-text">
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Uploaded:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">5 June 2020</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Type:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">MG11</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="govuk-inset-text cpsInsetChange">
+                                        <p class="searchResultsHighlights govuk-body-s">
+                                            ...hoped that Eoin would calm his drinking but unfortunately things got worse and that is when he first <strong class="searchModalResults">assault</strong>ed me. I was...
+                                        </p>
+                                    </div>
+                                    <details class="govuk-details" data-module="govuk-details">
+                                        <summary class="govuk-details__summary">
+                                            <span class="govuk-details__summary-text">View 8 more</span>
+                                        </summary>
+                                        <div class="">
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...at the time. Around a month later he <strong class="searchModalResults">assault</strong>ed me again hitting me to the head and the...
+                                                </p>
+                                            </div>
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...excuses to stop my mum visiting. Around April 17 Eoin <strong class="searchModalResults">assault</strong>ed me again, Eoin returned home...
+                                                </p>
+                                            </div>
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...Eoin was arrested and convicted of <strong class="searchModalResults">assault</strong>ing me. At this point social services again became involved...
+                                                </p>
+                                            </div>
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...Eoin <strong class="searchModalResults">assault</strong>ed me again in December 17, the Police were called but I did not provide a statement. This time Social services took our ...
+                                                </p>
+                                            </div>
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...Eoin has <strong class="searchModalResults">assault</strong>ed me at least three times in 2018 and four times in 2019. I didn’t ...
+                                                </p>
+                                            </div>
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...Eoin however <strong class="searchModalResults">assault</strong>ed me with a wooden spoon at Christmas 2019 which resulted in me becoming unconscious ...
+                                                </p>
+                                            </div>
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...As a result of this <strong class="searchModalResults">assault</strong> I have sustained a cut just to the side of my left eye and my face is starting to s...
+                                                </p>
+                                            </div>
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...No one has the right to <strong class="searchModalResults">assault</strong> me and I want Eoin to be prosecuted. He ...
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </details>
+                                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                                </div>
+                                <!-- RESULT 7 - END -->
+
+                                <!-- RESULT 8 - START -->
+                                <div id="resultsEight">
+                                    <div class="twoFlexContainer">
+                                        <div class="twoFlexItem">
+                                            <h2 class="govuk-heading-s results-header mb5">
+                                                <a href="">UNUSED 1 - STORM LOG 1881 01.6.20 - EDITED 2020-11-23 MCLOVE</a>
+                                                <span>
+                                                    <div class="flex-support-meta">
+
+                                                    </div>
+                                                </span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="support-text">
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Uploaded:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">5 June 2020</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Type:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">Storm log</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="govuk-inset-text cpsInsetChange">
+                                        <p class="searchResultsHighlights govuk-body-s">...Disposition Codes Common <strong class="searchModalResults">assault</strong>...</p>
+                                    </div>
+                                    <details class="govuk-details" data-module="govuk-details">
+                                        <summary class="govuk-details__summary">
+                                            <span class="govuk-details__summary-text">View 2 more</span>
+                                        </summary>
+                                        <div class="">
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...aCALLER HAS BEEN <strong class="searchModalResults">assault</strong>ED BY PARTNER WHO HAS LEFT THE SCENE IN HER CAR IN DRINK...
+                                                </p>
+                                            </div>
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...THREAT: 2 - <strong class="searchModalResults">assault</strong>ED AND VERBAL THREATS...
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </details>
+                                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                                </div>
+                                <!-- RESULT 8 - END -->
+
+                                <!-- RESULT 9 - START -->
+                                <div id="resultsNine">
+                                    <div class="twoFlexContainer">
+                                        <div class="twoFlexItem">
+                                            <h2 class="govuk-heading-s results-header mb5">
+                                                <a href="">UNUSED_6 DA CHECKLIST MCLOVE</a>
+                                                <span>
+                                                    <div class="flex-support-meta">
+
+                                                    </div>
+                                                </span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="support-text">
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Uploaded:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">5 June 2020</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex-support-meta">
+                                            <div class=" ">
+                                                <p class="govuk-body-s">Type:</p>
+                                            </div>
+                                            <div class="WideMobile175">
+                                                <p class="govuk-body-s">Domestic Abuse Checklist</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="govuk-inset-text cpsInsetChange">
+                                        <p class="searchResultsHighlights govuk-body-s">
+                                            ...Several previous incidents D had just been released from custody due to previous <strong class="searchModalResults">assault</strong> on C....
+                                        </p>
+                                    </div>
+                                    <details class="govuk-details" data-module="govuk-details">
+                                        <summary class="govuk-details__summary">
+                                            <span class="govuk-details__summary-text">View 1 more</span>
+                                        </summary>
+                                        <div class="">
+                                            <div class="govuk-inset-text cpsInsetChange">
+                                                <p class="searchResultsHighlights govuk-body-s">
+                                                    ...no contact with that child due to social services intervention and the family court.
+                                                    C has indicated that she wishes to break from D to avoid future <strong class="searchModalResults">assault</strong>s...
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </details>
+                                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                                </div>
+                                <!-- RESULT 9 - END -->
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- ///////////////////////////// SEARCH MODAL - END ///////////////////////////// -->
+
+        </div>
+    </div>
+</div>

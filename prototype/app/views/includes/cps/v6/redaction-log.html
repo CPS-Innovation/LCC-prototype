@@ -1,0 +1,476 @@
+<div aria-label="cookie banner" class="das-cookie-banner__wrap das-cookie-banner__modal rj-dont-display" id="redactionModal">
+
+    <div class="das-cookie-banner" id="openMe">
+        <div class="das-cookie-banner__wrapper">
+
+            <div class="govuk-modal-dialogue__header">
+                <button aria-label="Close modal dialogue" class="govuk-button govuk-modal-dialogue__close" data-module="govuk-button" type="button" onClick="closeModal2()">×</button>
+            </div>
+
+            <!-- //////////////////////////////// SAVING PANEL - START //////////////////////////////// -->
+            <div id="saving-panel">
+                <div>
+                    <span class="saving"></span>
+                    <h2 class="govuk-heading-s">Saving redactions...</h2>
+                </div>
+            </div>
+            <!-- //////////////////////////////// SAVING PANEL - END //////////////////////////////// -->
+
+            <!-- //////////////////////////////// REDACTION LOG - START //////////////////////////////// -->
+            <div class="govuk-grid-row" id="redaction-log" style="display: none;">
+
+                <div class="innerPanel simpleModelTwo">
+
+                    <div class="success-banner">
+                        <h2 class="govuk-heading-m">
+                            <span class="success"></span>
+                            Redactions succesfully saved
+                        </h2>
+                    </div>
+
+                    <div class="header-wrapper">
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-full">
+                                <h1 class="govuk-heading-l">{{ data['searchURN'] }}/1 <span>- Redaction log</span></h1>
+                            </div>
+                            <div class="govuk-grid-column-full document-details">
+                                <div class="">
+                                    <label class="govuk-label" for="redactionLog-Area">CPS Area or Central Casework Division:</label>
+                                    <p>CPS Direct <a href="#" class="edit-item">Edit CPS Area or Central Casework Division</a></p>
+                                    <select class="govuk-select hidden-select" id="redactionLog-Area" name="redactionLog-Area">
+                                        <option value="CPS Direct" selected>CPS Direct</option>
+                                        <option value="Cymru - Wales">Cymru - Wales</option>
+                                        <option value="East Midlands">East Midlands</option>
+                                        <option value="East of England">East of England</option>
+                                        <option value="London North">London North</option>
+                                        <option value="London South">London South</option>
+                                        <option value="Mersey Cheshire">Mersey Cheshire</option>
+                                        <option value="North East">North East</option>
+                                        <option value="North West">North West</option>
+                                        <option value="Proceeds of Crime">Proceeds of Crime</option>
+                                        <option value="Serious Economic Organised Crime and Iinternational Directorate">Serious Economic Organised Crime and Iinternational Directorate</option>
+                                        <option value="South East">South East</option>
+                                        <option value="South West">South West</option>
+                                        <option value="Special Crime and Counter Terrorism">Special Crime and Counter Terrorism</option>
+                                        <option value="Thames and Chiltern">Thames and Chiltern</option>
+                                        <option value="Wessex">Wessex</option>
+                                        <option value="West Midlands">West Midlands</option>
+                                        <option value="Yorkshire Humberside">Yorkshire Humberside</option>
+                                   </select>
+                                </div>
+                                <div class="">
+                                    <label class="govuk-label" for="redactionLog-BusinessUnit">CPS Business unit:</label>
+                                    <p>Magistrates Court <a href="#" class="edit-item">Edit CPS Business unit</a></p>
+                                    <select class="govuk-select hidden-select" id="redactionLog-BusinessUnit" name="redactionLog-BusinessUnit">
+                                        <option value="Magistrates Court" selected>Magistrates Court</option>
+                                        <option value="Crown Court">Crown Court</option>
+                                        <option value="RASSO">RASSO</option>
+                                        <option value="CCU">CCU</option>
+                                    </select>
+                                </div>
+                                <div class="">
+                                    <label class="govuk-label" for="redactionLog-InvestigativeAgency">Investigative Agency:</label>
+                                    <p>Surrey Police <a href="#" class="edit-item">Edit Investigative Agency</a></p>
+                                    <select class="govuk-select hidden-select" id="redactionLog-InvestigativeAgency" name="redactionLog-InvestigativeAgency">
+                                        <option value="Surrey Police" selected>Surrey Police</option>
+                                        <option value="DWP">DWP</option>
+                                        <option value="NHS">NHS</option>
+                                        <option value="Counter Fraud Authority">Counter Fraud Authority</option>
+                                        <option value="Department for Health and Social Care">Department for Health and Social Care</option>
+                                        <option value="Medicines Healthcare Regulatory Agency (MHRA)">Medicines Healthcare Regulatory Agency (MHRA)</option>
+                                        <option value="Welsh Revenue Authority">Welsh Revenue Authority</option>
+                                        <option value="Child Maintenance Group">Child Maintenance Group</option>
+                                        <option value="DEFRA-linked agencies including:">DEFRA-linked agencies including:</option>
+                                        <option value="The Veteinary Medicines Directorate">The Veteinary Medicines Directorate</option>
+                                        <option value="Animal Health and Veterinary Laboratories Agency">Animal Health and Veterinary Laboratories Agency</option>
+                                        <option value="Forestry Commission Wales">Forestry Commission Wales</option>
+                                        <option value="Rural Payments Agency">Rural Payments Agency</option>
+                                        <option value="Horticultural Marketing Inspectorate">Horticultural Marketing Inspectorate</option>
+                                        <option value="Marine Management Organisation">Marine Management Organisation</option>
+                                        <option value="Gangmasters and Labour Abuse Authority">Gangmasters and Labour Abuse Authority</option>
+                                        <option value="British Cattle Movement Service">British Cattle Movement Service</option>
+                                        <option value="Food Standards Agency">Food Standards Agency</option>
+                                        <option value="NATIS">NATIS</option>
+                                        <option value="MOD">MOD</option>
+                                        <option value="NCA">NCA</option>
+                                        <option value="Local Authority">Local Authority</option>
+                                        <option value="Independent Office for Police Conduct (IOPC)">Independent Office for Police Conduct (IOPC)</option>
+                                        <option value="Health and Safety Executive (HSE)">Health and Safety Executive (HSE)</option>
+                                        <option value="Home Office Immigration">Home Office Immigration</option>
+                                        <option value="HMRC">HMRC</option>
+                                        <option value="ROCU">ROCU</option>
+                                        <option value="SO15">SO15</option>
+                                        <option value="Police Scotland">Police Scotland</option>
+                                        <option value="Counter Terrorism Police">Counter Terrorism Police</option>
+                                        <option value="Avon and Somerset Constabulary">Avon and Somerset Constabulary</option>
+                                        <option value="Bedfordshire Police">Bedfordshire Police</option>
+                                        <option value="Cambridgeshrire Constabulary">Cambridgeshrire Constabulary</option>
+                                        <option value="Cheshire Constabulary">Cheshire Constabulary</option>
+                                        <option value="City of London Police">City of London Police</option>
+                                        <option value="Cleveland Police">Cleveland Police</option>
+                                        <option value="Cumbria Constabulary">Cumbria Constabulary</option>
+                                        <option value="Derbyshire Constabulary">Derbyshire Constabulary</option>
+                                        <option value="Devon & Cornwall Police">Devon & Cornwall Police</option>
+                                        <option value="Dorset Police">Dorset Police</option>
+                                        <option value="Durham Constabulary">Durham Constabulary</option>
+                                        <option value="Essex Police">Essex Police</option>
+                                        <option value="Gloucestershire Constabulary">Gloucestershire Constabulary</option>
+                                        <option value="Greater Manchester Police">Greater Manchester Police</option>
+                                        <option value="Hampshire Constabulary">Hampshire Constabulary</option>
+                                        <option value="Hertfordshire Constabulary">Hertfordshire Constabulary</option>
+                                        <option value="Humberside Police">Humberside Police</option>
+                                        <option value="Kent Police">Kent Police</option>
+                                        <option value="Lancashire Constabulary">Lancashire Constabulary</option>
+                                        <option value="Leicestershire Police">Leicestershire Police</option>
+                                        <option value="Lincolnshire Police">Lincolnshire Police</option>
+                                        <option value="Merseyside Police">Merseyside Police</option>
+                                        <option value="Metropolitan Police Service">Metropolitan Police Service</option>
+                                        <option value="Norfolk Constabulary">Norfolk Constabulary</option>
+                                        <option value="North Yorkshire Police">North Yorkshire Police</option>
+                                        <option value="Northamptonshire Police">Northamptonshire Police</option>
+                                        <option value="Northumbria Police">Northumbria Police</option>
+                                        <option value="Nottinghamshire Police">Nottinghamshire Police</option>
+                                        <option value="South Yorkshire Police">South Yorkshire Police</option>
+                                        <option value="Staffordshire Police">Staffordshire Police</option>
+                                        <option value="Suffolk Constabulary">Suffolk Constabulary</option>
+                                        <option value="Surrey Police">Surrey Police</option>
+                                        <option value="Thames Valley Police">Thames Valley Police</option>
+                                        <option value="Warwickshire Police">Warwickshire Police</option>
+                                        <option value="West Mercia Police">West Mercia Police</option>
+                                        <option value="West Midlands Police">West Midlands Police</option>
+                                        <option value="West Yorkshire Police">West Yorkshire Police</option>
+                                        <option value="Wilstshire Police">Wilstshire Police</option>
+                                        <option value="Dyfed-Powys Police">Dyfed-Powys Police</option>
+                                        <option value="Gwent Police">Gwent Police</option>
+                                        <option value="North Wales Police">North Wales Police</option>
+                                        <option value="South Wales Police">South Wales Police</option>
+                                        <option value="British Transport Police">British Transport Police</option>
+                                        <option value="Civil Nuclear Constabulary">Civil Nuclear Constabulary</option>
+                                        <option value="Ministry of Defence Police">Ministry of Defence Police</option>
+                                        <option value="National Police Air Service">National Police Air Service</option>
+                                        <option value="SEROCU">SEROCU</option>
+                                        <option value="ERSOU">ERSOU</option>
+                                    </select>
+                                </div>
+                                <div class="">
+                                    <label class="govuk-label" for="redactionLog-Type">Type:</label>
+                                    <p>Unredacted <a href="#" class="edit-item">Edit Type</a></p>
+                                    <select class="govuk-select hidden-select" id="redactionLog-Type" name="redactionLog-Type">
+                                        <option value="Unredacted" selected>Unredacted</option>
+                                        <option value="Overredacted">Overredacted</option>
+                                    </select>
+                                </div>
+                                <div class="">
+                                    <label class="govuk-label" for="redactionLog-Type">Charge status:</label>
+                                    <p><strong class="govuk-tag govuk-tag--yellow">Pre-charge</strong> <a href="#" class="edit-item">Edit Charge status</a></p>
+                                    <select class="govuk-select hidden-select" id="redactionLog-ChargeStatus" name="redactionLog-ChargeStatus">
+                                        <option value="Pre-charge" selected>Pre-charge</option>
+                                        <option value="Post-charge">Post-charge</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="sub-header-wrapper">
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-one-half">
+                                <h2 class="govuk-heading-m">
+                                    <div class="wrapper">
+                                        <span class="icon document">Document type</span>MG 11 - Redaction details
+                                        <a href="#" class="edit-item-doctype">Edit document type</a>
+                                    </div>
+                                    <div class="hidden-select">
+                                        <span class="icon document">Document type</span>
+                                        <select class="govuk-select" id="redactionLog-DocType" name="redactionLog-DocType">
+                                            <option value="Other">Other</option>
+                                            <option value="Exhibits">Exhibits</option>
+                                            <option value="Unused">Unused</option>
+                                            <option value="MME">MME</option>
+                                            <option value="MG 1">MG 1</option>
+                                            <option value="MG 10">MG 10</option>
+                                            <option value="MG 11" selected>MG 11</option>
+                                            <option value="MG 12">MG 12</option>
+                                            <option value="MG 14">MG 14</option>
+                                            <option value="MG 1">MG 16</option>
+                                            <option value="MG 18">MG 18</option>
+                                            <option value="MG 2">MG 2</option>
+                                            <option value="MG 20">MG 20</option>
+                                            <option value="MG 21">MG 21</option>
+                                            <option value="MG 21A">MG 21A</option>
+                                            <option value="MG 3">MG 3</option>
+                                            <option value="MG 4">MG 4</option>
+                                            <option value="MG 4A">MG 4A</option>
+                                            <option value="MG 4B">MG 4B</option>
+                                            <option value="MG 4C">MG 4C</option>
+                                            <option value="MG 4D">MG 4D</option>
+                                            <option value="MG 4E">MG 4E</option>
+                                            <option value="MG 4F">MG 4F</option>
+                                            <option value="MG 5">MG 5</option>
+                                            <option value="MG 6">MG 6</option>
+                                            <option value="MG 6A">MG 6A</option>
+                                            <option value="MG 6B">MG 6B</option>
+                                            <option value="MG 6C">MG 6C</option>
+                                            <option value="MG 6D">MG 6D</option>
+                                            <option value="MG 6E">MG 6E</option>
+                                            <option value="MG 7">MG 7</option>
+                                            <option value="MG 8">MG 8</option>
+                                            <option value="MG 9">MG 9</option>
+                                            <option value="MG 19">MG 19</option>
+                                        </select>
+                                        - Redaction details
+                                    </div>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="redaction-wrapper">
+                        <form method="" action="">
+
+                            <!-- /////////////////////// ROW - 1 - START /////////////////////// -->
+                            <div class="govuk-grid-row" id="form-row-1">
+                                <div class="govuk-grid-column-full">
+                                    <div class="govuk-form-group">
+                                        <p>Redaction 1</p>
+                                    </div>
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="redactionLog-missed__1">Missed redaction?</label>
+                                        <select class="govuk-select" id="redactionLog-missed__1" name="redactionLog-missed__1">
+                                            <option value="Date of Birth">Date of Birth</option>
+                                            <option value="Address">Address</option>
+                                            <option value="Named individual">Named individual</option>
+                                            <option value="Other">Other</option>
+                                            <option value="Occupation">Occupation</option>
+                                            <option value="Phone number">Phone number</option>
+                                            <option value="Vehicle registration">Vehicle registration</option>
+                                            <option value="Email address">Email address</option>
+                                            <option value="Location">Location</option>
+                                            <option value="Bank details">Bank details</option>
+                                            <option value="Previous convictions">Previous convictions</option>
+                                            <option value="Relationship to others">Relationship to others</option>
+                                            <option value="NHS number">NHS number</option>
+                                            <option value="NI number">NI number</option>
+                                            <option value="Title">Title</option>
+                                        </select>
+                                    </div>
+                                    <div class="govuk-character-count" data-module="govuk-character-count-1" data-maxlength="200">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label" for="redactionLog-notes__1">Supporting notes</label>
+                                            <textarea class="govuk-textarea govuk-js-character-count" id="redactionLog-notes__1" name="redactionLog-notes__1" rows="2" aria-describedby="redactionLog-notes-info__1" onkeyup="countChar1(this)"></textarea>
+                                        </div>
+                                        <div id="redactionLog-notes-info__1" class="govuk-hint govuk-character-count__message">You can enter up to <span id="charNum1">200</span> characters</div>
+                                    </div>  
+<!--                                     <div class="govuk-form-group">
+                                        <label class="govuk-label no-margin" for="redactionLog-returned__1">Returned to investigative agency?</label>
+                                        <fieldset class="govuk-fieldset">
+                                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                                <div class="govuk-checkboxes__item">
+                                                    <input class="govuk-checkboxes__input" id="redactionLog-returned__1" name="redactionLog-returned__1" type="checkbox" value="hmrc">
+                                                    <label class="govuk-label govuk-checkboxes__label" for="redactionLog-returned__1">Yes</label>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>   
+ --> 
+                                    <div class="govuk-form-group">
+                                        <a href="#" class="delete">Delete redaction log item</a>
+                                    </div>
+                               
+                                </div>
+                            </div>
+                            <!-- /////////////////////// ROW - 1 - END /////////////////////// -->
+
+                            <!-- /////////////////////// ROW - 2 - START /////////////////////// -->
+                            <div class="govuk-grid-row" id="form-row-2">
+                                <div class="govuk-grid-column-full">
+                                    <div class="govuk-form-group">
+                                        <p>Redaction 2</p>
+                                    </div>
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="redactionLog-missed__2">Missed redaction?</label>
+                                        <select class="govuk-select" id="redactionLog-missed__2" name="redactionLog-missed__2">
+                                            <option value="Date of Birth">Date of Birth</option>
+                                            <option value="Address">Address</option>
+                                            <option value="Named individual">Named individual</option>
+                                            <option value="Other">Other</option>
+                                            <option value="Occupation">Occupation</option>
+                                            <option value="Phone number">Phone number</option>
+                                            <option value="Vehicle registration">Vehicle registration</option>
+                                            <option value="Email address">Email address</option>
+                                            <option value="Location">Location</option>
+                                            <option value="Bank details">Bank details</option>
+                                            <option value="Previous convictions">Previous convictions</option>
+                                            <option value="Relationship to others">Relationship to others</option>
+                                            <option value="NHS number">NHS number</option>
+                                            <option value="NI number">NI number</option>
+                                            <option value="Title">Title</option>
+                                        </select>
+                                    </div>
+                                    <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="200">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label" for="redactionLog-notes__2">Supporting notes</label>
+                                            <textarea class="govuk-textarea govuk-js-character-count" id="redactionLog-notes__2" name="redactionLog-notes__2" rows="2" aria-describedby="redactionLog-notes-info__2" onkeyup="countChar2(this)"></textarea>
+                                        </div>
+                                        <div id="redactionLog-notes-info__2" class="govuk-hint govuk-character-count__message">You can enter up to <span id="charNum2">200</span> characters</div>
+                                    </div>  
+                                    <div class="govuk-form-group">
+                                        <a href="#" class="delete">Delete redaction log item</a>
+                                    </div>
+                               
+                                </div>
+                            </div>
+                            <!-- /////////////////////// ROW - 2 - END /////////////////////// -->
+
+                            <!-- /////////////////////// ROW - 3 - START /////////////////////// -->
+                            <div class="govuk-grid-row" id="form-row-3">
+                                <div class="govuk-grid-column-full">
+                                    <div class="govuk-form-group">
+                                        <p>Redaction 3</p>
+                                    </div>
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="redactionLog-missed__3">Missed redaction?</label>
+                                        <select class="govuk-select" id="redactionLog-missed__3" name="redactionLog-missed__3">
+                                            <option value="Date of Birth">Date of Birth</option>
+                                            <option value="Address">Address</option>
+                                            <option value="Named individual">Named individual</option>
+                                            <option value="Other">Other</option>
+                                            <option value="Occupation">Occupation</option>
+                                            <option value="Phone number">Phone number</option>
+                                            <option value="Vehicle registration">Vehicle registration</option>
+                                            <option value="Email address">Email address</option>
+                                            <option value="Location">Location</option>
+                                            <option value="Bank details">Bank details</option>
+                                            <option value="Previous convictions">Previous convictions</option>
+                                            <option value="Relationship to others">Relationship to others</option>
+                                            <option value="NHS number">NHS number</option>
+                                            <option value="NI number">NI number</option>
+                                            <option value="Title">Title</option>
+                                        </select>
+                                    </div>
+                                    <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="200">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label" for="redactionLog-notes__3">Supporting notes</label>
+                                            <textarea class="govuk-textarea govuk-js-character-count" id="redactionLog-notes__3" name="redactionLog-notes__3" rows="2" aria-describedby="redactionLog-notes-info__3" onkeyup="countChar3(this)"></textarea>
+                                        </div>
+                                        <div id="redactionLog-notes-info__3" class="govuk-hint govuk-character-count__message">You can enter up to <span id="charNum3">200</span> characters</div>
+                                    </div>  
+                                    <div class="govuk-form-group">
+                                        <a href="#" class="delete">Delete redaction log item</a>
+                                    </div>
+                               
+                                </div>
+                            </div>
+                            <!-- /////////////////////// ROW - 3 - END /////////////////////// -->
+
+                            <!-- /////////////////////// ROW - 4 - START /////////////////////// -->
+                            <div class="govuk-grid-row" id="form-row-4">
+                                <div class="govuk-grid-column-full">
+                                    <div class="govuk-form-group">
+                                        <p>Redaction 4</p>
+                                    </div>
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="redactionLog-missed__4">Missed redaction?</label>
+                                        <select class="govuk-select" id="redactionLog-missed__4" name="redactionLog-missed__4">
+                                            <option value="Date of Birth">Date of Birth</option>
+                                            <option value="Address">Address</option>
+                                            <option value="Named individual">Named individual</option>
+                                            <option value="Other">Other</option>
+                                            <option value="Occupation">Occupation</option>
+                                            <option value="Phone number">Phone number</option>
+                                            <option value="Vehicle registration">Vehicle registration</option>
+                                            <option value="Email address">Email address</option>
+                                            <option value="Location">Location</option>
+                                            <option value="Bank details">Bank details</option>
+                                            <option value="Previous convictions">Previous convictions</option>
+                                            <option value="Relationship to others">Relationship to others</option>
+                                            <option value="NHS number">NHS number</option>
+                                            <option value="NI number">NI number</option>
+                                            <option value="Title">Title</option>
+                                        </select>
+                                    </div>
+                                    <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="200">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label" for="redactionLog-notes__1">Supporting notes</label>
+                                            <textarea class="govuk-textarea govuk-js-character-count" id="redactionLog-notes__4" name="redactionLog-notes__4" rows="2" aria-describedby="redactionLog-notes-info__4" onkeyup="countChar4(this)"></textarea>
+                                        </div>
+                                        <div id="redactionLog-notes-info__4" class="govuk-hint govuk-character-count__message">You can enter up to <span id="charNum4">200</span> characters</div>
+                                    </div>  
+                                    <div class="govuk-form-group">
+                                        <a href="#" class="delete">Delete redaction log item</a>
+                                    </div>
+                               
+                                </div>
+                            </div>
+                            <!-- /////////////////////// ROW - 4 - END /////////////////////// -->
+
+                            <!-- /////////////////////// ROW - 5 - START /////////////////////// -->
+                            <div class="govuk-grid-row" id="form-row-5">
+                                <div class="govuk-grid-column-full">
+                                    <div class="govuk-form-group">
+                                        <p>Redaction 5</p>
+                                    </div>
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="redactionLog-missed__5">Missed redaction?</label>
+                                        <select class="govuk-select" id="redactionLog-missed__4" name="redactionLog-missed__5">
+                                            <option value="Date of Birth">Date of Birth</option>
+                                            <option value="Address">Address</option>
+                                            <option value="Named individual">Named individual</option>
+                                            <option value="Other">Other</option>
+                                            <option value="Occupation">Occupation</option>
+                                            <option value="Phone number">Phone number</option>
+                                            <option value="Vehicle registration">Vehicle registration</option>
+                                            <option value="Email address">Email address</option>
+                                            <option value="Location">Location</option>
+                                            <option value="Bank details">Bank details</option>
+                                            <option value="Previous convictions">Previous convictions</option>
+                                            <option value="Relationship to others">Relationship to others</option>
+                                            <option value="NHS number">NHS number</option>
+                                            <option value="NI number">NI number</option>
+                                            <option value="Title">Title</option>
+                                        </select>
+                                    </div>
+                                    <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="200">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label" for="redactionLog-notes__1">Supporting notes</label>
+                                            <textarea class="govuk-textarea govuk-js-character-count" id="redactionLog-notes__5" name="redactionLog-notes__5" rows="2" aria-describedby="redactionLog-notes-info__5" onkeyup="countChar5(this)"></textarea>
+                                        </div>
+                                        <div id="redactionLog-notes-info__5" class="govuk-hint govuk-character-count__message">You can enter up to <span id="charNum5">200</span> characters</div>
+                                    </div>  
+                                    <div class="govuk-form-group">
+                                        <a href="#" class="delete">Delete redaction log item</a>
+                                    </div>
+                               
+                                </div>
+                            </div>
+                            <!-- /////////////////////// ROW - 5 - END /////////////////////// -->
+
+                            <div class="govuk-grid-row">
+                                <div class="govuk-grid-column-full cta-group">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label no-margin" for="redactionLog-returned__1">Returned to investigative agency?</label>
+                                        <fieldset class="govuk-fieldset">
+                                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                                <div class="govuk-checkboxes__item">
+                                                    <input class="govuk-checkboxes__input" id="redactionLog-returned__1" name="redactionLog-returned__1" type="checkbox" value="hmrc">
+                                                    <label class="govuk-label govuk-checkboxes__label" for="redactionLog-returned__1">Yes</label>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>   
+                                    <button class="govuk-button" data-module="govuk-button" onClick="closeModal2()">Save and continue</button>
+                                    <button class="govuk-button govuk-button--secondary" data-module="govuk-button">Reset</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- //////////////////////////////// REDACTION LOG - END //////////////////////////////// -->
+        </div>
+    </div>
+</div>

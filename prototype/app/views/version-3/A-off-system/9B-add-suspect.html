@@ -1,0 +1,144 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row" id="">
+    <div class="govuk-grid-column-two-thirds">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+        <div class="wrapper gov-pages">
+
+            <h1 class="govuk-heading-xl" style="">Suspect details</h1>
+
+            <form method="get" action="5-case-overview#suspectsTab" id="addSuspect_Form-B">  
+
+                <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Surname">Surname</label>
+                        {% if data['addSuspect_Form-Surname'] %}
+                            <input class="govuk-input govuk-input--width-20" id="addSuspect_Form-Surname" name="addSuspect_Form-Surname" type="text" value="{{ data['addSuspect_Form-Surname'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="addSuspect_Form-Surname" name="addSuspect_Form-Surname" type="text">
+                        {% endif %}
+                    </div>                    
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Forename">Forename</label>
+                        {% if data['addSuspect_Form-Forename'] %}
+                            <input class="govuk-input govuk-input--width-20" id="addSuspect_Form-Forename" name="addSuspect_Form-Forename" type="text" value="{{ data['addSuspect_Form-Forename'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="addSuspect_Form-Forename" name="addSuspect_Form-Forename" type="text">
+                        {% endif %}
+                    </div>                    
+                    <!-- OPTION 2 - END -->
+
+                    <!-- OPTION 3 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="addSuspect_Form-DOB-hint">
+                            <legend class="govuk-fieldset__legend">Date of Birth</legend>
+                            <div id="addSuspect_Form-DOB-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="addSuspect_Form-DOB">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB-Day">Day</label>
+                                        {% if data['addSuspect_Form-DOB-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB-Day" name="addSuspect_Form-DOB-Day" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB-Day" name="addSuspect_Form-DOB-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB-Month">Month</label>
+                                        {% if data['addSuspect_Form-DOB-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB-Month" name="addSuspect_Form-DOB-Month" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB-Month" name="addSuspect_Form-DOB-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB-Year">Year</label>
+                                        {% if data['addSuspect_Form-DOB-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-DOB-Year" name="addSuspect_Form-DOB-Year" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-DOB-Year" name="addSuspect_Form-DOB-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 3 - END -->
+
+                    <!-- OPTION 4 - START -->
+                    <div class="govuk-form-group govuk-!-margin-bottom-2">
+                        <fieldset class="govuk-fieldset">
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="addSuspect_Form_YouthOffender" name="addSuspect_Form_YouthOffender" type="checkbox" value="Youth offender">
+                                    <label class="govuk-label govuk-checkboxes__label" for="addSuspect_Form_YouthOffender">Youth offender</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 4 - END -->
+
+                    <!-- OPTION 5 - START -->
+                    <div class="govuk-form-group govuk-!-margin-bottom-2">
+                        <fieldset class="govuk-fieldset">
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="addSuspect_Form_Vulnerable" name="addSuspect_Form_Vulnerable" type="checkbox" value="Vulnerable">
+                                    <label class="govuk-label govuk-checkboxes__label" for="addSuspect_Form_Vulnerable">Vulnerable</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 5 - END -->
+
+                    <!-- OPTION 6 - START -->
+                    <div class="govuk-form-group govuk-!-margin-bottom-2">
+                        <fieldset class="govuk-fieldset">
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="addSuspect_Form_Neurodivergent" name="addSuspect_Form_Neurodivergent" type="checkbox" value="Neurodivergent">
+                                    <label class="govuk-label govuk-checkboxes__label" for="addSuspect_Form_Neurodivergent">Neurodivergent</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <details class="govuk-details">
+                            <summary class="govuk-details__summary">
+                                <span class="govuk-details__summary-text">Help with neurodivergent</span>
+                            </summary>
+                            <div class="govuk-details__text">
+                                The suspect will be neurodivergent if they have a developmental or learning disorder, such as autism, ADHD, dyslexia, or Tourette's syndrome.
+                            </div>
+                        </details>
+                    </div>
+                    <p><br></p>
+                    <!-- OPTION 6 - END -->
+
+                </fieldset>
+
+                <input id="addSuspectPerson" name="addSuspectPerson" type="text" value="true" style="display: none;">
+                <button type="submit" class="govuk-button" style="">Continue</button>
+                <button type="button" onclick="location.href='5-case-overview';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

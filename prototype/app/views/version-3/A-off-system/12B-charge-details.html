@@ -1,0 +1,237 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+
+        <div class="ea-title-wrapper">
+            {% if data['existing_Case'] == 'true' %}
+                <h1 class="govuk-heading-l govuk-!-margin-bottom-0" style="">Groundhog day</h1>
+                <span class="govuk-caption-m">920620952/24</span>
+            {% else %}
+                {% if data['caseName_Type'] == 'Operation name' %}
+                    <h1 class="govuk-heading-l govuk-!-margin-bottom-0" style="">{{ data['newCase_OperationName'] }}</h1>
+                {% else %}
+                    <h1 class="govuk-heading-l govuk-!-margin-bottom-0" style=""><span class="uppercase">{{ data['newCase_DefendantName-Surname'] }}, </span>{{ data['newCase_DefendantName-Forename'] }}</h1>
+                {% endif %}                               
+                <span class="govuk-caption-m">
+                    {{ data['newCase_URN-A'] }}
+                    {{ data['newCase_URN-B'] }}
+                    {{ data['newCase_URN-C'] }}
+                    /
+                    {{ data['newCase_URN-D'] }}
+                </span>
+            {% endif %} 
+            <p>Autosave is on. Last saved <span id="auto-save">10:24:53</span></p>
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible govuk-!-margin-top-0 govuk-!-margin-bottom-10">
+        </div>
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="wrapper gov-pages">
+
+            <form method="get" action="" id="newChargeCode_B">  
+
+                <!-- ERROR MESSAGE - START -->
+                <div class="govuk-error-summary" data-module="govuk-error-summary" id="newChargeCode_ErrorPanel-B">
+                    <div role="alert">
+                        <h2 class="govuk-error-summary__title">There is a problem</h2>
+                        <div class="govuk-error-summary__body">
+                            <ul class="govuk-list govuk-error-summary__list">
+                                <li class="addCharge_Form_Date-Day-Error"><a href="#addCharge_Form_Date-Day">Enter the date of offence</a></li>
+                                <li class="addCharge_Form-Address_1-Error"><a href="#addCharge_Form-Address_1">Enter address line 1</a></li>
+                                <li class="addCharge_Form-Address_3-Error"><a href="#addCharge_Form-Address_3">Enter town or city</a></li>
+                                <li class="addCharge_Form-Postcode-Error"><a href="#addCharge_Form-Postcode">Enter postcode</a></li>
+                                <li class="addCharge_Form-Address_4-Error"><a href="#addCharge_Form-Address_4">Enter country</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- ERROR MESSAGE - END -->
+
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2" style="">
+                    {{ data['newChargeCode'] }} Criminal damage to property valued under £5000
+                    <a href="">Change</a>
+                </h2>
+                <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible govuk-!-margin-top-0 govuk-!-margin-bottom-10">
+
+                <!-- OPTION 1 - START -->
+                <div class="date_range_wrapper">
+                    <div class="govuk-form-group" id="dateRange-Container">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="addCharge_Form-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Date of offence</legend>
+                            <p id="addCharge_Form_Date-Day-Error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter the date of offence</p>
+                            <div class="govuk-date-input" id="addCharge_Form_Date">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addCharge_Form_Date-Day">Day</label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addCharge_Form_Date-Day" name="addCharge_Form_Date-Day" type="text" inputmode="numeric">
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addCharge_Form_Date-Month">Month</label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addCharge_Form_Date-Month" name="addCharge_Form_Date-Month" type="text" inputmode="numeric">
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addCharge_Form_Date-Year">Year</label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addCharge_Form_Date-Year" name="addCharge_Form_Date-Year" type="text" inputmode="numeric">
+                                    </div>
+                                </div>
+                                <button type="button" class="govuk-button datePicker" data-module="govuk-button" onclick="return datePicker();">Date picker</button>
+                                <button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="dateRangeButton" onclick="return dateRange();">Date range</button>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="govuk-form-group" id="dateRange-Container_2" style="display: none;">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="addCharge_Form-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s"><br></legend>
+                            <div class="govuk-date-input" id="addCharge_Form_Date">
+                                <div class="govuk-date-input__item" id="addCharge_Form_Date--To"><p>to</p></div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addCharge_Form_Date-Day">Day</label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addCharge_Form_Date-Day_2" name="addCharge_Form_Date-Day_2" type="text" inputmode="numeric">
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addCharge_Form_Date-Month">Month</label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addCharge_Form_Date-Month_2" name="addCharge_Form_Date-Month_2" type="text" inputmode="numeric">
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addCharge_Form_Date-Year">Year</label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addCharge_Form_Date-Year_2" name="addCharge_Form_Date-Year_2" type="text" inputmode="numeric">
+                                    </div>
+                                </div>
+                                <button type="button" class="govuk-button datePicker" data-module="govuk-button" onclick="return datePicker2();">Date picker</button>
+                                <button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="" onclick="return dateSingle();">Single date</button>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <!-- OPTION 1 - END -->
+
+                <!-- OPTION 2 - START -->
+                <div class="govuk-form-group" id="newChargeCode_Address_1">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Offence location</legend>
+                    <label class="govuk-label" for="addCharge_Form-Address_1">Address line 1</label>
+                    <p id="addCharge_Form-Address_1-Error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter address line 1</p>
+                    <input class="govuk-input govuk-!-width-full" id="addCharge_Form-Address_1" name="addCharge_Form-Address_1" type="text">
+                </div>                            
+                <div class="govuk-form-group">
+                    <label class="govuk-label" for="addCharge_Form-Address_2">Address line 2 (optional)</label>
+                    <input class="govuk-input govuk-!-width-full" id="addCharge_Form-Address_2" name="addCharge_Form-Address_2" type="text">
+                </div>                            
+                <div class="govuk-form-group" id="newChargeCode_Error-B">
+                    <label class="govuk-label" for="addCharge_Form-Address_3">Town or city</label>
+                    <p id="addCharge_Form-Address_3-Error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter town or city</p>
+                    <input class="govuk-input govuk-input--width-20" id="addCharge_Form-Address_3" name="addCharge_Form-Address_3" type="text">
+                </div>   
+                <div class="govuk-form-group" id="newChargeCode_Error-C">
+                    <label class="govuk-label" for="addCharge_Form-Postcode">Postcode</label>
+                    <p id="addCharge_Form-Postcode-Error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter postcode</p>
+                    {% if data['addCharge_Form-Postcode'] %}
+                        <input class="govuk-input govuk-input--width-10" id="addCharge_Form-Postcode" name="addCharge_Form-Postcode" type="text" value="{{ data['addCharge_Form-Postcode'] }}">
+                    {% else %}
+                        <input class="govuk-input govuk-input--width-10" id="addCharge_Form-Postcode" name="addCharge_Form-Postcode" type="text">
+                    {% endif %}
+                </div>
+                <div class="govuk-form-group" id="newChargeCode_Error-D">
+                    <label class="govuk-label" for="addCharge_Form-Address_4">Country</label>
+                    <p id="addCharge_Form-Address_4-Error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter country</p>
+                    <input class="govuk-input govuk-input--width-20" id="addCharge_Form-Address_4" name="addCharge_Form-Address_4" type="text">
+                </div>       
+                <!-- OPTION 2 - END -->
+
+                <!-- OPTION 3 - START -->
+                <div class="govuk-form-group" id="single_Suspects_Selection">
+                    <label class="govuk-label govuk-label--s" for="addCharge_Form-Suspect">Victim (optional)</label>
+                    <div id="addCharge_Form-Suspect-hint" class="govuk-hint">
+                        Where a suspect is accused of multiple instances of the same offence, victim name can be appended to the charge, making it easier to identify individual offences.
+                    </div>
+                    <select class="govuk-select" id="addCharge_Form-Suspect" name="addCharge_Form-Suspect" aria-describedby="addCharge_Form-Suspect-hint">
+                        <option value="Select" selected>Select</option>
+                        {% if data['addWitness_Form-Surname'] or data['addWitness_Form-Forename'] %}
+                            <option value="{{ data['addWitness_Form-Surname'] }}, {{ data['addWitness_Form-Forename'] }}">{{ data['addWitness_Form-Surname'] }}, {{ data['addWitness_Form-Forename'] }}</option>
+                        {% else %}
+
+                        {% endif %}
+                    </select>
+                </div>
+
+                <div class="govuk-form-group" id="multiple_Suspects_Selection">
+                    <label class="govuk-label govuk-label--s" for="addCharge_Form-Victim">Victim (optional)</label>
+                    <div id="addCharge_Form-Victim-hint" class="govuk-hint">
+                        Where a suspect is accused of multiple instances of the same offence, victim name can be appended to the charge, making it easier to identify individual offences.
+                    </div>
+                    <select class="govuk-select" id="addCharge_Form-Victim" name="addCharge_Form-Victim" aria-describedby="addCharge_Form-Victim-hint">
+                        <option value="Select" selected>Select</option>
+                        {% if data['addWitness_Form-Surname'] or data['addWitness_Form-Forename'] %}
+                            <option value="{{ data['addWitness_Form-Surname'] }}, {{ data['addWitness_Form-Forename'] }}">{{ data['addWitness_Form-Surname'] }}, {{ data['addWitness_Form-Forename'] }}</option>
+                        {% else %}
+
+                        {% endif %}
+                        <option value="NORTON, Asia">NORTON, Asia</option>
+                        <option value="HORTON, Rowan">HORTON, Rowan</option>
+                        <option value="LINDSEY, Aishah">LINDSEY, Aishah</option>
+                        <option value="McLAUGHLIN, Annie">McLAUGHLIN, Annie</option>
+                        <option value="ODLING, Mariam">ODLING, Mariam</option>
+                    </select>
+                </div>
+                <!-- OPTION 3 - END -->
+
+                <!-- OPTION 4 - START -->
+                <div class="govuk-form-group" id="addCharge_Form-VictimStatus-Wrapper">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Victim status (optional)</legend>
+                        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="addCharge_Form-VictimStatus-Vulnerable" name="addCharge_Form-VictimStatus" type="checkbox" value="Vulnerable">
+                                <label class="govuk-label govuk-checkboxes__label" for="addCharge_Form-VictimStatus-Vulnerable">Vulnerable</label>
+                            </div>
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="addCharge_Form-VictimStatus-Intimidated" name="addCharge_Form-VictimStatus" type="checkbox" value="Intimidated">
+                                <label class="govuk-label govuk-checkboxes__label" for="addCharge_Form-VictimStatus-Intimidated">Intimidated</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <!-- OPTION 4 - START -->
+
+                <div class="create-charge-error_B">
+                    <button type="submit" class="govuk-button" style="" id="newCharge_ErrorActivate_B">Continue</button>
+                    <button type="button" onclick="location.href='5-case-overview';" class="non-button margin-left" id="">Cancel</button>
+                </div>
+
+                <div class="create-charge-continue_B">
+                    <input id="chargeAdded" name="chargeAdded" type="text" value="true" style="display: none;">
+                    <button type="submit" class="govuk-button" style="">Continue</button>
+                    <button type="button" onclick="location.href='5-case-overview';" class="non-button margin-left" id="">Cancel</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}

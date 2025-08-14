@@ -1,0 +1,1049 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="wrapper gov-pages">
+
+            {% if data['newCase_OperationName'] or data['newCase_DefendantName-Surname'] or data['newCase_DefendantName-Forename'] %}
+                {% if data['newCase_OperationName'] %}
+                    <h1 class="govuk-heading-xl" style="">Add key contacts to {{ data['newCase_OperationName'] }}</h1>
+                {% else %}
+                    <h1 class="govuk-heading-xl" style="">Add key contacts to {{ data['newCase_DefendantName-Surname'] }}, {{ data['newCase_DefendantName-Forename'] }}</h1>
+                {% endif %}
+            {% elseif data['existing_Case'] == 'true' %}
+                <h1 class="govuk-heading-xl" style="">Add key contacts to Groundhog day</h1>
+            {% endif %}
+
+            <form method="get" action="5-case-overview#contactsTab" id="">  
+
+                <p> </p>
+
+                <!-- CONTACT 1 -- START -->
+                <div id="contactsDetails-1">
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="removeContact1" onclick="removeContact1()">Remove contact</a>
+                        <label class="govuk-label" for="keyContact_Name_1A">Surname</label>
+                        {% if data['keyContact_Name_1A'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_1A" name="keyContact_Name_1A" type="text" value="{{ data['keyContact_Name_1A'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_1A" name="keyContact_Name_1A" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Name_1B">Forename</label>
+                        {% if data['keyContact_Name_1B'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_1B" name="keyContact_Name_1B" type="text" value="{{ data['keyContact_Name_1B'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_1B" name="keyContact_Name_1B" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <!-- OPTION 3 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Role_1">What is their role on the case?</label>
+                        <select class="govuk-select" id="keyContact_Role_1" name="keyContact_Role_1">
+                            {% if data['keyContact_Role_1'] == 'CPS Lawyer' %}
+                                <option value="CPS Lawyer" selected>CPS Lawyer</option>
+                            {% else %}
+                                <option value="CPS Lawyer">CPS Lawyer</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_1'] == 'CPS Paralegal' %}
+                                <option value="CPS Paralegal" selected>CPS Paralegal</option>
+                            {% else %}
+                                <option value="CPS Paralegal">CPS Paralegal</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_1'] == 'OIC' %}
+                                <option value="OIC" selected>OIC</option>
+                            {% else %}
+                                <option value="OIC">OIC</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_1'] == 'OIC Supervision' %}
+                                <option value="OIC Supervision" selected>OIC Supervision</option>
+                            {% else %}
+                                <option value="OIC Supervision">OIC Supervision</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_1'] == 'Disclosure Officer' %}
+                                <option value="Disclosure Officer" selected>Disclosure Officer</option>
+                            {% else %}
+                                <option value="Disclosure Officer">Disclosure Officer</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_1'] == 'Counsel 1' %}
+                                <option value="Counsel 1" selected>Counsel 1</option>
+                            {% else %}
+                                <option value="Counsel 1">Counsel 1</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_1'] == 'Counsel 2' %}
+                                <option value="Counsel 2" selected>Counsel 2</option>
+                            {% else %}
+                                <option value="Counsel 2">Counsel 2</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_1'] == 'Counsel 3' %}
+                                <option value="Counsel 3" selected>Counsel 3</option>
+                            {% else %}
+                                <option value="Counsel 3">Counsel 3</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_1'] == 'SIO' %}
+                                <option value="SIO" selected>SIO</option>
+                            {% else %}
+                                <option value="SIO">SIO</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_1'] == 'Escaltion contact 1' %}
+                                <option value="Escaltion contact 1" selected>Escaltion contact 1</option>
+                            {% else %}
+                                <option value="Escaltion contact 1">Escaltion contact 1</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_1'] == 'Escaltion contact 2' %}
+                                <option value="Escaltion contact 2" selected>Escaltion contact 2</option>
+                            {% else %}
+                                <option value="Escaltion contact 2">Escaltion contact 2</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_1'] == 'Escaltion contact 3' %}
+                                <option value="Escaltion contact 3" selected>Escaltion contact 3</option>
+                            {% else %}
+                                <option value="Escaltion contact 3">Escaltion contact 3</option>
+                            {% endif %}
+                        </select>
+                        <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-keyContact_Role_1">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="keyContact_Role_1-Type">Type of Counsel</label>
+                                <select class="govuk-select" id="keyContact_Role_1-Type" name="keyContact_Role_1-Type">
+                                    <option value="Junior Alone">Junior Alone</option>
+                                    <option value="Led Junior">Led Junior</option>
+                                    <option value="Leading Junior">Leading Junior</option>
+                                    <option value="QC">QC</option>
+                                    <option value="Disclosure Counsel">Disclosure Counsel</option>
+                                </select>
+                            </div>
+                        </div>                    
+                    </div>
+                    <!-- OPTION 3 - END -->
+
+                    <!-- OPTION 4 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Email_1">Email</label>
+                        {% if data['keyContact_Email_1'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Email_1" name="keyContact_Email_1" type="text" value="{{ data['keyContact_Email_1'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Email_1" name="keyContact_Email_1" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 4 - END -->
+
+                    <!-- OPTION 5 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Phone_1">Telephone</label>
+                        {% if data['keyContact_Phone_1'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Phone_1" name="keyContact_Phone_1" type="text" value="{{ data['keyContact_Phone_1'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Phone_1" name="keyContact_Phone_1" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 5 - END -->
+
+                    <!-- OPTION 6 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="keyContact_Date_1-hint">
+                            <legend class="govuk-fieldset__legend">Date of appointment</legend>
+                            <div id="keyContact_Date_1-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="keyContact_Date_1">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="keyContact_Date_1-Day">Day</label>
+                                        {% if data['keyContact_Date_1-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_1-Day" name="keyContact_Date_1-Day" type="text" inputmode="numeric" value="{{ data['keyContact_Date_1-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_1-Day" name="keyContact_Date_1-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="keyContact_Date_1-Month">Month</label>
+                                        {% if data['keyContact_Date_1-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_1-Month" name="keyContact_Date_1-Month" type="text" inputmode="numeric" value="{{ data['keyContact_Date_1-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_1-Month" name="keyContact_Date_1-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="keyContact_Date_1-Year">Year</label>
+                                        {% if data['keyContact_Date_1-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="keyContact_Date_1-Year" name="keyContact_Date_1-Year" type="text" inputmode="numeric" value="{{ data['keyContact_Date_1-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="keyContact_Date_1-Year" name="keyContact_Date_1-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 6 - END -->
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addContact1" onclick="addContact1()">Add contact</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- USER 1 -- END -->
+
+                <!-- CONTACT 2 -- START -->
+                {% if data['keyContact_Name_1A'] %}
+                    <div id="contactsDetails-2" class="active">
+                {% else %}
+                    <div id="contactsDetails-2">
+                {% endif %}
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="removeContact2" onclick="removeContact2()">Remove contact</a>
+                        <label class="govuk-label" for="keyContact_Name_2A">Surname</label>
+                        {% if data['keyContact_Name_2A'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_2A" name="keyContact_Name_2A" type="text" value="{{ data['keyContact_Name_2A'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_2A" name="keyContact_Name_2A" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Name_2B">Forename</label>
+                        {% if data['keyContact_Name_2B'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_2B" name="keyContact_Name_2B" type="text" value="{{ data['keyContact_Name_2B'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_2B" name="keyContact_Name_2B" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <!-- OPTION 3 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Role_2">What is their role on the case?</label>
+                        <select class="govuk-select" id="keyContact_Role_2" name="keyContact_Role_2">
+                            {% if data['keyContact_Role_2'] == 'CPS Lawyer' %}
+                                <option value="CPS Lawyer" selected>CPS Lawyer</option>
+                            {% else %}
+                                <option value="CPS Lawyer">CPS Lawyer</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_2'] == 'CPS Paralegal' %}
+                                <option value="CPS Paralegal" selected>CPS Paralegal</option>
+                            {% else %}
+                                <option value="CPS Paralegal">CPS Paralegal</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_2'] == 'OIC' %}
+                                <option value="OIC" selected>OIC</option>
+                            {% else %}
+                                <option value="OIC">OIC</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_2'] == 'OIC Supervision' %}
+                                <option value="OIC Supervision" selected>OIC Supervision</option>
+                            {% else %}
+                                <option value="OIC Supervision">OIC Supervision</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_2'] == 'Disclosure Officer' %}
+                                <option value="Disclosure Officer" selected>Disclosure Officer</option>
+                            {% else %}
+                                <option value="Disclosure Officer">Disclosure Officer</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_2'] == 'Counsel 1' %}
+                                <option value="Counsel 1" selected>Counsel 1</option>
+                            {% else %}
+                                <option value="Counsel 1">Counsel 1</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_2'] == 'Counsel 2' %}
+                                <option value="Counsel 2" selected>Counsel 2</option>
+                            {% else %}
+                                <option value="Counsel 2">Counsel 2</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_2'] == 'Counsel 3' %}
+                                <option value="Counsel 3" selected>Counsel 3</option>
+                            {% else %}
+                                <option value="Counsel 3">Counsel 3</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_2'] == 'SIO' %}
+                                <option value="SIO" selected>SIO</option>
+                            {% else %}
+                                <option value="SIO">SIO</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_2'] == 'Escaltion contact 1' %}
+                                <option value="Escaltion contact 1" selected>Escaltion contact 1</option>
+                            {% else %}
+                                <option value="Escaltion contact 1">Escaltion contact 1</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_2'] == 'Escaltion contact 2' %}
+                                <option value="Escaltion contact 2" selected>Escaltion contact 2</option>
+                            {% else %}
+                                <option value="Escaltion contact 2">Escaltion contact 2</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_2'] == 'Escaltion contact 3' %}
+                                <option value="Escaltion contact 3" selected>Escaltion contact 3</option>
+                            {% else %}
+                                <option value="Escaltion contact 3">Escaltion contact 3</option>
+                            {% endif %}
+                        </select>
+                        <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-keyContact_Role_2">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="keyContact_Role_2-Type">Type of Counsel</label>
+                                <select class="govuk-select" id="keyContact_Role_2-Type" name="keyContact_Role_2-Type">
+                                    <option value="Junior Alone">Junior Alone</option>
+                                    <option value="Led Junior">Led Junior</option>
+                                    <option value="Leading Junior">Leading Junior</option>
+                                    <option value="QC">QC</option>
+                                    <option value="Disclosure Counsel">Disclosure Counsel</option>
+                                </select>
+                            </div>
+                        </div>                    
+                    </div>
+                    <!-- OPTION 3 - END -->
+
+                    <!-- OPTION 4 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Email_2">Email</label>
+                        {% if data['keyContact_Email_2'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Email_2" name="keyContact_Email_2" type="text" value="{{ data['keyContact_Email_2'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Email_2" name="keyContact_Email_2" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 4 - END -->
+
+                    <!-- OPTION 5 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Phone_2">Telephone</label>
+                        {% if data['keyContact_Phone_2'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Phone_2" name="keyContact_Phone_2" type="text" value="{{ data['keyContact_Phone_2'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Phone_2" name="keyContact_Phone_2" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 5 - END -->
+
+                    <!-- OPTION 6 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="keyContact_Date_2-hint">
+                            <legend class="govuk-fieldset__legend">Date of appointment</legend>
+                            <div id="keyContact_Date_2-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="keyContact_Date_2">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="keyContact_Date_2-Day">Day</label>
+                                        {% if data['keyContact_Date_2-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_2-Day" name="keyContact_Date_2-Day" type="text" inputmode="numeric" value="{{ data['keyContact_Date_2-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_2-Day" name="keyContact_Date_2-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="keyContact_Date_2-Month">Month</label>
+                                        {% if data['keyContact_Date_2-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_2-Month" name="keyContact_Date_2-Month" type="text" inputmode="numeric" value="{{ data['keyContact_Date_2-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_2-Month" name="keyContact_Date_2-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="keyContact_Date_2-Year">Year</label>
+                                        {% if data['keyContact_Date_2-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="keyContact_Date_2-Year" name="keyContact_Date_2-Year" type="text" inputmode="numeric" value="{{ data['keyContact_Date_2-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="keyContact_Date_2-Year" name="keyContact_Date_2-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 6 - END -->
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addContact2" onclick="addContact2()">Add contact</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- USER 2 -- END -->
+
+                <!-- CONTACT 3 -- START -->
+                {% if data['keyContact_Name_2A'] %}
+                    <div id="contactsDetails-3" class="active">
+                {% else %}
+                    <div id="contactsDetails-3">
+                {% endif %}
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="removeContact2" onclick="removeContact2()">Remove contact</a>
+                        <label class="govuk-label" for="keyContact_Name_3A">Surname</label>
+                        {% if data['keyContact_Name_3A'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_3A" name="keyContact_Name_3A" type="text" value="{{ data['keyContact_Name_3A'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_3A" name="keyContact_Name_3A" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Name_3B">Forename</label>
+                        {% if data['keyContact_Name_3B'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_3B" name="keyContact_Name_3B" type="text" value="{{ data['keyContact_Name_3B'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_3B" name="keyContact_Name_3B" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <!-- OPTION 3 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Role_3">What is their role on the case?</label>
+                        <select class="govuk-select" id="keyContact_Role_3" name="keyContact_Role_3">
+                            {% if data['keyContact_Role_3'] == 'CPS Lawyer' %}
+                                <option value="CPS Lawyer" selected>CPS Lawyer</option>
+                            {% else %}
+                                <option value="CPS Lawyer">CPS Lawyer</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_3'] == 'CPS Paralegal' %}
+                                <option value="CPS Paralegal" selected>CPS Paralegal</option>
+                            {% else %}
+                                <option value="CPS Paralegal">CPS Paralegal</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_3'] == 'OIC' %}
+                                <option value="OIC" selected>OIC</option>
+                            {% else %}
+                                <option value="OIC">OIC</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_3'] == 'OIC Supervision' %}
+                                <option value="OIC Supervision" selected>OIC Supervision</option>
+                            {% else %}
+                                <option value="OIC Supervision">OIC Supervision</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_3'] == 'Disclosure Officer' %}
+                                <option value="Disclosure Officer" selected>Disclosure Officer</option>
+                            {% else %}
+                                <option value="Disclosure Officer">Disclosure Officer</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_3'] == 'Counsel 1' %}
+                                <option value="Counsel 1" selected>Counsel 1</option>
+                            {% else %}
+                                <option value="Counsel 1">Counsel 1</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_3'] == 'Counsel 2' %}
+                                <option value="Counsel 2" selected>Counsel 2</option>
+                            {% else %}
+                                <option value="Counsel 2">Counsel 2</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_3'] == 'Counsel 3' %}
+                                <option value="Counsel 3" selected>Counsel 3</option>
+                            {% else %}
+                                <option value="Counsel 3">Counsel 3</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_3'] == 'SIO' %}
+                                <option value="SIO" selected>SIO</option>
+                            {% else %}
+                                <option value="SIO">SIO</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_3'] == 'Escaltion contact 1' %}
+                                <option value="Escaltion contact 1" selected>Escaltion contact 1</option>
+                            {% else %}
+                                <option value="Escaltion contact 1">Escaltion contact 1</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_3'] == 'Escaltion contact 2' %}
+                                <option value="Escaltion contact 2" selected>Escaltion contact 2</option>
+                            {% else %}
+                                <option value="Escaltion contact 2">Escaltion contact 2</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_3'] == 'Escaltion contact 3' %}
+                                <option value="Escaltion contact 3" selected>Escaltion contact 3</option>
+                            {% else %}
+                                <option value="Escaltion contact 3">Escaltion contact 3</option>
+                            {% endif %}
+                        </select>
+                        <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-keyContact_Role_3">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="keyContact_Role_3-Type">Type of Counsel</label>
+                                <select class="govuk-select" id="keyContact_Role_3-Type" name="keyContact_Role_3-Type">
+                                    <option value="Junior Alone">Junior Alone</option>
+                                    <option value="Led Junior">Led Junior</option>
+                                    <option value="Leading Junior">Leading Junior</option>
+                                    <option value="QC">QC</option>
+                                    <option value="Disclosure Counsel">Disclosure Counsel</option>
+                                </select>
+                            </div>
+                        </div>                    
+                    </div>
+                    <!-- OPTION 3 - END -->
+
+                    <!-- OPTION 4 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Email_3">Email</label>
+                        {% if data['keyContact_Email_2'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Email_3" name="keyContact_Email_3" type="text" value="{{ data['keyContact_Email_3'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Email_3" name="keyContact_Email_3" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 4 - END -->
+
+                    <!-- OPTION 5 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Phone_3">Telephone</label>
+                        {% if data['keyContact_Phone_3'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Phone_3" name="keyContact_Phone_3" type="text" value="{{ data['keyContact_Phone_3'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Phone_3" name="keyContact_Phone_3" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 5 - END -->
+
+                    <!-- OPTION 6 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="keyContact_Date_3-hint">
+                            <legend class="govuk-fieldset__legend">Date of appointment</legend>
+                            <div id="keyContact_Date_3-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="keyContact_Date_3">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="keyContact_Date_3-Day">Day</label>
+                                        {% if data['keyContact_Date_3-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_3-Day" name="keyContact_Date_3-Day" type="text" inputmode="numeric" value="{{ data['keyContact_Date_3-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_3-Day" name="keyContact_Date_3-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="keyContact_Date_3-Month">Month</label>
+                                        {% if data['keyContact_Date_3-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_3-Month" name="keyContact_Date_3-Month" type="text" inputmode="numeric" value="{{ data['keyContact_Date_3-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_3-Month" name="keyContact_Date_3-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="keyContact_Date_3-Year">Year</label>
+                                        {% if data['keyContact_Date_3-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="keyContact_Date_3-Year" name="keyContact_Date_3-Year" type="text" inputmode="numeric" value="{{ data['keyContact_Date_3-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="keyContact_Date_3-Year" name="keyContact_Date_3-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 6 - END -->
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addContact3" onclick="addContact3()">Add contact</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- CONTACT 3 -- END -->
+
+                <!-- CONTACT 4 -- START -->
+                {% if data['keyContact_Name_3A'] %}
+                    <div id="contactsDetails-4" class="active">
+                {% else %}
+                    <div id="contactsDetails-4">
+                {% endif %}
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="removeContact4" onclick="removeContact4()">Remove contact</a>
+                        <label class="govuk-label" for="keyContact_Name_4A">Surname</label>
+                        {% if data['keyContact_Name_4A'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_4A" name="keyContact_Name_4A" type="text" value="{{ data['keyContact_Name_4A'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_4A" name="keyContact_Name_4A" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Name_4B">Forename</label>
+                        {% if data['keyContact_Name_4B'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_4B" name="keyContact_Name_4B" type="text" value="{{ data['keyContact_Name_4B'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_4B" name="keyContact_Name_4B" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <!-- OPTION 3 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Role_4">What is their role on the case?</label>
+                        <select class="govuk-select" id="keyContact_Role_4" name="keyContact_Role_4">
+                            {% if data['keyContact_Role_4'] == 'CPS Lawyer' %}
+                                <option value="CPS Lawyer" selected>CPS Lawyer</option>
+                            {% else %}
+                                <option value="CPS Lawyer">CPS Lawyer</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_4'] == 'CPS Paralegal' %}
+                                <option value="CPS Paralegal" selected>CPS Paralegal</option>
+                            {% else %}
+                                <option value="CPS Paralegal">CPS Paralegal</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_4'] == 'OIC' %}
+                                <option value="OIC" selected>OIC</option>
+                            {% else %}
+                                <option value="OIC">OIC</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_4'] == 'OIC Supervision' %}
+                                <option value="OIC Supervision" selected>OIC Supervision</option>
+                            {% else %}
+                                <option value="OIC Supervision">OIC Supervision</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_4'] == 'Disclosure Officer' %}
+                                <option value="Disclosure Officer" selected>Disclosure Officer</option>
+                            {% else %}
+                                <option value="Disclosure Officer">Disclosure Officer</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_4'] == 'Counsel 1' %}
+                                <option value="Counsel 1" selected>Counsel 1</option>
+                            {% else %}
+                                <option value="Counsel 1">Counsel 1</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_4'] == 'Counsel 2' %}
+                                <option value="Counsel 2" selected>Counsel 2</option>
+                            {% else %}
+                                <option value="Counsel 2">Counsel 2</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_4'] == 'Counsel 3' %}
+                                <option value="Counsel 3" selected>Counsel 3</option>
+                            {% else %}
+                                <option value="Counsel 3">Counsel 3</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_4'] == 'SIO' %}
+                                <option value="SIO" selected>SIO</option>
+                            {% else %}
+                                <option value="SIO">SIO</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_4'] == 'Escaltion contact 1' %}
+                                <option value="Escaltion contact 1" selected>Escaltion contact 1</option>
+                            {% else %}
+                                <option value="Escaltion contact 1">Escaltion contact 1</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_4'] == 'Escaltion contact 2' %}
+                                <option value="Escaltion contact 2" selected>Escaltion contact 2</option>
+                            {% else %}
+                                <option value="Escaltion contact 2">Escaltion contact 2</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_4'] == 'Escaltion contact 3' %}
+                                <option value="Escaltion contact 3" selected>Escaltion contact 3</option>
+                            {% else %}
+                                <option value="Escaltion contact 3">Escaltion contact 3</option>
+                            {% endif %}
+                        </select>
+                        <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-keyContact_Role_4">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="keyContact_Role_4-Type">Type of Counsel</label>
+                                <select class="govuk-select" id="keyContact_Role_4-Type" name="keyContact_Role_4-Type">
+                                    <option value="Junior Alone">Junior Alone</option>
+                                    <option value="Led Junior">Led Junior</option>
+                                    <option value="Leading Junior">Leading Junior</option>
+                                    <option value="QC">QC</option>
+                                    <option value="Disclosure Counsel">Disclosure Counsel</option>
+                                </select>
+                            </div>
+                        </div>                    
+                    </div>
+                    <!-- OPTION 3 - END -->
+
+                    <!-- OPTION 4 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Email_4">Email</label>
+                        {% if data['keyContact_Email_4'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Email_4" name="keyContact_Email_4" type="text" value="{{ data['keyContact_Email_4'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Email_4" name="keyContact_Email_4" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 4 - END -->
+
+                    <!-- OPTION 5 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Phone_2">Telephone</label>
+                        {% if data['keyContact_Phone_4'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Phone_4" name="keyContact_Phone_4" type="text" value="{{ data['keyContact_Phone_4'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Phone_4" name="keyContact_Phone_4" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 5 - END -->
+
+                    <!-- OPTION 6 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="keyContact_Date_4-hint">
+                            <legend class="govuk-fieldset__legend">Date of appointment</legend>
+                            <div id="keyContact_Date_4-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="keyContact_Date_4">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="keyContact_Date_4-Day">Day</label>
+                                        {% if data['keyContact_Date_4-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_4-Day" name="keyContact_Date_4-Day" type="text" inputmode="numeric" value="{{ data['keyContact_Date_4-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_4-Day" name="keyContact_Date_4-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="keyContact_Date_4-Month">Month</label>
+                                        {% if data['keyContact_Date_4-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_4-Month" name="keyContact_Date_4-Month" type="text" inputmode="numeric" value="{{ data['keyContact_Date_4-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_4-Month" name="keyContact_Date_4-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="keyContact_Date_4-Year">Year</label>
+                                        {% if data['keyContact_Date_4-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="keyContact_Date_4-Year" name="keyContact_Date_4-Year" type="text" inputmode="numeric" value="{{ data['keyContact_Date_4-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="keyContact_Date_4-Year" name="keyContact_Date_4-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 6 - END -->
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addContact4" onclick="addContact4()">Add contact</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- CONTACT 4 -- END -->
+
+                <!-- CONTACT 5 -- START -->
+                {% if data['keyContact_Name_4A'] %}
+                    <div id="contactsDetails-5" class="active">
+                {% else %}
+                    <div id="contactsDetails-5">
+                {% endif %}
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="removeContact5" onclick="removeContact5()">Remove contact</a>
+                        <label class="govuk-label" for="keyContact_Name_5A">Surname</label>
+                        {% if data['keyContact_Name_5A'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_5A" name="keyContact_Name_5A" type="text" value="{{ data['keyContact_Name_5A'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_5A" name="keyContact_Name_5A" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Name_5B">Forename</label>
+                        {% if data['keyContact_Name_5B'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_5B" name="keyContact_Name_5B" type="text" value="{{ data['keyContact_Name_5B'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Name_5B" name="keyContact_Name_5B" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <!-- OPTION 3 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Role_5">What is their role on the case?</label>
+                        <select class="govuk-select" id="keyContact_Role_5" name="keyContact_Role_5">
+                            {% if data['keyContact_Role_5'] == 'CPS Lawyer' %}
+                                <option value="CPS Lawyer" selected>CPS Lawyer</option>
+                            {% else %}
+                                <option value="CPS Lawyer">CPS Lawyer</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_5'] == 'CPS Paralegal' %}
+                                <option value="CPS Paralegal" selected>CPS Paralegal</option>
+                            {% else %}
+                                <option value="CPS Paralegal">CPS Paralegal</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_5'] == 'OIC' %}
+                                <option value="OIC" selected>OIC</option>
+                            {% else %}
+                                <option value="OIC">OIC</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_5'] == 'OIC Supervision' %}
+                                <option value="OIC Supervision" selected>OIC Supervision</option>
+                            {% else %}
+                                <option value="OIC Supervision">OIC Supervision</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_5'] == 'Disclosure Officer' %}
+                                <option value="Disclosure Officer" selected>Disclosure Officer</option>
+                            {% else %}
+                                <option value="Disclosure Officer">Disclosure Officer</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_5'] == 'Counsel 1' %}
+                                <option value="Counsel 1" selected>Counsel 1</option>
+                            {% else %}
+                                <option value="Counsel 1">Counsel 1</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_5'] == 'Counsel 2' %}
+                                <option value="Counsel 2" selected>Counsel 2</option>
+                            {% else %}
+                                <option value="Counsel 2">Counsel 2</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_5'] == 'Counsel 3' %}
+                                <option value="Counsel 3" selected>Counsel 3</option>
+                            {% else %}
+                                <option value="Counsel 3">Counsel 3</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_5'] == 'SIO' %}
+                                <option value="SIO" selected>SIO</option>
+                            {% else %}
+                                <option value="SIO">SIO</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_5'] == 'Escaltion contact 1' %}
+                                <option value="Escaltion contact 1" selected>Escaltion contact 1</option>
+                            {% else %}
+                                <option value="Escaltion contact 1">Escaltion contact 1</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_5'] == 'Escaltion contact 2' %}
+                                <option value="Escaltion contact 2" selected>Escaltion contact 2</option>
+                            {% else %}
+                                <option value="Escaltion contact 2">Escaltion contact 2</option>
+                            {% endif %}
+                            {% if data['keyContact_Role_5'] == 'Escaltion contact 3' %}
+                                <option value="Escaltion contact 3" selected>Escaltion contact 3</option>
+                            {% else %}
+                                <option value="Escaltion contact 3">Escaltion contact 3</option>
+                            {% endif %}
+                        </select>
+                        <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-keyContact_Role_5">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="keyContact_Role_5-Type">Type of Counsel</label>
+                                <select class="govuk-select" id="keyContact_Role_5-Type" name="keyContact_Role_5-Type">
+                                    <option value="Junior Alone">Junior Alone</option>
+                                    <option value="Led Junior">Led Junior</option>
+                                    <option value="Leading Junior">Leading Junior</option>
+                                    <option value="QC">QC</option>
+                                    <option value="Disclosure Counsel">Disclosure Counsel</option>
+                                </select>
+                            </div>
+                        </div>                    
+                    </div>
+                    <!-- OPTION 3 - END -->
+
+                    <!-- OPTION 4 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Email_5">Email</label>
+                        {% if data['keyContact_Email_5'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Email_5" name="keyContact_Email_5" type="text" value="{{ data['keyContact_Email_5'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Email_5" name="keyContact_Email_5" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 4 - END -->
+
+                    <!-- OPTION 5 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="keyContact_Phone_5">Telephone</label>
+                        {% if data['keyContact_Phone_5'] %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Phone_5" name="keyContact_Phone_5" type="text" value="{{ data['keyContact_Phone_5'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="keyContact_Phone_5" name="keyContact_Phone_5" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 5 - END -->
+
+                    <!-- OPTION 6 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="keyContact_Date_5-hint">
+                            <legend class="govuk-fieldset__legend">Date of appointment</legend>
+                            <div id="keyContact_Date_5-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="keyContact_Date_5">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="keyContact_Date_5-Day">Day</label>
+                                        {% if data['keyContact_Date_5-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_5-Day" name="keyContact_Date_5-Day" type="text" inputmode="numeric" value="{{ data['keyContact_Date_5-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_5-Day" name="keyContact_Date_5-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="keyContact_Date_5-Month">Month</label>
+                                        {% if data['keyContact_Date_5-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_5-Month" name="keyContact_Date_5-Month" type="text" inputmode="numeric" value="{{ data['keyContact_Date_5-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="keyContact_Date_5-Month" name="keyContact_Date_5-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="keyContact_Date_5-Year">Year</label>
+                                        {% if data['keyContact_Date_5-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="keyContact_Date_5-Year" name="keyContact_Date_5-Year" type="text" inputmode="numeric" value="{{ data['keyContact_Date_5-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="keyContact_Date_5-Year" name="keyContact_Date_5-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 6 - END -->
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addContact5" onclick="addContact5()">Add contact</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- CONTACT 5 -- END -->
+
+                <input id="contactsAdded" name="contactsAdded" type="text" value="true" style="display: none;">
+                <button type="submit" class="govuk-button" style="">Save and exit</button>
+                <button type="button" onclick="location.href='5-case-overview';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+        <div class="existing-contacts">
+            <h2 class="govuk-heading-s" style="">Key contacts</h2>
+            <div class="contacts">
+                <div id="new-contacts">
+                    {% if data['keyContact_Name_1A'] %}
+                        <p class="contactDetails-1">
+                            <span class="icon-new user"></span><strong>{{ data['keyContact_Name_1A'] }}, {{ data['keyContact_Name_1B'] }}</strong>
+                        </p>
+                        <details class="govuk-details">
+                            <summary class="govuk-details__summary">
+                                <span class="govuk-details__summary-text">Contact details</span>
+                            </summary>
+                            <div class="govuk-details__text">
+                                {% if data['keyContact_Role_1'] == 'Counsel 1' or data['keyContact_Role_1'] == 'Counsel 2' or data['keyContact_Role_1'] == 'Counsel 3' %}
+                                    <strong>Role:</strong> <span>{{ data['keyContact_Role_1'] }} - {{ data['keyContact_Role_1-Type'] }}</span><br>
+                                {% else %}
+                                    <strong>Role:</strong> <span>{{ data['keyContact_Role_1'] }}</span><br>
+                                {% endif %}
+                                <strong>Email:</strong> <a href="mailto:{{ data['keyContact_Email_1'] }}" class="copy_Item">{{ data['keyContact_Email_1'] }}</a><br>
+                                <strong>Telephone:</strong> <a href="tel:{{ data['keyContact_Phone_1'] }}" class="copy_Item">{{ data['keyContact_Phone_1'] }}</a><br>
+                                <strong>Date:</strong> <span>{{ data['keyContact_Date_1-Day'] }}/{{ data['keyContact_Date_1-Month'] }}/{{ data['keyContact_Date_1-Year'] }}<span>
+                            </div>
+                        </details>                    
+                    {% else %}
+                        <p id="no_key_contacts">No key contacts have yet been added</p>
+                    {% endif %}
+                    {% if data['keyContact_Name_2A'] %}
+                        <p class="contactDetails-2">
+                            <span class="icon-new user"></span><strong>{{ data['keyContact_Name_2A'] }}, {{ data['keyContact_Name_2B'] }}</strong>
+                        </p>
+                        <details class="govuk-details">
+                            <summary class="govuk-details__summary">
+                                <span class="govuk-details__summary-text">Contact details</span>
+                            </summary>
+                            <div class="govuk-details__text">
+                                {% if data['keyContact_Role_2'] == 'Counsel 1' or data['keyContact_Role_2'] == 'Counsel 2' or data['keyContact_Role_2'] == 'Counsel 3' %}
+                                    <strong>Role:</strong> <span>{{ data['keyContact_Role_2'] }} - {{ data['keyContact_Role_2-Type'] }}</span><br>
+                                {% else %}
+                                    <strong>Role:</strong> <span>{{ data['keyContact_Role_2'] }}</span><br>
+                                {% endif %}
+                                <strong>Email:</strong> <a href="mailto:{{ data['keyContact_Email_2'] }}" class="copy_Item">{{ data['keyContact_Email_2'] }}</a><br>
+                                <strong>Telephone:</strong> <a href="tel:{{ data['keyContact_Phone_2'] }}" class="copy_Item">{{ data['keyContact_Phone_2'] }}</a><br>
+                                <strong>Date:</strong> <span>{{ data['keyContact_Date_2-Day'] }}/{{ data['keyContact_Date_2-Month'] }}/{{ data['keyContact_Date_2-Year'] }}<span>
+                            </div>
+                        </details>                    
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['keyContact_Name_3A'] %}
+                        <p class="contactDetails-3">
+                            <span class="icon-new user"></span><strong>{{ data['keyContact_Name_3A'] }}, {{ data['keyContact_Name_3B'] }}</strong>
+                        </p>
+                        <details class="govuk-details">
+                            <summary class="govuk-details__summary">
+                                <span class="govuk-details__summary-text">Contact details</span>
+                            </summary>
+                            <div class="govuk-details__text">
+                                {% if data['keyContact_Role_3'] == 'Counsel 1' or data['keyContact_Role_3'] == 'Counsel 2' or data['keyContact_Role_3'] == 'Counsel 3' %}
+                                    <strong>Role:</strong> <span>{{ data['keyContact_Role_3'] }} - {{ data['keyContact_Role_3-Type'] }}</span><br>
+                                {% else %}
+                                    <strong>Role:</strong> <span>{{ data['keyContact_Role_3'] }}</span><br>
+                                {% endif %}
+                                <strong>Email:</strong> <a href="mailto:{{ data['keyContact_Email_3'] }}" class="copy_Item">{{ data['keyContact_Email_3'] }}</a><br>
+                                <strong>Telephone:</strong> <a href="tel:{{ data['keyContact_Phone_3'] }}" class="copy_Item">{{ data['keyContact_Phone_3'] }}</a><br>
+                                <strong>Date:</strong> <span>{{ data['keyContact_Date_3-Day'] }}/{{ data['keyContact_Date_31-Month'] }}/{{ data['keyContact_Date_3-Year'] }}<span>
+                            </div>
+                        </details>                    
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['keyContact_Name_4A'] %}
+                        <p class="contactDetails-4">
+                            <span class="icon-new user"></span><strong>{{ data['keyContact_Name_4A'] }}, {{ data['keyContact_Name_4B'] }}</strong>
+                        </p>
+                        <details class="govuk-details">
+                            <summary class="govuk-details__summary">
+                                <span class="govuk-details__summary-text">Contact details</span>
+                            </summary>
+                            <div class="govuk-details__text">
+                                {% if data['keyContact_Role_4'] == 'Counsel 1' or data['keyContact_Role_4'] == 'Counsel 2' or data['keyContact_Role_4'] == 'Counsel 3' %}
+                                    <strong>Role:</strong> <span>{{ data['keyContact_Role_4'] }} - {{ data['keyContact_Role_4-Type'] }}</span><br>
+                                {% else %}
+                                    <strong>Role:</strong> <span>{{ data['keyContact_Role_4'] }}</span><br>
+                                {% endif %}
+                                <strong>Email:</strong> <a href="mailto:{{ data['keyContact_Email_4'] }}" class="copy_Item">{{ data['keyContact_Email_4'] }}</a><br>
+                                <strong>Telephone:</strong> <a href="tel:{{ data['keyContact_Phone_4'] }}" class="copy_Item">{{ data['keyContact_Phone_4'] }}</a><br>
+                                <strong>Date:</strong> <span>{{ data['keyContact_Date_4-Day'] }}/{{ data['keyContact_Date_4-Month'] }}/{{ data['keyContact_Date_4-Year'] }}<span>
+                            </div>
+                        </details>                    
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['keyContact_Name_5A'] %}
+                        <p class="contactDetails-5">
+                            <span class="icon-new user"></span><strong>{{ data['keyContact_Name_5A'] }}, {{ data['keyContact_Name_5B'] }}</strong>
+                        </p>
+                        <details class="govuk-details">
+                            <summary class="govuk-details__summary">
+                                <span class="govuk-details__summary-text">Contact details</span>
+                            </summary>
+                            <div class="govuk-details__text">
+                                {% if data['keyContact_Role_5'] == 'Counsel 1' or data['keyContact_Role_5'] == 'Counsel 2' or data['keyContact_Role_5'] == 'Counsel 3' %}
+                                    <strong>Role:</strong> <span>{{ data['keyContact_Role_5'] }} - {{ data['keyContact_Role_5-Type'] }}</span><br>
+                                {% else %}
+                                    <strong>Role:</strong> <span>{{ data['keyContact_Role_5'] }}</span><br>
+                                {% endif %}
+                                <strong>Email:</strong> <a href="mailto:{{ data['keyContact_Email_5'] }}" class="copy_Item">{{ data['keyContact_Email_5'] }}</a><br>
+                                <strong>Telephone:</strong> <a href="tel:{{ data['keyContact_Phone_5'] }}" class="copy_Item">{{ data['keyContact_Phone_5'] }}</a><br>
+                                <strong>Date:</strong> <span>{{ data['keyContact_Date_5-Day'] }}/{{ data['keyContact_Date_5-Month'] }}/{{ data['keyContact_Date_5-Year'] }}<span>
+                            </div>
+                        </details>                    
+                    {% else %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

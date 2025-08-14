@@ -1,0 +1,39 @@
+<!-- search-banner-modal-simple-v2.html -->
+<div aria-label="problem banner" class="das-cookie-banner__wrap das-cookie-banner__modal rj-dont-display" id="problemModal">
+    <div class="das-cookie-banner" style="width:50%; margin-top:200xpx; height:460px" id="openMe">
+        <div class="das-cookie-banner__wrapper ">
+            <div class="govuk-modal-dialogue__header" style="height:42px; ">
+                <button aria-label="Close modal dialogue" class="govuk-button govuk-modal-dialogue__close" data-module="govuk-button" type="button" onClick="closeProblemModal()">×</button>
+            </div>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full" style="">
+                    <div class="innerPanel simpleModelTwo" style="margin:0 auto">
+                        <div class="govuk-grid-row">
+                            <h1 class="govuk-heading-l"> Tell us what went wrong</h1>
+                            <p>Don’t include personal or sensitive information about the case. </p>
+<!--                             <div class="govuk-form-group">
+                                <label class="govuk-label govuk-label--s" for="more-detail">
+                                    What were you doing? (optional)
+                                </label>
+                                <textarea class="govuk-textarea" id="more-detail" name="more-detail" rows="3"></textarea>
+                            </div> -->
+                            <div class="govuk-form-group">
+<!--                                 <label class="govuk-label govuk-label--s" for="more-detail">
+                                    Tell us what went wrong
+                                </label> -->
+                                <textarea class="govuk-textarea" id="more-detail" name="more-detail" rows="5"></textarea>
+                            </div>
+                                        <div class="govuk-button-group">
+                <button class="govuk-button" data-module="govuk-button" onClick="closeProblemModal()">
+                    Send and return
+                </button>
+                 <a class="govuk-link" style="color:#0000EE" onClick="closeProblemModal()">Cancel</a>
+             </div>
+                        </div>
+                        <!--  end of inner panel div above -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
