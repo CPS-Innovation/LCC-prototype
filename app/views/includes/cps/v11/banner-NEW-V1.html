@@ -1,0 +1,30 @@
+<header class="govuk-header {{ params.classes if params.classes }}" role="banner" data-module="govuk-header" {%- for attribute, value in params.attributes %} {{attribute}}="{{value}}"{% endfor %}>
+    <div class="govuk-header__container {{ params.containerClasses | default('govuk-width-container') }}">
+        <div style="display:flex">
+            <div class="govuk-header__logo">
+                <a href="{{ params.homepageUrl | default('/') }}" class="govuk-header__link govuk-header__link--homepage">
+                    <span class="govuk-header__logotype">
+                        <span class="govuk-header__logotype-text caseReviewHeader">Casework App</span>
+                    </span>
+                </a>
+            </div>
+            <div class="govuk-header__logo">
+                <a href="" class="username">user_name_1983</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>body {visibility: hidden}</style>
+<script>
+    $(document).ready(function () {
+        $("body")
+            .contents()
+            .filter(function () {
+        return this.nodeType == Node.TEXT_NODE;
+    })
+        .remove();
+        $("body").css("visibility", "visible");
+    });
+</script>
+

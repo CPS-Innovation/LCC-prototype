@@ -1,0 +1,132 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-V5.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+        <a href="javascript:history.back()" class="govuk-back-link no-margin-top no-margin-bottom">Back</a>
+        <div class="wrapper gov-pages">
+            <h1 class="govuk-heading-l" style="">Select the document details</h1>
+
+            <form method="get" action="F-check-answers"> 
+
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            {% if data['scenario'] == 'one' %}
+                                <legend class="govuk-fieldset__legend">Do you want to change the document name of <mark class="hods-highlight"><strong>Asset Rec 1</strong></mark>?</legend>
+                            {% elseif data['scenario'] == 'two' %}
+                                <legend class="govuk-fieldset__legend">Do you want to change the document name of <mark class="hods-highlight"><strong>MG11 - 1</strong></mark>?</legend>
+                            {% elseif data['scenario'] == 'three' %}
+                                <legend class="govuk-fieldset__legend">Do you want to change the document name of <mark class="hods-highlight"><strong>Exhibit Rec 1</strong></mark>?</legend>
+                            {% endif %}
+                            
+                            <div class="govuk-radios__item">
+                                {% if data['docType-document-name'] == 'Yes' and data['answers-complete'] == 'true' %}
+                                    <input class="govuk-radios__input" id="docType-document-name-Yes" name="docType-document-name" type="radio" value="Yes" data-aria-controls="conditional-Name" checked>
+                                {% else %}
+                                    <input class="govuk-radios__input" id="docType-document-name-Yes" name="docType-document-name" type="radio" value="Yes" data-aria-controls="conditional-Name">
+                                {% endif %}
+                                <label class="govuk-label govuk-radios__label" for="docType-document-name-Yes">Yes</label>
+                            </div>
+                            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-Name">
+                                <div class="govuk-form-group">
+                                    {% if data['scenario'] == 'one' %}
+                                        <label class="govuk-label" for="docType-Scenario-1-NAME">Enter new document name</label>
+                                        {% if data['docType-Scenario-1-NAME'] %}
+                                            <input class="govuk-input govuk-!-width-two-thirds" id="docType-Scenario-1-NAME" name="docType-Scenario-1-NAME" type="text" value="{{ data['docType-Scenario-1-NAME'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-!-width-two-thirds" id="docType-Scenario-1-NAME" name="docType-Scenario-1-NAME" type="text" value="Asset Rec 1">
+                                        {% endif %}
+                                    {% elseif data['scenario'] == 'two' %}
+                                        <label class="govuk-label" for="docType-Scenario-2-NAME">Enter new document name</label>
+                                        <span class="govuk-hint">Example: Doc Name witness SURNAME First Name date of statement</span>
+                                        <span class="govuk-hint">MG11 SMITH John 25/06/2024</span>
+                                        {% if data['docType-Scenario-2-NAME'] %}
+                                            <input class="govuk-input govuk-!-width-two-thirds" id="docType-Scenario-2-NAME" name="docType-Scenario-2-NAME" type="text" value="{{ data['docType-Scenario-2-NAME'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-!-width-two-thirds" id="docType-Scenario-2-NAME" name="docType-Scenario-2-NAME" type="text" value="MG11 - 1">
+                                        {% endif %}
+                                    {% elseif data['scenario'] == 'three' %}
+                                        <label class="govuk-label" for="docType-Scenario-3-NAME">Enter new document name</label>
+                                        <span class="govuk-hint">Example: Doc Name</span>
+                                        <span class="govuk-hint">MG12</span>
+                                        {% if data['docType-Scenario-3-NAME'] %}
+                                            <input class="govuk-input govuk-!-width-two-thirds" id="docType-Scenario-3-NAME" name="docType-Scenario-3-NAME" type="text" value="{{ data['docType-Scenario-3-NAME'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-!-width-two-thirds" id="docType-Scenario-3-NAME" name="docType-Scenario-3-NAME" type="text" value="Exhibit - 1">
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>                            
+                            <div class="govuk-radios__item">
+                                {% if data['docType-document-name'] == 'Yes' and data['answers-complete'] == 'true' %}
+                                    <input class="govuk-radios__input" id="docType-document-name-No" name="docType-document-name" type="radio" value="No">
+                                {% else %}
+                                    <input class="govuk-radios__input" id="docType-document-name-No" name="docType-document-name" type="radio" value="No" checked>
+                                {% endif %}
+                                <label class="govuk-label govuk-radios__label" for="docType-document-name-No">No</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                {% if data['scenario'] == 'one' %}
+                    {% if data['documentType-FOUR-Type'] == 'Asset recovery' or data['documentType-FOUR-Type'] == 'Asset recovery 3rd Party' or data['documentType-FOUR-Type'] == 'Complaint' or data['documentType-FOUR-Type'] == 'Correspondence' or data['documentType-FOUR-Type'] == 'Counsel Case Acknowledgement' or data['documentType-FOUR-Type'] == 'Defence Statement' or data['documentType-FOUR-Type'] == 'MG6C' or data['documentType-FOUR-Type'] == 'MG6D' or data['documentType-FOUR-Type'] == 'MG6E' or data['documentType-FOUR-Type'] == 'Other Communication' or data['documentType-FOUR-Type'] == 'PCN3' or data['documentType-FOUR-Type'] == 'SDC' or data['documentType-FOUR-Type'] == 'Service of ABE' %}
+
+                    {% elseif data['documentType'] == 'Other Communication' %}
+                    
+                    {% else %}
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend">What is the document status?</legend>
+                                <div class="govuk-radios" data-module="govuk-radios">
+                                    <div class="govuk-radios__item">
+                                        {% if data['docType-document-status'] == 'Used' and data['answers-complete'] == 'true' %}
+                                            <input class="govuk-radios__input" id="docType-document-status-Evidential" name="docType-document-status" type="radio" value="Used">
+                                        {% else %}
+                                            <input class="govuk-radios__input" id="docType-document-status-Evidential" name="docType-document-status" type="radio" value="Used" checked>
+                                        {% endif %}
+                                        <label class="govuk-label govuk-radios__label" for="docType-document-status-Evidential">Used</label>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        {% if data['docType-document-status'] == 'Unused' and data['answers-complete'] == 'true' %}
+                                            <input class="govuk-radios__input" id="docType-document-status-Unused" name="docType-document-status" type="radio" value="Unused" checked>
+                                        {% else %}
+                                            <input class="govuk-radios__input" id="docType-document-status-Unused" name="docType-document-status" type="radio" value="Unused">
+                                        {% endif %}
+                                        <label class="govuk-label govuk-radios__label" for="docType-document-status-Unused">Unused</label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    {% endif %}
+                {% else %}
+
+                {% endif %}
+
+                <button type="submit" class="govuk-button" style="">Continue</button>
+                <input id="answers-complete" name="answers-complete" type="text" value="true" class="visuallyhidden">
+                <button type="button" onclick="location.href='../1-new-designs/C-casefile-1.html';" class="non-button margin-left" id="cancelPageLoad">Cancel</button>
+            </form>
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-half">
+        <div class="image-holder">
+            {% if data['scenario'] == 'one' %}
+                <img src="../../../public/files/Asset-Rec-PREVIEW.png" alt="Asset Rec - 1 - Preview" class="">
+            {% elseif data['scenario'] == 'two' %}
+                <img src="../../../public/files/MG11_1-PREVIEW.png" alt="MG11 - 1 - Preview" class="">
+            {% elseif data['scenario'] == 'three' %}
+                <img src="../../../public/files/MG12_1-PREVIEW.png" alt="Exhibit - 1 - Preview" class="">
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

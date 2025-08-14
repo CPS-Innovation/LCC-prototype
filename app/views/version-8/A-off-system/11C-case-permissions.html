@@ -1,0 +1,168 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+{% if data['caseAccess'] == 'true' %}
+<div class="govuk-grid-row">
+{% else %}
+<div class="govuk-grid-row" id="create-case-journey">
+{% endif %}
+    <div class="govuk-grid-column-two-thirds">
+        <div class="wrapper gov-pages">
+
+            <h1 class="govuk-heading-xl" style="">User permissions</h1>
+            <label class="govuk-label" for="">Set the user permissions for <mark class="hods-highlight"><strong> {{ data['newCase_Access-Email'] }} </strong></mark></label>
+
+            <form method="get" action="5-case-overview#permissionsTab" id="">  
+
+                <p> </p>
+
+                <!-- OPTION 1 - START -->
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s"><h1 class="govuk-fieldset__heading">Case role</h1></legend>
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            <div class="govuk-radios__item">
+                                {% if data['newCase_NEWAccess-Role'] == 'Lead Prosecutor' %}
+                                    <input class="govuk-radios__input" id="newCase_NEWAccess-Role-Lead-Prosecutor" name="newCase_NEWAccess-Role" type="radio" value="Lead Prosecutor" checked>
+                                {% else %}
+                                    <input class="govuk-radios__input" id="newCase_NEWAccess-Role-Lead-Prosecutor" name="newCase_NEWAccess-Role" type="radio" value="Lead Prosecutor">
+                                {% endif %}
+                                <label class="govuk-label govuk-radios__label" for="newCase_NEWAccess-Role-Lead-Prosecutor">Lead Prosecutor</label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                {% if data['newCase_NEWAccess-Role'] == 'Prosecutor' %}
+                                    <input class="govuk-radios__input" id="newCase_NEWAccess-Role-Prosecutor" name="newCase_NEWAccess-Role" type="radio" value="Prosecutor" checked>
+                                {% else %}
+                                    <input class="govuk-radios__input" id="newCase_NEWAccess-Role-Prosecutor" name="newCase_NEWAccess-Role" type="radio" value="Prosecutor">
+                                {% endif %}
+                                <label class="govuk-label govuk-radios__label" for="newCase_NEWAccess-Role-Prosecutor">Prosecutor</label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                {% if data['newCase_NEWAccess-Role'] == 'Lead Caseworker' %}
+                                    <input class="govuk-radios__input" id="newCase_NEWAccess-Role-Lead-Caseworker" name="newCase_NEWAccess-Role" type="radio" value="Lead Caseworker" checked>
+                                {% else %}
+                                    <input class="govuk-radios__input" id="newCase_NEWAccess-Role-Lead-Caseworker" name="newCase_NEWAccess-Role" type="radio" value="Lead Caseworker">
+                                {% endif %}
+                                <label class="govuk-label govuk-radios__label" for="newCase_NEWAccess-Role-Lead-Caseworker">Lead Caseworker</label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                {% if data['newCase_NEWAccess-Role'] == 'Caseworker' %}
+                                    <input class="govuk-radios__input" id="newCase_NEWAccess-Role-Caseworker" name="newCase_NEWAccess-Role" type="radio" value="Caseworker" checked>
+                                {% else %}
+                                    <input class="govuk-radios__input" id="newCase_NEWAccess-Role-Caseworker" name="newCase_NEWAccess-Role" type="radio" value="Caseworker">
+                                {% endif %}
+                                <label class="govuk-label govuk-radios__label" for="newCase_NEWAccess-Role-Caseworker">Caseworker</label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                {% if data['newCase_NEWAccess-Role'] == 'Crown Advocate (HCA)' %}
+                                    <input class="govuk-radios__input" id="newCase_NEWAccess-Role-Crown-Advocate" name="newCase_NEWAccess-Role" type="radio" value="Crown Advocate (HCA)" checked>
+                                {% else %}
+                                    <input class="govuk-radios__input" id="newCase_NEWAccess-Role-Crown-Advocate" name="newCase_NEWAccess-Role" type="radio" value="Crown Advocate (HCA)">
+                                {% endif %}
+                                <label class="govuk-label govuk-radios__label" for="newCase_NEWAccess-Role-Crown-Advocate">Crown Advocate (HCA)</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <!-- OPTION 1 - END -->
+
+                <!-- OPTION 2 - START -->
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s"><h1 class="govuk-fieldset__heading">Materials permissions</h1></legend>
+                        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+
+                            <!-- EGRESS - START -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="newCase_NEWAccess-Egress" name="newCase_NEWAccess" type="checkbox" value="Egress" data-aria-controls="conditional-newCase_NEWAccess-Egress">
+                                <label class="govuk-label govuk-checkboxes__label" for="newCase_NEWAccess-Egress">Egress</label>
+                            </div>
+                            <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-newCase_NEWAccess-Egress">
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label" for="newCase_NEWAccess-EgressPermissions">What permissions would you like them to have?</label>
+                                    <select class="govuk-select" id="newCase_NEWAccess-EgressPermissions" name="newCase_NEWAccess-EgressPermissions">
+                                        <option value="Administrator" selected>Administrator</option>
+                                        <option value="CPS Admin">CPS Admin</option>
+                                        <option value="CPS Prosecutor and Paralegal">CPS Prosecutor and Paralegal</option>
+                                        <option value="CPS Unit Manager">CPS Unit Manager</option>
+                                        <option value="Download only">Download only</option>
+                                        <option value="Guest User">Guest User</option>
+                                        <option value="User">User</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- EGRESS - END -->
+
+                            <!-- SHARED DRIVE - START -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="newCase_NEWAccess-Shared-Drive" name="newCase_NEWAccess" type="checkbox" value="Shared drive" data-aria-controls="conditional-newCase_NEWAccess-Shared-Drive">
+                                <label class="govuk-label govuk-checkboxes__label" for="newCase_NEWAccess-Shared-Drive">Shared drive</label>
+                            </div>
+                            <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-newCase_NEWAccess-Shared-Drive">
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label" for="newCase_NEWAccess-SharedDrivePermissions">What permissions would you like them to have?</label>
+                                    <select class="govuk-select" id="newCase_NEWAccess-SharedDrivePermissions" name="newCase_NEWAccess-SharedDrivePermissions">
+                                        <option value="Administrator" selected>Administrator</option>
+                                        <option value="CPS Admin">CPS Admin</option>
+                                        <option value="CPS Prosecutor and Paralegal">CPS Prosecutor and Paralegal</option>
+                                        <option value="CPS Unit Manager">CPS Unit Manager</option>
+                                        <option value="Download only">Download only</option>
+                                        <option value="Guest User">Guest User</option>
+                                        <option value="User">User</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- SHARED DRIVE - END -->
+
+                            <!-- OUTLOOK - START -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="newCase_NEWAccess-Outlook" name="newCase_NEWAccess" type="checkbox" value="Outlook" data-aria-controls="conditional-newCase_NEWAccess-Outlook">
+                                <label class="govuk-label govuk-checkboxes__label" for="newCase_NEWAccess-Outlook">Outlook</label>
+                            </div>
+                            <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-newCase_NEWAccess-Outlook">
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label" for="newCase_NEWAccess-OutlookPermissions">What permissions would you like them to have?</label>
+                                    <select class="govuk-select" id="newCase_NEWAccess-OutlookPermissions" name="newCase_NEWAccess-OutlookPermissions">
+                                        <option value="Administrator" selected>Administrator</option>
+                                        <option value="CPS Admin">CPS Admin</option>
+                                        <option value="CPS Prosecutor and Paralegal">CPS Prosecutor and Paralegal</option>
+                                        <option value="CPS Unit Manager">CPS Unit Manager</option>
+                                        <option value="Download only">Download only</option>
+                                        <option value="Guest User">Guest User</option>
+                                        <option value="User">User</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- OUTLOOK - END -->
+                        </div>
+                    </fieldset>
+                </div>
+                <!-- OPTION 2 - END -->
+
+
+                <input id="caseAccessNEW-Complete" name="caseAccessNEW-Complete" type="text" value="true" style="display: none;">
+                <button type="submit" class="govuk-button" style="">Save and exit</button>
+                <button type="button" onclick="location.href='5-case-overview#permissionsTab';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}

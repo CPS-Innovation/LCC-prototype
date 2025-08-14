@@ -1,0 +1,216 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-V5.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+        <a href="javascript:history.back()" class="govuk-back-link no-margin-top">Back</a>
+
+        <!-- NOTIFICATION BANNER - START -->
+        <div id="saving-to-cms" class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+            <div class="govuk-notification-banner__header">
+                <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
+            </div>
+            <div class="govuk-notification-banner__content">
+                <p class="govuk-notification-banner__heading"><span class="saving"></span>Saving to CMS, please wait.</p>
+            </div>
+        </div>
+        <!-- NOTIFICATION BANNER - END -->
+
+        <h1 class="govuk-heading-l">Check your answers</h1>
+        <h2 class="govuk-heading-m">Document details</h2>
+        <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Type</dt>
+                <dd class="govuk-summary-list__value">
+                    {% if data['documentType'] == 'Statements' %}
+                        Statement - {{ data['documentType-ONE-Statements'] }}
+                    {% elseif data['documentType'] == 'Exhibit' %}
+                        Exhibit - {{ data['documentType-TWO-Exhibits'] }}
+                    {% elseif data['documentType'] == 'Other Communication' %}
+                        Other Communication
+                    {% elseif data['documentType'] == 'Other' %}
+                        Other - {{ data['documentType-FOUR-Type'] }}
+                    {% endif %}
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" href="A-category">Change<span class="govuk-visually-hidden"> document type</span></a>
+                </dd>
+            </div>
+
+            {% if data['scenario'] == 'one' %}
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Name</dt>
+                    <dd class="govuk-summary-list__value">
+                        {% if data['docType-document-name'] == 'Yes' %}
+                            {% if data['scenario'] == 'one' %}
+                                {{ data['docType-Scenario-1-NAME'] }}
+                            {% elseif data['scenario'] == 'two' %}
+                                {{ data['docType-Scenario-2-NAME'] }}
+                            {% elseif data['scenario'] == 'three' %}
+                                {{ data['docType-Scenario-3-NAME'] }}
+                            {% endif %}
+                        {% else %}
+                            {% if data['scenario'] == 'one' %}
+                                Asset Rec 1
+                            {% elseif data['scenario'] == 'two' %}
+                                MG11 - 1
+                            {% elseif data['scenario'] == 'three' %}
+                                Exhibit - 1
+                            {% endif %}
+                        {% endif %}
+
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="D-document-name">Change<span class="govuk-visually-hidden"> document name</span></a>
+                    </dd>
+                </div>
+
+                {% if data['documentType'] == 'Asset recovery' or data['documentType'] == 'Asset recovery 3rd Party' or data['documentType'] == 'Complaint' or data['documentType'] == 'Correspondence' or data['documentType'] == 'Counsel Case Acknowledgement' or data['documentType'] == 'Defence Statement' or data['documentType'] == 'MG6C' or data['documentType'] == 'MG6D' or data['documentType'] == 'MG6E' or data['documentType'] == 'Other Communication' or data['documentType'] == 'PCN3' or data['documentType'] == 'SDC' or data['documentType'] == 'Service of ABE' %}
+
+                {% elseif data['documentType'] == 'Other Communication' %}
+                    
+                {% else %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Status</dt>
+                        <dd class="govuk-summary-list__value">{{ data['docType-document-status'] }}</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="D-document-name">Change<span class="govuk-visually-hidden"> status</span></a>
+                        </dd>
+                    </div>
+                {% endif %}
+            {% else %}
+
+            {% endif %}
+
+            {% if data['scenario'] == 'two' %}
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Witness</dt>
+                    <dd class="govuk-summary-list__value">
+                        {% if data['documentStatement'] == 'Other' %}
+                            {{ data['documentStatement-Witness-Other-Name'] }}
+                        {% else %}
+                            {{ data['documentStatement-Witness'] }}
+                        {% endif %}
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="B-statement-details">Change<span class="govuk-visually-hidden"> statement existing producer or witness</span></a>
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Date</dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ data['documentStatement-day'] }} {{ data['documentStatement-month'] }} {{ data['documentStatement-year'] }} 
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="B-statement-details">Change<span class="govuk-visually-hidden"> statement date</span></a>
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Number</dt>
+                    <dd class="govuk-summary-list__value">{{ data['documentStatement-Number'] }}</dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="B-statement-details">Change<span class="govuk-visually-hidden"> statement number</span></a>
+                    </dd>
+                </div>
+
+                {% if data['documentType'] == 'Asset recovery' or data['documentType'] == 'Asset recovery 3rd Party' or data['documentType'] == 'Complaint' or data['documentType'] == 'Correspondence' or data['documentType'] == 'Counsel Case Acknowledgement' or data['documentType'] == 'Defence Statement' or data['documentType'] == 'MG6C' or data['documentType'] == 'MG6D' or data['documentType'] == 'MG6E' or data['documentType'] == 'Other Communication' or data['documentType'] == 'PCN3' or data['documentType'] == 'SDC' or data['documentType'] == 'Service of ABE' %}
+
+                {% elseif data['documentType'] == 'Other Communication' %}
+                    
+                {% else %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Status</dt>
+                        <dd class="govuk-summary-list__value">{{ data['docType-document-status'] }}</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="B-statement-details">Change<span class="govuk-visually-hidden"> status</span></a>
+                        </dd>
+                    </div>
+                {% endif %}
+
+            {% else %}
+
+            {% endif %}
+            {% if data['scenario'] == 'three' %}
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Item name</dt>
+                    <dd class="govuk-summary-list__value">{{ data['documentExhibit-Name'] }}</dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="C-exhibit-details">Change<span class="govuk-visually-hidden"> exhibit item name</span></a>
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Reference</dt>
+                    <dd class="govuk-summary-list__value">{{ data['documentExhibit-Reference'] }}</dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="C-exhibit-details">Change<span class="govuk-visually-hidden"> exhibit item reference</span></a>
+                    </dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Existing producer or witness</dt>
+                    <dd class="govuk-summary-list__value">
+                        {% if data['documentExhibit-Witness'] == 'Other' %}
+                            {{ data['documentExhibit-Witness-Other-Name'] }}
+                        {% else %}
+                            {{ data['documentExhibit-Witness'] }}
+                        {% endif %}
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="C-exhibit-details">Change<span class="govuk-visually-hidden"> exhibit existing producer or witness</span></a>
+                    </dd>
+                </div>
+
+                {% if data['documentType'] == 'Asset recovery' or data['documentType'] == 'Asset recovery 3rd Party' or data['documentType'] == 'Complaint' or data['documentType'] == 'Correspondence' or data['documentType'] == 'Counsel Case Acknowledgement' or data['documentType'] == 'Defence Statement' or data['documentType'] == 'MG6C' or data['documentType'] == 'MG6D' or data['documentType'] == 'MG6E' or data['documentType'] == 'Other Communication' or data['documentType'] == 'PCN3' or data['documentType'] == 'SDC' or data['documentType'] == 'Service of ABE' %}
+                
+                {% elseif data['documentType'] == 'Other Communication' %}
+                    
+                {% else %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Status</dt>
+                        <dd class="govuk-summary-list__value">{{ data['docType-document-status'] }}</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="C-exhibit-details">Change<span class="govuk-visually-hidden"> status</span></a>
+                        </dd>
+                    </div>
+                {% endif %}
+                
+            {% else %}
+
+            {% endif %}
+
+        </dl>
+
+        {% if data['scenario'] == 'one' %}
+            <form id="delayedForm" action="../1-new-designs/C-casefile-1#catergory-Communications"  onsubmit="document.getElementById('cancelPageLoad').setAttribute('disabled', 'disabled'); window.setTimeout(function () { document.getElementById('delayedForm').submit(); }, 4000); return false" method="post" novalidate>
+        {% elseif data['scenario'] == 'two' %}
+            <form id="delayedForm" action="../1-new-designs/C-casefile-1#hidden-documents"  onsubmit="document.getElementById('cancelPageLoad').setAttribute('disabled', 'disabled'); window.setTimeout(function () { document.getElementById('delayedForm').submit(); }, 4000); return false" method="post" novalidate>
+        {% elseif data['scenario'] == 'three' %}
+            <form id="delayedForm" action="../1-new-designs/C-casefile-1#catergory-Exhibits"  onsubmit="document.getElementById('cancelPageLoad').setAttribute('disabled', 'disabled'); window.setTimeout(function () { document.getElementById('delayedForm').submit(); }, 4000); return false" method="post" novalidate>
+        {% endif %}
+            <input type="hidden" name="docType-CheckAnswers" value="true">
+            <button type="submit" class="govuk-button end-scenario cancelPageLoad" data-module="govuk-button" id="cancelPageLoad">Accept and save</button>
+        </form>
+
+    </div>
+    <div class="govuk-grid-column-one-half">
+        <div class="image-holder">
+            {% if data['scenario'] == 'one' %}
+                <img src="../../../public/files/Asset-Rec-PREVIEW.png" alt="Asset Rec - 1 - Preview" class="">
+            {% elseif data['scenario'] == 'two' %}
+                <img src="../../../public/files/MG11_1-PREVIEW.png" alt="MG11 - 1 - Preview" class="">
+            {% elseif data['scenario'] == 'three' %}
+                <img src="../../../public/files/MG12_1-PREVIEW.png" alt="Exhibit - 1 - Preview" class="">
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

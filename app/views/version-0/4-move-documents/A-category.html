@@ -1,0 +1,487 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-V5.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+        <a href="javascript:history.back()" class="govuk-back-link no-margin-top no-margin-bottom">Back</a>
+
+        <!-- NOTIFICATION BANNER - START -->
+        <div id="saving-to-cms" class="govuk-notification-banner govuk-!-margin-top-4 govuk-!-margin-bottom-4" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+            <div class="govuk-notification-banner__header">
+                <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
+            </div>
+            <div class="govuk-notification-banner__content">
+                <p class="govuk-notification-banner__heading"><span class="saving"></span>Saving to CMS, please wait.</p>
+            </div>
+        </div>
+        <!-- NOTIFICATION BANNER - END -->
+
+        {% if data['scenario'] == 'one' %}
+            <form id="delayedForm" action="../1-new-designs/C-casefile-1#catergory-Communications"  onsubmit="document.getElementById('cancelPageLoad').setAttribute('disabled', 'disabled'); window.setTimeout(function () { document.getElementById('delayedForm').submit(); }, 4000); return false" method="post" novalidate>
+        {% elseif data['scenario'] == 'two' %}
+            <form id="delayedForm" action="../1-new-designs/C-casefile-1#hidden-documents"  onsubmit="document.getElementById('cancelPageLoad').setAttribute('disabled', 'disabled'); window.setTimeout(function () { document.getElementById('delayedForm').submit(); }, 4000); return false" method="post" novalidate>
+        {% elseif data['scenario'] == 'three' %}
+            <form id="delayedForm" action="../1-new-designs/C-casefile-1#catergory-Exhibits"  onsubmit="document.getElementById('cancelPageLoad').setAttribute('disabled', 'disabled'); window.setTimeout(function () { document.getElementById('delayedForm').submit(); }, 4000); return false" method="post" novalidate>
+        {% endif %}
+
+            <div class="wrapper gov-pages">
+                <h1 class="govuk-heading-l" style="">What type of document is this?</h1>
+
+                <!-- OPTION 1 - START -->
+                <div class="govuk-form-group govuk-!-margin-bottom-4">
+                    {% if data['scenario'] == 'one' %}
+                        <label class="govuk-label" for="documentType">Select document type for <mark class="hods-highlight"><strong>Asset Rec 1</strong></mark></label>
+                    {% elseif data['scenario'] == 'two' %}
+                        <label class="govuk-label" for="documentType">Select document type for <mark class="hods-highlight"><strong>MG11 - 1</strong></mark></label>
+                    {% elseif data['scenario'] == 'three' %}
+                        <label class="govuk-label" for="documentType">Select document type for <mark class="hods-highlight"><strong>Exhibit - 1</strong></mark></label>
+                    {% endif %}
+                    <select class="govuk-select" id="documentType" name="documentType">
+                        <option disabled selected>Choose document type</option>
+                        <option value="ABE">ABE</option>
+                        <option value="Asset recovery">Asset recovery</option>
+                        <option value="Asset recovery 3rd Party">Asset recovery 3rd Party</option>
+                        <option value="Complaint">Complaint</option>
+                        <option value="Correspondence">Correspondence</option>
+                        <option value="Counsel Case Acknowledgement">Counsel Case Acknowledgement</option>
+                        <option value="DCF">DCF</option>
+                        <option value="DREP">DREP</option>
+                        <option value="Defence Statement">Defence Statement</option>
+                        <option value="MG00">MG00</option>
+                        <option value="MG1">MG1</option>
+                        <option value="MG2">MG2</option>
+                        <option value="MG3">MG3</option>
+                        <option value="MG3A">MG3A</option>
+                        <option value="MG4">MG4</option>
+                        <option value="MG4A">MG4A</option>
+                        <option value="MG4B">MG4B</option>
+                        <option value="MG4C">MG4C</option>
+                        <option value="MG4D">MG4D</option>
+                        <option value="MG4E">MG4E</option>
+                        <option value="MG4(post)">MG4(post)</option>
+                        <option value="MG4F">MG4F</option>
+                        <option value="MG5">MG5</option>
+                        <option value="MG5(SP)">MG5(SP)</option>
+                        <option value="MG6">MG6</option>
+                        <option value="MG6A">MG6A</option>
+                        <option value="MGB">MG6B</option>
+                        <option value="MG6C">MG6C</option>
+                        <option value="MG6D">MG6D</option>
+                        <option value="MG6E">MG6E</option>
+                        <option value="MG7">MG7</option>
+                        <option value="MG8">MG8</option>
+                        <option value="MG9">MG9</option>
+                        <option value="MG10">MG10</option>
+                        <option value="MG11">MG11</option>
+                        <option value="MG11 (R)">MG11 (R)</option>                                
+                        <option value="MG12">MG12</option>
+                        <option value="MG13">MG13</option>
+                        <option value="MG14">MG14</option>
+                        <option value="MG15 (SDN)">MG15 (SDN)</option>
+                        <option value="MG15 (ROTI)">MG15 (ROTI)</option>
+                        <option value="MG15 (ROVI)">MG15 (ROVI)</option>
+                        <option value="MG15 (CONI)">MG15 (CONI)</option>
+                        <option value="Other Exhibit">Other Exhibit</option>
+                        <option value="MG16">MG16</option>
+                        <option value="MG16(DBCI)">MG16(DBCI)</option>
+                        <option value="MG16(DOI)">MG16(DOI)</option>
+                        <option value="MG17">MG17</option>
+                        <option value="MG18">MG18</option>
+                        <option value="MG19">MG19</option>
+                        <option value="MG20">MG20</option>
+                        <option value="MG21">MG21</option>
+                        <option value="MG21A">MG21A</option>
+                        <option value="MG22 SFR">MG22 SFR</option>
+                        <option value="MGDD">MGDD</option>
+                        <option value="MG/FSSA">MG/FSSA</option>
+                        <option value="MG/FSSB">MG/FSSB</option>
+                        <option value="Other Material">Other Material</option>
+                        <option value="Other Communication">Other Communication</option>
+                        <option value="PCN1">PCN1</option>
+                        <option value="PCN2">PCN2</option>
+                        <option value="PCN3">PCN3</option>
+                        <option value="PE1">PE1</option>
+                        <option value="PE2">PE2</option>
+                        <option value="PE3">PE3</option>
+                        <option value="PE4">PE4</option>
+                        <option value="SDC">SDC</option>
+                        <option value="Service of ABE">Service of ABE</option>
+                    </select>
+                </div>                    
+                <!-- OPTION 1 - END -->
+
+                <!-- OPTION 1A - START -->
+                <div id="document_Option_1" class="govuk-checkboxes__conditional">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="documentStatement-Witness">Select witness</label>
+
+                        <select class="govuk-select" id="documentStatement-Witness" name="documentStatement-Witness" aria-describedby="documentStatement-Witness">
+                            {% if data['documentStatement-Witness'] == 'PC Blaynee' and data['answers-complete'] == 'true' %}
+                                <option disabled>Select a witness</option>
+                                <option value="PC Blaynee" selected>PC Blaynee</option>
+                                <option value="PC Jones">PC Jones</option>
+                                <option value="Lucy Doyle">Lucy Doyle</option>
+                                <option value="Shelagh Mclove">Shelagh Mclove</option>
+                                <option value="Geoff McLove">Geoff McLove</option>
+                            {% elseif data['documentStatement-Witness'] == 'PC Jones' and data['answers-complete'] == 'true' %}
+                                <option disabled>Select a witness</option>
+                                <option value="PC Blaynee">PC Blaynee</option>
+                                <option value="PC Jones" selected>PC Jones</option>
+                                <option value="Lucy Doyle">Lucy Doyle</option>
+                                <option value="Shelagh Mclove">Shelagh Mclove</option>
+                                <option value="Geoff McLove">Geoff McLove</option>
+                            {% elseif data['documentStatement-Witness'] == 'Lucy Doyle' and data['answers-complete'] == 'true' %}
+                                <option disabled>Select a witness</option>
+                                <option value="PC Blaynee">PC Blaynee</option>
+                                <option value="PC Jones">PC Jones</option>
+                                <option value="Lucy Doyle" selected>Lucy Doyle</option>
+                                <option value="Shelagh Mclove">Shelagh Mclove</option>
+                                <option value="Geoff McLove">Geoff McLove</option>
+                            {% elseif data['documentStatement-Witness'] == 'Shelagh Mclove' and data['answers-complete'] == 'true' %}
+                                <option disabled>Select a witness</option>
+                                <option value="PC Blaynee">PC Blaynee</option>
+                                <option value="PC Jones">PC Jones</option>
+                                <option value="Lucy Doyle">Lucy Doyle</option>
+                                <option value="Shelagh Mclove" selected>Shelagh Mclove</option>
+                                <option value="Geoff McLove">Geoff McLove</option>
+                            {% elseif data['documentStatement-Witness'] == 'Geoff McLove' and data['answers-complete'] == 'true' %}
+                                <option disabled>Select a witness</option>
+                                <option value="PC Blaynee">PC Blaynee</option>
+                                <option value="PC Jones">PC Jones</option>
+                                <option value="Lucy Doyle">Lucy Doyle</option>
+                                <option value="Shelagh Mclove">Shelagh Mclove</option>
+                                <option value="Geoff McLove" selected>Geoff McLove</option>
+                            {% else %}
+                                <option disabled selected>Select a witness</option>
+                                <option value="PC Blaynee">PC Blaynee</option>
+                                <option value="PC Jones">PC Jones</option>
+                                <option value="Lucy Doyle">Lucy Doyle</option>
+                                <option value="Shelagh Mclove">Shelagh Mclove</option>
+                                <option value="Geoff McLove">Geoff McLove</option>
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="documentStatement-hint">
+                            <legend class="govuk-fieldset__legend">Statement date</legend>
+                            <div id="documentStatement-hint" class="govuk-hint">
+                                For example, 27 3 2024<br>
+                                Leave blank if the document is Undated.
+                            </div>
+                            <div class="govuk-date-input" id="documentStatement">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="documentStatement-day">Day</label>
+                                        {% if data['documentStatement-day'] and data['answers-complete'] == 'true' %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="documentStatement-day" name="documentStatement-day" type="text" inputmode="numeric" value="{{ data['documentStatement-day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="documentStatement-day" name="documentStatement-day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="documentStatement-month">Month</label>
+                                        {% if data['documentStatement-month'] and data['answers-complete'] == 'true' %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="documentStatement-month" name="documentStatement-month" type="text" inputmode="numeric" value="{{ data['documentStatement-month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="documentStatement-month" name="documentStatement-month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="documentStatement-year">Year</label>
+                                        {% if data['documentStatement-year'] and data['answers-complete'] == 'true' %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="documentStatement-year" name="documentStatement-year" type="text" inputmode="numeric" value="{{ data['documentStatement-year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="documentStatement-year" name="documentStatement-year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="documentStatement-Number">Statement number</label>
+                        <div id="documentStatement-Number-hint" class="govuk-hint">Already in use #6, #5, #4, #3, #2 and #1</div>
+                        {% if data['documentStatement-Number'] and data['answers-complete'] == 'true' %}
+                            <input class="govuk-input govuk-input--width-5" id="documentStatement-Number" name="documentStatement-Number" type="text" value="{{ data['documentStatement-Number'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-5" id="documentStatement-Number" name="documentStatement-Number" type="text" value="7">
+                        {% endif %}
+                    </div> 
+
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend">What is the document status?</legend>
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['docType-document-status_EVIDENCE'] == 'Used' and data['answers-complete'] == 'true' %}
+                                        <input class="govuk-radios__input" id="docType-document-status_EVIDENCE-Evidential" name="docType-document-status_EVIDENCE" type="radio" value="Used">
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="docType-document-status_EVIDENCE-Evidential" name="docType-document-status_EVIDENCE" type="radio" value="Used" checked>
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="docType-document-status_EVIDENCE-Evidential">Used</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['docType-document-status_EVIDENCE'] == 'Unused' and data['answers-complete'] == 'true' %}
+                                        <input class="govuk-radios__input" id="docType-document-status_EVIDENCE-Unused" name="docType-document-status_EVIDENCE" type="radio" value="Unused" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="docType-document-status_EVIDENCE-Unused" name="docType-document-status_EVIDENCE" type="radio" value="Unused">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="docType-document-status_EVIDENCE-Unused">Unused</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <!-- OPTION 1A - END -->
+
+                <!-- OPTION 1B - START -->
+                <div id="document_Option_2" class="govuk-checkboxes__conditional">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="documentExhibit-Name">Item name</label>
+                        {% if data['documentExhibit-Name'] %}
+                            <input class="govuk-input govuk-!-width-one-half" id="documentExhibit-Name" name="documentExhibit-Name" type="text" value="{{ data['documentExhibit-Name'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-!-width-one-half" id="documentExhibit-Name" name="documentExhibit-Name" type="text" value="Exhibit - 1">
+                        {% endif %}
+                    </div> 
+                    
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="documentExhibit-Reference">Exhibit reference</label>
+                        {% if data['documentExhibit-Reference'] %}
+                            <input class="govuk-input govuk-!-width-one-half" id="documentExhibit-Reference" name="documentExhibit-Reference" type="text" value="{{ data['documentExhibit-Reference'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-!-width-one-half" id="documentExhibit-Reference" name="documentExhibit-Reference" type="text">
+                        {% endif %}
+                    </div> 
+
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="documentExhibit-Witness">Select existing producer or witness</label>
+                        <select class="govuk-select" id="documentExhibit-Witness" name="documentExhibit-Witness" aria-describedby="documentExhibit-Witness" onclick="" onchange="other1(event)">
+                            {% if data['documentExhibit-Witness'] == 'PC Blaynee' and data['answers-complete'] == 'true' %}
+                                <option disabled>Select existing producer or witness</option>
+                                <option value="PC Blaynee" selected>PC Blaynee</option>
+                                <option value="PC Jones">PC Jones</option>
+                                <option value="Lucy Doyle">Lucy Doyle</option>
+                                <option value="Shelagh Mclove">Shelagh Mclove</option>
+                                <option value="Geoff McLove">Geoff McLove</option>
+                                <option disabled>Or</option>
+                                <option value="Other">Other producer or witness</option>
+                            {% elseif data['documentExhibit-Witness'] == 'PC Jones' and data['answers-complete'] == 'true' %}
+                                <option disabled>Select existing producer or witness</option>
+                                <option value="PC Blaynee">PC Blaynee</option>
+                                <option value="PC Jones" selected>PC Jones</option>
+                                <option value="Lucy Doyle">Lucy Doyle</option>
+                                <option value="Shelagh Mclove">Shelagh Mclove</option>
+                                <option value="Geoff McLove">Geoff McLove</option>
+                                <option disabled>Or</option>
+                                <option value="Other">Other producer or witness</option>
+                            {% elseif data['documentExhibit-Witness'] == 'Lucy Doyle' and data['answers-complete'] == 'true' %}
+                                <option disabled>Select existing producer or witness</option>
+                                <option value="PC Blaynee">PC Blaynee</option>
+                                <option value="PC Jones">PC Jones</option>
+                                <option value="Lucy Doyle" selected>Lucy Doyle</option>
+                                <option value="Shelagh Mclove">Shelagh Mclove</option>
+                                <option value="Geoff McLove">Geoff McLove</option>
+                                <option disabled>Or</option>
+                                <option value="Other">Other producer or witness</option>
+                            {% elseif data['documentExhibit-Witness'] == 'Shelagh Mclove' and data['answers-complete'] == 'true' %}
+                                <option disabled>Select existing producer or witness</option>
+                                <option value="PC Blaynee">PC Blaynee</option>
+                                <option value="PC Jones">PC Jones</option>
+                                <option value="Lucy Doyle">Lucy Doyle</option>
+                                <option value="Shelagh Mclove" selected>Shelagh Mclove</option>
+                                <option value="Geoff McLove">Geoff McLove</option>
+                                <option disabled>Or</option>
+                                <option value="Other">Other producer or witness</option>
+                            {% elseif data['documentExhibit-Witness'] == 'Geoff McLove' and data['answers-complete'] == 'true' %}
+                                <option disabled>Select existing producer or witness</option>
+                                <option value="PC Blaynee">PC Blaynee</option>
+                                <option value="PC Jones">PC Jones</option>
+                                <option value="Lucy Doyle">Lucy Doyle</option>
+                                <option value="Shelagh Mclove">Shelagh Mclove</option>
+                                <option value="Geoff McLove" selected>Geoff McLove</option>
+                                <option disabled>Or</option>
+                                <option value="Other">Other producer or witness</option>
+                            {% elseif data['documentExhibit-Witness'] == 'Other' and data['answers-complete'] == 'true' %}
+                                <option disabled>Select existing producer or witness</option>
+                                <option value="PC Blaynee">PC Blaynee</option>
+                                <option value="PC Jones">PC Jones</option>
+                                <option value="Lucy Doyle">Lucy Doyle</option>
+                                <option value="Shelagh Mclove">Shelagh Mclove</option>
+                                <option value="Geoff McLove">Geoff McLove</option>
+                                <option disabled>Or</option>
+                                <option value="Other" selected>Other producer or witness</option>
+                            {% else %}
+                                <option disabled selected>Select existing producer or witness</option>
+                                <option value="PC Blaynee">PC Blaynee</option>
+                                <option value="PC Jones">PC Jones</option>
+                                <option value="Lucy Doyle">Lucy Doyle</option>
+                                <option value="Shelagh Mclove">Shelagh Mclove</option>
+                                <option value="Geoff McLove">Geoff McLove</option>
+                                <option disabled>Or</option>
+                                <option value="Other" data-aria-controls="conditional-Exhibits">Other producer or witness</option>
+                            {% endif %}
+                        </select>
+                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-Exhibits">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="documentExhibit-Witness-Other-Name"><span class="govuk-hint">Enter name</span></label>
+                                {% if data['documentExhibit-Witness-Other-Name'] and data['answers-complete'] == 'true' %}
+                                    <input class="govuk-input govuk-!-width-one-half" id="documentExhibit-Witness-Other-Name" name="documentExhibit-Witness-Other-Name" type="text" value="{{ data['documentExhibit-Witness-Other-Name'] }}">
+                                {% else %}
+                                    <input class="govuk-input govuk-!-width-one-half" id="documentExhibit-Witness-Other-Name" name="documentExhibit-Witness-Other-Name" type="text">
+                                {% endif %}
+                            </div>
+                        </div>                            
+                    </div>
+
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend">What is the document status?</legend>
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['docType-document-status_STATEMENT'] == 'Used' and data['answers-complete'] == 'true' %}
+                                        <input class="govuk-radios__input" id="docType-document-status_STATEMENT-Evidential" name="docType-document-status_STATEMENT" type="radio" value="Used">
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="docType-document-status_STATEMENT-Evidential" name="docType-document-status_STATEMENT" type="radio" value="Used" checked>
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="docType-document-status_STATEMENT-Evidential">Used</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['docType-document-status_STATEMENT'] == 'Unused' and data['answers-complete'] == 'true' %}
+                                        <input class="govuk-radios__input" id="docType-document-status_STATEMENT-Unused" name="docType-document-status_STATEMENT" type="radio" value="Unused" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="docType-document-status_STATEMENT-Unused" name="docType-document-status_STATEMENT" type="radio" value="Unused">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="docType-document-status_STATEMENT-Unused">Unused</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </div>
+                <!-- OPTION 1B - END -->
+
+                <!-- OPTION 1C - START -->
+                <div id="document_Option_3" class="govuk-checkboxes__conditional">
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                {% if data['scenario'] == 'one' %}
+                                    <legend class="govuk-fieldset__legend">Do you want to change the document name of <mark class="hods-highlight"><strong>Asset Rec 1</strong></mark>?</legend>
+                                {% elseif data['scenario'] == 'two' %}
+                                    <legend class="govuk-fieldset__legend">Do you want to change the document name of <mark class="hods-highlight"><strong>MG11 - 1</strong></mark>?</legend>
+                                {% elseif data['scenario'] == 'three' %}
+                                    <legend class="govuk-fieldset__legend">Do you want to change the document name of <mark class="hods-highlight"><strong>Exhibit Rec 1</strong></mark>?</legend>
+                                {% endif %}
+                                
+                                <div class="govuk-radios__item">
+                                    {% if data['docType-document-name'] == 'Yes' and data['answers-complete'] == 'true' %}
+                                        <input class="govuk-radios__input" id="docType-document-name-Yes" name="docType-document-name" type="radio" value="Yes" data-aria-controls="conditional-Name" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="docType-document-name-Yes" name="docType-document-name" type="radio" value="Yes" data-aria-controls="conditional-Name">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="docType-document-name-Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-Name">
+                                    <div class="govuk-form-group">
+                                        {% if data['scenario'] == 'one' %}
+                                            <label class="govuk-label" for="docType-Scenario-1-NAME">Enter new document name</label>
+                                            {% if data['docType-Scenario-1-NAME'] %}
+                                                <input class="govuk-input govuk-!-width-two-thirds" id="docType-Scenario-1-NAME" name="docType-Scenario-1-NAME" type="text" value="{{ data['docType-Scenario-1-NAME'] }}">
+                                            {% else %}
+                                                <input class="govuk-input govuk-!-width-two-thirds" id="docType-Scenario-1-NAME" name="docType-Scenario-1-NAME" type="text" value="Asset Rec 1">
+                                            {% endif %}
+                                        {% elseif data['scenario'] == 'two' %}
+                                            <label class="govuk-label" for="docType-Scenario-2-NAME">Enter new document name</label>
+                                            <span class="govuk-hint">Example: Doc Name witness SURNAME First Name date of statement</span>
+                                            <span class="govuk-hint">MG11 SMITH John 25/06/2024</span>
+                                            {% if data['docType-Scenario-2-NAME'] %}
+                                                <input class="govuk-input govuk-!-width-two-thirds" id="docType-Scenario-2-NAME" name="docType-Scenario-2-NAME" type="text" value="{{ data['docType-Scenario-2-NAME'] }}">
+                                            {% else %}
+                                                <input class="govuk-input govuk-!-width-two-thirds" id="docType-Scenario-2-NAME" name="docType-Scenario-2-NAME" type="text" value="MG11 - 1">
+                                            {% endif %}
+                                        {% elseif data['scenario'] == 'three' %}
+                                            <label class="govuk-label" for="docType-Scenario-3-NAME">Enter new document name</label>
+                                            <span class="govuk-hint">Example: Doc Name</span>
+                                            <span class="govuk-hint">MG12</span>
+                                            {% if data['docType-Scenario-3-NAME'] %}
+                                                <input class="govuk-input govuk-!-width-two-thirds" id="docType-Scenario-3-NAME" name="docType-Scenario-3-NAME" type="text" value="{{ data['docType-Scenario-3-NAME'] }}">
+                                            {% else %}
+                                                <input class="govuk-input govuk-!-width-two-thirds" id="docType-Scenario-3-NAME" name="docType-Scenario-3-NAME" type="text" value="Exhibit - 1">
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                </div>                            
+                                <div class="govuk-radios__item">
+                                    {% if data['docType-document-name'] == 'Yes' and data['answers-complete'] == 'true' %}
+                                        <input class="govuk-radios__input" id="docType-document-name-No" name="docType-document-name" type="radio" value="No">
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="docType-document-name-No" name="docType-document-name" type="radio" value="No" checked>
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="docType-document-name-No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="govuk-form-group" id="used_Unused">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend">What is the document status?</legend>
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['docType-document-status'] == 'Used' and data['answers-complete'] == 'true' %}
+                                        <input class="govuk-radios__input" id="docType-document-status-Evidential" name="docType-document-status" type="radio" value="Used">
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="docType-document-status-Evidential" name="docType-document-status" type="radio" value="Used" checked>
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="docType-document-status-Evidential">Used</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['docType-document-status'] == 'Unused' and data['answers-complete'] == 'true' %}
+                                        <input class="govuk-radios__input" id="docType-document-status-Unused" name="docType-document-status" type="radio" value="Unused" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="docType-document-status-Unused" name="docType-document-status" type="radio" value="Unused">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="docType-document-status-Unused">Unused</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <!-- OPTION 1C - END -->
+
+                <p><br></p>
+
+                <input type="hidden" name="docType-CheckAnswers" value="true">
+                <button type="submit" class="govuk-button end-scenario cancelPageLoad" data-module="govuk-button" id="cancelPageLoad">Accept and save</button>
+                <button type="button" onclick="location.href='../1-new-designs/C-casefile-1.html';" class="non-button margin-left" id="cancelPageLoad">Cancel</button>
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-half">
+        <div class="image-holder">
+            {% if data['scenario'] == 'one' %}
+                <img src="../../../public/files/Asset-Rec-PREVIEW.png" alt="Asset Rec - 1 - Preview" class="">
+            {% elseif data['scenario'] == 'two' %}
+                <img src="../../../public/files/MG11_1-PREVIEW.png" alt="MG11 - 1 - Preview" class="">
+            {% elseif data['scenario'] == 'three' %}
+                <img src="../../../public/files/MG12_1-PREVIEW.png" alt="Exhibit - 1 - Preview" class="">
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

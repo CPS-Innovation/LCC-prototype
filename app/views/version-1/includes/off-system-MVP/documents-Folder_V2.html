@@ -1,0 +1,819 @@
+<!-- ////////////////////////////////////////////// SEOCID MATERIALS - SECTION 1 - START ////////////////////////////////////////////// -->
+<div id="shared_drive_section_1">
+
+    <div class="permissions transfer_Folder_Destination">
+        {% if data['searchOFF_Operation_VALUE'] == 'Dumper Truck' or data['searchOFF_Operation_VALUE'] == 'Dumper truck'  or data['searchOFF_Operation_VALUE'] == 'dumper truck'  or data['searchOFF_Operation_VALUE'] == 'Dumpertruck' %}
+            <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">{{ data['searchOFF_Operation_VALUE'] }}</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+        {% elseif data['searchOFF_Defendant_VALUE'] == 'Dumper Truck' or data['searchOFF_Defendant_VALUE'] == 'Dumper truck'  or data['searchOFF_Defendant_VALUE'] == 'dumper truck'  or data['searchOFF_Defendant_VALUE'] == 'Dumpertruck' %}
+            <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">{{ data['searchOFF_Defendant_VALUE'] }}</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+        {% elseif data['searchOFF_URN_VALUE'] %}
+            <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">Dumper Truck</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+        {% elseif data['searchOFF_Operation_VALUE'] %}
+            {% if data['mvp_Case_1'] == 'true' %}
+                {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">{{ data['searchOFF_Operation_VALUE'] }}struck</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% else %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">{{ data['searchOFF_Operation_VALUE'] }}</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% endif %}
+            {% elseif data['mvp_Case_2'] == 'true' %}
+                {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">{{ data['searchOFF_Operation_VALUE'] }}struck Traffic</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% else %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">{{ data['searchOFF_Operation_VALUE'] }} Traffic</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% endif %}
+            {% elseif data['mvp_Case_3'] == 'true' %}
+                {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">{{ data['searchOFF_Operation_VALUE'] }}struck Office</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% else %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">{{ data['searchOFF_Operation_VALUE'] }} Office</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% endif %}
+            {% elseif data['mvp_Case_4'] == 'true' %}
+                {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">Captain {{ data['searchOFF_Operation_VALUE'] }}struck</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% else %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">Captain {{ data['searchOFF_Operation_VALUE'] }}</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% endif %}
+            {% endif %}
+        {% elseif data['searchOFF_Defendant_VALUE'] %}
+            {% if data['mvp_Case_1'] == 'true' %}
+                {% if data['searchOFF_Defendant_VALUE'] == 'Thunder' or data['searchOFF_Defendant_VALUE'] == 'thunder' %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">{{ data['searchOFF_Defendant_VALUE'] }}struck</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% else %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">{{ data['searchOFF_Defendant_VALUE'] }}</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% endif %}
+            {% elseif data['mvp_Case_2'] == 'true' %}
+                {% if data['searchOFF_Defendant_VALUE'] == 'Thunder' or data['searchOFF_Defendant_VALUE'] == 'thunder' %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">{{ data['searchOFF_Defendant_VALUE'] }}struck Traffic</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% else %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">{{ data['searchOFF_Defendant_VALUE'] }} Traffic</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% endif %}
+            {% elseif data['mvp_Case_3'] == 'true' %}
+                {% if data['searchOFF_Defendant_VALUE'] == 'Thunder' or data['searchOFF_Defendant_VALUE'] == 'thunder' %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">{{ data['searchOFF_Defendant_VALUE'] }}struck Office</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% else %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">{{ data['searchOFF_Defendant_VALUE'] }} Office</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% endif %}
+            {% elseif data['mvp_Case_4'] == 'true' %}
+                {% if data['searchOFF_Defendant_VALUE'] == 'Thunder' or data['searchOFF_Defendant_VALUE'] == 'thunder' %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">Captain {{ data['searchOFF_Defendant_VALUE'] }}struck</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% else %}
+                    <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">Captain {{ data['searchOFF_Defendant_VALUE'] }}</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name">Thunderstruck</span> <a href="" class="copy_Folder_Destination_top_level">Copy</a><a href="" class="move_Folder_Destination_top_level">Move</a></div>
+        {% endif %}
+    </div>
+
+    <table class="govuk-table" id="shared_drive-table">
+
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header" width="45%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Folder/file name</button></th>
+                <th scope="col" class="govuk-table__header" width="20%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Type</button></th>
+                <th scope="col" class="govuk-table__header" width="10%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Date</button></th>
+                <th scope="col" class="govuk-table__header" width="10%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Size</button></th>
+                <th scope="col" class="govuk-table__header" width="15%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();"></button></th>
+            </tr>
+        </thead>
+
+        <tbody class="govuk-table__body">
+
+            <!-- FOLDER 1 - START -->
+            <tr class="govuk-table__row materials_row_1">
+                <td class="govuk-table__cell">
+                    <span class="icon-new folder"></span>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state empty_shared_drive_section_2">1. Case Management</a>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state shared_drive_section_2">1. Case Management</a>
+                </td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">24/06/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell">
+                    <a href="" class="move_Folder_Destination">Move</a>
+                    <a href="" class="copy_Folder_Destination">Copy</a>
+                    <strong class="govuk-tag govuk-tag--green">Finished</strong>
+                </td>
+            </tr>
+            <!-- FOLDER 1  - END -->
+
+            <!-- FOLDER 2 - START -->
+            <tr class="govuk-table__row materials_row_2">
+                <td class="govuk-table__cell">
+                    <span class="icon-new folder"></span>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state empty_shared_drive_section_2">2. Conference Hearing Notes</a>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state shared_drive_section_2">2. Conference Hearing Notes</a>
+                </td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">08/08/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell">
+                    <a href="" class="move_Folder_Destination">Move</a>
+                    <a href="" class="copy_Folder_Destination">Copy</a>
+                    <strong class="govuk-tag govuk-tag--green">Finished</strong>
+                </td>
+            </tr>
+            <!-- FOLDER 2  - END -->
+
+            <!-- FOLDER 3 - START -->
+            <tr class="govuk-table__row materials_row_3">
+                <td class="govuk-table__cell">
+                    <span class="icon-new folder"></span>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state empty_shared_drive_section_2">3. Experts</a>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state shared_drive_section_2">3. Experts</a>
+                </td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">15/03/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell">
+                    <a href="" class="move_Folder_Destination">Move</a>
+                    <a href="" class="copy_Folder_Destination">Copy</a>
+                    <strong class="govuk-tag govuk-tag--green">Finished</strong>
+                </td>
+            </tr>
+            <!-- FOLDER 3  - END -->
+
+            <!-- FOLDER 4 - START -->
+            <tr class="govuk-table__row materials_row_4">
+                <td class="govuk-table__cell">
+                    <span class="icon-new folder"></span>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state empty_shared_drive_section_2">4. Counsel</a>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state shared_drive_section_2">4. Counsel</a>
+                </td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">01/03/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell">
+                    <a href="" class="move_Folder_Destination">Move</a>
+                    <a href="" class="copy_Folder_Destination">Copy</a>
+                    <strong class="govuk-tag govuk-tag--green">Finished</strong>
+                </td>
+            </tr>
+            <!-- FOLDER 4  - END -->
+
+            <!-- FOLDER 5 - START -->
+            <tr class="govuk-table__row materials_row_5">
+                <td class="govuk-table__cell">
+                    <span class="icon-new folder"></span>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state empty_shared_drive_section_2">5. Correspondence</a>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state shared_drive_section_2">5. Correspondence</a>
+                </td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">21/09/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell">
+                    <a href="" class="move_Folder_Destination">Move</a>
+                    <a href="" class="copy_Folder_Destination">Copy</a>
+                    <strong class="govuk-tag govuk-tag--green">Finished</strong>
+                </td>
+            </tr>
+            <!-- FOLDER 5  - END -->
+
+            <!-- FOLDER 6 - START -->
+            <tr class="govuk-table__row materials_row_6">
+                <td class="govuk-table__cell">
+                    <span class="icon-new folder"></span>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state empty_shared_drive_section_2">6. Disclosure</a>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state shared_drive_section_2">6. Disclosure</a>
+                </td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">28/10/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell">
+                    <a href="" class="move_Folder_Destination">Move</a>
+                    <a href="" class="copy_Folder_Destination">Copy</a>
+                    <strong class="govuk-tag govuk-tag--green">Finished</strong>
+                </td>
+            </tr>
+            <!-- FOLDER 6  - END -->
+
+            <!-- FOLDER 7 - START -->
+            <tr class="govuk-table__row materials_row_7">
+                <td class="govuk-table__cell">
+                    <span class="icon-new folder"></span>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state empty_shared_drive_section_2">7. Finance</a>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state shared_drive_section_2">7. Finance</a>
+                </td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">25/06/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell">
+                    <a href="" class="move_Folder_Destination">Move</a>
+                    <a href="" class="copy_Folder_Destination">Copy</a>
+                    <strong class="govuk-tag govuk-tag--green">Finished</strong>
+                </td>
+            </tr>
+            <!-- FOLDER 7  - END -->
+
+            <!-- FOLDER 8 - START -->
+            <tr class="govuk-table__row materials_row_8">
+                <td class="govuk-table__cell">
+                    <span class="icon-new folder"></span>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state empty_shared_drive_section_2">8. Lawyer Working copies</a>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state shared_drive_section_2">8. Lawyer Working copies</a>
+                </td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">26/06/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell">
+                    <a href="" class="move_Folder_Destination">Move</a>
+                    <a href="" class="copy_Folder_Destination">Copy</a>
+                    <strong class="govuk-tag govuk-tag--green">Finished</strong>
+                </td>
+            </tr>
+            <!-- FOLDER 8  - END -->
+
+            <!-- FOLDER 9 - START -->
+            <tr class="govuk-table__row materials_row_9">
+                <td class="govuk-table__cell">
+                    <span class="icon-new folder"></span>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state empty_shared_drive_section_2">9. PO Working copies</a>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state shared_drive_section_2">9. PO Working copies</a>
+                </td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">17/07/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell">
+                    <a href="" class="move_Folder_Destination">Move</a>
+                    <a href="" class="copy_Folder_Destination">Copy</a>
+                    <strong class="govuk-tag govuk-tag--green">Finished</strong>
+                </td>
+            </tr>
+            <!-- FOLDER 9  - END -->
+
+            <!-- FOLDER 10 - START -->
+            <tr class="govuk-table__row materials_row_10">
+                <td class="govuk-table__cell">
+                    <span class="icon-new folder"></span>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state empty_shared_drive_section_2">10. Police</a>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state shared_drive_section_2">10. Police</a>
+                </td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">24/07/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell">
+                    <a href="" class="move_Folder_Destination">Move</a>
+                    <a href="" class="copy_Folder_Destination">Copy</a>
+                    <strong class="govuk-tag govuk-tag--green">Finished</strong>
+                </td>
+            </tr>
+            <!-- FOLDER 10 - END -->
+
+            <!-- FOLDER 11 - START -->
+            <tr class="govuk-table__row materials_row_11">
+                <td class="govuk-table__cell">
+                    <span class="icon-new folder"></span>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state empty_shared_drive_section_2">11. Media</a>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state shared_drive_section_2">11. Media</a>
+                </td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">08/08/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell">
+                    <a href="" class="move_Folder_Destination">Move</a>
+                    <a href="" class="copy_Folder_Destination">Copy</a>
+                    <strong class="govuk-tag govuk-tag--green">Finished</strong>
+                </td>
+            </tr>
+            <!-- FOLDER 11 - END -->
+
+            <!-- FOLDER 12 - START -->
+            <tr class="govuk-table__row materials_row_12">
+                <td class="govuk-table__cell">
+                    <span class="icon-new folder"></span>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state empty_shared_drive_section_2">12. Victims & Witnesses</a>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state shared_drive_section_2">12. Victims & Witnesses</a>
+                </td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">01/02/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell">
+                    <a href="" class="move_Folder_Destination">Move</a>
+                    <a href="" class="copy_Folder_Destination">Copy</a>
+                    <strong class="govuk-tag govuk-tag--green">Finished</strong>
+                </td>
+            </tr>
+            <!-- FOLDER 12 - END -->
+
+            <!-- FOLDER 13 - START -->
+            <tr class="govuk-table__row materials_row_13">
+                <td class="govuk-table__cell">
+                    <span class="icon-new folder"></span>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state empty_shared_drive_section_2">13. DCS</a>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state shared_drive_section_2">13. DCS</a>
+                </td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">03/10/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell">
+                    <a href="" class="move_Folder_Destination">Move</a>
+                    <a href="" class="copy_Folder_Destination">Copy</a>
+                    <strong class="govuk-tag govuk-tag--green">Finished</strong>
+                </td>
+            </tr>
+            <!-- FOLDER 13 - END -->
+
+            <!-- FOLDER 14 - START -->
+            <tr class="govuk-table__row materials_row_14">
+                <td class="govuk-table__cell">
+                    <span class="icon-new folder"></span>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state empty_shared_drive_section_2">14. Mags Ct</a>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state shared_drive_section_2">14. Mags Ct</a>
+                </td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">21/08/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell">
+                    <a href="" class="move_Folder_Destination">Move</a>
+                    <a href="" class="copy_Folder_Destination">Copy</a>
+                    <strong class="govuk-tag govuk-tag--green">Finished</strong>
+                </td>
+            </tr>
+            <!-- FOLDER 14 - END -->
+
+            <!-- FOLDER 15 - START -->
+            <tr class="govuk-table__row materials_row_15">
+                <td class="govuk-table__cell">
+                    <span class="icon-new folder"></span>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state empty_shared_drive_section_2">15. IDPC</a>
+                    <a href="#" class="govuk-link govuk-link--no-visited-state shared_drive_section_2">15. IDPC</a>
+                </td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">24/06/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell">
+                    <a href="" class="move_Folder_Destination">Move</a>
+                    <a href="" class="copy_Folder_Destination">Copy</a>
+                    <strong class="govuk-tag govuk-tag--green">Finished</strong>
+                </td>
+            </tr>
+            <!-- FOLDER 15 - END -->
+
+            <!-- ================= HIDDEN ROWS - START ================= -->
+
+            <!-- SUB FOLDER 1 - START -->
+            <tr class="govuk-table__row hidden_row hidden_row_1">
+                <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="govuk-link govuk-link--no-visited-state show_section_pdrive_3A">Reviews</a></td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">22/11/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <!-- SUB FOLDER 1 - END -->
+
+            <!-- SUB FOLDER 2 - START -->
+            <tr class="govuk-table__row hidden_row hidden_row_2">
+                <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="govuk-link govuk-link--no-visited-state show_section_pdrive_3B">Case overview</a></td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">03/10/2023</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <!-- SUB FOLDER 2 - END -->
+
+            <!-- SUB FOLDER 3 - START -->
+            <tr class="govuk-table__row hidden_row hidden_row_3">
+                <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="govuk-link govuk-link--no-visited-state show_section_pdrive_3C">Statements</a></td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">01/02/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <!-- SUB FOLDER 3 - END -->
+
+            <!-- SUB FOLDER 1 - FILES - START -->
+            <tr class="govuk-table__row hidden_row hidden_row_4">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">MCLOVEMG3.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">23/07/2024</td>
+                <td class="govuk-table__cell">27 KB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <!-- SUB FOLDER 1 - FILES - END -->
+
+            <!-- SUB FOLDER 2 - FILES - START -->
+            <tr class="govuk-table__row hidden_row hidden_row_5">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">CM01.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">11/05/2024</td>
+                <td class="govuk-table__cell">20 MB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_6">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">CM01.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">14/06/2024</td>
+                <td class="govuk-table__cell">108 KB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_7">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">MG06_3June.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">21/07/2024</td>
+                <td class="govuk-table__cell">1 MB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_8">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">MG06_10june.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">24/04/2024</td>
+                <td class="govuk-table__cell">24 MB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <!-- SUB FOLDER 2 - FILES - END -->
+
+            <!-- SUB FOLDER 3 - FILES - START -->
+            <tr class="govuk-table__row hidden_row hidden_row_9">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">stmt_BLAYNEE_2034_1_JUNE_mg11.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">22/08/2024</td>
+                <td class="govuk-table__cell">50 KB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_10">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">stmt_JONES_1989_1_JUNE_mg11.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">25/09/2024</td>
+                <td class="govuk-table__cell">1 MB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_11">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">stmt_Lucy_Doyle_MG11.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">15/08/2024</td>
+                <td class="govuk-table__cell">207 KB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_12">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">stmt_Shelagh_McLove_MG11_hand.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">14/10/2024</td>
+                <td class="govuk-table__cell">68 KB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_13">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">Shelagh_McLove_VPS_mg11.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">23/04/2024</td>
+                <td class="govuk-table__cell">87 KB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_14">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">MG11_Shelagh_MCLOVE_retraction.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">08/12/2024</td>
+                <td class="govuk-table__cell">69 KB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <!-- SUB FOLDER 3 - FILES - END -->
+            <!-- ================= HIDDEN ROWS - END ================= -->
+
+        </tbody>
+    </table>
+
+</div>
+<!-- ////////////////////////////////////////////// SEOCID MATERIALS - SECTION 1 - END ////////////////////////////////////////////// -->
+
+<!-- ////////////////////////////////////////////// SEOCID MATERIALS - EMPTY SECTION 2 - START ////////////////////////////////////////////// -->
+<div id="shared_drive_empty_section_2">
+
+    <div class="permissions transfer_Folder_Destination">
+        <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name"></span> <a href="" class="copy_Folder_Destination_second_level">Copy</a><a href="" class="move_Folder_Destination_second_level">Move</a></div>
+    </div>
+
+    <table class="govuk-table transfer-table" id="">
+
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header" width="45%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Folder/file name</button></th>
+                <th scope="col" class="govuk-table__header" width="20%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Type</button></th>
+                <th scope="col" class="govuk-table__header" width="10%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Date</button></th>
+                <th scope="col" class="govuk-table__header" width="10%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Size</button></th>
+                <th scope="col" class="govuk-table__header" width="15%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();"></button></th>
+            </tr>
+        </thead>
+
+        <tbody class="govuk-table__body">
+            <tr class="govuk-table__row empty_row" id="">
+                <td scope="row" class="govuk-table__cell" colspan="5">
+                    <p>There are no documents currently in this folder</p>
+                </td>
+            </tr>
+
+            <!-- ================= HIDDEN ROWS - START ================= -->
+            <!-- SUB FOLDER 1 - START -->
+            <tr class="govuk-table__row hidden_row hidden_row_1">
+                <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="govuk-link govuk-link--no-visited-state show_section_pdrive_3A">Reviews</a></td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">22/11/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <!-- SUB FOLDER 1 - END -->
+
+            <!-- SUB FOLDER 2 - START -->
+            <tr class="govuk-table__row hidden_row hidden_row_2">
+                <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="govuk-link govuk-link--no-visited-state show_section_pdrive_3B">Case overview</a></td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">03/10/2023</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <!-- SUB FOLDER 2 - END -->
+
+            <!-- SUB FOLDER 3 - START -->
+            <tr class="govuk-table__row hidden_row hidden_row_3">
+                <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="govuk-link govuk-link--no-visited-state show_section_pdrive_3C">Statements</a></td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">01/02/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <!-- SUB FOLDER 3 - END -->
+
+            <!-- SUB FOLDER 1 - FILES - START -->
+            <tr class="govuk-table__row hidden_row hidden_row_4">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">MCLOVEMG3.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">23/07/2024</td>
+                <td class="govuk-table__cell">27 KB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <!-- SUB FOLDER 1 - FILES - END -->
+
+            <!-- SUB FOLDER 2 - FILES - START -->
+            <tr class="govuk-table__row hidden_row hidden_row_5">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">CM01.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">11/05/2024</td>
+                <td class="govuk-table__cell">20 MB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_6">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">CM01.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">14/06/2024</td>
+                <td class="govuk-table__cell">108 KB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_7">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">MG06_3June.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">21/07/2024</td>
+                <td class="govuk-table__cell">1 MB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_8">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">MG06_10june.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">24/04/2024</td>
+                <td class="govuk-table__cell">24 MB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <!-- SUB FOLDER 2 - FILES - END -->
+
+            <!-- SUB FOLDER 3 - FILES - START -->
+            <tr class="govuk-table__row hidden_row hidden_row_9">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">stmt_BLAYNEE_2034_1_JUNE_mg11.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">22/08/2024</td>
+                <td class="govuk-table__cell">50 KB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_10">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">stmt_JONES_1989_1_JUNE_mg11.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">25/09/2024</td>
+                <td class="govuk-table__cell">1 MB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_11">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">stmt_Lucy_Doyle_MG11.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">15/08/2024</td>
+                <td class="govuk-table__cell">207 KB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_12">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">stmt_Shelagh_McLove_MG11_hand.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">14/10/2024</td>
+                <td class="govuk-table__cell">68 KB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_13">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">Shelagh_McLove_VPS_mg11.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">23/04/2024</td>
+                <td class="govuk-table__cell">87 KB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <tr class="govuk-table__row hidden_row hidden_row_14">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">MG11_Shelagh_MCLOVE_retraction.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">08/12/2024</td>
+                <td class="govuk-table__cell">69 KB</td>
+                <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Finished</strong></td>
+            </tr>
+            <!-- SUB FOLDER 3 - FILES - END -->
+            <!-- ================= HIDDEN ROWS - END ================= -->
+
+        </tbody>
+    </table>
+
+</div>
+<!-- ////////////////////////////////////////////// SEOCID MATERIALS - EMPTY SECTION 2 - END ////////////////////////////////////////////// -->
+
+<!-- ////////////////////////////////////////////// SEOCID MATERIALS - SECTION 2 - START ////////////////////////////////////////////// -->
+<div id="shared_drive_section_2">
+
+    <div class="permissions transfer_Folder_Destination">
+        <div class="govuk-inset-text">Transfer to <span class="transfer_folder_name"></span> <a href="" class="copy_Folder_Destination_second_level">Copy</a><a href="" class="move_Folder_Destination_second_level">Move</a></div>
+    </div>
+
+    <table class="govuk-table transferred-table" id="show_transferred_Folders">
+
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header" width="45%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Folder/file name</button></th>
+                <th scope="col" class="govuk-table__header" width="20%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Type</button></th>
+                <th scope="col" class="govuk-table__header" width="10%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Date</button></th>
+                <th scope="col" class="govuk-table__header" width="10%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Size</button></th>
+                <th scope="col" class="govuk-table__header" width="15%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();"></button></th>
+            </tr>
+        </thead>
+
+        <tbody class="govuk-table__body">
+
+            <!-- SUB FOLDER 1 - START -->
+            <tr class="govuk-table__row" id="show_transferred_Folder_1">
+                <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="govuk-link govuk-link--no-visited-state show_section_pdrive_3A">Reviews</a></td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">22/11/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell"></td>
+            </tr>
+            <!-- SUB FOLDER 1 - END -->
+
+            <!-- SUB FOLDER 2 - START -->
+            <tr class="govuk-table__row" id="show_transferred_Folder_2">
+                <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="govuk-link govuk-link--no-visited-state show_section_pdrive_3B">Case overview</a></td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">03/10/2023</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell"></td>
+            </tr>
+            <!-- SUB FOLDER 2 - END -->
+
+            <!-- SUB FOLDER 3 - START -->
+            <tr class="govuk-table__row" id="show_transferred_Folder_3">
+                <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="govuk-link govuk-link--no-visited-state show_section_pdrive_3C">Statements</a></td>
+                <td class="govuk-table__cell">File folder</td>
+                <td class="govuk-table__cell">01/02/2024</td>
+                <td class="govuk-table__cell"></td>
+                <td class="govuk-table__cell"></td>
+            </tr>
+            <!-- SUB FOLDER 3 - END -->
+
+        </tbody>
+    </table>
+
+    <table class="govuk-table transferred-table" id="show_transferred_Folder_Contents_1">
+
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header" width="45%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Folder/file name</button></th>
+                <th scope="col" class="govuk-table__header" width="20%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Type</button></th>
+                <th scope="col" class="govuk-table__header" width="10%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Date</button></th>
+                <th scope="col" class="govuk-table__header" width="10%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Size</button></th>
+                <th scope="col" class="govuk-table__header" width="15%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();"></button></th>
+            </tr>
+        </thead>
+
+        <tbody class="govuk-table__body">
+
+            <!-- SUB FOLDER 1 - FILES - START -->
+            <tr class="govuk-table__row" id="show_transferred_Folder_Contents_1A">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">MCLOVEMG3.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">23/07/2024</td>
+                <td class="govuk-table__cell">27 KB</td>
+                <td class="govuk-table__cell"></td>
+            </tr>
+            <!-- SUB FOLDER 1 - FILES - END -->
+
+        </tbody>
+    </table>
+
+    <table class="govuk-table transferred-table" id="show_transferred_Folder_Contents_2">
+
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header" width="45%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Folder/file name</button></th>
+                <th scope="col" class="govuk-table__header" width="20%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Type</button></th>
+                <th scope="col" class="govuk-table__header" width="10%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Date</button></th>
+                <th scope="col" class="govuk-table__header" width="10%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Size</button></th>
+                <th scope="col" class="govuk-table__header" width="15%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();"></button></th>
+            </tr>
+        </thead>
+
+        <tbody class="govuk-table__body">
+
+            <!-- SUB FOLDER 2 - FILES - START -->
+            <tr class="govuk-table__row" id="show_transferred_Folder_Contents_2A">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">CM01.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">11/05/2024</td>
+                <td class="govuk-table__cell">20 MB</td>
+                <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row" id="show_transferred_Folder_Contents_2B">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">CM01.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">14/06/2024</td>
+                <td class="govuk-table__cell">108 KB</td>
+                <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row" id="show_transferred_Folder_Contents_2C">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">MG06_3June.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">21/07/2024</td>
+                <td class="govuk-table__cell">1 MB</td>
+                <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row" id="show_transferred_Folder_Contents_2D">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">MG06_10june.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">24/04/2024</td>
+                <td class="govuk-table__cell">24 MB</td>
+                <td class="govuk-table__cell"></td>
+            </tr>
+            <!-- SUB FOLDER 2 - FILES - END -->
+
+        </tbody>
+    </table>
+
+    <table class="govuk-table transferred-table" id="show_transferred_Folder_Contents_3">
+
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header" width="45%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Folder/file name</button></th>
+                <th scope="col" class="govuk-table__header" width="20%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Type</button></th>
+                <th scope="col" class="govuk-table__header" width="10%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Date</button></th>
+                <th scope="col" class="govuk-table__header" width="10%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Size</button></th>
+                <th scope="col" class="govuk-table__header" width="15%"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();"></button></th>
+            </tr>
+        </thead>
+
+        <tbody class="govuk-table__body">
+
+            <!-- SUB FOLDER 3 - FILES - START -->
+            <tr class="govuk-table__row" id="show_transferred_Folder_Contents_3A">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">stmt_BLAYNEE_2034_1_JUNE_mg11.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">22/08/2024</td>
+                <td class="govuk-table__cell">50 KB</td>
+                <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row" id="show_transferred_Folder_Contents_3B">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">stmt_JONES_1989_1_JUNE_mg11.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">25/09/2024</td>
+                <td class="govuk-table__cell">1 MB</td>
+                <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row" id="show_transferred_Folder_Contents_3C">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">stmt_Lucy_Doyle_MG11.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">15/08/2024</td>
+                <td class="govuk-table__cell">207 KB</td>
+                <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row" id="show_transferred_Folder_Contents_3D">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">stmt_Shelagh_McLove_MG11_hand.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">14/10/2024</td>
+                <td class="govuk-table__cell">68 KB</td>
+                <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row" id="show_transferred_Folder_Contents_3E">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">Shelagh_McLove_VPS_mg11.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">23/04/2024</td>
+                <td class="govuk-table__cell">87 KB</td>
+                <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row" id="show_transferred_Folder_Contents_3F">
+                <td class="govuk-table__cell"><span class="icon-new file"></span><span class="file_name">MG11_Shelagh_MCLOVE_retraction.pdf</span></td>
+                <td class="govuk-table__cell">PDF</td>
+                <td class="govuk-table__cell">08/12/2024</td>
+                <td class="govuk-table__cell">69 KB</td>
+                <td class="govuk-table__cell"></td>
+            </tr>
+            <!-- SUB FOLDER 3 - FILES - END -->
+
+        </tbody>
+    </table>
+
+</div>
+<!-- ////////////////////////////////////////////// SEOCID MATERIALS - SECTION 2 - END ////////////////////////////////////////////// -->

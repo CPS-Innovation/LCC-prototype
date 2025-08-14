@@ -1,0 +1,49 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+{% if data['caseAccess'] == 'true' %}
+<div class="govuk-grid-row">
+{% else %}
+<div class="govuk-grid-row" id="create-case-journey">
+{% endif %}
+    <div class="govuk-grid-column-two-thirds">
+        <div class="wrapper gov-pages">
+
+            <h1 class="govuk-heading-xl" style="">User details</h1>
+
+            <form method="get" action="11C-case-permissions" id="">  
+
+                <p> </p>
+                <!-- OPTION 1 - START -->
+                <div class="govuk-form-group">
+                    <label class="govuk-label" for="newCase_Access-Email">Who would you like to share this case with?</label>
+                    <input class="govuk-input govuk-input--width-20" id="newCase_Access-Email" name="newCase_Access-Email" type="text">
+                </div>
+                <!-- OPTION 1 - END -->
+
+                <input id="caseAccessNEW" name="caseAccessNEW" type="text" value="true" style="display: none;">
+                <button type="submit" class="govuk-button" style="">Continue</button>
+                <button type="button" onclick="location.href='5-case-overview#permissionsTab';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}

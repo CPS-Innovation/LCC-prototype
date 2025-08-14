@@ -1,0 +1,540 @@
+{% extends "layoutCPS-OFF.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V4.html" %}
+{% endblock %}
+{% block beforeContent %}
+    {% include "../includes/off-system-MVP/modalConfirmation-PDrive.html" %} 
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+<div class="govuk-grid-row govuk-!-margin-top-2" id="homepage-journey">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="wrapper main-cotent">
+            {% if data['mvp_Case_3'] == 'true' %}
+                {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
+                    <h2 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Link <span class="operation_name">{{ data['searchOFF_Operation_VALUE'] }}struck Office</span> case to the Shared Drive</h2>
+                {% elseif data['searchOFF_Defendant_VALUE'] == 'Thunder' or data['searchOFF_Defendant_VALUE'] == 'thunder' %}
+                    <h2 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Link <span class="operation_name">{{ data['searchOFF_Defendant_VALUE'] }}struck Office</span> case to the Shared Drive</h2>
+                {% elseif data['searchOFF_Operation_VALUE'] %}
+                    <h2 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Link <span class="operation_name">{{ data['searchOFF_Operation_VALUE'] }} Office</span> case to the Shared Drive</h2>
+                {% elseif data['searchOFF_Defendant_VALUE'] %}
+                    <h2 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Link <span class="operation_name">{{ data['searchOFF_Defendant_VALUE'] }} Office</span> case to the Shared Drive</h2>
+                {% endif %}
+            {% elseif data['mvp_Case_4'] == 'true' %}
+                {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
+                    <h2 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Link <span class="operation_name">Captain {{ data['searchOFF_Operation_VALUE'] }}struck</span> case to the Shared Drive</h2>
+                {% elseif data['searchOFF_Defendant_VALUE'] == 'Thunder' or data['searchOFF_Defendant_VALUE'] == 'thunder' %}
+                    <h2 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Link <span class="operation_name">Captain {{ data['searchOFF_Defendant_VALUE'] }}struck</span> case to the Shared Drive</h2>
+                {% elseif data['searchOFF_Operation_VALUE'] %}
+                    <h2 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Link <span class="operation_name">Captain {{ data['searchOFF_Operation_VALUE'] }}</span> case to the Shared Drive</h2>
+                {% elseif data['searchOFF_Defendant_VALUE'] %}
+                    <h2 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Link <span class="operation_name">Captain {{ data['searchOFF_Defendant_VALUE'] }}</span> case to the Shared Drive</h2>
+                {% endif %}
+            {% endif %}
+
+            <div class="my-cases-filter govuk-!-margin-bottom-8">
+                <p class="total"><span class="govuk-caption-m">Last updated <span id="my-cases-timestamp">today 12:04pm</span></span></p>
+            </div>
+
+            <div class="govuk-inset-text">Select the folder that contains the case material</div>       
+
+            <!-- NAV - START -->
+            <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
+                <ol class="govuk-breadcrumbs__list">
+                    <li class="govuk-breadcrumbs__list-item pdrive_nav_1 pdrive_nav_items"><a class="govuk-breadcrumbs__link pdrive_nav_1" href="#">Public (P:)</a></li>
+                    <li class="govuk-breadcrumbs__list-item pdrive_nav_2 pdrive_nav_items"><a class="govuk-breadcrumbs__link pdrive_nav_2" href="#">RCTCaseData</a></li>
+                    <li class="govuk-breadcrumbs__list-item pdrive_nav_3 pdrive_nav_items"><a class="govuk-breadcrumbs__link selected pdrive_nav_3" href="#">SCCTD</a></li>
+                    <li class="govuk-breadcrumbs__list-item pdrive_nav_4 pdrive_nav_items"><a class="govuk-breadcrumbs__link pdrive_nav_4" href="#">Live cases</a></li>
+                    <li class="govuk-breadcrumbs__list-item pdrive_nav_5 pdrive_nav_items"><a class="govuk-breadcrumbs__link pdrive_nav_5" href="#"><span class="folder_name"></span></a></li>
+                </ol>
+            </nav>    
+            <!-- NAV - END -->
+
+            <table class="govuk-table" id="pdrive-table">
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Folder name</button></th>
+                        <th scope="col" class="govuk-table__header"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Date created</button></th>
+                        <th scope="col" class="govuk-table__header" width="15%"></th>
+                    </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+
+                    <!-- ////////////////////////////////////////////////////// STAGE 3 - START ////////////////////////////////////////////////////// -->
+                    <!-- FOLDER 1 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_3 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_3 pdrive_items">Live Cases</a></th>
+                        <td class="govuk-table__cell">24/01/2010</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_1" name="egress_file_link_1" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 1 - END --> 
+
+                    <!-- FOLDER 2 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_3 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_3 pdrive_items">Archive Cases</a></th>
+                        <td class="govuk-table__cell">24/01/2010</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_1" name="egress_file_link_1" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 2 - END --> 
+                    <!-- ////////////////////////////////////////////////////// STAGE 3 - END ////////////////////////////////////////////////////// -->
+
+                    <!-- ////////////////////////////////////////////////////// STAGE 4 - START ////////////////////////////////////////////////////// -->
+                    <!-- FOLDER 1 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Barbarossa 98576243/19</a></th>
+                        <td class="govuk-table__cell">24/01/2019</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_1" name="egress_file_link_1" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 1 - END --> 
+
+                    <!-- FOLDER 2 - START --> 
+                    {% if data['offCMS_PDrive_files_V2'] %}
+
+                    {% else %}
+                        <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                            <th scope="row" class="govuk-table__header">
+                                <span class="icon-new folder"></span>
+                                {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
+                                    <a href="#" class="operation_name pdrive_stage_4 pdrive_items">Captain {{ data['searchOFF_Operation_VALUE'] }}struck 6897542684/24</strong>
+                                {% elseif data['searchOFF_Defendant_VALUE'] == 'Thunder' or data['searchOFF_Defendant_VALUE'] == 'thunder' %}
+                                    <a href="#" class="operation_name pdrive_stage_4 pdrive_items">Captain {{ data['searchOFF_Defendant_VALUE'] }}struck 6897542684/24</strong>
+                                {% elseif data['searchOFF_Operation_VALUE'] %}
+                                    <a href="#" class="operation_name pdrive_stage_4 pdrive_items">Captain {{ data['searchOFF_Operation_VALUE'] }} 6897542684/24</strong>
+                                {% elseif data['searchOFF_Defendant_VALUE'] %}
+                                    <a href="#" class="operation_name pdrive_stage_4 pdrive_items">Captain {{ data['searchOFF_Defendant_VALUE'] }} 6897542684/24</strong>
+                                {% endif %}
+                            </th>
+                            <td class="govuk-table__cell">18/08/2024</td>
+                            <td class="govuk-table__cell">
+                                <form method="get" action="" id="">  
+                                    <input id="egress_file_link_2" name="egress_file_link_2" type="text" value="true" style="display: none;">
+                                    <button type="button" class="pdrive_link_files">Link folder</button>
+                                </form>                            
+                            </td>
+                        </tr>
+                    {% endif %}
+                    <!-- FOLDER 2 - END --> 
+
+                    <!-- FOLDER 3 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Chopper Harris 120120933/23</strong></th>
+                        <td class="govuk-table__cell">01/03/2023</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_3" name="egress_file_link_3" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 3 - END --> 
+
+                    <!-- FOLDER 4 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Crescent Wind 120520944/24</strong></th>
+                        <td class="govuk-table__cell">15/03/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_4" name="egress_file_link_4" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 4 - END --> 
+
+                    <!-- FOLDER 5 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Desert Storm 687985472/17</strong></th>
+                        <td class="govuk-table__cell">04/01/2017</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_5" name="egress_file_link_5" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 5 - END --> 
+
+                    <!-- FOLDER 6 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Enduring Freedom 67894572/19</strong></th>
+                        <td class="govuk-table__cell">24/06/2019</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_6" name="egress_file_link_6" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 6 - END --> 
+
+                    <!-- FOLDER 7 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Game of Thrones 120720952/24</strong></th>
+                        <td class="govuk-table__cell">08/08/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_7" name="egress_file_link_7" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 7 - END --> 
+
+                    <!-- FOLDER 8 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Groundhog day 920620952/24</strong></th>
+                        <td class="govuk-table__cell">21/09/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_8" name="egress_file_link_8" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 8 - END --> 
+
+                    <!-- FOLDER 9 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Mincemeat 587869848/21</strong></th>
+                        <td class="govuk-table__cell">25/12/2021</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_9" name="egress_file_link_9" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 9 - END --> 
+
+                    <!-- FOLDER 10 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Overlord 840320999/19</strong></th>
+                        <td class="govuk-table__cell">28/10/2019</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_10" name="egress_file_link_10" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 10 - END --> 
+
+                    <!-- FOLDER 11 - START --> 
+                    {% if data['edit_Thunderstruck'] %}
+                        <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                            <th scope="row" class="govuk-table__header">
+                                <span class="icon-new folder"></span>
+                                {% if data['searchOFF_URN'] == 'Thunder' or data['searchOFF_URN'] == 'thunder' %}
+                                    <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_URN'] }}struck 45AA209820/21</strong>
+                                {% else %}
+                                    <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_URN'] }} 45AA209820/21</strong>
+                                {% endif %}                            
+                            </th>
+                            <td class="govuk-table__cell">08/08/2021</td>
+                            <td class="govuk-table__cell">
+                                <form method="get" action="" id="">  
+                                    <input id="egress_file_link_11" name="egress_file_link_11" type="text" value="true" style="display: none;">
+                                    <button type="button" class="pdrive_link_files">Link folder</button>
+                                </form>                            
+                            </td>
+                        </tr>
+                    {% else %}
+
+                    {% endif %}
+                    <!-- FOLDER 11 - END --> 
+
+                    <!-- FOLDER 12 - START --> 
+                    {% if data['offCMS_PDrive_files'] %}
+
+                    {% else %}
+                        <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                            <th scope="row" class="govuk-table__header">
+                                <span class="icon-new folder"></span>
+                                {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
+                                    <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_Operation_VALUE'] }}struck Office 64GB245761/24</strong>
+                                {% elseif data['searchOFF_Defendant_VALUE'] == 'Thunder' or data['searchOFF_Defendant_VALUE'] == 'thunder' %}
+                                    <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_Defendant_VALUE'] }}struck Office 64GB245761/24</strong>
+                                {% elseif data['searchOFF_Operation_VALUE'] %}
+                                    <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_Operation_VALUE'] }} Office 64GB245761/24</strong>
+                                {% elseif data['searchOFF_Defendant_VALUE'] %}
+                                    <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_Defendant_VALUE'] }} Office 64GB245761/24</strong>
+                                {% endif %}
+                            </th>
+                            <td class="govuk-table__cell">17/07/2024</td>
+                            <td class="govuk-table__cell">
+                                <form method="get" action="" id="">  
+                                    <input id="egress_file_link_12" name="egress_file_link_12" type="text" value="true" style="display: none;">
+                                    <button type="button" class="pdrive_link_files">Link folder</button>
+                                </form>                            
+                            </td>
+                        </tr>
+                    {% endif %}
+                    <!-- FOLDER 12 - END --> 
+
+                    <!-- FOLDER 13 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Urgent Fury 687954726/25</strong></th>
+                        <td class="govuk-table__cell">01/02/2025</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_13" name="egress_file_link_13" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 13 - END --> 
+
+                    <!-- FOLDER 14 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Vittles 986425733/25</strong></th>
+                        <td class="govuk-table__cell">05/01/2025</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_14" name="egress_file_link_14" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 14 - END --> 
+
+                    <!-- FOLDER 15 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Wrath of God 689745123/03</strong></th>
+                        <td class="govuk-table__cell">04/04/2003</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_15" name="egress_file_link_15" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 15 - END --> 
+                    <!-- ////////////////////////////////////////////////////// STAGE 4 - START ////////////////////////////////////////////////////// -->
+
+                    <!-- ////////////////////////////////////////////////////// STAGE 5 - START ////////////////////////////////////////////////////// -->
+                    <!-- FOLDER 1 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_5 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">1. Case Management</a></th>
+                        <td class="govuk-table__cell">11/12/2016</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_1" name="egress_file_link_1" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 1 - END --> 
+
+                    <!-- FOLDER 2 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_5 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">2. Conference Hearing Notes</strong></th>
+                        <td class="govuk-table__cell">18/08/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="" id="">  
+                                <input id="egress_file_link_2" name="egress_file_link_2" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 2 - END --> 
+
+                    <!-- FOLDER 3 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_5 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">3. Experts</a></th>
+                        <td class="govuk-table__cell">18/08/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_3" name="egress_file_link_3" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 3 - END --> 
+
+                    <!-- FOLDER 4 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_5 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">4. Counsel</a></th>
+                        <td class="govuk-table__cell">18/08/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_4" name="egress_file_link_4" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 4 - END --> 
+
+                    <!-- FOLDER 5 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_5 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">5. Correspondence</a></th>
+                        <td class="govuk-table__cell">18/08/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_5" name="egress_file_link_5" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 5 - END --> 
+
+                    <!-- FOLDER 6 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_5 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">6. Disclosure</a></th>
+                        <td class="govuk-table__cell">18/08/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_6" name="egress_file_link_6" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 6 - END --> 
+
+                    <!-- FOLDER 7 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_5 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">7. Finance</a></th>
+                        <td class="govuk-table__cell">18/08/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_7" name="egress_file_link_7" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 7 - END --> 
+
+                    <!-- FOLDER 8 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_5 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">8. Lawyer Working copies</a></th>
+                        <td class="govuk-table__cell">18/08/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_8" name="egress_file_link_8" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 8 - END --> 
+
+                    <!-- FOLDER 9 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_5 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">9. PO Working copies</a></th>
+                        <td class="govuk-table__cell">18/08/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_9" name="egress_file_link_9" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 9 - END --> 
+
+                    <!-- FOLDER 10 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_5 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">10. Police</a></th>
+                        <td class="govuk-table__cell">18/08/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_10" name="egress_file_link_10" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 10 - END --> 
+
+                    <!-- FOLDER 11 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_5 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">11. Media</a></th>
+                        <td class="govuk-table__cell">18/08/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="" id="">  
+                                <input id="egress_file_link_11" name="egress_file_link_11" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 11 - END --> 
+
+                    <!-- FOLDER 12 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_5 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">12. Victims & Witnesses</a></th>
+                        <td class="govuk-table__cell">18/08/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="" id="">  
+                                <input id="egress_file_link_12" name="egress_file_link_12" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 12 - END --> 
+
+                    <!-- FOLDER 13 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_5 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">13. DCS</a></th>
+                        <td class="govuk-table__cell">18/08/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_13" name="egress_file_link_13" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 13 - END --> 
+
+                    <!-- FOLDER 14 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_5 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">14. Mags Ct</a></th>
+                        <td class="govuk-table__cell">18/08/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_14" name="egress_file_link_14" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 14 - END --> 
+
+                    <!-- FOLDER 15 - START --> 
+                    <tr class="govuk-table__row pdrive_stage_5 pdrive_items">
+                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">15. IDPC</a></th>
+                        <td class="govuk-table__cell">18/08/2024</td>
+                        <td class="govuk-table__cell">
+                            <form method="get" action="03-case-overview" id="">  
+                                <input id="egress_file_link_15" name="egress_file_link_15" type="text" value="true" style="display: none;">
+                                <button type="button" class="pdrive_link_files">Link folder</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                    <!-- FOLDER 15 - END --> 
+                    <!-- ////////////////////////////////////////////////////// STAGE 5 - START ////////////////////////////////////////////////////// -->
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

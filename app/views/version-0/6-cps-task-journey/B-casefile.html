@@ -1,0 +1,300 @@
+{% extends "layoutCPS-NEW-CASEFILE.html" %}
+{% block header %}
+    {% include "../includes/banner-V5.html" %}
+{% endblock %}
+{% block beforeContent %}
+    {% include "../includes/modals/redaction-log.html" %}
+    {% include "../includes/modals/redaction-history.html" %}
+    {% include "../includes/modals/redaction-over.html" %}
+    {% include "../includes/modals/report-a-problem.html" %}
+    {% include "../includes/modals/search.html" %}
+    {% include "../includes/modals/view-redactions.html" %}
+    {% include "../includes/modals/feedback.html" %}
+    {% include "../includes/modals/feedback-survey.html" %}
+    {% include "../includes/modals/notes.html" %}
+    {% include "../includes/modals/notes-new.html" %}
+    {% include "../includes/modals/case-action-plan.html" %}
+    {% include "../includes/modals/case-action-plan-2.html" %}
+    {% include "../includes/modals/case-action-plan-builder.html" %}
+    {% include "../includes/modals/confirmation.html" %}
+    {% include "../includes/modals/redact-all.html" %}
+    {% include "../includes/modals/discarded.html" %}
+    {% include "../includes/modals/search-redaction.html" %}
+    {% include "../includes/modals/search-suggestions.html" %}
+    {% include "../includes/modals/document-history.html" %}
+    {% include "../includes/modals/confirmation-Document.html" %}
+    {% include "../includes/modals/confirmation-Suggested.html" %}
+    {% include "../includes/modals/redaction-log-Dummy.html" %}
+    {% include "../includes/modals/rename.html" %}
+    {% include "../includes/modals/move-document.html" %}
+    {% include "../includes/modals/move-multiple-documents.html" %}
+    {% include "../includes/modals/confirmation-Reorder.html" %}
+    <!-- {% include "../includes/modals/remove-Pages.html" %} -->
+    {% include "../includes/modals/confirmation-Remove.html" %}
+    {% include "../includes/modals/warning-Notes.html" %}
+    {% include "../includes/modals/confirmation-Task.html" %}
+    {% include "../includes/modals/email-document.html" %}
+    {% include "../includes/modals/remove-and-rotate-pages.html" %}
+{% endblock %}
+{% block content %}
+
+<link href="/public/stylesheets/filtering.css" media="screen" rel="stylesheet" type="text/css" />
+<!-- remove if you get rid of the gov width container -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% include "../includes/new-script.html" %}
+
+<script>
+
+    $(".success-banner").hide();
+
+    function showHideRedaction() {
+        setTimeout(function () {
+            redactionSummary()
+        }, 0)
+        setTimeout(function () {
+            redactionSummary()
+            $("#saving-panel").hide();
+            $(".success-banner").show();
+            $("#redaction-log-button").removeClass('govuk-button--disabled').removeAttr('aria-disabled');
+            document.getElementById("redaction-log-button").disabled = false;
+            // $("#redaction-log").show()
+            // addRedactionLogRows()
+        }, 5000)
+        setTimeout(function () {
+            $(".success-banner").slideUp();
+        }, 10000)
+        setTimeout(function () {
+            $(".success-banner").slideUp();
+        }, 15000)
+    }
+
+    function topFunction() {
+        $("html, body").animate({ scrollTop: 0 }, {
+            duration: 500,
+            easing: "easeInOutExpo"
+        });
+    }
+
+</script>
+
+<div class="govuk-grid-row">
+
+    <!-- ////////////////////////////////////////////// STICKY BAR - PART 1 - START ////////////////////////////////////////////// -->
+    <div class="govuk-grid-column-one-quarter" id="left-column-top" style="margin-bottom: 0.01em;">
+
+        <div class="govuk-phase-banner header new-V2" style="margin-bottom: 0.01em;">
+
+        </div>
+
+        <div id="navbar" class="navbar test">
+            <div class="govuk-width-container">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-one-quarter">
+                        <div class="case-info">
+                            <h1 class="govuk-heading-m">McLove, Eoin</h1>
+                            <table class="govuk-table">
+                                <tbody>
+                                    <tr class="govuk-table__row">
+                                        <td class="govuk-table__cell govuk-body-s wrapLongFilenamesCPS openMe" scope="row">
+                                            {% if data['searchURN'] %}
+                                                <a href="" class="show-case" data-doc="PRE_CONS_D.pdf" data-count="2" onclick="return pageCounter()" data-page="9">{{ data['searchURN'] }}/1</a>
+                                            {% else %}
+                                                <a href="" class="show-case" data-doc="PRE_CONS_D.pdf" data-count="2" onclick="return pageCounter()" data-page="9">45AA209820/1</a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="searchFormTest2" class="searchForm" method="get">
+                            <div class="search-button">Search materials</div>
+                            <label class="govuk-label--s govuk-label" for="searchURNModal2" style="">Search materials</label>
+                            <div class="searchForm-inner">
+                                <input class="govuk-input" id="searchURNModal2" name="searchURNModal2" type="text" aria-describedby="FirstName-hint" value="" placeholder="" />
+                                <div class="bba v2"><button class="search searchModal modalButton" type="submit" id="openSearch" onClick="openModal(); searchTerm2();">Search</button></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ////////////////////////////////////////////// STICKY BAR - PART 1 - END ////////////////////////////////////////////// -->
+
+    <!-- ////////////////////////////////////////////// DOCUMENT COLUMN - START ////////////////////////////////////////////// -->
+    <div class="govuk-grid-column-three-quarters document-holder" id="right-column">
+
+        <div id="document-top"></div>
+
+        <div class="file1 weirdFix1400">
+            <div class="govuk-tabs" data-module="govuk-tabs">
+                <!-- ====== STICKY BAR - PART 2 - START ====== -->
+                <div id="navbar2" class="">
+                    <!-- <div class="page-counter show"><p>Page: <span>1/<strong>1</strong></span></p></div> -->
+                    <div class="govuk-width-container">
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-full">
+
+                                <ul class="govuk-tabs__list navbar sticky-tabs" id="tab-list" role="tablist">
+                                    <li class="arrow left" tabindex="0" role="button"><a href="#">tab left</a></li>
+                                    <li class="arrow right" tabindex="0" role="button"><a href="#">tab right</a></li>
+                                    <li class="arrow down" tabindex="0" role="button"><a href="#">tab down</a></li>
+                                    <li class="govuk-tabs__list-item tooltip govuk-tabs__list-item--selected" data-tab-id="Asset%20Rec%201" onclick="return documentTitle()" draggable="true" id="selectedTab">
+                                        <svg class="closeButtonOnCPS">
+                                            <circle cx="12" cy="12" r="13" stroke="white" stroke-width="1" fill="white"></circle>
+                                            <path stroke="white" stroke-width="3" fill="none" d="M6.25,6.25,17.75,17.75"></path>
+                                            <path stroke="white" stroke-width="3" fill="none" d="M6.25,17.75,17.75,6.25"></path>
+                                        </svg>
+
+                                        <a class="govuk-tabs__tab" id="tabHeadingss" href="" onclick="documentTarget()">Asset Rec 1</a>  <span class="tooltiptext">Asset Rec 1</span>
+                                    </li>
+                                </ul>
+                                <div class="govuk-tabs__panel document-panel" data-tab-id="Asset%20Rec%201-content" data-is-searched="undefined">  
+
+                                    <button onclick="windowSizeChange(), windowSizeChangeText()" class="window-size" id="window-size"><span>View full screen</span></button>
+                         
+                                    <!-- Non search heading -->
+                                    <div class="docSummaryTopPage rj-dont-display" id="documentNameHeader" style="display: inline-block;">
+                                        <p class="govuk-body-s inPageSearchMargins2">Asset Rec 1</p>
+                                        <div class="dropdown">
+                                            <button onclick="myFunction(), toggleClass()" class="dropbtn">Document actions</button>
+                                            <div id="myDropdown2" class="dropdown-content">
+                                                <button onclick="openModalOver(), documentTitle()" class="">Log an Under/Over redaction</button>
+                                                <button onclick="window.open('https://as-web-redaction-log-dev.azurewebsites.net','_blank')" class="">View redaction log history</button>
+                                                <button onclick="suggestedRedactions()" class="suggested-redactions" id="suggestedRedactions">Turn <strong>ON</strong> Potential redactions</button>
+                                                <!-- <button onclick="" class="">Remove document pages</button>-->
+                                                <button onclick="openHistoryModal(), documentTitle()" class="notes-trigger">View previous document version(s) (<strong><span class="document-number">1</span></strong>)</button>
+                                                <button onclick="openRemovePagesModal(), documentTitle()" class="">Remove document pages</button>
+                                                <button onclick="openRotatePagesModal(), documentTitle()" class="">Rotate document pages</button>
+                                                <button onclick="openEmailModal(), documentTitle()" class="">Email document</button>
+                                                <button onclick="printDocument('pdf-root')" class="">Print document</button>
+                                                <!-- <button onclick="openNotesModal(), documentTitle()" class="notes-trigger">Add a note (<span>4</span>)</button> -->
+                                                <hr>
+                                                <button onclick="openModalProblem(), documentTitle()" class="openNewDoc">Report a technical problem</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- start Zoom - Select -->
+                                        <div class="govuk-form-group" id="zoom-wrapper">
+                                            <label class="govuk-label govuk-visually-hidden" for="zoomPercentage-V1">Zoom</label>
+                                            <select class="govuk-select" id="zoomPercentage-V1" name="zoomPercentage-V1" onclick="" onchange="zoom1(event)">
+                                                <option value="800">800%</option>
+                                                <option value="400">400%</option>
+                                                <option value="300">300%</option>
+                                                <option value="200">200%</option>
+                                                <option value="175">175%</option>
+                                                <option value="150">150%</option>
+                                                <option value="125">125%</option>
+                                                <option value="100" selected="">100%</option>
+                                                <option value="75">75%</option>
+                                                <option value="50">50%</option>
+                                                <option value="25">25%</option>
+                                                <option value="10">10%</option>
+                                            </select>
+                                        </div>                                    
+                                        <!-- end Zoom - Select -->
+
+                                        <!-- start Zoom in and out -->
+                                        <button onclick="zoomOut()" class="zoom zoomOut"><span>Zoom out of document</span></button>
+                                        <button onclick="zoomIn()" class="zoom zoomIn"><span>Zoom in to document</span></button>
+                                        <!-- end Zoom in and out -->
+
+                                        <!-- start Select Tool --> 
+                                        <button onclick="marqueeOn()" class="marquee" id="marquee"><span>Redact area tool</span></button>
+                                        <!-- end Select Tool --> 
+                                    </div>
+                                    <!-- End of non search heading -->
+
+                                    <div class="suggested-redactions-panel">
+                                        <h3 class="govuk-heading-s">Potential redactions</h3>
+                                        <p>The following terms are items that could potentially be redacted in this document:</p>
+                                        <p><span id="SRNumber">(25)</span> Named individuals, <span>(2)</span> Email addresses, <span>(2)</span> Previous convictions, <span>(1)</span> Date of birth</p>
+                                    </div> 
+
+                                    <div class="email-message">
+                                        <h3 class="govuk-heading-s">Document emailed</h3>
+                                        <p>This document has been emailed to: <a href="" id="emailRecipients-Content">Name</a>, <span id="email-date-stamp">date</span></p>
+                                        <details class="govuk-details" data-module="govuk-details">
+                                            <summary class="govuk-details__summary">
+                                                <span class="govuk-details__summary-text">View details</span>
+                                            </summary>
+                                            <div class="govuk-details__text" id="">
+                                                <p>Title: <strong id="emailTitle-Content">Title text</strong></p>
+                                                <p>Text: <strong id="emailText-Content">Text text</strong></p>
+                                            </div>
+                                        </details>
+                                    </div> 
+                            
+                                    <div id="pdf-root" data-pdf-url="/public/files/defendants.pdf" style="height: calc(100vh)">
+                                        <div style="height: 100%; width: 100%; position: relative;">
+                                            <span></span>
+                                            <div>
+                                                <div class="PdfHighlighter" style="overflow: visible;">
+                                                    <div class="pdfViewer removePageBorders" id="changeDocument">
+                                                        <div class="page" data-page-number="1" role="region" aria-label="Page 1" data-loaded="true" style="width: 1018px; height: 1393px;">
+                                                            <div class="canvasWrapper" style="width: 1018px; height: 1393px;">
+                                                                <canvas width="1019" height="1394" style="width: 1019px; height: 1394px;"></canvas>
+                                                            </div>
+                                                            <div class="textLayer" style="width: 1018px; height: 1393px;">
+                                                                <div class="endOfContent"></div>
+                                                                <div class="PdfHighlighter__highlight-layer">
+                                                                    <div>
+                                                                        <img src="../../public/files/Asset-Rec-1.png" alt="Asset Rec 1" class="">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="annotationLayer">
+                                                                <section data-annotation-id="10R" class="linkAnnotation" style="transform: matrix(1.4026, 0, 0, 1.4026, -131.418, -181.683); transform-origin: -120px -79.7284px; left: 120px; top: 79.7284px; width: 275.25px; height: 22.5px;">
+                                                                    <a title="https://getfireshot.com/pdf_aHR0cDovLzEyNy4wLjAuMTozMDAwLw==" href="https://getfireshot.com/pdf_aHR0cDovLzEyNy4wLjAuMTozMDAwLw==" target="_blank" rel="noopener noreferrer nofollow"></a>
+                                                                </section>
+                                                                <section data-annotation-id="11R" class="linkAnnotation" style="transform: matrix(1.4026, 0, 0, 1.4026, -131.418, -181.683); transform-origin: -762px -79.7284px; left: 762px; top: 79.7284px; width: 70.5px; height: 22.5px;">
+                                                                    <a title="https://getfireshot.com/pdf_aHR0cDovLzEyNy4wLjAuMTozMDAwLw==" href="https://getfireshot.com/pdf_aHR0cDovLzEyNy4wLjAuMTozMDAwLw==" target="_blank" rel="noopener noreferrer nofollow"></a>
+                                                                </section>
+                                                                <section data-annotation-id="12R" class="linkAnnotation" style="transform: matrix(1.4026, 0, 0, 1.4026, -131.418, -181.683); transform-origin: -303.75px -1168.73px; left: 303.75px; top: 1168.73px; width: 53.25px; height: 10.5px;">
+                                                                    <a title="https://getfireshot.com/pdf_aHR0cDovLzEyNy4wLjAuMTozMDAwL3Byb3RvdHlwZS1hZG1pbi9jbGVhci1kYXRh" href="https://getfireshot.com/pdf_aHR0cDovLzEyNy4wLjAuMTozMDAwL3Byb3RvdHlwZS1hZG1pbi9jbGVhci1kYXRh" target="_blank" rel="noopener noreferrer nofollow"></a>
+                                                                </section>
+                                                                <section data-annotation-id="13R" class="linkAnnotation" style="transform: matrix(1.4026, 0, 0, 1.4026, -131.418, -181.683); transform-origin: -333px -1202.48px; left: 333px; top: 1202.48px; width: 159px; height: 10.5px;">
+                                                                    <a title="https://getfireshot.com/pdf_aHR0cHM6Ly93d3cubmF0aW9uYWxhcmNoaXZlcy5nb3YudWsvZG9jL29wZW4tZ292ZXJubWVudC1saWNlbmNlL3ZlcnNpb24vMy8=" href="https://getfireshot.com/pdf_aHR0cHM6Ly93d3cubmF0aW9uYWxhcmNoaXZlcy5nb3YudWsvZG9jL29wZW4tZ292ZXJubWVudC1saWNlbmNlL3ZlcnNpb24vMy8=" target="_blank" rel="noopener noreferrer nofollow"></a>
+                                                                </section>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="MouseSelection-container"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ====== STICKY BAR - PART 2 - END ====== -->
+
+                <div id="docCopy" class="docCopy old-verison" style="display: none;">
+                    <h2 class="govuk-heading-m">View your documents</h2>
+                    <p>Search or choose a file to start reviewing documents</p>
+                </div>
+
+            </div>
+        </div>
+    </div>    <!-- ////////////////////////////////////////////// DOCUMENT COLUMN - END ////////////////////////////////////////////// -->
+
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-quarter" style="padding-right: 0;">
+        <div class="searchForm-inner">
+            <input class="govuk-input" style="width: 98%;" id="searchURNModal" name="searchURNModal" type="text" aria-describedby="FirstName-hint" value="" placeholder="Search materials..." />
+            <div class="bba" style="margin-left: -45px;"><button class="search searchModal modalButton" type="submit" id="openSearch" onClick="openModal(); searchTerm();"></button></div>
+        </div>
+    </div>
+
+    {% include "../includes/documents/case-1-OPEN.html" %}
+</div>
+
+{% endblock %}
