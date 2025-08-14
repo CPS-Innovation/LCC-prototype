@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .header {
+                height: 200px;
+                background-color: #dddddd;
+            }
+            .body {
+                display: flex;
+                height: 100vh;
+            }
+            .sidebar {
+                width: 400px;
+                height: calc(100vh - 200px);
+            }
+            #content-container {
+                height: calc(100vh);
+                background-color: #bbbbbb;
+                width: calc(100vw - 400px);
+            }
+            #content-header {
+                height: 40px;
+                background-color: #bbbbbb;
+                display: flex;
+                align-items: center;
+            }
+            #content-body {
+                height: calc(100% - 40px);
+                background-color: #eeeeee;
+                overflow: hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header"></div>
+        <div class="body">
+            <div class="sidebar"></div>
+            <div id="content-container">
+                <div id="content">
+                    <div id="content-header">&nbsp;Tabs</div>
+                    <div id="content-body">
+                        top<br />
+                        content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />
+                        content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />
+                        content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />
+                        content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />
+                        content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />
+                        content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />
+                        content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />
+                        content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />content<br />
+                        bottom
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        const content = document.getElementById("content");
+        const contentBody = document.getElementById("content-body");
+
+        document.addEventListener("scroll", handleScroll);
+        contentBody.addEventListener("scroll", handleScroll);
+
+        function handleScroll() {
+            const isAtTopOfPage = content.getBoundingClientRect().top <= 0;
+            const isAtTopOfOwnScrollRange = contentBody.scrollTop === 0;
+            console.log({ isAtTopOfPage, isAtTopOfOwnScrollRange });
+            contentBody.style.overflow =
+                isAtTopOfPage || !isAtTopOfOwnScrollRange ? "auto" : "hidden";
+        }
+    </script>
+</html>
