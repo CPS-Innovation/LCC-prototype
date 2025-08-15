@@ -1,0 +1,165 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row" id="">
+    <div class="govuk-grid-column-two-thirds">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+        <div class="wrapper gov-pages">
+
+            <h1 class="govuk-heading-xl" style="">Case settings</h1>
+
+            <form method="get" action="5-case-overview#permissionsTab" id="caseSettings_Form">  
+
+                <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+
+                    <!-- OPTION 1 - START -->
+<!--                     <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Case complexity</h1>
+                            </legend>
+                            <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['caseSettings_Complexity'] == 'Low' %}
+                                        <input class="govuk-radios__input" id="caseSettings_Complexity-Low" name="caseSettings_Complexity" type="radio" value="Low" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="caseSettings_Complexity-Low" name="caseSettings_Complexity" type="radio" value="Low">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="caseSettings_Complexity-Low">Low</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['caseSettings_Complexity'] == 'Medium' %}
+                                        <input class="govuk-radios__input" id="caseSettings_Complexity-Medium" name="caseSettings_Complexity" type="radio" value="Medium" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="caseSettings_Complexity-Medium" name="caseSettings_Complexity" type="radio" value="Medium">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="caseSettings_Complexity-Medium">Medium</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['caseSettings_Complexity'] == 'High' %}
+                                        <input class="govuk-radios__input" id="caseSettings_Complexity-High" name="caseSettings_Complexity" type="radio" value="High" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="caseSettings_Complexity-High" name="caseSettings_Complexity" type="radio" value="High">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="caseSettings_Complexity-High">High</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['caseSettings_Complexity'] == 'Exceptional' %}
+                                        <input class="govuk-radios__input" id="caseSettings_Complexity-Exceptional" name="caseSettings_Complexity" type="radio" value="Exceptional" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="caseSettings_Complexity-Exceptional" name="caseSettings_Complexity" type="radio" value="Exceptional">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="caseSettings_Complexity-Exceptional">Exceptional</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+ -->                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Is this an International case?</h1>
+                            </legend>
+                            <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['caseSettings_International'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="caseSettings_International-YES" name="caseSettings_International" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="caseSettings_International-YES" name="caseSettings_International" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="caseSettings_International-YES">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['caseSettings_International'] == 'No' %}
+                                        <input class="govuk-radios__input" id="caseSettings_International-NO" name="caseSettings_International" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="caseSettings_International-NO" name="caseSettings_International" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="caseSettings_International-NO">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 2 - END -->
+
+                    <!-- OPTION 3 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Case sensitivity</h1>
+                            </legend>
+                            <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['caseSettings_Sensitivity'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="caseSettings_Sensitivity-YES" name="caseSettings_Sensitivity" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="caseSettings_Sensitivity-YES" name="caseSettings_Sensitivity" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="caseSettings_Sensitivity-YES">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['caseSettings_Sensitivity'] == 'No' %}
+                                        <input class="govuk-radios__input" id="caseSettings_Sensitivity-NO" name="caseSettings_Sensitivity" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="caseSettings_Sensitivity-NO" name="caseSettings_Sensitivity" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="caseSettings_Sensitivity-NO">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 3 - END -->
+
+                    <!-- OPTION 4 - START -->
+<!--                     <div class="govuk-form-group">
+                        <label class="govuk-label" for="caseSettings_Summary">Case summary</label>
+                        {% if data['caseSettings_Summary'] %}
+                            <textarea class="govuk-textarea" id="caseSettings_Summary" name="caseSettings_Summary" rows="5">{{ data['caseSettings_Summary'] }}</textarea>
+                        {% else %}
+                            <textarea class="govuk-textarea" id="caseSettings_Summary" name="caseSettings_Summary" rows="5"></textarea>
+                        {% endif %}
+                    </div>                    
+ -->                    <!-- OPTION 4 - END -->
+
+                    <!-- OPTION 5 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    {% if data['caseSettings_Long'] %}
+                                        <input class="govuk-checkboxes__input" id="caseSettings_Long" name="caseSettings_Long" type="checkbox" value="Long term interest" checked>
+                                    {% else %}
+                                        <input class="govuk-checkboxes__input" id="caseSettings_Long" name="caseSettings_Long" type="checkbox" value="Long term interest">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-checkboxes__label" for="caseSettings_Long">Long term interest</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 5 - END -->
+
+                </fieldset>
+
+                <input id="caseAccess" name="caseAccess" type="text" value="false" style="display: none;">
+                <input id="caseSettings" name="caseSettings" type="text" value="true" style="display: none;">
+                <button type="submit" class="govuk-button" style="">Continue</button>
+                <button type="button" onclick="location.href='5-case-overview';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}
