@@ -1,0 +1,1318 @@
+{% extends "layoutCPS-OFF.html" %}
+{% block header %}
+    {% include "../../includes/banner-OFF-V5.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+<div class="govuk-grid-row" id="create-case-journey">
+
+    <div class="govuk-grid-column-two-thirds">
+        <div class="gov-pages">
+
+            <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-4" style="">Check your answers before creating the case</h1>
+
+            <!-- //////////////////////////////////////////////////// SECTION 1 - START //////////////////////////////////////////////////// -->
+            <h2 class="govuk-heading-m">Case details</h2>
+            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+
+                <!-- ITEM 1 - START -->
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Area</dt>
+                    <dd class="govuk-summary-list__value">{{ data['newCase_Operation_AREA'] }}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> area</span></a></dd>
+                </div>
+                <!-- ITEM 1 - END -->
+
+                <!-- ITEM 2 - START -->
+                {% if data['newCase_URN-Compass_ID'] %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">URN</dt>
+                        <dd class="govuk-summary-list__value">842620982/25</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> URN</span></a></dd>
+                    </div>
+                {% else %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">URN</dt>
+                        <dd class="govuk-summary-list__value">{{ data['newCase_URN-A'] }}{{ data['newCase_URN-B'] }}{{ data['newCase_URN-C'] }}/{{ data['newCase_URN-D'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> URN</span></a></dd>
+                    </div>
+                {% endif %}        
+                <!-- ITEM 2 - END -->
+
+                <!-- ITEM 3 - START -->
+                {% if data['newCase_LocalRef'] %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Local Ref</dt>
+                        <dd class="govuk-summary-list__value">{{ data['newCase_LocalRef'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> Local Ref</span></a></dd>
+                    </div>
+                {% else %}
+
+                {% endif %}        
+                <!-- ITEM 3 - END -->
+
+                <!-- ITEM 4 - START -->
+                {% if data['newCase_RegisteringArea'] %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Registering Area</dt>
+                        <dd class="govuk-summary-list__value">{{ data['newCase_RegisteringArea'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> Registering Area</span></a></dd>
+                    </div>
+                {% else %}
+
+                {% endif %}        
+                <!-- ITEM 4 - END -->
+
+                <!-- ITEM 5 - START -->
+                {% if data['newCase_RegisteringUnit'] %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Registering Unit</dt>
+                        <dd class="govuk-summary-list__value">{{ data['newCase_RegisteringUnit'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> Registering Unit</span></a></dd>
+                    </div>
+                {% else %}
+
+                {% endif %}        
+                <!-- ITEM 5 - END -->
+
+                <!-- ITEM 6 - START -->
+                {% if data['newCase_WCU'] %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">WCU</dt>
+                        <dd class="govuk-summary-list__value">{{ data['newCase_WCU'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> WCU</span></a></dd>
+                    </div>
+                {% else %}
+
+                {% endif %}        
+                <!-- ITEM 6 - END -->
+
+                <!-- ITEM 7 - START -->
+                {% if data['newCase_Crest'] %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Crest</dt>
+                        <dd class="govuk-summary-list__value">{{ data['newCase_Crest'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> Crest</span></a></dd>
+                    </div>
+                {% else %}
+
+                {% endif %}        
+                <!-- ITEM 7 - END -->
+
+            </dl>
+            <!-- //////////////////////////////////////////////////// SECTION 1 - END //////////////////////////////////////////////////// -->
+
+            <!-- //////////////////////////////////////////////////// SECTION 2 - START //////////////////////////////////////////////////// -->
+            <h2 class="govuk-heading-m">Case particulars</h2>
+            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+
+                <!-- ITEM 1 - START -->
+                {% if data['newCase_OperationName_YesNo'] == 'Yes' %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Operation name</dt>
+                        <dd class="govuk-summary-list__value">{{ data['newCase_OperationName'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> Operation name</span></a></dd>
+                    </div>
+                {% else %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Operation name</dt>
+                        <dd class="govuk-summary-list__value">No</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> area</span></a></dd>
+                    </div>
+                {% endif %}        
+                <!-- ITEM 1 - END -->
+
+                <!-- ITEM 2 - START -->
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Suspects</dt>
+                    <dd class="govuk-summary-list__value">{{ data['newCase_Suspect_YesNo'] }}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> Suspects</span></a></dd>
+                </div>
+                <!-- ITEM 2 - END -->
+
+                <!-- ITEM 3 - START -->
+                {% if data['newCase_FirstHearing_YesNo'] == 'Yes' %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">First hearing court location</dt>
+                        <dd class="govuk-summary-list__value">{{ data['newCase_CourtLocation'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> First Hearing court location</span></a></dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">First hearing date</dt>
+                        <dd class="govuk-summary-list__value">{{ data['newCase_FirstHearing_Date'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> First Hearing date</span></a></dd>
+                    </div>
+                {% else %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">First Hearing</dt>
+                        <dd class="govuk-summary-list__value">No</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> First Hearing</span></a></dd>
+                    </div>
+                {% endif %}        
+                <!-- ITEM 3 - END -->
+
+                <!-- ITEM 4 - START -->
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Witnesses</dt>
+                    <dd class="govuk-summary-list__value">{{ data['newCase_Witness_YesNo'] }}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> Witnesses</span></a></dd>
+                </div>
+                <!-- ITEM 4 - END -->
+
+                <!-- ITEM 5 - START -->
+                {% if data['newCase_LongTerm'] %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Long term interest</dt>
+                        <dd class="govuk-summary-list__value">Yes</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> Long term interest</span></a></dd>
+                    </div>
+                {% else %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Long term interest</dt>
+                        <dd class="govuk-summary-list__value">No</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> Long term interest</span></a></dd>
+                    </div>
+                {% endif %}        
+                <!-- ITEM 5 - END -->
+
+            </dl>
+            <!-- //////////////////////////////////////////////////// SECTION 2 - END //////////////////////////////////////////////////// -->
+
+            <!-- //////////////////////////////////////////////////// SECTION 3 - START //////////////////////////////////////////////////// -->
+            {% if data['newCase_Suspect_YesNo'] == 'Yes' %}
+                <h2 class="govuk-heading-m">Suspects</h2>
+
+                <!-- SUSPECT 1 - START -->
+                {% if data['newCase_Suspect-LastName'] or data['newCase_Suspect-CompanyName'] %}
+                    {% if data['newCase_Suspect-LastName'] %}
+                        <dl class="govuk-summary-list govuk-!-margin-bottom-4">
+                    {% elseif data['newCase_Suspect-CompanyName'] %}
+                        <dl class="govuk-summary-list govuk-!-margin-bottom-4">
+                    {% endif %}
+                    <dl class="govuk-summary-list govuk-!-margin-bottom-0">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                {% if data['newCase_Suspect-LastName'] %}
+                                    <span class="icon-new user"></span> <span class="uppercase">{{ data['newCase_Suspect-LastName'] }}</span>, {{ data['newCase_Suspect-FirstName'] }}
+                                {% elseif data['newCase_Suspect-CompanyName'] %}
+                                    <span class="icon-new company"></span> {{ data['newCase_Suspect-CompanyName'] }}
+                                {% endif %}
+                            </dt>
+                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03B-suspects">Change<span class="govuk-visually-hidden"> Suspect</span></a></dd>
+                        </div>
+                    </dl>
+                {% else %}
+
+                {% endif %}   
+
+                {% if data['createCase_Suspect_1_complete'] == 'true' or data['createCase_C5_V1_Complete'] == 'true' %}
+                    <details class="govuk-details suspect_details_panel govuk-!-margin-bottom-6">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">View details and charges</span>
+                        </summary>
+                        <div class="govuk-details__text">
+
+                            {% if data['createCase_Suspect_1_complete'] == 'true' %}
+                                <h2 class="govuk-heading-m" style="">Suspect details</h2>
+                            {% else %}
+
+                            {% endif %}
+
+                            {% if data['addSuspect_Form-DOB-Day'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">DOB</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-DOB-Day'] }}/{{ data['addSuspect_Form-DOB-Month'] }}/{{ data['addSuspect_Form-DOB-Year'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> DOB</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Gender'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Gender</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Gender'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Gender</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Disability'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Disability</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Disability'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Disability</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Religion/Belief</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Religion'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Religion/Belief</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Ethnicity</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Ethnicity'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Ethnicity</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-SDO'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">SDO</dt>
+                                    <dd class="govuk-summary-list__value">Yes</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> SDO</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Type</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Type'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Type</span></a></dd>
+                                </div>
+                                {% if data['addSuspect_Form-Type'] == 'Unspecified' %}
+                                
+                                {% else %}
+                                    <div class="govuk-summary-list__row">
+                                        <dt class="govuk-summary-list__key">Arrest date</dt>
+                                        <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-ArrestDate-Day'] }}/{{ data['addSuspect_Form-ArrestDate-Month'] }}/{{ data['addSuspect_Form-ArrestDate-Year'] }}</dd>
+                                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Arrest date</span></a></dd>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['createCase_Suspect_1_Aliases-LastName'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Aliases</dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <ul>
+                                            {% if data['createCase_Suspect_1_Aliases-LastName'] %}<li><span class="uppercase">{{ data['createCase_Suspect_1_Aliases-LastName'] }}</span>, {{ data['createCase_Suspect_1_Aliases-FirstName'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_1_Aliases-LastName2'] %}<li><span class="uppercase">{{ data['createCase_Suspect_1_Aliases-LastName2'] }}</span>, {{ data['createCase_Suspect_1_Aliases-FirstName2'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_1_Aliases-LastName3'] %}<li><span class="uppercase">{{ data['createCase_Suspect_1_Aliases-LastName3'] }}</span>, {{ data['createCase_Suspect_1_Aliases-FirstName3'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_1_Aliases-LastName4'] %}<li><span class="uppercase">{{ data['createCase_Suspect_1_Aliases-LastName4'] }}</span>, {{ data['createCase_Suspect_1_Aliases-FirstName4'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_1_Aliases-LastName5'] %}<li><span class="uppercase">{{ data['createCase_Suspect_1_Aliases-LastName5'] }}</span>, {{ data['createCase_Suspect_1_Aliases-FirstName5'] }}</li>{% else %}{% endif %}
+                                        </ul>
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Aliases</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+
+                            {% if data['createCase_C5_V1_Complete'] == 'true' %}
+                                {% if data['createCase_Suspect_1_complete'] == 'true' %}
+                                    <h2 class="govuk-heading-m govuk-!-margin-top-8" style="">Charges</h2>
+                                {% else %}
+                                    <h2 class="govuk-heading-m govuk-!-margin-top-2" style="">Charges</h2>
+                                {% endif %}
+
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Offence code</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['newChargeCode'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V1-suspect-charges">Change<span class="govuk-visually-hidden"> Offence code</span></a></dd>
+                                </div>
+
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Description</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['newCharge_Description'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V1-suspect-charges">Change<span class="govuk-visually-hidden"> Description</span></a></dd>
+                                </div>
+
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Date of offence</dt>
+                                    <dd class="govuk-summary-list__value">
+                                        {{ data['addCharge_Form_Date-Day'] }}/{{ data['addCharge_Form_Date-Month'] }}/{{ data['addCharge_Form_Date-Year'] }}
+                                        {% if data['addCharge_Form_Date-Day_2'] %}
+                                            to {{ data['addCharge_Form_Date-Day_2'] }}/{{ data['addCharge_Form_Date-Month_2'] }}/{{ data['addCharge_Form_Date-Year_2'] }}
+                                        {% else %}
+
+                                        {% endif %}                    
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V1-suspect-charges">Change<span class="govuk-visually-hidden"> Date of offence</span></a></dd>
+                                </div>
+
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Comment</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['newCharge_Comment'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V1-suspect-charges">Change<span class="govuk-visually-hidden"> Comment</span></a></dd>
+                                </div>
+
+                                {% if data['newCharge_Victim_YesNo'] == 'Yes' %}
+                                    <div class="govuk-summary-list__row">
+                                        <dt class="govuk-summary-list__key">Victim</dt>
+                                        <dd class="govuk-summary-list__value">
+                                            <span class="uppercase">{{ data['newCharge_Victim_SurnameName'] }}</span>, {{ data['newCharge_Victim_FirstName'] }}
+                                            {% if data['newCharge_Vulnerable'] or data['newCharge_Intimidated'] %}
+                                                <br>
+                                            {% else %}
+
+                                            {% endif %}  
+                                            {% if data['newCharge_Vulnerable'] %}<strong class="govuk-tag govuk-tag--blue">{{ data['newCharge_Vulnerable'] }}</strong>{% else %}{% endif %}  
+                                            {% if data['newCharge_Intimidated'] %}<strong class="govuk-tag govuk-tag--blue">{{ data['newCharge_Intimidated'] }}</strong>{% else %}{% endif %}  
+                                        </dd>
+                                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V1-suspect-charges">Change<span class="govuk-visually-hidden"> Victim</span></a></dd>
+                                    </div>
+                                {% else %}
+                                    <div class="govuk-summary-list__row">
+                                        <dt class="govuk-summary-list__key">Victim</dt>
+                                        <dd class="govuk-summary-list__value">No</dd>
+                                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V1-suspect-charges">Change<span class="govuk-visually-hidden"> Victim</span></a></dd>
+                                    </div>
+                                {% endif %}                    
+
+                            {% else %}
+
+                            {% endif %}                    
+
+                        </div>
+                    </details>
+
+                {% else %}
+
+                {% endif %}                    
+            {% else %}
+
+            {% endif %}   
+            <!-- SUSPECT 1 - END -->
+
+            <!-- SUSPECT 2 - START -->
+            {% if data['newCase_Suspect-LastName2'] or data['newCase_Suspect-CompanyName2'] %}
+                {% if data['newCase_Suspect-LastName2'] %}
+                    <dl class="govuk-summary-list govuk-!-margin-bottom-4">
+                {% elseif data['newCase_Suspect-CompanyName2'] %}
+                    <dl class="govuk-summary-list govuk-!-margin-bottom-4">
+                {% endif %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            {% if data['newCase_Suspect-LastName2'] %}
+                                <span class="icon-new user"></span> <span class="uppercase">{{ data['newCase_Suspect-LastName2'] }}</span>, {{ data['newCase_Suspect-FirstName2'] }}
+                            {% elseif data['newCase_Suspect-CompanyName2'] %}
+                                <span class="icon-new company"></span> {{ data['newCase_Suspect-CompanyName2'] }}
+                            {% endif %}
+                        </dt>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03B-suspects">Change<span class="govuk-visually-hidden"> Suspect</span></a></dd>
+                    </div>
+                </dl>
+
+                {% if data['createCase_Suspect_2_complete'] == 'true' or data['chargeAddedComplete'] == 'true' %}
+                    <details class="govuk-details suspect_details_panel govuk-!-margin-bottom-6">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">View details and charges</span>
+                        </summary>
+                        <div class="govuk-details__text">
+
+                            {% if data['createCase_Suspect_2_complete'] == 'true' %}
+                                <h2 class="govuk-heading-m" style="">Suspect details</h2>
+                            {% else %}
+
+                            {% endif %}
+
+                            {% if data['addSuspect_Form-DOB_2-Day'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">DOB</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-DOB_2-Day'] }}/{{ data['addSuspect_Form-DOB_2-Month'] }}/{{ data['addSuspect_Form-DOB_2-Year'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> DOB</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Gender_2'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Gender</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Gender_2'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Gender</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Disability_2'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Disability</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Disability_2'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Disability</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_2'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Religion/Belief</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Religion_2'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Religion/Belief</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Ethnicity</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Ethnicity_2'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Ethnicity</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-SDO_2'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">SDO</dt>
+                                    <dd class="govuk-summary-list__value">Yes</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> SDO</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_2'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Type</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Type_2'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Type</span></a></dd>
+                                </div>
+                                {% if data['addSuspect_Form-Type_2'] == 'Unspecified' %}
+
+                                {% else %}
+                                    <div class="govuk-summary-list__row">
+                                        <dt class="govuk-summary-list__key">Arrest date</dt>
+                                        <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-ArrestDate_2-Day'] }}/{{ data['addSuspect_Form-ArrestDate_2-Month'] }}/{{ data['addSuspect_Form-ArrestDate_2-Year'] }}</dd>
+                                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Arrest date</span></a></dd>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+
+                            {% endif %}
+
+                            {% if data['createCase_Suspect_2_Aliases-LastName'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Aliases</dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <ul>
+                                            {% if data['createCase_Suspect_2_Aliases-LastName'] %}<li><span class="uppercase">{{ data['createCase_Suspect_2_Aliases-LastName'] }}</span>, {{ data['createCase_Suspect_2_Aliases-FirstName'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_2_Aliases-LastName2'] %}<li><span class="uppercase">{{ data['createCase_Suspect_2_Aliases-LastName2'] }}</span>, {{ data['createCase_Suspect_2_Aliases-FirstName2'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_2_Aliases-LastName3'] %}<li><span class="uppercase">{{ data['createCase_Suspect_2_Aliases-LastName3'] }}</span>, {{ data['createCase_Suspect_2_Aliases-FirstName3'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_2_Aliases-LastName4'] %}<li><span class="uppercase">{{ data['createCase_Suspect_2_Aliases-LastName4'] }}</span>, {{ data['createCase_Suspect_2_Aliases-FirstName4'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_2_Aliases-LastName5'] %}<li><span class="uppercase">{{ data['createCase_Suspect_2_Aliases-LastName5'] }}</span>, {{ data['createCase_Suspect_2_Aliases-FirstName5'] }}</li>{% else %}{% endif %}
+                                        </ul>
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Aliases</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+
+                            {% if data['chargeAddedComplete'] == 'true' %}
+                                {% if data['createCase_Suspect_1_complete'] == 'true' %}
+                                    <h2 class="govuk-heading-m govuk-!-margin-top-8" style="">Charges</h2>
+                                {% else %}
+                                    <h2 class="govuk-heading-m govuk-!-margin-top-2" style="">Charges</h2>
+                                {% endif %}
+
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Offence</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['newChargeCode_2'] }} Criminal damage to property valued under £5000</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_A-suspect-charges">Change<span class="govuk-visually-hidden"> Offence</span></a></dd>
+                                </div>
+
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Date of offence</dt>
+                                    <dd class="govuk-summary-list__value">
+                                        {{ data['addCharge_Form_Date-Day_3'] }}/{{ data['addCharge_Form_Date-Month_3'] }}/{{ data['addCharge_Form_Date-Year_3'] }}
+                                        {% if data['addCharge_Form_Date-Day_4'] %}
+                                            to {{ data['addCharge_Form_Date-Day_4'] }}/{{ data['addCharge_Form_Date-Month_4'] }}/{{ data['addCharge_Form_Date-Year_4'] }}
+                                        {% else %}
+
+                                        {% endif %}                    
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_B-suspect-charges">Change<span class="govuk-visually-hidden"> Date of offence</span></a></dd>
+                                </div>
+
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Address</dt>
+                                    <dd class="govuk-summary-list__value">
+                                        {{ data['addCharge_Form-Address_1'] }},<br>
+                                        {% if data['addCharge_Form_Date-Day_4'] %}{{ data['addCharge_Form-Address_2'] }},<br>{% else %}{% endif %}
+                                        {{ data['addCharge_Form-Address_3'] }},<br>
+                                        {{ data['addCharge_Form-Postcode'] }},<br>
+                                        {{ data['addCharge_Form-Address_4'] }},<br>
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_B-suspect-charges">Change<span class="govuk-visually-hidden"> Address</span></a></dd>
+                                </div>
+
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Victim</dt>
+                                    <dd class="govuk-summary-list__value">
+                                        {{ data['addCharge_Form-Victim'] }}
+                                        {% if data['addCharge_Form-Vulnerable'] or data['addCharge_Form-Intimidated'] %}<br>{% else %}{% endif %}
+                                        {% if data['addCharge_Form-Vulnerable'] %}<strong class="govuk-tag govuk-tag--blue">Vulnerable</strong>{% else %}{% endif %}
+                                        {% if data['addCharge_Form-Intimidated'] %}<strong class="govuk-tag govuk-tag--blue">Intimidated</strong>{% else %}{% endif %}
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_B-suspect-charges">Change<span class="govuk-visually-hidden"> Victim</span></a></dd>
+                                </div>
+
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Details</dt>
+                                    <dd class="govuk-summary-list__value">
+                                        On <span class="dateOffence">{{ data['addCharge_Form_Date-Day_2'] }}/{{ data['addCharge_Form_Date-Month_2'] }}/{{ data['addCharge_Form_Date-Year_2'] }}</span> at {{ data['addCharge_Form-Location'] }}
+                                        without lawful excuse, {{ data['addCharge_Form-Type'] }} {{ data['addCharge_Form-Property'] }} to the value of {{ data['addCharge_Form-Value'] }} belonging to {{ data['addCharge_Form-Owner'] }} 
+                                        intending to destroy or damage such property or being reckless as to whether such property would be destroyed or damaged.
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_C-suspect-charges">Change<span class="govuk-visually-hidden"> Details</span></a></dd>
+                                </div>
+
+                                {% if data['addCharge_Form-Particulars'] %}
+                                    <div class="govuk-summary-list__row">
+                                        <dt class="govuk-summary-list__key">Charge particulars</dt>
+                                        <dd class="govuk-summary-list__value">{{ data['addCharge_Form-Particulars'] }}</dd>
+                                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_C-suspect-charges">Change<span class="govuk-visually-hidden"> Charge particulars</span></a></dd>
+                                    </div>
+                                {% else %}
+
+                                {% endif %}
+
+
+                            {% else %}
+
+                            {% endif %}
+
+                        </div>
+                    </details>
+                {% else %}
+
+                {% endif %}  
+            {% else %}
+
+            {% endif %}   
+            <!-- SUSPECT 2 - END -->
+
+            <!-- SUSPECT 3 - START -->
+            {% if data['newCase_Suspect-LastName3'] or data['newCase_Suspect-CompanyName3'] %}
+                {% if data['newCase_Suspect-LastName3'] %}
+                    <dl class="govuk-summary-list govuk-!-margin-bottom-4">
+                {% elseif data['newCase_Suspect-CompanyName3'] %}
+                    <dl class="govuk-summary-list govuk-!-margin-bottom-4">
+                {% endif %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            {% if data['newCase_Suspect-LastName3'] %}
+                                <span class="icon-new user"></span> <span class="uppercase">{{ data['newCase_Suspect-LastName3'] }}</span>, {{ data['newCase_Suspect-FirstName3'] }}
+                            {% elseif data['newCase_Suspect-CompanyName3'] %}
+                                <span class="icon-new company"></span> {{ data['newCase_Suspect-CompanyName3'] }}
+                            {% endif %}
+                        </dt>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03B-suspects">Change<span class="govuk-visually-hidden"> Suspect</span></a></dd>
+                    </div>
+                </dl>
+
+                {% if data['createCase_Suspect_3_complete'] == 'true' %}
+                    <details class="govuk-details suspect_details_panel govuk-!-margin-bottom-4">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">View details and charges</span>
+                        </summary>
+                        <div class="govuk-details__text">
+
+                            <h2 class="govuk-heading-m" style="">Suspect details</h2>
+
+                            {% if data['addSuspect_Form-DOB_3-Day'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">DOB</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-DOB_3-Day'] }}/{{ data['addSuspect_Form-DOB_3-Month'] }}/{{ data['addSuspect_Form-DOB_3-Year'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> DOB</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}   
+                            {% if data['addSuspect_Form-Gender_3'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Gender</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Gender_3'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Gender</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Disability_3'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Disability</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Disability_3'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Disability</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_3'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Religion/Belief</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Religion_3'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Religion/Belief</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Ethnicity</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Ethnicity_3'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Ethnicity</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-SDO_3'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">SDO</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-SDO_3'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> SDO</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_3'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Type</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Type_3'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Type</span></a></dd>
+                                </div>
+                                {% if data['addSuspect_Form-Type_3'] == 'Unspecified' %}
+                                
+                                {% else %}
+                                    <div class="govuk-summary-list__row">
+                                        <dt class="govuk-summary-list__key">Arrest date</dt>
+                                        <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-ArrestDate_3-Day'] }}/{{ data['addSuspect_Form-ArrestDate_3-Month'] }}/{{ data['addSuspect_Form-ArrestDate_3-Year'] }}</dd>
+                                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Arrest date</span></a></dd>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Charges_3'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Charges</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Charges_3'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Charges</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['createCase_Suspect_3_Aliases-LastName'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Aliases</dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <ul>
+                                            {% if data['createCase_Suspect_3_Aliases-LastName'] %}<li><span class="uppercase">{{ data['createCase_Suspect_3_Aliases-LastName'] }}</span>, {{ data['createCase_Suspect_3_Aliases-FirstName'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_3_Aliases-LastName2'] %}<li><span class="uppercase">{{ data['createCase_Suspect_3_Aliases-LastName2'] }}</span>, {{ data['createCase_Suspect_3_Aliases-FirstName2'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_3_Aliases-LastName3'] %}<li><span class="uppercase">{{ data['createCase_Suspect_3_Aliases-LastName3'] }}</span>, {{ data['createCase_Suspect_3_Aliases-FirstName3'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_3_Aliases-LastName4'] %}<li><span class="uppercase">{{ data['createCase_Suspect_3_Aliases-LastName4'] }}</span>, {{ data['createCase_Suspect_3_Aliases-FirstName4'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_3_Aliases-LastName5'] %}<li><span class="uppercase">{{ data['createCase_Suspect_3_Aliases-LastName5'] }}</span>, {{ data['createCase_Suspect_3_Aliases-FirstName5'] }}</li>{% else %}{% endif %}
+                                        </ul>
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Aliases</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+
+                        </div>
+                    </details>
+                {% else %}
+
+                {% endif %}   
+            {% else %}
+
+            {% endif %}   
+            <!-- SUSPECT 3 - END -->
+
+            <!-- SUSPECT 4 - START -->
+            {% if data['newCase_Suspect-LastName4'] or data['newCase_Suspect-CompanyName4'] %}
+                {% if data['newCase_Suspect-LastName4'] %}
+                    <dl class="govuk-summary-list govuk-!-margin-bottom-4">
+                {% elseif data['newCase_Suspect-CompanyName4'] %}
+                    <dl class="govuk-summary-list govuk-!-margin-bottom-4">
+                {% endif %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            {% if data['newCase_Suspect-LastName4'] %}
+                                <span class="icon-new user"></span> <span class="uppercase">{{ data['newCase_Suspect-LastName4'] }}</span>, {{ data['newCase_Suspect-FirstName4'] }}
+                            {% elseif data['newCase_Suspect-CompanyName4'] %}
+                                <span class="icon-new company"></span> {{ data['newCase_Suspect-CompanyName4'] }}
+                            {% endif %}
+                        </dt>
+
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03B-suspects">Change<span class="govuk-visually-hidden"> Suspect</span></a></dd>
+                    </div>
+                </dl>
+
+                {% if data['createCase_Suspect_4_complete'] == 'true' %}
+                    <details class="govuk-details suspect_details_panel govuk-!-margin-bottom-4">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">View details and charges</span>
+                        </summary>
+                        <div class="govuk-details__text">
+
+                            <h2 class="govuk-heading-m" style="">Suspect details</h2>
+
+                            {% if data['addSuspect_Form-DOB_4-Day'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">DOB</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-DOB_4-Day'] }}/{{ data['addSuspect_Form-DOB_4-Month'] }}/{{ data['addSuspect_Form-DOB_4-Year'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> DOB</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}   
+                            {% if data['addSuspect_Form-Gender_4'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Gender</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Gender_4'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Gender</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Disability_4'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Disability</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Disability_4'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Disability</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_4'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Religion/Belief</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Religion_4'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Religion/Belief</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Ethnicity</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Ethnicity_4'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Ethnicity</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-SDO_4'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">SDO</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-SDO_4'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> SDO</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_4'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Type</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Type_4'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Type</span></a></dd>
+                                </div>
+                                {% if data['addSuspect_Form-Type_4'] == 'Unspecified' %}
+                                
+                                {% else %}
+                                    <div class="govuk-summary-list__row">
+                                        <dt class="govuk-summary-list__key">Arrest date</dt>
+                                        <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-ArrestDate_4-Day'] }}/{{ data['addSuspect_Form-ArrestDate_4-Month'] }}/{{ data['addSuspect_Form-ArrestDate_4-Year'] }}</dd>
+                                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Arrest date</span></a></dd>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Charges_4'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Charges</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Charges_4'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Charges</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['createCase_Suspect_4_Aliases-LastName'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Aliases</dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <ul>
+                                            {% if data['createCase_Suspect_4_Aliases-LastName'] %}<li><span class="uppercase">{{ data['createCase_Suspect_4_Aliases-LastName'] }}</span>, {{ data['createCase_Suspect_4_Aliases-FirstName'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_4_Aliases-LastName2'] %}<li><span class="uppercase">{{ data['createCase_Suspect_4_Aliases-LastName2'] }}</span>, {{ data['createCase_Suspect_4_Aliases-FirstName2'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_4_Aliases-LastName3'] %}<li><span class="uppercase">{{ data['createCase_Suspect_4_Aliases-LastName3'] }}</span>, {{ data['createCase_Suspect_4_Aliases-FirstName3'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_4_Aliases-LastName4'] %}<li><span class="uppercase">{{ data['createCase_Suspect_4_Aliases-LastName4'] }}</span>, {{ data['createCase_Suspect_4_Aliases-FirstName4'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_4_Aliases-LastName5'] %}<li><span class="uppercase">{{ data['createCase_Suspect_4_Aliases-LastName5'] }}</span>, {{ data['createCase_Suspect_4_Aliases-FirstName5'] }}</li>{% else %}{% endif %}
+                                        </ul>
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Aliases</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+
+                        </div>
+                    </details>
+                {% else %}
+
+                {% endif %}   
+            {% else %}
+
+            {% endif %}   
+            <!-- SUSPECT 4 - END -->
+
+            <!-- SUSPECT 5 - START -->
+            {% if data['newCase_Suspect-LastName5'] or data['newCase_Suspect-CompanyName5'] %}
+                {% if data['newCase_Suspect-LastName5'] %}
+                    <dl class="govuk-summary-list govuk-!-margin-bottom-0">
+                {% elseif data['newCase_Suspect-CompanyName5'] %}
+                    <dl class="govuk-summary-list govuk-!-margin-bottom-4">
+                {% endif %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            {% if data['newCase_Suspect-LastName5'] %}
+                                <span class="icon-new user"></span> <span class="uppercase">{{ data['newCase_Suspect-LastName5'] }}</span>, {{ data['newCase_Suspect-FirstName5'] }}
+                            {% elseif data['newCase_Suspect-CompanyName5'] %}
+                                <span class="icon-new company"></span> {{ data['newCase_Suspect-CompanyName5'] }}
+                            {% endif %}
+                        </dt>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03B-suspects">Change<span class="govuk-visually-hidden"> Suspect</span></a></dd>
+                    </div>
+                </dl>
+
+                {% if data['createCase_Suspect_5_complete'] == 'true' %}
+                    <details class="govuk-details suspect_details_panel govuk-!-margin-bottom-4">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">View details and charges</span>
+                        </summary>
+                        <div class="govuk-details__text">
+
+                            <h2 class="govuk-heading-m" style="">Suspect details</h2>
+
+                            {% if data['addSuspect_Form-DOB_5-Day'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">DOB</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-DOB_5-Day'] }}/{{ data['addSuspect_Form-DOB_5-Month'] }}/{{ data['addSuspect_Form-DOB_5-Year'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> DOB</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}   
+                            {% if data['addSuspect_Form-Gender_5'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Gender</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Gender_5'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Gender</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Disability_5'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Disability</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Disability_5'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Disability</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_5'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Religion/Belief</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Religion_5'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Religion/Belief</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Ethnicity</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Ethnicity_5'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Ethnicity</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-SDO_5'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">SDO</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-SDO_5'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> SDO</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_5'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Type</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Type_5'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Type</span></a></dd>
+                                </div>
+                                {% if data['addSuspect_Form-Type_5'] == 'Unspecified' %}
+                                
+                                {% else %}
+                                    <div class="govuk-summary-list__row">
+                                        <dt class="govuk-summary-list__key">Arrest date</dt>
+                                        <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-ArrestDate_5-Day'] }}/{{ data['addSuspect_Form-ArrestDate_5-Month'] }}/{{ data['addSuspect_Form-ArrestDate_5-Year'] }}</dd>
+                                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Arrest date</span></a></dd>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['addSuspect_Form-Charges_5'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Charges</dt>
+                                    <dd class="govuk-summary-list__value">{{ data['addSuspect_Form-Charges_5'] }}</dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Charges</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+                            {% if data['createCase_Suspect_5_Aliases-LastName'] %}
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Aliases</dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <ul>
+                                            {% if data['createCase_Suspect_5_Aliases-LastName'] %}<li><span class="uppercase">{{ data['createCase_Suspect_5_Aliases-LastName'] }}</span>, {{ data['createCase_Suspect_5_Aliases-FirstName'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_5_Aliases-LastName2'] %}<li><span class="uppercase">{{ data['createCase_Suspect_5_Aliases-LastName2'] }}</span>, {{ data['createCase_Suspect_5_Aliases-FirstName2'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_5_Aliases-LastName3'] %}<li><span class="uppercase">{{ data['createCase_Suspect_5_Aliases-LastName3'] }}</span>, {{ data['createCase_Suspect_5_Aliases-FirstName3'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_5_Aliases-LastName4'] %}<li><span class="uppercase">{{ data['createCase_Suspect_5_Aliases-LastName4'] }}</span>, {{ data['createCase_Suspect_5_Aliases-FirstName4'] }}</li>{% else %}{% endif %}
+                                            {% if data['createCase_Suspect_5_Aliases-LastName5'] %}<li><span class="uppercase">{{ data['createCase_Suspect_5_Aliases-LastName5'] }}</span>, {{ data['createCase_Suspect_5_Aliases-FirstName5'] }}</li>{% else %}{% endif %}
+                                        </ul>
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Aliases</span></a></dd>
+                                </div>
+                            {% else %}
+
+                            {% endif %}
+
+                        </div>
+                    </details>
+                {% else %}
+
+                {% endif %}   
+            {% else %}
+
+            {% endif %}   
+            <!-- SUSPECT 5 - END -->
+            <!-- //////////////////////////////////////////////////// SECTION 3 - END //////////////////////////////////////////////////// -->
+
+            <!-- //////////////////////////////////////////////////// SECTION 4 - START //////////////////////////////////////////////////// -->
+            {% if data['newCase_Witness_YesNo'] == 'Yes' %}
+                <h2 class="govuk-heading-m govuk-!-margin-top-9">Witnesses</h2>
+                <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+
+                    <!-- WITNESS 1 - START -->
+                    {% if data['newCase_Witness-LastName'] %}
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                <span class="uppercase">{{ data['newCase_Witness-LastName'] }}</span>, {{ data['newCase_Witness-FirstName'] }}
+                                {% if data['newCase_Witness-Victim'] or data['newCase_Witness-Vulnerable'] or data['newCase_Witness-Intimidated'] %}<br>{% else %}{% endif %}
+                                {% if data['newCase_Witness-Victim'] %}<strong class="govuk-tag govuk-tag--blue">Victim</strong>{% else %}{% endif %}
+                                {% if data['newCase_Witness-Vulnerable'] %}<strong class="govuk-tag govuk-tag--blue">Vulnerable</strong>{% else %}{% endif %}
+                                {% if data['newCase_Witness-Intimidated'] %}<strong class="govuk-tag govuk-tag--blue">Intimidated</strong>{% else %}{% endif %}
+                            </dt>
+                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="04A-create-witness">Change<span class="govuk-visually-hidden"> Witness</span></a></dd>
+                        </div>
+                    {% else %}
+
+                    {% endif %}   
+                    <!-- WITNESS 1 - END -->
+
+                    <!-- WITNESS 2 - START -->
+                    {% if data['newCase_Witness-LastName2'] %}
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                <span class="uppercase">{{ data['newCase_Witness-LastName2'] }}</span>, {{ data['newCase_Witness-FirstName2'] }}
+                                {% if data['newCase_Witness-Victim2'] or data['newCase_Witness-Vulnerable2'] or data['newCase_Witness-Intimidated2'] %}<br>{% else %}{% endif %}
+                                {% if data['newCase_Witness-Victim2'] %}<strong class="govuk-tag govuk-tag--blue">Victim</strong>{% else %}{% endif %}
+                                {% if data['newCase_Witness-Vulnerable2'] %}<strong class="govuk-tag govuk-tag--blue">Vulnerable</strong>{% else %}{% endif %}
+                                {% if data['newCase_Witness-Intimidated2'] %}<strong class="govuk-tag govuk-tag--blue">Intimidated</strong>{% else %}{% endif %}
+                            </dt>
+                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="04A-create-witness">Change<span class="govuk-visually-hidden"> Witness</span></a></dd>
+                        </div>
+                    {% else %}
+
+                    {% endif %}   
+                    <!-- WITNESS 2 - END -->
+
+                    <!-- WITNESS 3 - START -->
+                    {% if data['newCase_Witness-LastName3'] %}
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                <span class="uppercase">{{ data['newCase_Witness-LastName3'] }}</span>, {{ data['newCase_Witness-FirstName3'] }}
+                                {% if data['newCase_Witness-Victim3'] or data['newCase_Witness-Vulnerable3'] or data['newCase_Witness-Intimidated3'] %}<br>{% else %}{% endif %}
+                                {% if data['newCase_Witness-Victim3'] %}<strong class="govuk-tag govuk-tag--blue">Victim</strong>{% else %}{% endif %}
+                                {% if data['newCase_Witness-Vulnerable3'] %}<strong class="govuk-tag govuk-tag--blue">Vulnerable</strong>{% else %}{% endif %}
+                                {% if data['newCase_Witness-Intimidated3'] %}<strong class="govuk-tag govuk-tag--blue">Intimidated</strong>{% else %}{% endif %}
+                            </dt>
+                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="04A-create-witness">Change<span class="govuk-visually-hidden"> Witness</span></a></dd>
+                        </div>
+                    {% else %}
+
+                    {% endif %} 
+                    <!-- WITNESS 3 - END -->
+
+                    <!-- WITNESS 4 - START -->
+                    {% if data['newCase_Witness-LastName4'] %}
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                <span class="uppercase">{{ data['newCase_Witness-LastName4'] }}</span>, {{ data['newCase_Witness-FirstName4'] }}
+                                {% if data['newCase_Witness-Victim4'] or data['newCase_Witness-Vulnerable4'] or data['newCase_Witness-Intimidated4'] %}<br>{% else %}{% endif %}
+                                {% if data['newCase_Witness-Victim4'] %}<strong class="govuk-tag govuk-tag--blue">Victim</strong>{% else %}{% endif %}
+                                {% if data['newCase_Witness-Vulnerable4'] %}<strong class="govuk-tag govuk-tag--blue">Vulnerable</strong>{% else %}{% endif %}
+                                {% if data['newCase_Witness-Intimidated4'] %}<strong class="govuk-tag govuk-tag--blue">Intimidated</strong>{% else %}{% endif %}
+                            </dt>
+                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="04A-create-witness">Change<span class="govuk-visually-hidden"> Witness</span></a></dd>
+                        </div>
+                    {% else %}
+
+                    {% endif %}   
+                    <!-- WITNESS 4 - END -->
+
+                    <!-- WITNESS 5 - START -->
+                    {% if data['newCase_Witness-LastName5'] %}
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                <span class="uppercase">{{ data['newCase_Witness-LastName5'] }}</span>, {{ data['newCase_Witness-FirstName5'] }}
+                                {% if data['newCase_Witness-Victim5'] or data['newCase_Witness-Vulnerable5'] or data['newCase_Witness-Intimidated5'] %}<br>{% else %}{% endif %}
+                                {% if data['newCase_Witness-Victim5'] %}<strong class="govuk-tag govuk-tag--blue">Victim</strong>{% else %}{% endif %}
+                                {% if data['newCase_Witness-Vulnerable5'] %}<strong class="govuk-tag govuk-tag--blue">Vulnerable</strong>{% else %}{% endif %}
+                                {% if data['newCase_Witness-Intimidated5'] %}<strong class="govuk-tag govuk-tag--blue">Intimidated</strong>{% else %}{% endif %}
+                            </dt>
+                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="04A-create-witness">Change<span class="govuk-visually-hidden"> Witness</span></a></dd>
+                        </div>
+                    {% else %}
+
+                    {% endif %}   
+                    <!-- WITNESS 5 - END -->
+
+                </dl>
+            {% else %}
+
+            {% endif %}   
+            <!-- //////////////////////////////////////////////////// SECTION 4 - END //////////////////////////////////////////////////// -->
+
+            <!-- //////////////////////////////////////////////////// SECTION 5 - START //////////////////////////////////////////////////// -->
+            <h2 class="govuk-heading-m govuk-!-margin-top-9">Case complexity, weight and monitoring codes</h2>
+            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+
+                <!-- ITEM 1 - START -->
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Case complexity</dt>
+                    <dd class="govuk-summary-list__value">{{ data['newCase_Complexity'] }}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="05-monitoring-codes">Change<span class="govuk-visually-hidden"> Case complexity</span></a></dd>
+                </div>
+                <!-- ITEM 1 - END -->
+
+                <!-- ITEM 2 - START -->
+                {% if data['newCase_CaseWeight_YesNo'] == 'No' %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Case weight</dt>
+                        <dd class="govuk-summary-list__value">None</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="05-monitoring-codes">Change<span class="govuk-visually-hidden"> Case weight</span></a></dd>
+                    </div>
+                {% else %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Case weight</dt>
+                        {% if data['newCase_CaseWeight'] == 'N/A' %}
+                            <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--grey">{{ data['newCase_CaseWeight'] }}</strong></dd>
+                        {% elseif data['newCase_CaseWeight'] == 'Low' %}
+                            <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--light-blue">{{ data['newCase_CaseWeight'] }}</strong></dd>
+                        {% elseif data['newCase_CaseWeight'] == 'Medium' %}
+                            <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--yellow">{{ data['newCase_CaseWeight'] }}</strong></dd>
+                        {% elseif data['newCase_CaseWeight'] == 'High' %}
+                            <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--orange">{{ data['newCase_CaseWeight'] }}</strong></dd>
+                        {% elseif data['newCase_CaseWeight'] == 'Exceptional' %}
+                            <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--red">{{ data['newCase_CaseWeight'] }}</strong></dd>
+                        {% endif %}        
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="05-monitoring-codes">Change<span class="govuk-visually-hidden"> Case weight</span></a></dd>
+                    </div>
+                {% endif %}        
+                <!-- ITEM 2 - END -->
+
+                <!-- ITEM 3 - START -->
+                {% if data['newCase_MonitoringCodes_YesNo'] == 'No' %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Monitoring codes</dt>
+                        <dd class="govuk-summary-list__value">None</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="05-monitoring-codes">Change<span class="govuk-visually-hidden"> Monitoring codes</span></a></dd>
+                    </div>
+                {% else %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Monitoring codes</dt>
+                        <dd class="govuk-summary-list__value">
+                            <ul class="govuk-list govuk-list--bullet">
+                                {% if 'Asset recovery' in data['newCase_MonitoringCodes']  %}<li>Asset recovery</li>{% else %}{% endif %}
+                                {% if 'Border security' in data['newCase_MonitoringCodes']  %}<li>Border security</li>{% else %}{% endif %}
+                                {% if 'Child abuse' in data['newCase_MonitoringCodes']  %}<li>Child abuse</li>{% else %}{% endif %}
+                                {% if 'Coronavirus offence' in data['newCase_MonitoringCodes']  %}<li>Coronavirus offence</li>{% else %}{% endif %}
+                                {% if 'COVID bail' in data['newCase_MonitoringCodes']  %}<li>COVID bail</li>{% else %}{% endif %}
+                                {% if 'COVID CTL' in data['newCase_MonitoringCodes']  %}<li>COVID CTL</li>{% else %}{% endif %}
+                                {% if 'Crime against an older person' in data['newCase_MonitoringCodes']  %}<li>Crime against an older person</li>{% else %}{% endif %}
+                                {% if 'Disability hate crime' in data['newCase_MonitoringCodes']  %}<li>Disability hate crime</li>{% else %}{% endif %}
+                                {% if 'Domestic abuse' in data['newCase_MonitoringCodes']  %}<li>Domestic abuse</li>{% else %}{% endif %}
+                                {% if 'Extraordinary event (post 2019)' in data['newCase_MonitoringCodes']  %}<li>Extraordinary event (post 2019)</li>{% else %}{% endif %}
+                                {% if 'Fatality' in data['newCase_MonitoringCodes']  %}<li>Fatality</li>{% else %}{% endif %}
+                                {% if 'Forced marriage' in data['newCase_MonitoringCodes']  %}<li>Forced marriage</li>{% else %}{% endif %}
+                                {% if 'GAP or NGAP' in data['newCase_MonitoringCodes']  %}<li>GAP or NGAP</li>{% else %}{% endif %}
+                                {% if 'Homophobic crime' in data['newCase_MonitoringCodes']  %}<li>Homophobic crime</li>{% else %}{% endif %}
+                                {% if '‘Honour’ based abuse' in data['newCase_MonitoringCodes']  %}<li>‘Honour’ based abuse</li>{% else %}{% endif %}
+                                {% if 'Human trafficking' in data['newCase_MonitoringCodes']  %}<li>Human trafficking</li>{% else %}{% endif %}
+                                {% if 'Identified victim' in data['newCase_MonitoringCodes']  %}<li>Identified victim</li>{% else %}{% endif %}
+                                {% if 'Joint enterprise' in data['newCase_MonitoringCodes']  %}<li>Joint enterprise</li>{% else %}{% endif %}
+                                {% if 'Major incident flag' in data['newCase_MonitoringCodes']  %}<li>Major incident flag</li>{% else %}{% endif %}
+                                {% if 'Media interest' in data['newCase_MonitoringCodes']  %}<li>Media interest</li>{% else %}{% endif %}
+                                {% if 'Mental health' in data['newCase_MonitoringCodes']  %}<li>Mental health</li>{% else %}{% endif %}
+                                {% if 'Nationality bar' in data['newCase_MonitoringCodes']  %}<li>Nationality bar</li>{% else %}{% endif %}
+                                {% if 'Police complaints' in data['newCase_MonitoringCodes']  %}<li>Police complaints</li>{% else %}{% endif %}
+                                {% if 'Pre-Charge decision' in data['newCase_MonitoringCodes']  %}<li>Pre-Charge decision</li>{% else %}{% endif %}
+                                {% if 'Prohibited weapons' in data['newCase_MonitoringCodes']  %}<li>Prohibited weapons</li>{% else %}{% endif %}
+                                {% if 'Racist crime' in data['newCase_MonitoringCodes']  %}<li>Racist crime</li>{% else %}{% endif %}
+                                {% if 'Rape' in data['newCase_MonitoringCodes']  %}<li>Rape</li>{% else %}{% endif %}
+                                {% if 'Real time case conversations' in data['newCase_MonitoringCodes']  %}<li>Real time case conversations</li>{% else %}{% endif %}
+                                {% if 'Religious crime' in data['newCase_MonitoringCodes']  %}<li>Religious crime</li>{% else %}{% endif %}
+                                {% if 'Transphobic crime' in data['newCase_MonitoringCodes']  %}<li>Transphobic crime</li>{% else %}{% endif %}
+                                {% if 'Vulnerable or intimidated victim' in data['newCase_MonitoringCodes']  %}<li>Vulnerable or intimidated victim</li>{% else %}{% endif %}
+                            </ul>
+                        </dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="05-monitoring-codes">Change<span class="govuk-visually-hidden"> Monitoring codes</span></a></dd>
+                    </div>
+                {% endif %}        
+                <!-- ITEM 3 - END -->
+
+            </dl>
+            <!-- //////////////////////////////////////////////////// SECTION 5 - END //////////////////////////////////////////////////// -->
+
+            <!-- //////////////////////////////////////////////////// SECTION 6 - START //////////////////////////////////////////////////// -->
+            <h2 class="govuk-heading-m">Working on the case</h2>
+            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+
+                <!-- ITEM 1 - START -->
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Prosecutor</dt>
+                    <dd class="govuk-summary-list__value">{{ data['newCase_Prosecutor'] }}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Prosecutor</span></a></dd>
+                </div>
+                <!-- ITEM 1 - END -->
+
+                <!-- ITEM 2 - START -->
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Caseworker</dt>
+                    <dd class="govuk-summary-list__value">{{ data['newCase_Caseworker'] }}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Caseworker</span></a></dd>
+                </div>
+                <!-- ITEM 2 - END -->
+
+                <!-- ITEM 3 - START -->
+                {% if data['newCase_Police_YesNo'] == 'Yes' %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Police officer or investigator</dt>
+                        <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--blue">{{ data['newCase_Police_Rank'] }}</strong> - <span class="uppercase">{{ data['newCase_Police_LastName'] }}</span>, {{ data['newCase_Police_FirstName'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Police officer or investigator</span></a></dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Shoulder number</dt>
+                        <dd class="govuk-summary-list__value">{{ data['newCase_Police_Number'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Shoulder no.</span></a></dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Police unit</dt>
+                        <dd class="govuk-summary-list__value">{{ data['newCase_Police_Unit'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Police unit</span></a></dd>
+                    </div>
+                {% elseif data['newCase_Police_YesNo'] == 'No' %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Police officer or investigator</dt>
+                        <dd class="govuk-summary-list__value">No</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Police officer or investigator</span></a></dd>
+                    </div>
+                {% else %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Police officer or investigator</dt>
+                        <dd class="govuk-summary-list__value">No</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Police officer or investigator</span></a></dd>
+                    </div>
+                {% endif %}        
+                <!-- ITEM 3 - END -->
+
+            </dl>
+            <!-- //////////////////////////////////////////////////// SECTION 6 - END //////////////////////////////////////////////////// -->
+
+            <!-- //////////////////////////////////////////////////// SECTION 7 - START //////////////////////////////////////////////////// -->
+            <h2 class="govuk-heading-m">Material locations</h2>
+            <dl class="govuk-summary-list no_list govuk-!-margin-bottom-9">
+
+                <!-- ITEM 1 - START -->
+                {% if data['newCase_ExistingEgress_YesNo'] == 'No' %}
+                    <div class="govuk-summary-list__row no_border">
+                        <dt class="govuk-summary-list__key">Egress location</dt>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07-egress-shared-drive">Change<span class="govuk-visually-hidden"> Egress location</span></a></dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dd class="govuk-summary-list__full_width"><span class="url-text small_text">https://cps.egresscloud.com/w/edit/66fd8bd1158de0c2ca41b172/</span></dd>
+                    </div>
+                {% else %}
+                    <div class="govuk-summary-list__row no_border">
+                        <dt class="govuk-summary-list__key">Egress location</dt>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07-egress-shared-drive">Change<span class="govuk-visually-hidden"> Egress location</span></a></dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dd class="govuk-summary-list__full_width"><span class="url-text small_text">https://cps.egresscloud.com/w/edit/66fd8bd1158de0c2ca41b172/</span></dd>
+                    </div>
+                {% endif %}        
+                <!-- ITEM 1 - END -->
+
+                <!-- ITEM 2 - START -->
+                {% if data['newCase_ExistingSharedDrive_YesNo'] == 'No' %}
+                    <div class="govuk-summary-list__row no_border">
+                        <dt class="govuk-summary-list__key">Shared drive location</dt>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07-egress-shared-drive">Change<span class="govuk-visually-hidden"> Shared drive location</span></a></dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dd class="govuk-summary-list__full_width"><span class="url-text small_text">\\ Public (P:) > RCTCaseData > SCCTD > CTD > Live Op > {{ data['newCase_OperationName'] }}</span></dd>
+                    </div>
+                {% else %}
+                    <div class="govuk-summary-list__row no_border">
+                        <dt class="govuk-summary-list__key">Shared drive location</dt>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07-egress-shared-drive">Change<span class="govuk-visually-hidden"> Shared drive location</span></a></dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dd class="govuk-summary-list__full_width"><span class="url-text small_text">\\ Public (P:) > RCTCaseData > SCCTD > CTD > Live Op > {{ data['newCase_OperationName'] }}</span></dd>
+                    </div>
+                {% endif %}        
+                <!-- ITEM 2 - END -->
+
+            </dl>
+            <!-- //////////////////////////////////////////////////// SECTION 7 - END //////////////////////////////////////////////////// -->
+
+            <form method="get" action="../03-case-overview" id="newCase_Form-H">  
+                <input id="createCase_H_Complete" name="createCase_H_Complete" type="text" value="true" style="display: none;">
+                <button type="submit" class="govuk-button" style="">Accept and create</button>
+                <button type="button" onclick="location.href='01-search';" class="non-button margin-left" id="">Cancel</button>
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}

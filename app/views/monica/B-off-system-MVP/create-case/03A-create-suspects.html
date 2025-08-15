@@ -1,0 +1,440 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../../includes/banner-OFF-V5.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+<div class="govuk-grid-row" id="create-case-journey">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="wrapper gov-pages">
+
+            <h1 class="govuk-heading-xl" style="">Add suspects</h1>
+
+            <form method="get" action="03B-suspects" id="newCase_Form-C1">  
+
+                <p> </p>
+
+                <!-- SUSPECT 1 -- START -->
+                <div id="suspectDetails-1" class="">
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="newCase_Suspect_1-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                <h1 class="govuk-fieldset__heading">
+                                    Suspect 1
+                                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2 removeSuspect" id="removeSuspect1" onclick="removeSuspect1()">Remove suspect</a>
+                                </h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="newCase_Suspect_Suspect" name="newCase_Suspect_1" type="radio" value="Person" data-aria-controls="conditional-newCase_Suspect_Suspect">
+                                    <label class="govuk-label govuk-radios__label" for="newCase_Suspect_Suspect">Person</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="newCase_OperationName_Company" name="newCase_Suspect_1" type="radio" value="Company" data-aria-controls="conditional-newCase_Suspect_Company">
+                                    <label class="govuk-label govuk-radios__label" for="newCase_OperationName_Company">Company</label>
+                                </div>
+
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-newCase_Suspect_Suspect">
+                                    <!-- OPTION 1 - START -->
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Suspect-FirstName">First name</label>
+                                        {% if data['newCase_Suspect-FirstName'] %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-FirstName" name="newCase_Suspect-FirstName" type="text" value="{{ data['newCase_Suspect-FirstName'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-FirstName" name="newCase_Suspect-FirstName" type="text">
+                                        {% endif %}
+                                    </div>
+                                    <!-- OPTION 1 - END -->
+
+                                    <!-- OPTION 2 - START -->
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Suspect-LastName">Last name</label>
+                                        {% if data['newCase_Suspect-LastName'] %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-LastName" name="newCase_Suspect-LastName" type="text" value="{{ data['newCase_Suspect-LastName'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-LastName" name="newCase_Suspect-LastName" type="text">
+                                        {% endif %}
+                                    </div>
+                                    <!-- OPTION 2 - END -->
+                                </div>
+
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-newCase_Suspect_Company">
+                                    <!-- OPTION 1 - START -->
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Suspect-CompanyName">Company name</label>
+                                        <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-CompanyName" name="newCase_Suspect-CompanyName" type="text">
+                                    </div>                                
+                                    <!-- OPTION 1 - END -->
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>                    
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addSuspect1" onclick="addSuspect1()">Add suspect</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- SUSPECT 1 -- END -->
+
+                <!-- SUSPECT 2 -- START -->
+                {% if data['newCase_Suspect-LastName2'] %}
+                    <div id="suspectDetails-2" class="suspectDetails active">
+                {% else %}
+                    <div id="suspectDetails-2" class="suspectDetails">
+                {% endif %}
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="newCase_Suspect_2-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                <h1 class="govuk-fieldset__heading">
+                                    Suspect 2
+                                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2 removeSuspect" id="removeSuspect2" onclick="removeSuspect2()">Remove suspect</a>
+                                </h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="newCase_Suspect_Suspect2" name="newCase_Suspect_2" type="radio" value="Person" data-aria-controls="conditional-newCase_Suspect_Suspect2">
+                                    <label class="govuk-label govuk-radios__label" for="newCase_Suspect_Suspect2">Person</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="newCase_OperationName_Company2" name="newCase_Suspect_2" type="radio" value="Company" data-aria-controls="conditional-newCase_Suspect_Company2">
+                                    <label class="govuk-label govuk-radios__label" for="newCase_OperationName_Company2">Company</label>
+                                </div>
+
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-newCase_Suspect_Suspect2">
+
+                                    <!-- OPTION 1 - START -->
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Suspect-FirstName2">First name</label>
+                                        {% if data['newCase_Suspect-FirstName2'] %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-FirstName2" name="newCase_Suspect-FirstName2" type="text" value="{{ data['newCase_Suspect-FirstName2'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-FirstName2" name="newCase_Suspect-FirstName2" type="text">
+                                        {% endif %}
+                                    </div>
+                                    <!-- OPTION 1 - END -->
+
+                                    <!-- OPTION 2 - START -->
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Suspect-LastName2">Last name</label>
+                                        {% if data['newCase_Suspect-LastName2'] %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-LastName2" name="newCase_Suspect-LastName2" type="text" value="{{ data['newCase_Suspect-LastName2'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-LastName2" name="newCase_Suspect-LastName2" type="text">
+                                        {% endif %}
+                                    </div>
+                                    <!-- OPTION 2 - END -->
+
+                                </div>
+
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-newCase_Suspect_Company2">
+                                    <!-- OPTION 1 - START -->
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Suspect-CompanyName2">Company name</label>
+                                        <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-CompanyName2" name="newCase_Suspect-CompanyName2" type="text">
+                                    </div>                                
+                                    <!-- OPTION 1 - END -->
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>                    
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addSuspect2" onclick="addSuspect2()">Add suspect</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- SUSPECT 2 -- END -->
+
+                <!-- SUSPECT 3 -- START -->
+                {% if data['newCase_Suspect-LastName3'] %}
+                    <div id="suspectDetails-3" class="suspectDetails active">
+                {% else %}
+                    <div id="suspectDetails-3" class="suspectDetails">
+                {% endif %}
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="newCase_Suspect_3-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                <h1 class="govuk-fieldset__heading">
+                                    Suspect 3
+                                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2 removeSuspect" id="removeSuspect3" onclick="removeSuspect3()">Remove suspect</a>
+                                </h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="newCase_Suspect_Suspect3" name="newCase_Suspect_3" type="radio" value="Person" data-aria-controls="conditional-newCase_Suspect_Suspect3">
+                                    <label class="govuk-label govuk-radios__label" for="newCase_Suspect_Suspect3">Person</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="newCase_OperationName_Company3" name="newCase_Suspect_3" type="radio" value="Company" data-aria-controls="conditional-newCase_Suspect_Company3">
+                                    <label class="govuk-label govuk-radios__label" for="newCase_OperationName_Company3">Company</label>
+                                </div>
+
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-newCase_Suspect_Suspect3">
+
+                                    <!-- OPTION 1 - START -->
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Suspect-FirstName3">First name</label>
+                                        {% if data['newCase_Suspect-FirstName3'] %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-FirstName3" name="newCase_Suspect-FirstName3" type="text" value="{{ data['newCase_Suspect-FirstName3'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-FirstName3" name="newCase_Suspect-FirstName3" type="text">
+                                        {% endif %}
+                                    </div>
+                                    <!-- OPTION 1 - END -->
+
+                                    <!-- OPTION 2 - START -->
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Suspect-LastName3">Last name</label>
+                                        {% if data['newCase_Suspect-LastName3'] %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-LastName3" name="newCase_Suspect-LastName3" type="text" value="{{ data['newCase_Suspect-LastName3'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-LastName3" name="newCase_Suspect-LastName3" type="text">
+                                        {% endif %}
+                                    </div>
+                                    <!-- OPTION 2 - END -->
+
+                                </div>
+
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-newCase_Suspect_Company3">
+                                    <!-- OPTION 1 - START -->
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Suspect-CompanyName3">Company name</label>
+                                        <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-CompanyName3" name="newCase_Suspect-CompanyName3" type="text">
+                                    </div>                                
+                                    <!-- OPTION 1 - END -->
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>                    
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addSuspect3" onclick="addSuspect3()">Add suspect</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- SUSPECT 3 -- END -->
+
+                <!-- SUSPECT 4 -- START -->
+                {% if data['newCase_Suspect-LastName4'] %}
+                    <div id="suspectDetails-4" class="suspectDetails active">
+                {% else %}
+                    <div id="suspectDetails-4" class="suspectDetails">
+                {% endif %}
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="newCase_Suspect_4-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                <h1 class="govuk-fieldset__heading">
+                                    Suspect 4
+                                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2 removeSuspect" id="removeSuspect4" onclick="removeSuspect4()">Remove suspect</a>
+                                </h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="newCase_Suspect_Suspect4" name="newCase_Suspect_4" type="radio" value="Person" data-aria-controls="conditional-newCase_Suspect_Suspect4">
+                                    <label class="govuk-label govuk-radios__label" for="newCase_Suspect_Suspect4">Person</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="newCase_OperationName_Company4" name="newCase_Suspect_4" type="radio" value="Company" data-aria-controls="conditional-newCase_Suspect_Company4">
+                                    <label class="govuk-label govuk-radios__label" for="newCase_OperationName_Company4">Company</label>
+                                </div>
+
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-newCase_Suspect_Suspect4">
+
+                                    <!-- OPTION 1 - START -->
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Suspect-FirstName4">First name</label>
+                                        {% if data['newCase_Suspect-FirstName4'] %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-FirstName4" name="newCase_Suspect-FirstName4" type="text" value="{{ data['newCase_Suspect-FirstName4'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-FirstName4" name="newCase_Suspect-FirstName4" type="text">
+                                        {% endif %}
+                                    </div>
+                                    <!-- OPTION 1 - END -->
+
+                                    <!-- OPTION 2 - START -->
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Suspect-LastName2">Last name</label>
+                                        {% if data['newCase_Suspect-LastName4'] %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-LastName4" name="newCase_Suspect-LastName4" type="text" value="{{ data['newCase_Suspect-LastName4'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-LastName4" name="newCase_Suspect-LastName4" type="text">
+                                        {% endif %}
+                                    </div>
+                                    <!-- OPTION 2 - END -->
+
+                                </div>
+
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-newCase_Suspect_Company4">
+                                    <!-- OPTION 1 - START -->
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Suspect-CompanyName4">Company name</label>
+                                        <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-CompanyName4" name="newCase_Suspect-CompanyName4" type="text">
+                                    </div>                                
+                                    <!-- OPTION 1 - END -->
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>                    
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addSuspect4" onclick="addSuspect4()">Add suspect</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- SUSPECT 4 -- END -->
+
+                <!-- SUSPECT 5 -- START -->
+                {% if data['newCase_Suspect-LastName5'] %}
+                    <div id="suspectDetails-5" class="suspectDetails active">
+                {% else %}
+                    <div id="suspectDetails-5" class="suspectDetails">
+                {% endif %}
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="newCase_Suspect_5-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                <h1 class="govuk-fieldset__heading">
+                                    Suspect 5
+                                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2 removeSuspect" id="removeSuspect5" onclick="removeSuspect5()">Remove suspect</a>
+                                </h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="newCase_Suspect_Suspect5" name="newCase_Suspect_5" type="radio" value="Person" data-aria-controls="conditional-newCase_Suspect_Suspect5">
+                                    <label class="govuk-label govuk-radios__label" for="newCase_Suspect_Suspect5">Person</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="newCase_OperationName_Company5" name="newCase_Suspect_5" type="radio" value="Company" data-aria-controls="conditional-newCase_Suspect_Company5">
+                                    <label class="govuk-label govuk-radios__label" for="newCase_OperationName_Company5">Company</label>
+                                </div>
+
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-newCase_Suspect_Suspect5">
+
+                                    <!-- OPTION 1 - START -->
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Suspect-FirstName5">First name</label>
+                                        {% if data['newCase_Suspect-FirstName5'] %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-FirstName5" name="newCase_Suspect-FirstName5" type="text" value="{{ data['newCase_Suspect-FirstName5'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-FirstName5" name="newCase_Suspect-FirstName5" type="text">
+                                        {% endif %}
+                                    </div>
+                                    <!-- OPTION 1 - END -->
+
+                                    <!-- OPTION 2 - START -->
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Suspect-LastName5">Last name</label>
+                                        {% if data['newCase_Suspect-LastName5'] %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-LastName5" name="newCase_Suspect-LastName5" type="text" value="{{ data['newCase_Suspect-LastName5'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-LastName5" name="newCase_Suspect-LastName5" type="text">
+                                        {% endif %}
+                                    </div>
+                                    <!-- OPTION 2 - END -->
+
+                                </div>
+
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-newCase_Suspect_Company5">
+                                    <!-- OPTION 1 - START -->
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="newCase_Suspect-CompanyName5">Company name</label>
+                                        <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-CompanyName5" name="newCase_Suspect-CompanyName5" type="text">
+                                    </div>                                
+                                    <!-- OPTION 1 - END -->
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>                    
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addSuspect5" onclick="addSuspect5()">Add suspect</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- SUSPECT 5 -- END -->
+
+                <input id="createCase_C1_Complete" name="createCase_C1_Complete" type="text" value="true" style="display: none;">
+                <button type="submit" class="govuk-button" style="">Save and continue</button>
+                <button type="button" onclick="location.href='02-case-details';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+        <div class="existing-contacts">
+            <h2 class="govuk-heading-s" style="">Suspects added to the case</h2>
+            <div class="contacts">
+                <div id="new-contacts">
+                    {% if data['newCase_Suspect-LastName'] or data['newCase_Suspect-CompanyName'] %}
+
+                    {% else %}
+                        <p class="holder">Your list of suspects will appear here</p>
+                    {% endif %}
+
+                    {% if data['newCase_Suspect-LastName'] %}
+                        <p class="suspectDetails-1">
+                            <span class="icon-new user"></span><span class="uppercase">{{ data['newCase_Suspect-LastName'] }}</span>, {{ data['newCase_Suspect-FirstName'] }}
+                        </p>
+                    {% elseif data['newCase_Suspect-CompanyName'] %}
+                        <p class="suspectDetails-1">
+                            <span class="icon-new company"></span>{{ data['newCase_Suspect-CompanyName'] }}
+                        </p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['newCase_Suspect-LastName2'] %}
+                        <p class="suspectDetails-2">
+                            <span class="icon-new user"></span><span class="uppercase">{{ data['newCase_Suspect-LastName2'] }}</span>, {{ data['newCase_Suspect-FirstName2'] }}
+                        </p>
+                    {% elseif data['newCase_Suspect-CompanyName2'] %}
+                        <p class="suspectDetails-1">
+                            <span class="icon-new company"></span>{{ data['newCase_Suspect-CompanyName2'] }}
+                        </p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['newCase_Suspect-LastName3'] %}
+                        <p class="suspectDetails-3">
+                            <span class="icon-new user"></span><span class="uppercase">{{ data['newCase_Suspect-LastName3'] }}</span>, {{ data['newCase_Suspect-FirstName3'] }}
+                        </p>
+                    {% elseif data['newCase_Suspect-CompanyName3'] %}
+                        <p class="suspectDetails-1">
+                            <span class="icon-new company"></span>{{ data['newCase_Suspect-CompanyName3'] }}
+                        </p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['newCase_Suspect-LastName4'] %}
+                        <p class="suspectDetails-4">
+                            <span class="icon-new user"></span><span class="uppercase">{{ data['newCase_Suspect-LastName4'] }}</span>, {{ data['newCase_Suspect-FirstName4'] }}
+                        </p>
+                    {% elseif data['newCase_Suspect-CompanyName4'] %}
+                        <p class="suspectDetails-1">
+                            <span class="icon-new company"></span>{{ data['newCase_Suspect-CompanyName4'] }}
+                        </p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['newCase_Suspect-LastName5'] %}
+                        <p class="suspectDetails-5">
+                            <span class="icon-new user"></span><span class="uppercase">{{ data['newCase_Suspect-LastName5'] }}</span>, {{ data['newCase_Suspect-FirstName5'] }}
+                        </p>
+                    {% elseif data['newCase_Suspect-CompanyName5'] %}
+                        <p class="suspectDetails-1">
+                            <span class="icon-new company"></span>{{ data['newCase_Suspect-CompanyName5'] }}
+                        </p>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

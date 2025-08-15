@@ -1,0 +1,63 @@
+{% extends "layoutCPS-OFF.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+    <div class="search-bar-wrapper">
+        <div class="govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <form method="get" action="searchResults">
+                        <fieldset>
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-label--s" for="searchOFF_URN">Search by Operation name</label>
+                                {% if data['searchOFF_URN'] %}
+                                    <input class="govuk-input govuk-!-width-one-half" id="searchOFF_URN" name="searchOFF_URN" type="text" value="{{ data['searchOFF_URN'] }}" />
+                                {% else %}
+                                    <input class="govuk-input govuk-!-width-one-half" id="searchOFF_URN" name="searchOFF_URN" type="text" value="45AA209820/1" />
+                                {% endif %}
+                                <button type="submit" class="govuk-button" style="">Search</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                    <span span class="govuk-caption-m">We've found <strong>1</strong> case that matches {{ data['searchOFF_URN'] }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<link href="/public/stylesheets/filtering.css" media="screen" rel="stylesheet" type="text/css" />
+
+<div class="govuk-grid-row search-results" id="search-journey" style="display: block !important;">
+    <div class="govuk-grid-column-two-thirds">
+
+        <div id="caseOne" class="result-item" style="width: 60%;">
+            <div class="heading">
+                <h2 class="govuk-heading-l">
+                    <form method="get" action="5-case-overview" id="">  
+                        <input id="existing_Case" name="existing_Case" type="text" value="true" style="display: none;">
+                        <button type="submit" class="">{{ data['searchOFF_URN'] }}</button><br>
+                    </form>
+                    {% if data['searchOFF_URN'] %}
+                        <span id="" class="govuk-hint">{{ data['searchOFF_URN'] }}/1</span>
+                    {% else %}
+                        <span id="" class="govuk-hint">45AA209820/1</span>
+                    {% endif %}
+                    <!-- <span id="" class="govuk-hint">Date of birth: 10 October 1985</span> -->
+                </h2>
+            </div>
+            <div class="contents">
+                <p class="title">Defendants:</p> <p class="description"><strong>McLove, Eoin</strong></p>
+<!--                 <p class="title">Status:</p> <p class="description"><strong class="govuk-tag govuk-tag--yellow">Not yet charged</strong></p>
+                <p class="title">Date of offence:</p> <p class="description">1 June 2020</p>
+                <p class="title">Next hearing date:</p> <p class="description">1 June 2024</p>
+                <p class="title">Proposed charges:</p> <p class="description"><strong>No charge added</strong></p>
+ -->            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
