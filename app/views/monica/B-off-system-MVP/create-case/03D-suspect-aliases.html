@@ -1,0 +1,151 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../../includes/banner-OFF-V5.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+<div class="govuk-grid-row" id="create-case-journey">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="wrapper gov-pages">
+
+            <h1 class="govuk-heading-xl" style="">Add aliases</h1>
+
+            <form method="get" action="03B-suspects" id="newCase_Form-C4">  
+
+                <p> </p>
+
+                <!-- ALIAS 1 -- START -->
+                <div id="aliasDetails-1" class="">
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="newCase_Suspect_1-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                <h1 class="govuk-fieldset__heading">
+                                    Alias 1
+                                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2 removeAlias" id="removeAlias1" onclick="removeAlias1()">Remove alias</a>
+                                </h1>
+                            </legend>
+                            <!-- OPTION 1 - START -->
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="createCase_Suspect_1_Aliases-FirstName">First name</label>
+                                <input class="govuk-input govuk-input--width-20" id="createCase_Suspect_1_Aliases-FirstName" name="createCase_Suspect_1_Aliases-FirstName" type="text">
+                            </div>
+                            <!-- OPTION 1 - END -->
+
+                            <!-- OPTION 2 - START -->
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="createCase_Suspect_1_Aliases-LastName">Last name</label>
+                                <input class="govuk-input govuk-input--width-20" id="createCase_Suspect_1_Aliases-LastName" name="createCase_Suspect_1_Aliases-LastName" type="text">
+                            </div>
+                            <!-- OPTION 2 - END -->
+                        </fieldset>
+                    </div>                    
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addAlias1" onclick="addAlias1()">Add alias</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- ALIAS 1 -- END -->
+
+                <!-- ALIAS 2 -- START -->
+                {% if data['createCase_Suspect_1_Aliases-LastName2'] %}
+                    <div id="aliasDetails-2" class="aliasDetails active">
+                {% else %}
+                    <div id="aliasDetails-2" class="aliasDetails">
+                {% endif %}
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="newCase_Suspect_1-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                <h1 class="govuk-fieldset__heading">
+                                    Alias 2
+                                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2 removeSuspect" id="removeAlias1" onclick="removeAlias1()">Remove alias</a>
+                                </h1>
+                            </legend>
+                            <!-- OPTION 1 - START -->
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="createCase_Suspect_1_Aliases-FirstName">First name</label>
+                                <input class="govuk-input govuk-input--width-20" id="createCase_Suspect_1_Aliases-FirstName" name="createCase_Suspect_1_Aliases-FirstName" type="text">
+                            </div>
+                            <!-- OPTION 1 - END -->
+
+                            <!-- OPTION 2 - START -->
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="createCase_Suspect_1_Aliases-LastName">Last name</label>
+                                <input class="govuk-input govuk-input--width-20" id="createCase_Suspect_1_Aliases-LastName" name="createCase_Suspect_1_Aliases-LastName" type="text">
+                            </div>
+                            <!-- OPTION 2 - END -->
+                        </fieldset>
+                    </div>                    
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addAlias1" onclick="addAlias1()">Add alias</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- ALIAS 2 -- END -->
+
+                <input id="createCase_C4_Complete" name="createCase_C4_Complete" type="text" value="true" style="display: none;">
+                <button type="submit" class="govuk-button" style="">Save and continue</button>
+                <button type="button" onclick="location.href='03C-suspect-details';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+        <div class="existing-contacts">
+            <h2 class="govuk-heading-s" style="">Aliases</h2>
+            <div class="contacts">
+                <div id="new-contacts">
+                    {% if data['createCase_Suspect_1_Aliases-LastName'] %}
+
+                    {% else %}
+                        <p class="holder">Aliases added for this suspect</p>
+                    {% endif %}
+                    {% if data['createCase_Suspect_1_Aliases-LastName'] %}
+                        <p class="witnessDetails-1">
+                            <span class="icon-new user"></span><span class="uppercase">{{ data['createCase_Suspect_1_Aliases-LastName'] }}</span>, {{ data['createCase_Suspect_1_Aliases-FirstName'] }}<br>
+                        </p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['createCase_Suspect_1_Aliases-LastName2'] %}
+                        <p class="witnessDetails-2">
+                            <span class="icon-new user"></span><span class="uppercase">{{ data['createCase_Suspect_1_Aliases-LastName2'] }}</span>, {{ data['createCase_Suspect_1_Aliases-FirstName2'] }}<br>
+                        </p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['createCase_Suspect_1_Aliases-LastName3'] %}
+                        <p class="witnessDetails-3">
+                            <span class="icon-new user"></span><span class="uppercase">{{ data['createCase_Suspect_1_Aliases-LastName3'] }}</span>, {{ data['createCase_Suspect_1_Aliases-FirstName3'] }}<br>
+                        </p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['createCase_Suspect_1_Aliases-LastName4'] %}
+                        <p class="witnessDetails-4">
+                            <span class="icon-new user"></span><span class="uppercase">{{ data['createCase_Suspect_1_Aliases-LastName4'] }}</span>, {{ data['createCase_Suspect_1_Aliases-FirstName4'] }}<br>
+                        </p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['createCase_Suspect_1_Aliases-LastName5'] %}
+                        <p class="witnessDetails-5">
+                            <span class="icon-new user"></span><span class="uppercase">{{ data['createCase_Suspect_1_Aliases-LastName5'] }}</span>, {{ data['createCase_Suspect_1_Aliases-FirstName5'] }}<br>
+                        </p>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

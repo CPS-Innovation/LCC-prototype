@@ -1,0 +1,2285 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../../includes/banner-OFF-V5.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+<div class="govuk-grid-row" id="create-case-journey">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="wrapper gov-pages">
+
+            <h1 class="govuk-heading-xl" style="">Add suspect details</h1>
+
+            <!-- SUSPECT 1 -- START -->
+            {% if data['createCase_Suspect_1'] == 'true' %}
+                <form method="get" action="03B-suspects" id="newCase_Form-C3_1">  
+                    {% if data['newCase_Suspect-LastName'] %}
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><span class="uppercase">{{ data['newCase_Suspect-LastName'] }}</span>, {{ data['newCase_Suspect-FirstName'] }}</h2>
+                    {% elseif data['newCase_Suspect-CompanyName'] %}
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ data['newCase_Suspect-CompanyName'] }}</h2>
+                    {% endif %}
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="addSuspect_Form-DOB-hint">
+                            <legend class="govuk-fieldset__legend">What is their date of birth?</legend>
+                            <div id="addSuspect_Form-DOB-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="addSuspect_Form-DOB">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB-Day">Day</label>
+                                        {% if data['addSuspect_Form-DOB-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB-Day" name="addSuspect_Form-DOB-Day" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB-Day" name="addSuspect_Form-DOB-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB-Month">Month</label>
+                                        {% if data['addSuspect_Form-DOB-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB-Month" name="addSuspect_Form-DOB-Month" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB-Month" name="addSuspect_Form-DOB-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB-Year">Year</label>
+                                        {% if data['addSuspect_Form-DOB-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-DOB-Year" name="addSuspect_Form-DOB-Year" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-DOB-Year" name="addSuspect_Form-DOB-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Gender">Gender</label>
+                        <select class="govuk-select" id="addSuspect_Form-Gender" name="addSuspect_Form-Gender">
+                            {% if data['addSuspect_Form-Gender'] == 'Unknown' %}
+                                <option value="Unknown" selected>Unknown</option>
+                            {% else %}
+                                <option value="Unknown">Unknown</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Gender'] == 'Male' %}
+                                <option value="Male" selected>Male</option>
+                            {% else %}
+                                <option value="Male">Male</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Gender'] == 'Female' %}
+                                <option value="Female" selected>Female</option>
+                            {% else %}
+                                <option value="Female">Female</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <!-- OPTION 3 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Disability">Disability</label>
+                        <select class="govuk-select" id="addSuspect_Form-Disability" name="addSuspect_Form-Disability">
+                            {% if data['addSuspect_Form-Disability'] == 'Unknown' %}
+                                <option value="Unknown" selected>Unknown</option>
+                            {% else %}
+                                <option value="Unknown">Unknown</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Disability'] == 'Yes' %}
+                                <option value="Yes" selected>Yes</option>
+                            {% else %}
+                                <option value="Yes">Yes</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Disability'] == 'No' %}
+                                <option value="No" selected>No</option>
+                            {% else %}
+                                <option value="No">No</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 3 - END -->
+
+                    <!-- OPTION 4 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Religion">What is their religion?</label>
+                        <select class="govuk-select" id="addSuspect_Form-Religion" name="addSuspect_Form-Religion">
+                            {% if data['addSuspect_Form-Religion'] == 'Not provided' %}
+                                <option value="Not provided" selected>Not provided</option>
+                            {% else %}
+                                <option value="Not provided">Not provided</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion'] == 'Not stated' %}
+                                <option value="Not stated" selected>Not stated</option>
+                            {% else %}
+                                <option value="Not stated">Not stated</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion'] == 'No Religion' %}
+                                <option value="No Religion" selected>No Religion</option>
+                            {% else %}
+                                <option value="No Religion">No Religion</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion'] == 'Buddhist' %}
+                                <option value="Buddhist" selected>Buddhist</option>
+                            {% else %}
+                                <option value="Buddhist">Buddhist</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion'] == 'Christian' %}
+                                <option value="Christian" selected>Christian</option>
+                            {% else %}
+                                <option value="Christian">Christian</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion'] == 'Hindu' %}
+                                <option value="Hindu" selected>Hindu</option>
+                            {% else %}
+                                <option value="Hindu">Hindu</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion'] == 'Jewish' %}
+                                <option value="Jewish" selected>Jewish</option>
+                            {% else %}
+                                <option value="Jewish">Jewish</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion'] == 'Muslim' %}
+                                <option value="Muslim" selected>Muslim</option>
+                            {% else %}
+                                <option value="Muslim">Muslim</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion'] == 'Sikh' %}
+                                <option value="Sikh" selected>Sikh</option>
+                            {% else %}
+                                <option value="Sikh">Sikh</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion'] == 'Other Religion' %}
+                                <option value="Other Religion" selected>Other Religion</option>
+                            {% else %}
+                                <option value="Other Religion">Other Religion</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 4 - END -->
+
+                    <!-- OPTION 5 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Ethnicity">What is their ethnicity?</label>
+                        <select class="govuk-select" id="addSuspect_Form-Ethnicity" name="addSuspect_Form-Ethnicity">
+                            {% if data['addSuspect_Form-Ethnicity'] == 'Not provided, NP' %}
+                                <option value="Not provided, NP" selected>Not provided, NP</option>
+                            {% else %}
+                                <option value="Not provided, NP">Not provided, NP</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'Not stated, NS' %}
+                                <option value="Not stated, NS" selected>Not stated, NS</option>
+                            {% else %}
+                                <option value="Not stated, NS">Not stated, NS</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'British, W1' %}
+                                <option value="British, W1" selected>British, W1</option>
+                            {% else %}
+                                <option value="British, W1">British, W1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'Irish, W2' %}
+                                <option value="Irish, W2" selected>Irish, W2</option>
+                            {% else %}
+                                <option value="Irish, W2">Irish, W2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'Gypsy or Irish Traveller, W3' %}
+                                <option value="Gypsy or Irish Traveller, W3" selected>Gypsy or Irish Traveller, W3</option>
+                            {% else %}
+                                <option value="Gypsy or Irish Traveller, W3">Gypsy or Irish Traveller, W3</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'Any other white background, W9' %}
+                                <option value="Any other white background, W9" selected>Any other white background, W9</option>
+                            {% else %}
+                                <option value="Any other white background, W9">Any other white background, W9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'White and Black Caribbean, M1' %}
+                                <option value="White and Black Caribbean, M1" selected>White and Black Caribbean, M1</option>
+                            {% else %}
+                                <option value="White and Black Caribbean, M1">White and Black Caribbean, M1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'White and Black African, M2' %}
+                                <option value="White and Black African, M2" selected>White and Black African, M2</option>
+                            {% else %}
+                                <option value="White and Black African, M2">White and Black African, M2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'White and Asian, M3' %}
+                                <option value="White and Asian, M3" selected>White and Asian, M3</option>
+                            {% else %}
+                                <option value="White and Asian, M3">White and Asian, M3</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'Any other mixed background, M9' %}
+                                <option value="Any other mixed background, M9" selected>Any other mixed background, M9</option>
+                            {% else %}
+                                <option value="Any other mixed background, M9">Any other mixed background, M9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'India, A1' %}
+                                <option value="India, A1" selected>India, A1</option>
+                            {% else %}
+                                <option value="India, A1">India, A1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'Pakistani, A2' %}
+                                <option value="Pakistani, A2" selected>Pakistani, A2</option>
+                            {% else %}
+                                <option value="Pakistani, A2">Pakistani, A2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'Bangledeshi, A3' %}
+                                <option value="Bangledeshi, A3" selected>Bangledeshi, A3</option>
+                            {% else %}
+                                <option value="Bangledeshi, A3">Bangledeshi, A3</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'Chinese, A4' %}
+                                <option value="Chinese, A4" selected>Chinese, A4</option>
+                            {% else %}
+                                <option value="Chinese, A4">Chinese, A4</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'Any other Asian background, A9' %}
+                                <option value="Any other Asian background, A9" selected>Any other Asian background, A9</option>
+                            {% else %}
+                                <option value="Any other Asian background, A9">Any other Asian background, A9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'Caribbean, B1' %}
+                                <option value="Caribbean, B1" selected>Caribbean, B1</option>
+                            {% else %}
+                                <option value="Caribbean, B1">Caribbean, B1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'African, B2' %}
+                                <option value="African, B2" selected>African, B2</option>
+                            {% else %}
+                                <option value="African, B2">African, B2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'Any other Black background, B9' %}
+                                <option value="Any other Black background, B9" selected>Any other Black background, B9</option>
+                            {% else %}
+                                <option value="Any other Black background, B9">Any other Black background, B9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'Arab, O2' %}
+                                <option value="Arab, O2" selected>Arab, O2</option>
+                            {% else %}
+                                <option value="Arab, O2">Arab, O2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity'] == 'Any other ethnic group, O9' %}
+                                <option value="Any other ethnic group, O9" selected>Any other ethnic group, O9</option>
+                            {% else %}
+                                <option value="Any other ethnic group, O9">Any other ethnic group, O9</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 5 - END -->
+
+                    <!-- OPTION 6 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="addSuspect_Form-SDO-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Are they a Serious Dangerous Offender (SDO)?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-SDO'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_Yes" name="addSuspect_Form-SDO" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_Yes" name="addSuspect_Form-SDO" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-SDO_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-SDO'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_No" name="addSuspect_Form-SDO" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_No" name="addSuspect_Form-SDO" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-SDO_No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 6 - END -->
+
+                    <!-- OPTION 7 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="newCase_Suspect-ASN">Do you have an Arrest Summons Number (ASN)? (optional)</label>
+                        {% if data['newCase_Suspect-ASN'] %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-ASN" name="newCase_Suspect-ASN" type="text" value="{{ data['newCase_Suspect-ASN'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-ASN" name="newCase_Suspect-ASN" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 7 - END -->
+
+                    <!-- OPTION 8 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Type">What is the offender type?</label>
+                        <select class="govuk-select" id="addSuspect_Form-Type" name="addSuspect_Form-Type">
+                            {% if data['addSuspect_Form-Type'] == 'Unspecified' %}
+                                <option value="Unspecified" selected>Unspecified</option>
+                            {% else %}
+                                <option value="Unspecified">Unspecified</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type'] == 'Both PPO and PYO' %}
+                                <option value="Both PPO and PYO" selected>Both PPO and PYO</option>
+                            {% else %}
+                                <option value="Both PPO and PYO">Both PPO and PYO</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type'] == 'Prolific priority offender PPO' %}
+                                <option value="Prolific priority offender PPO" selected>Prolific priority offender (PPO)</option>
+                            {% else %}
+                                <option value="Prolific priority offender PPO">Prolific priority offender (PPO)</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type'] == 'Prolific youth offender PYO' %}
+                                <option value="Prolific youth offender PYO" selected>Prolific youth offender (PYO)</option>
+                            {% else %}
+                                <option value="Prolific youth offender PYO">Prolific youth offender (PYO)</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type'] == 'Youth offender YO' %}
+                                <option value="Youth offender YO" selected>Youth offender (YO)</option>
+                            {% else %}
+                                <option value="Youth offender YO">Youth offender (YO)</option>
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-addSuspect_Form-Type">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="addSuspect_Form-ArrestDate-hint">
+                            <legend class="govuk-fieldset__legend">Arrest Date</legend>
+                            <div id="addSuspect_Form-ArrestDate-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="addSuspect_Form-ArrestDate">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-ArrestDate-Day">Day</label>
+                                        {% if data['addSuspect_Form-ArrestDate-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate-Day" name="addSuspect_Form-ArrestDate-Day" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-ArrestDate-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate-Day" name="addSuspect_Form-ArrestDate-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-ArrestDate-Month">Month</label>
+                                        {% if data['addSuspect_Form-ArrestDate-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate-Month" name="addSuspect_Form-ArrestDate-Month" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-ArrestDate-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate-Month" name="addSuspect_Form-ArrestDate-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-ArrestDate-Year">Year</label>
+                                        {% if data['addSuspect_Form-ArrestDate-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-ArrestDate-Year" name="addSuspect_Form-ArrestDate-Year" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-ArrestDate-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-ArrestDate-Year" name="addSuspect_Form-ArrestDate-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 8 - END -->
+
+                    <!-- OPTION 9 - START -->
+<!--                     <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="addSuspect_Form-Charges-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Are there any charges?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Charges'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_Yes" name="addSuspect_Form-Charges" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_Yes" name="addSuspect_Form-Charges" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Charges_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Charges'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_No" name="addSuspect_Form-Charges" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_No" name="addSuspect_Form-Charges" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Charges_No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+ -->                    <!-- OPTION 9 - END -->
+
+                    <!-- OPTION 9 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="addSuspect_Form-Alias-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Do you have alias details?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Alias'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_Yes" name="addSuspect_Form-Alias" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_Yes" name="addSuspect_Form-Alias" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Alias_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Alias'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_No" name="addSuspect_Form-Alias" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_No" name="addSuspect_Form-Alias" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Alias_No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 9 - END -->
+
+                    <!-- <a class="govuk-button govuk-button--secondary" style="" href="03D-suspect-aliases">Add Aliases</a> -->
+
+                    <p></p>
+
+                    <input id="createCase_Suspect_1_complete" name="createCase_Suspect_1_complete" type="text" value="true" style="display: none;">
+                    <button type="submit" class="govuk-button" style="">Save and continue</button>
+
+                </form>
+            {% else %}
+
+            {% endif %}
+            <!-- SUSPECT 1 -- END -->
+
+            <!-- SUSPECT 2 -- START -->
+            {% if data['createCase_Suspect_2'] == 'true' %}
+                <form method="get" action="03B-suspects" id="newCase_Form-C3_1">  
+                    {% if data['newCase_Suspect-LastName2'] %}
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><span class="uppercase">{{ data['newCase_Suspect-LastName2'] }}</span>, {{ data['newCase_Suspect-FirstName2'] }}</h2>
+                    {% elseif data['newCase_Suspect-CompanyName2'] %}
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ data['newCase_Suspect-CompanyName2'] }}</h2>
+                    {% endif %}
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="addSuspect_Form-DOB_2-hint">
+                            <legend class="govuk-fieldset__legend">What is their date of birth?</legend>
+                            <div id="addSuspect_Form-DOB_2-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="addSuspect_Form-DOB_2">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB_2-Day">Day</label>
+                                        {% if data['addSuspect_Form-DOB_2-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_2-Day" name="addSuspect_Form-DOB_2-Day" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB_2-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_2-Day" name="addSuspect_Form-DOB_2-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB_2-Month">Month</label>
+                                        {% if data['addSuspect_Form-DOB_2-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_2-Month" name="addSuspect_Form-DOB_2-Month" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB_2-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_2-Month" name="addSuspect_Form-DOB_2-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB_2-Year">Year</label>
+                                        {% if data['addSuspect_Form-DOB_2-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-DOB_2-Year" name="addSuspect_Form-DOB_2-Year" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB_2-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-DOB_2-Year" name="addSuspect_Form-DOB_2-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Gender_2">Gender</label>
+                        <select class="govuk-select" id="addSuspect_Form-Gender_2" name="addSuspect_Form-Gender_2">
+                            {% if data['addSuspect_Form-Gender_2'] == 'Unknown' %}
+                                <option value="Unknown" selected>Unknown</option>
+                            {% else %}
+                                <option value="Unknown">Unknown</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Gender_2'] == 'Male' %}
+                                <option value="Male" selected>Male</option>
+                            {% else %}
+                                <option value="Male">Male</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Gender_2'] == 'Female' %}
+                                <option value="Female" selected>Female</option>
+                            {% else %}
+                                <option value="Female">Female</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <!-- OPTION 3 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Disability_2">Disability</label>
+                        <select class="govuk-select" id="addSuspect_Form-Disability_2" name="addSuspect_Form-Disability_2">
+                            {% if data['addSuspect_Form-Disability_2'] == 'Unknown' %}
+                                <option value="Unknown" selected>Unknown</option>
+                            {% else %}
+                                <option value="Unknown">Unknown</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Disability_2'] == 'Yes' %}
+                                <option value="Yes" selected>Yes</option>
+                            {% else %}
+                                <option value="Yes">Yes</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Disability_2'] == 'No' %}
+                                <option value="No" selected>No</option>
+                            {% else %}
+                                <option value="No">No</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 3 - END -->
+
+                    <!-- OPTION 4 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Religion_2">What is their religion?</label>
+                        <select class="govuk-select" id="addSuspect_Form-Religion_2" name="addSuspect_Form-Religion_2">
+                            {% if data['addSuspect_Form-Religion_2'] == 'Not provided' %}
+                                <option value="Not provided" selected>Not provided</option>
+                            {% else %}
+                                <option value="Not provided">Not provided</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_2'] == 'Not stated' %}
+                                <option value="Not stated" selected>Not stated</option>
+                            {% else %}
+                                <option value="Not stated">Not stated</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_2'] == 'No Religion' %}
+                                <option value="No Religion" selected>No Religion</option>
+                            {% else %}
+                                <option value="No Religion">No Religion</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_2'] == 'Buddhist' %}
+                                <option value="Buddhist" selected>Buddhist</option>
+                            {% else %}
+                                <option value="Buddhist">Buddhist</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_2'] == 'Christian' %}
+                                <option value="Christian" selected>Christian</option>
+                            {% else %}
+                                <option value="Christian">Christian</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_2'] == 'Hindu' %}
+                                <option value="Hindu" selected>Hindu</option>
+                            {% else %}
+                                <option value="Hindu">Hindu</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_2'] == 'Jewish' %}
+                                <option value="Jewish" selected>Jewish</option>
+                            {% else %}
+                                <option value="Jewish">Jewish</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_2'] == 'Muslim' %}
+                                <option value="Muslim" selected>Muslim</option>
+                            {% else %}
+                                <option value="Muslim">Muslim</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_2'] == 'Sikh' %}
+                                <option value="Sikh" selected>Sikh</option>
+                            {% else %}
+                                <option value="Sikh">Sikh</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_2'] == 'Other Religion' %}
+                                <option value="Other Religion" selected>Other Religion</option>
+                            {% else %}
+                                <option value="Other Religion">Other Religion</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 4 - END -->
+
+                    <!-- OPTION 5 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Ethnicity_2">What is their ethnicity?</label>
+                        <select class="govuk-select" id="addSuspect_Form-Ethnicity_2" name="addSuspect_Form-Ethnicity_2">
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'Not provided, NP' %}
+                                <option value="Not provided, NP" selected>Not provided, NP</option>
+                            {% else %}
+                                <option value="Not provided, NP">Not provided, NP</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'Not stated, NS' %}
+                                <option value="Not stated, NS" selected>Not stated, NS</option>
+                            {% else %}
+                                <option value="Not stated, NS">Not stated, NS</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'British, W1' %}
+                                <option value="British, W1" selected>British, W1</option>
+                            {% else %}
+                                <option value="British, W1">British, W1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'Irish, W2' %}
+                                <option value="Irish, W2" selected>Irish, W2</option>
+                            {% else %}
+                                <option value="Irish, W2">Irish, W2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'Gypsy or Irish Traveller, W3' %}
+                                <option value="Gypsy or Irish Traveller, W3" selected>Gypsy or Irish Traveller, W3</option>
+                            {% else %}
+                                <option value="Gypsy or Irish Traveller, W3">Gypsy or Irish Traveller, W3</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'Any other white background, W9' %}
+                                <option value="Any other white background, W9" selected>Any other white background, W9</option>
+                            {% else %}
+                                <option value="Any other white background, W9">Any other white background, W9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'White and Black Caribbean, M1' %}
+                                <option value="White and Black Caribbean, M1" selected>White and Black Caribbean, M1</option>
+                            {% else %}
+                                <option value="White and Black Caribbean, M1">White and Black Caribbean, M1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'White and Black African, M2' %}
+                                <option value="White and Black African, M2" selected>White and Black African, M2</option>
+                            {% else %}
+                                <option value="White and Black African, M2">White and Black African, M2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'White and Asian, M3' %}
+                                <option value="White and Asian, M3" selected>White and Asian, M3</option>
+                            {% else %}
+                                <option value="White and Asian, M3">White and Asian, M3</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'Any other mixed background, M9' %}
+                                <option value="Any other mixed background, M9" selected>Any other mixed background, M9</option>
+                            {% else %}
+                                <option value="Any other mixed background, M9">Any other mixed background, M9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'India, A1' %}
+                                <option value="India, A1" selected>India, A1</option>
+                            {% else %}
+                                <option value="India, A1">India, A1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'Pakistani, A2' %}
+                                <option value="Pakistani, A2" selected>Pakistani, A2</option>
+                            {% else %}
+                                <option value="Pakistani, A2">Pakistani, A2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'Bangledeshi, A3' %}
+                                <option value="Bangledeshi, A3" selected>Bangledeshi, A3</option>
+                            {% else %}
+                                <option value="Bangledeshi, A3">Bangledeshi, A3</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'Chinese, A4' %}
+                                <option value="Chinese, A4" selected>Chinese, A4</option>
+                            {% else %}
+                                <option value="Chinese, A4">Chinese, A4</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'Any other Asian background, A9' %}
+                                <option value="Any other Asian background, A9" selected>Any other Asian background, A9</option>
+                            {% else %}
+                                <option value="Any other Asian background, A9">Any other Asian background, A9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'Caribbean, B1' %}
+                                <option value="Caribbean, B1" selected>Caribbean, B1</option>
+                            {% else %}
+                                <option value="Caribbean, B1">Caribbean, B1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'African, B2' %}
+                                <option value="African, B2" selected>African, B2</option>
+                            {% else %}
+                                <option value="African, B2">African, B2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'Any other Black background, B9' %}
+                                <option value="Any other Black background, B9" selected>Any other Black background, B9</option>
+                            {% else %}
+                                <option value="Any other Black background, B9">Any other Black background, B9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'Arab, O2' %}
+                                <option value="Arab, O2" selected>Arab, O2</option>
+                            {% else %}
+                                <option value="Arab, O2">Arab, O2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_2'] == 'Any other ethnic group, O9' %}
+                                <option value="Any other ethnic group, O9" selected>Any other ethnic group, O9</option>
+                            {% else %}
+                                <option value="Any other ethnic group, O9">Any other ethnic group, O9</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 5 - END -->
+
+                    <!-- OPTION 6 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="addSuspect_Form-SDO_2-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Are they a Serious Dangerous Offender (SDO)?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-SDO_2'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_2_Yes" name="addSuspect_Form-SDO_2" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_2_Yes" name="addSuspect_Form-SDO_2" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-SDO_2_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-SDO_2'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_2_No" name="addSuspect_Form-SDO_2" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_2_No" name="addSuspect_Form-SDO_2" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-SDO_2_No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 6 - END -->
+
+                    <!-- OPTION 7 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="newCase_Suspect-ASN_2">Do you have an Arrest Summons Number (ASN)? (optional)</label>
+                        {% if data['newCase_Suspect-AS_2N'] %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-ASN_2" name="newCase_Suspect-ASN_2" type="text" value="{{ data['newCase_Suspect-ASN_2'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-ASN_2" name="newCase_Suspect-ASN_2" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 7 - END -->
+
+                    <!-- OPTION 8 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Type_2">What is the offender type?</label>
+                        <select class="govuk-select" id="addSuspect_Form-Type_2" name="addSuspect_Form-Type_2">
+                            {% if data['addSuspect_Form-Type_2'] == 'Unspecified' %}
+                                <option value="Unspecified" selected>Unspecified</option>
+                            {% else %}
+                                <option value="Unspecified">Unspecified</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_2'] == 'Both PPO and PYO' %}
+                                <option value="Both PPO and PYO" selected>Both PPO and PYO</option>
+                            {% else %}
+                                <option value="Both PPO and PYO">Both PPO and PYO</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_2'] == 'Prolific priority offender PPO' %}
+                                <option value="Prolific priority offender PPO" selected>Prolific priority offender (PPO)</option>
+                            {% else %}
+                                <option value="Prolific priority offender PPO">Prolific priority offender (PPO)</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_2'] == 'Prolific youth offender PYO' %}
+                                <option value="Prolific youth offender PYO" selected>Prolific youth offender (PYO)</option>
+                            {% else %}
+                                <option value="Prolific youth offender PYO">Prolific youth offender (PYO)</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_2'] == 'Youth offender YO' %}
+                                <option value="Youth offender YO" selected>Youth offender (YO)</option>
+                            {% else %}
+                                <option value="Youth offender YO">Youth offender (YO)</option>
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-addSuspect_Form-Type">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="addSuspect_Form-ArrestDate_2-hint">
+                            <legend class="govuk-fieldset__legend">Arrest Date</legend>
+                            <div id="addSuspect_Form-ArrestDate_2-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="addSuspect_Form-ArrestDate_2">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-ArrestDate_2-Day">Day</label>
+                                        {% if data['addSuspect_Form-ArrestDate_2-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_2-Day" name="addSuspect_Form-ArrestDate_2-Day" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-ArrestDate_2-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_2-Day" name="addSuspect_Form-ArrestDate_2-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-ArrestDate_2-Month">Month</label>
+                                        {% if data['addSuspect_Form-ArrestDate_2-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_2-Month" name="addSuspect_Form-ArrestDate_2-Month" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-ArrestDate_2-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_2-Month" name="addSuspect_Form-ArrestDate_2-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-ArrestDate_2-Year">Year</label>
+                                        {% if data['addSuspect_Form-ArrestDate_2-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-ArrestDate_2-Year" name="addSuspect_Form-ArrestDate_2-Year" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-ArrestDate_2-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-ArrestDate_2-Year" name="addSuspect_Form-ArrestDate_2-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 8 - END -->
+
+                    <!-- OPTION 9 - START -->
+<!--                     <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="addSuspect_Form-Charges_2-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Are there any charges?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Charges_2'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_2_Yes" name="addSuspect_Form-Charges_2" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_2_Yes" name="addSuspect_Form-Charges_2" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Charges_2_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Charges_2'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_2_No" name="addSuspect_Form-Charges_2" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_2_No" name="addSuspect_Form-Charges_2" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Charges_2_No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+ -->                    <!-- OPTION 9 - END -->
+
+                    <!-- OPTION 9 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="addSuspect_Form-Alias_2-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Do you have alias details?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Alias_2'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_2_Yes" name="addSuspect_Form-Alias_2" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_2_Yes" name="addSuspect_Form-Alias_2" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Alias_2_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Alias_2'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_2_No" name="addSuspect_Form-Alias_2" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_2_No" name="addSuspect_Form-Alias_2" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Alias_2_No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 9 - END -->
+
+                    <!-- <a class="govuk-button govuk-button--secondary" style="" href="03D-suspect-aliases">Add Aliases</a> -->
+
+                    <p></p>
+
+                    <input id="createCase_Suspect_2_complete" name="createCase_Suspect_2_complete" type="text" value="true" style="display: none;">
+                    <button type="submit" class="govuk-button" style="">Save and continue</button>
+
+                </form>
+            {% else %}
+
+            {% endif %}
+            <!-- SUSPECT 2 -- END -->
+
+            <!-- SUSPECT 3 -- START -->
+            {% if data['createCase_Suspect_3'] == 'true' %}
+                <form method="get" action="03B-suspects" id="newCase_Form-C3_1">  
+                    {% if data['newCase_Suspect-LastName3'] %}
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><span class="uppercase">{{ data['newCase_Suspect-LastName3'] }}</span>, {{ data['newCase_Suspect-FirstName3'] }}</h2>
+                    {% elseif data['newCase_Suspect-CompanyName3'] %}
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ data['newCase_Suspect-CompanyName3'] }}</h2>
+                    {% endif %}
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="addSuspect_Form-DOB_3-hint">
+                            <legend class="govuk-fieldset__legend">What is their date of birth?</legend>
+                            <div id="addSuspect_Form-DOB_3-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="addSuspect_Form-DOB_3">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB_3-Day">Day</label>
+                                        {% if data['addSuspect_Form-DOB_3-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_3-Day" name="addSuspect_Form-DOB_3-Day" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB_3-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_3-Day" name="addSuspect_Form-DOB_3-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB_3-Month">Month</label>
+                                        {% if data['addSuspect_Form-DOB_3-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_3-Month" name="addSuspect_Form-DOB_3-Month" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB_3-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_3-Month" name="addSuspect_Form-DOB_3-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB_3-Year">Year</label>
+                                        {% if data['addSuspect_Form-DOB_3-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-DOB_3-Year" name="addSuspect_Form-DOB_3-Year" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB_3-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-DOB_3-Year" name="addSuspect_Form-DOB_3-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Gender_3">Gender</label>
+                        <select class="govuk-select" id="addSuspect_Form-Gender_3" name="addSuspect_Form-Gender_3">
+                            {% if data['addSuspect_Form-Gender_3'] == 'Unknown' %}
+                                <option value="Unknown" selected>Unknown</option>
+                            {% else %}
+                                <option value="Unknown">Unknown</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Gender_3'] == 'Male' %}
+                                <option value="Male" selected>Male</option>
+                            {% else %}
+                                <option value="Male">Male</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Gender_3'] == 'Female' %}
+                                <option value="Female" selected>Female</option>
+                            {% else %}
+                                <option value="Female">Female</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <!-- OPTION 3 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Disability_3">Disability</label>
+                        <select class="govuk-select" id="addSuspect_Form-Disability_3" name="addSuspect_Form-Disability_3">
+                            {% if data['addSuspect_Form-Disability_3'] == 'Unknown' %}
+                                <option value="Unknown" selected>Unknown</option>
+                            {% else %}
+                                <option value="Unknown">Unknown</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Disability_3'] == 'Yes' %}
+                                <option value="Yes" selected>Yes</option>
+                            {% else %}
+                                <option value="Yes">Yes</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Disability_3'] == 'No' %}
+                                <option value="No" selected>No</option>
+                            {% else %}
+                                <option value="No">No</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 3 - END -->
+
+                    <!-- OPTION 4 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Religion_3">What is their religion?</label>
+                        <select class="govuk-select" id="addSuspect_Form-Religion_3" name="addSuspect_Form-Religion_3">
+                            {% if data['addSuspect_Form-Religion_3'] == 'Not provided' %}
+                                <option value="Not provided" selected>Not provided</option>
+                            {% else %}
+                                <option value="Not provided">Not provided</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_3'] == 'Not stated' %}
+                                <option value="Not stated" selected>Not stated</option>
+                            {% else %}
+                                <option value="Not stated">Not stated</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_3'] == 'No Religion' %}
+                                <option value="No Religion" selected>No Religion</option>
+                            {% else %}
+                                <option value="No Religion">No Religion</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_3'] == 'Buddhist' %}
+                                <option value="Buddhist" selected>Buddhist</option>
+                            {% else %}
+                                <option value="Buddhist">Buddhist</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_3'] == 'Christian' %}
+                                <option value="Christian" selected>Christian</option>
+                            {% else %}
+                                <option value="Christian">Christian</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_3'] == 'Hindu' %}
+                                <option value="Hindu" selected>Hindu</option>
+                            {% else %}
+                                <option value="Hindu">Hindu</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_3'] == 'Jewish' %}
+                                <option value="Jewish" selected>Jewish</option>
+                            {% else %}
+                                <option value="Jewish">Jewish</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_3'] == 'Muslim' %}
+                                <option value="Muslim" selected>Muslim</option>
+                            {% else %}
+                                <option value="Muslim">Muslim</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_3'] == 'Sikh' %}
+                                <option value="Sikh" selected>Sikh</option>
+                            {% else %}
+                                <option value="Sikh">Sikh</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_3'] == 'Other Religion' %}
+                                <option value="Other Religion" selected>Other Religion</option>
+                            {% else %}
+                                <option value="Other Religion">Other Religion</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 4 - END -->
+
+                    <!-- OPTION 5 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Ethnicity_3">What is their ethnicity?</label>
+                        <select class="govuk-select" id="addSuspect_Form-Ethnicity_3" name="addSuspect_Form-Ethnicity_3">
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'Not provided, NP' %}
+                                <option value="Not provided, NP" selected>Not provided, NP</option>
+                            {% else %}
+                                <option value="Not provided, NP">Not provided, NP</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'Not stated, NS' %}
+                                <option value="Not stated, NS" selected>Not stated, NS</option>
+                            {% else %}
+                                <option value="Not stated, NS">Not stated, NS</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'British, W1' %}
+                                <option value="British, W1" selected>British, W1</option>
+                            {% else %}
+                                <option value="British, W1">British, W1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'Irish, W2' %}
+                                <option value="Irish, W2" selected>Irish, W2</option>
+                            {% else %}
+                                <option value="Irish, W2">Irish, W2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'Gypsy or Irish Traveller, W3' %}
+                                <option value="Gypsy or Irish Traveller, W3" selected>Gypsy or Irish Traveller, W3</option>
+                            {% else %}
+                                <option value="Gypsy or Irish Traveller, W3">Gypsy or Irish Traveller, W3</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'Any other white background, W9' %}
+                                <option value="Any other white background, W9" selected>Any other white background, W9</option>
+                            {% else %}
+                                <option value="Any other white background, W9">Any other white background, W9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'White and Black Caribbean, M1' %}
+                                <option value="White and Black Caribbean, M1" selected>White and Black Caribbean, M1</option>
+                            {% else %}
+                                <option value="White and Black Caribbean, M1">White and Black Caribbean, M1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'White and Black African, M2' %}
+                                <option value="White and Black African, M2" selected>White and Black African, M2</option>
+                            {% else %}
+                                <option value="White and Black African, M2">White and Black African, M2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'White and Asian, M3' %}
+                                <option value="White and Asian, M3" selected>White and Asian, M3</option>
+                            {% else %}
+                                <option value="White and Asian, M3">White and Asian, M3</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'Any other mixed background, M9' %}
+                                <option value="Any other mixed background, M9" selected>Any other mixed background, M9</option>
+                            {% else %}
+                                <option value="Any other mixed background, M9">Any other mixed background, M9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'India, A1' %}
+                                <option value="India, A1" selected>India, A1</option>
+                            {% else %}
+                                <option value="India, A1">India, A1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'Pakistani, A2' %}
+                                <option value="Pakistani, A2" selected>Pakistani, A2</option>
+                            {% else %}
+                                <option value="Pakistani, A2">Pakistani, A2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'Bangledeshi, A3' %}
+                                <option value="Bangledeshi, A3" selected>Bangledeshi, A3</option>
+                            {% else %}
+                                <option value="Bangledeshi, A3">Bangledeshi, A3</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'Chinese, A4' %}
+                                <option value="Chinese, A4" selected>Chinese, A4</option>
+                            {% else %}
+                                <option value="Chinese, A4">Chinese, A4</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'Any other Asian background, A9' %}
+                                <option value="Any other Asian background, A9" selected>Any other Asian background, A9</option>
+                            {% else %}
+                                <option value="Any other Asian background, A9">Any other Asian background, A9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'Caribbean, B1' %}
+                                <option value="Caribbean, B1" selected>Caribbean, B1</option>
+                            {% else %}
+                                <option value="Caribbean, B1">Caribbean, B1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'African, B2' %}
+                                <option value="African, B2" selected>African, B2</option>
+                            {% else %}
+                                <option value="African, B2">African, B2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'Any other Black background, B9' %}
+                                <option value="Any other Black background, B9" selected>Any other Black background, B9</option>
+                            {% else %}
+                                <option value="Any other Black background, B9">Any other Black background, B9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'Arab, O2' %}
+                                <option value="Arab, O2" selected>Arab, O2</option>
+                            {% else %}
+                                <option value="Arab, O2">Arab, O2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_3'] == 'Any other ethnic group, O9' %}
+                                <option value="Any other ethnic group, O9" selected>Any other ethnic group, O9</option>
+                            {% else %}
+                                <option value="Any other ethnic group, O9">Any other ethnic group, O9</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 5 - END -->
+
+                    <!-- OPTION 6 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="addSuspect_Form-SDO_3-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Are they a Serious Dangerous Offender (SDO)?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-SDO_3'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_3_Yes" name="addSuspect_Form-SDO_3" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_3_Yes" name="addSuspect_Form-SDO_3" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-SDO_3_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-SDO_3'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_3_No" name="addSuspect_Form-SDO_3" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_3_No" name="addSuspect_Form-SDO_3" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-SDO_3_No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 6 - END -->
+
+                    <!-- OPTION 7 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="newCase_Suspect-ASN_3">Do you have an Arrest Summons Number (ASN)? (optional)</label>
+                        {% if data['newCase_Suspect-AS_3N'] %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-ASN_3" name="newCase_Suspect-ASN_3" type="text" value="{{ data['newCase_Suspect-ASN_3'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-ASN_3" name="newCase_Suspect-ASN_3" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 7 - END -->
+
+                    <!-- OPTION 8 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Type_3">What is the offender type?</label>
+                        <select class="govuk-select" id="addSuspect_Form-Type_3" name="addSuspect_Form-Type_3">
+                            {% if data['addSuspect_Form-Type_3'] == 'Unspecified' %}
+                                <option value="Unspecified" selected>Unspecified</option>
+                            {% else %}
+                                <option value="Unspecified">Unspecified</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_3'] == 'Both PPO and PYO' %}
+                                <option value="Both PPO and PYO" selected>Both PPO and PYO</option>
+                            {% else %}
+                                <option value="Both PPO and PYO">Both PPO and PYO</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_3'] == 'Prolific priority offender PPO' %}
+                                <option value="Prolific priority offender PPO" selected>Prolific priority offender (PPO)</option>
+                            {% else %}
+                                <option value="Prolific priority offender PPO">Prolific priority offender (PPO)</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_3'] == 'Prolific youth offender PYO' %}
+                                <option value="Prolific youth offender PYO" selected>Prolific youth offender (PYO)</option>
+                            {% else %}
+                                <option value="Prolific youth offender PYO">Prolific youth offender (PYO)</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_3'] == 'Youth offender YO' %}
+                                <option value="Youth offender YO" selected>Youth offender (YO)</option>
+                            {% else %}
+                                <option value="Youth offender YO">Youth offender (YO)</option>
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-addSuspect_Form-Type">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="addSuspect_Form-ArrestDate_3-hint">
+                            <legend class="govuk-fieldset__legend">Arrest Date</legend>
+                            <div id="addSuspect_Form-ArrestDate_3-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="addSuspect_Form-ArrestDate_3">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-ArrestDate_3-Day">Day</label>
+                                        {% if data['addSuspect_Form-ArrestDate_3-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_3-Day" name="addSuspect_Form-ArrestDate_3-Day" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-ArrestDate_3-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_3-Day" name="addSuspect_Form-ArrestDate_3-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-ArrestDate_3-Month">Month</label>
+                                        {% if data['addSuspect_Form-ArrestDate_3-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_3-Month" name="addSuspect_Form-ArrestDate_3-Month" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-ArrestDate_3-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_3-Month" name="addSuspect_Form-ArrestDate_3-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-ArrestDate_3-Year">Year</label>
+                                        {% if data['addSuspect_Form-ArrestDate_3-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-ArrestDate_3-Year" name="addSuspect_Form-ArrestDate_3-Year" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-ArrestDate_3-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-ArrestDate_3-Year" name="addSuspect_Form-ArrestDate_3-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 8 - END -->
+
+                    <!-- OPTION 9 - START -->
+<!--                     <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="addSuspect_Form-Charges_3-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Are there any charges?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Charges_3'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_3_Yes" name="addSuspect_Form-Charges_3" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_3_Yes" name="addSuspect_Form-Charges_3" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Charges_3_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Charges_3'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_3_No" name="addSuspect_Form-Charges_3" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_3_No" name="addSuspect_Form-Charges_3" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Charges_3_No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+ -->                    <!-- OPTION 9 - END -->
+
+                    <!-- OPTION 9 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="addSuspect_Form-Alias_3-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Do you have alias details?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Alias_3'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_3_Yes" name="addSuspect_Form-Alias_3" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_3_Yes" name="addSuspect_Form-Alias_3" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Alias_3_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Alias_3'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_3_No" name="addSuspect_Form-Alias_3" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_3_No" name="addSuspect_Form-Alias_3" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Alias_3_No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 9 - END -->
+
+                    <!-- <a class="govuk-button govuk-button--secondary" style="" href="03D-suspect-aliases">Add Aliases</a> -->
+
+                    <p></p>
+
+                    <input id="createCase_Suspect_3_complete" name="createCase_Suspect_3_complete" type="text" value="true" style="display: none;">
+                    <button type="submit" class="govuk-button" style="">Save and continue</button>
+
+                </form>
+            {% else %}
+
+            {% endif %}
+            <!-- SUSPECT 3 -- END -->
+
+            <!-- SUSPECT 4 -- START -->
+            {% if data['createCase_Suspect_4'] == 'true' %}
+                <form method="get" action="03B-suspects" id="newCase_Form-C3_1">  
+                    {% if data['newCase_Suspect-LastName4'] %}
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><span class="uppercase">{{ data['newCase_Suspect-LastName4'] }}</span>, {{ data['newCase_Suspect-FirstName4'] }}</h2>
+                    {% elseif data['newCase_Suspect-CompanyName4'] %}
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ data['newCase_Suspect-CompanyName4'] }}</h2>
+                    {% endif %}
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="addSuspect_Form-DOB_4-hint">
+                            <legend class="govuk-fieldset__legend">What is their date of birth?</legend>
+                            <div id="addSuspect_Form-DOB_4-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="addSuspect_Form-DOB_4">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB_4-Day">Day</label>
+                                        {% if data['addSuspect_Form-DOB_4-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_4-Day" name="addSuspect_Form-DOB_4-Day" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB_4-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_4-Day" name="addSuspect_Form-DOB_4-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB_4-Month">Month</label>
+                                        {% if data['addSuspect_Form-DOB_4-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_4-Month" name="addSuspect_Form-DOB_4-Month" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB_4-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_4-Month" name="addSuspect_Form-DOB_4-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB_4-Year">Year</label>
+                                        {% if data['addSuspect_Form-DOB_4-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-DOB_4-Year" name="addSuspect_Form-DOB_4-Year" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB_4-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-DOB_4-Year" name="addSuspect_Form-DOB_4-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Gender_4">Gender</label>
+                        <select class="govuk-select" id="addSuspect_Form-Gender_4" name="addSuspect_Form-Gender_4">
+                            {% if data['addSuspect_Form-Gender_4'] == 'Unknown' %}
+                                <option value="Unknown" selected>Unknown</option>
+                            {% else %}
+                                <option value="Unknown">Unknown</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Gender_4'] == 'Male' %}
+                                <option value="Male" selected>Male</option>
+                            {% else %}
+                                <option value="Male">Male</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Gender_4'] == 'Female' %}
+                                <option value="Female" selected>Female</option>
+                            {% else %}
+                                <option value="Female">Female</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <!-- OPTION 3 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Disability_4">Disability</label>
+                        <select class="govuk-select" id="addSuspect_Form-Disability_4" name="addSuspect_Form-Disability_4">
+                            {% if data['addSuspect_Form-Disability_4'] == 'Unknown' %}
+                                <option value="Unknown" selected>Unknown</option>
+                            {% else %}
+                                <option value="Unknown">Unknown</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Disability_4'] == 'Yes' %}
+                                <option value="Yes" selected>Yes</option>
+                            {% else %}
+                                <option value="Yes">Yes</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Disability_4'] == 'No' %}
+                                <option value="No" selected>No</option>
+                            {% else %}
+                                <option value="No">No</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 3 - END -->
+
+                    <!-- OPTION 4 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Religion_4">What is their religion?</label>
+                        <select class="govuk-select" id="addSuspect_Form-Religion_4" name="addSuspect_Form-Religion_4">
+                            {% if data['addSuspect_Form-Religion_4'] == 'Not provided' %}
+                                <option value="Not provided" selected>Not provided</option>
+                            {% else %}
+                                <option value="Not provided">Not provided</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_4'] == 'Not stated' %}
+                                <option value="Not stated" selected>Not stated</option>
+                            {% else %}
+                                <option value="Not stated">Not stated</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_4'] == 'No Religion' %}
+                                <option value="No Religion" selected>No Religion</option>
+                            {% else %}
+                                <option value="No Religion">No Religion</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_4'] == 'Buddhist' %}
+                                <option value="Buddhist" selected>Buddhist</option>
+                            {% else %}
+                                <option value="Buddhist">Buddhist</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_4'] == 'Christian' %}
+                                <option value="Christian" selected>Christian</option>
+                            {% else %}
+                                <option value="Christian">Christian</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_4'] == 'Hindu' %}
+                                <option value="Hindu" selected>Hindu</option>
+                            {% else %}
+                                <option value="Hindu">Hindu</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_4'] == 'Jewish' %}
+                                <option value="Jewish" selected>Jewish</option>
+                            {% else %}
+                                <option value="Jewish">Jewish</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_4'] == 'Muslim' %}
+                                <option value="Muslim" selected>Muslim</option>
+                            {% else %}
+                                <option value="Muslim">Muslim</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_4'] == 'Sikh' %}
+                                <option value="Sikh" selected>Sikh</option>
+                            {% else %}
+                                <option value="Sikh">Sikh</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_4'] == 'Other Religion' %}
+                                <option value="Other Religion" selected>Other Religion</option>
+                            {% else %}
+                                <option value="Other Religion">Other Religion</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 4 - END -->
+
+                    <!-- OPTION 5 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Ethnicity_4">What is their ethnicity?</label>
+                        <select class="govuk-select" id="addSuspect_Form-Ethnicity_4" name="addSuspect_Form-Ethnicity_4">
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'Not provided, NP' %}
+                                <option value="Not provided, NP" selected>Not provided, NP</option>
+                            {% else %}
+                                <option value="Not provided, NP">Not provided, NP</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'Not stated, NS' %}
+                                <option value="Not stated, NS" selected>Not stated, NS</option>
+                            {% else %}
+                                <option value="Not stated, NS">Not stated, NS</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'British, W1' %}
+                                <option value="British, W1" selected>British, W1</option>
+                            {% else %}
+                                <option value="British, W1">British, W1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'Irish, W2' %}
+                                <option value="Irish, W2" selected>Irish, W2</option>
+                            {% else %}
+                                <option value="Irish, W2">Irish, W2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'Gypsy or Irish Traveller, W3' %}
+                                <option value="Gypsy or Irish Traveller, W3" selected>Gypsy or Irish Traveller, W3</option>
+                            {% else %}
+                                <option value="Gypsy or Irish Traveller, W3">Gypsy or Irish Traveller, W3</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'Any other white background, W9' %}
+                                <option value="Any other white background, W9" selected>Any other white background, W9</option>
+                            {% else %}
+                                <option value="Any other white background, W9">Any other white background, W9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'White and Black Caribbean, M1' %}
+                                <option value="White and Black Caribbean, M1" selected>White and Black Caribbean, M1</option>
+                            {% else %}
+                                <option value="White and Black Caribbean, M1">White and Black Caribbean, M1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'White and Black African, M2' %}
+                                <option value="White and Black African, M2" selected>White and Black African, M2</option>
+                            {% else %}
+                                <option value="White and Black African, M2">White and Black African, M2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'White and Asian, M3' %}
+                                <option value="White and Asian, M3" selected>White and Asian, M3</option>
+                            {% else %}
+                                <option value="White and Asian, M3">White and Asian, M3</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'Any other mixed background, M9' %}
+                                <option value="Any other mixed background, M9" selected>Any other mixed background, M9</option>
+                            {% else %}
+                                <option value="Any other mixed background, M9">Any other mixed background, M9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'India, A1' %}
+                                <option value="India, A1" selected>India, A1</option>
+                            {% else %}
+                                <option value="India, A1">India, A1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'Pakistani, A2' %}
+                                <option value="Pakistani, A2" selected>Pakistani, A2</option>
+                            {% else %}
+                                <option value="Pakistani, A2">Pakistani, A2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'Bangledeshi, A3' %}
+                                <option value="Bangledeshi, A3" selected>Bangledeshi, A3</option>
+                            {% else %}
+                                <option value="Bangledeshi, A3">Bangledeshi, A3</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'Chinese, A4' %}
+                                <option value="Chinese, A4" selected>Chinese, A4</option>
+                            {% else %}
+                                <option value="Chinese, A4">Chinese, A4</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'Any other Asian background, A9' %}
+                                <option value="Any other Asian background, A9" selected>Any other Asian background, A9</option>
+                            {% else %}
+                                <option value="Any other Asian background, A9">Any other Asian background, A9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'Caribbean, B1' %}
+                                <option value="Caribbean, B1" selected>Caribbean, B1</option>
+                            {% else %}
+                                <option value="Caribbean, B1">Caribbean, B1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'African, B2' %}
+                                <option value="African, B2" selected>African, B2</option>
+                            {% else %}
+                                <option value="African, B2">African, B2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'Any other Black background, B9' %}
+                                <option value="Any other Black background, B9" selected>Any other Black background, B9</option>
+                            {% else %}
+                                <option value="Any other Black background, B9">Any other Black background, B9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'Arab, O2' %}
+                                <option value="Arab, O2" selected>Arab, O2</option>
+                            {% else %}
+                                <option value="Arab, O2">Arab, O2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_4'] == 'Any other ethnic group, O9' %}
+                                <option value="Any other ethnic group, O9" selected>Any other ethnic group, O9</option>
+                            {% else %}
+                                <option value="Any other ethnic group, O9">Any other ethnic group, O9</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 5 - END -->
+
+                    <!-- OPTION 6 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="addSuspect_Form-SDO_4-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Are they a Serious Dangerous Offender (SDO)?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-SDO_4'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_4_Yes" name="addSuspect_Form-SDO_4" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_4_Yes" name="addSuspect_Form-SDO_4" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-SDO_4_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-SDO_4'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_4_No" name="addSuspect_Form-SDO_4" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_4_No" name="addSuspect_Form-SDO_4" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-SDO_4_No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 6 - END -->
+
+                    <!-- OPTION 7 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="newCase_Suspect-ASN_4">Do you have an Arrest Summons Number (ASN)? (optional)</label>
+                        {% if data['newCase_Suspect-AS_4N'] %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-ASN_4" name="newCase_Suspect-ASN_4" type="text" value="{{ data['newCase_Suspect-ASN_4'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-ASN_4" name="newCase_Suspect-ASN_4" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 7 - END -->
+
+                    <!-- OPTION 8 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Type_4">What is the offender type?</label>
+                        <select class="govuk-select" id="addSuspect_Form-Type_4" name="addSuspect_Form-Type_4">
+                            {% if data['addSuspect_Form-Type_4'] == 'Unspecified' %}
+                                <option value="Unspecified" selected>Unspecified</option>
+                            {% else %}
+                                <option value="Unspecified">Unspecified</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_4'] == 'Both PPO and PYO' %}
+                                <option value="Both PPO and PYO" selected>Both PPO and PYO</option>
+                            {% else %}
+                                <option value="Both PPO and PYO">Both PPO and PYO</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_4'] == 'Prolific priority offender PPO' %}
+                                <option value="Prolific priority offender PPO" selected>Prolific priority offender (PPO)</option>
+                            {% else %}
+                                <option value="Prolific priority offender PPO">Prolific priority offender (PPO)</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_4'] == 'Prolific youth offender PYO' %}
+                                <option value="Prolific youth offender PYO" selected>Prolific youth offender (PYO)</option>
+                            {% else %}
+                                <option value="Prolific youth offender PYO">Prolific youth offender (PYO)</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_4'] == 'Youth offender YO' %}
+                                <option value="Youth offender YO" selected>Youth offender (YO)</option>
+                            {% else %}
+                                <option value="Youth offender YO">Youth offender (YO)</option>
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-addSuspect_Form-Type">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="addSuspect_Form-ArrestDate_4-hint">
+                            <legend class="govuk-fieldset__legend">Arrest Date</legend>
+                            <div id="addSuspect_Form-ArrestDate_4-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="addSuspect_Form-ArrestDate_4">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-ArrestDate_4-Day">Day</label>
+                                        {% if data['addSuspect_Form-ArrestDate_4-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_4-Day" name="addSuspect_Form-ArrestDate_4-Day" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-ArrestDate_4-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_4-Day" name="addSuspect_Form-ArrestDate_4-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-ArrestDate_4-Month">Month</label>
+                                        {% if data['addSuspect_Form-ArrestDate_4-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_4-Month" name="addSuspect_Form-ArrestDate_4-Month" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-ArrestDate_4-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_4-Month" name="addSuspect_Form-ArrestDate_4-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-ArrestDate_4-Year">Year</label>
+                                        {% if data['addSuspect_Form-ArrestDate_4-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-ArrestDate_4-Year" name="addSuspect_Form-ArrestDate_4-Year" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-ArrestDate_4-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-ArrestDate_4-Year" name="addSuspect_Form-ArrestDate_4-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 8 - END -->
+
+                    <!-- OPTION 9 - START -->
+<!--                     <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="addSuspect_Form-Charges_4-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Are there any charges?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Charges_4'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_4_Yes" name="addSuspect_Form-Charges_4" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_4_Yes" name="addSuspect_Form-Charges_4" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Charges_4_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Charges_4'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_4_No" name="addSuspect_Form-Charges_4" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_4_No" name="addSuspect_Form-Charges_4" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Charges_4_No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+ -->                    <!-- OPTION 9 - END -->
+
+                    <!-- OPTION 9 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="addSuspect_Form-Alias_4-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Do you have alias details?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Alias_4'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_4_Yes" name="addSuspect_Form-Alias_4" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_4_Yes" name="addSuspect_Form-Alias_4" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Alias_4_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Alias_4'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_4_No" name="addSuspect_Form-Alias_4" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_4_No" name="addSuspect_Form-Alias_4" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Alias_4_No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 9 - END -->
+
+                    <!-- <a class="govuk-button govuk-button--secondary" style="" href="03D-suspect-aliases">Add Aliases</a> -->
+
+                    <p></p>
+
+                    <input id="createCase_Suspect_4_complete" name="createCase_Suspect_4_complete" type="text" value="true" style="display: none;">
+                    <button type="submit" class="govuk-button" style="">Save and continue</button>
+
+                </form>
+            {% else %}
+
+            {% endif %}
+            <!-- SUSPECT 4 -- END -->
+
+            <!-- SUSPECT 5 -- START -->
+            {% if data['createCase_Suspect_5'] == 'true' %}
+                <form method="get" action="03B-suspects" id="newCase_Form-C3_1">  
+                    {% if data['newCase_Suspect-LastName5'] %}
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2"><span class="uppercase">{{ data['newCase_Suspect-LastName5'] }}</span>, {{ data['newCase_Suspect-FirstName5'] }}</h2>
+                    {% elseif data['newCase_Suspect-CompanyName5'] %}
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ data['newCase_Suspect-CompanyName5'] }}</h2>
+                    {% endif %}
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="addSuspect_Form-DOB_5-hint">
+                            <legend class="govuk-fieldset__legend">What is their date of birth?</legend>
+                            <div id="addSuspect_Form-DOB_5-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="addSuspect_Form-DOB_5">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB_5-Day">Day</label>
+                                        {% if data['addSuspect_Form-DOB_5-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_5-Day" name="addSuspect_Form-DOB_5-Day" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB_5-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_5-Day" name="addSuspect_Form-DOB_5-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB_5-Month">Month</label>
+                                        {% if data['addSuspect_Form-DOB_5-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_5-Month" name="addSuspect_Form-DOB_5-Month" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB_5-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-DOB_5-Month" name="addSuspect_Form-DOB_5-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-DOB_5-Year">Year</label>
+                                        {% if data['addSuspect_Form-DOB_5-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-DOB_5-Year" name="addSuspect_Form-DOB_5-Year" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-DOB_5-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-DOB_5-Year" name="addSuspect_Form-DOB_5-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Gender_5">Gender</label>
+                        <select class="govuk-select" id="addSuspect_Form-Gender_5" name="addSuspect_Form-Gender_5">
+                            {% if data['addSuspect_Form-Gender_5'] == 'Unknown' %}
+                                <option value="Unknown" selected>Unknown</option>
+                            {% else %}
+                                <option value="Unknown">Unknown</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Gender_5'] == 'Male' %}
+                                <option value="Male" selected>Male</option>
+                            {% else %}
+                                <option value="Male">Male</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Gender_5'] == 'Female' %}
+                                <option value="Female" selected>Female</option>
+                            {% else %}
+                                <option value="Female">Female</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <!-- OPTION 3 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Disability_5">Disability</label>
+                        <select class="govuk-select" id="addSuspect_Form-Disability_5" name="addSuspect_Form-Disability_5">
+                            {% if data['addSuspect_Form-Disability_5'] == 'Unknown' %}
+                                <option value="Unknown" selected>Unknown</option>
+                            {% else %}
+                                <option value="Unknown">Unknown</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Disability_5'] == 'Yes' %}
+                                <option value="Yes" selected>Yes</option>
+                            {% else %}
+                                <option value="Yes">Yes</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Disability_5'] == 'No' %}
+                                <option value="No" selected>No</option>
+                            {% else %}
+                                <option value="No">No</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 3 - END -->
+
+                    <!-- OPTION 4 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Religion_5">What is their religion?</label>
+                        <select class="govuk-select" id="addSuspect_Form-Religion_5" name="addSuspect_Form-Religion_5">
+                            {% if data['addSuspect_Form-Religion_5'] == 'Not provided' %}
+                                <option value="Not provided" selected>Not provided</option>
+                            {% else %}
+                                <option value="Not provided">Not provided</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_5'] == 'Not stated' %}
+                                <option value="Not stated" selected>Not stated</option>
+                            {% else %}
+                                <option value="Not stated">Not stated</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_5'] == 'No Religion' %}
+                                <option value="No Religion" selected>No Religion</option>
+                            {% else %}
+                                <option value="No Religion">No Religion</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_5'] == 'Buddhist' %}
+                                <option value="Buddhist" selected>Buddhist</option>
+                            {% else %}
+                                <option value="Buddhist">Buddhist</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_5'] == 'Christian' %}
+                                <option value="Christian" selected>Christian</option>
+                            {% else %}
+                                <option value="Christian">Christian</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_5'] == 'Hindu' %}
+                                <option value="Hindu" selected>Hindu</option>
+                            {% else %}
+                                <option value="Hindu">Hindu</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_5'] == 'Jewish' %}
+                                <option value="Jewish" selected>Jewish</option>
+                            {% else %}
+                                <option value="Jewish">Jewish</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_5'] == 'Muslim' %}
+                                <option value="Muslim" selected>Muslim</option>
+                            {% else %}
+                                <option value="Muslim">Muslim</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_5'] == 'Sikh' %}
+                                <option value="Sikh" selected>Sikh</option>
+                            {% else %}
+                                <option value="Sikh">Sikh</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Religion_5'] == 'Other Religion' %}
+                                <option value="Other Religion" selected>Other Religion</option>
+                            {% else %}
+                                <option value="Other Religion">Other Religion</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 4 - END -->
+
+                    <!-- OPTION 5 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Ethnicity_5">What is their ethnicity?</label>
+                        <select class="govuk-select" id="addSuspect_Form-Ethnicity_5" name="addSuspect_Form-Ethnicity_5">
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'Not provided, NP' %}
+                                <option value="Not provided, NP" selected>Not provided, NP</option>
+                            {% else %}
+                                <option value="Not provided, NP">Not provided, NP</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'Not stated, NS' %}
+                                <option value="Not stated, NS" selected>Not stated, NS</option>
+                            {% else %}
+                                <option value="Not stated, NS">Not stated, NS</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'British, W1' %}
+                                <option value="British, W1" selected>British, W1</option>
+                            {% else %}
+                                <option value="British, W1">British, W1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'Irish, W2' %}
+                                <option value="Irish, W2" selected>Irish, W2</option>
+                            {% else %}
+                                <option value="Irish, W2">Irish, W2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'Gypsy or Irish Traveller, W3' %}
+                                <option value="Gypsy or Irish Traveller, W3" selected>Gypsy or Irish Traveller, W3</option>
+                            {% else %}
+                                <option value="Gypsy or Irish Traveller, W3">Gypsy or Irish Traveller, W3</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'Any other white background, W9' %}
+                                <option value="Any other white background, W9" selected>Any other white background, W9</option>
+                            {% else %}
+                                <option value="Any other white background, W9">Any other white background, W9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'White and Black Caribbean, M1' %}
+                                <option value="White and Black Caribbean, M1" selected>White and Black Caribbean, M1</option>
+                            {% else %}
+                                <option value="White and Black Caribbean, M1">White and Black Caribbean, M1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'White and Black African, M2' %}
+                                <option value="White and Black African, M2" selected>White and Black African, M2</option>
+                            {% else %}
+                                <option value="White and Black African, M2">White and Black African, M2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'White and Asian, M3' %}
+                                <option value="White and Asian, M3" selected>White and Asian, M3</option>
+                            {% else %}
+                                <option value="White and Asian, M3">White and Asian, M3</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'Any other mixed background, M9' %}
+                                <option value="Any other mixed background, M9" selected>Any other mixed background, M9</option>
+                            {% else %}
+                                <option value="Any other mixed background, M9">Any other mixed background, M9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'India, A1' %}
+                                <option value="India, A1" selected>India, A1</option>
+                            {% else %}
+                                <option value="India, A1">India, A1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'Pakistani, A2' %}
+                                <option value="Pakistani, A2" selected>Pakistani, A2</option>
+                            {% else %}
+                                <option value="Pakistani, A2">Pakistani, A2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'Bangledeshi, A3' %}
+                                <option value="Bangledeshi, A3" selected>Bangledeshi, A3</option>
+                            {% else %}
+                                <option value="Bangledeshi, A3">Bangledeshi, A3</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'Chinese, A4' %}
+                                <option value="Chinese, A4" selected>Chinese, A4</option>
+                            {% else %}
+                                <option value="Chinese, A4">Chinese, A4</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'Any other Asian background, A9' %}
+                                <option value="Any other Asian background, A9" selected>Any other Asian background, A9</option>
+                            {% else %}
+                                <option value="Any other Asian background, A9">Any other Asian background, A9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'Caribbean, B1' %}
+                                <option value="Caribbean, B1" selected>Caribbean, B1</option>
+                            {% else %}
+                                <option value="Caribbean, B1">Caribbean, B1</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'African, B2' %}
+                                <option value="African, B2" selected>African, B2</option>
+                            {% else %}
+                                <option value="African, B2">African, B2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'Any other Black background, B9' %}
+                                <option value="Any other Black background, B9" selected>Any other Black background, B9</option>
+                            {% else %}
+                                <option value="Any other Black background, B9">Any other Black background, B9</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'Arab, O2' %}
+                                <option value="Arab, O2" selected>Arab, O2</option>
+                            {% else %}
+                                <option value="Arab, O2">Arab, O2</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Ethnicity_5'] == 'Any other ethnic group, O9' %}
+                                <option value="Any other ethnic group, O9" selected>Any other ethnic group, O9</option>
+                            {% else %}
+                                <option value="Any other ethnic group, O9">Any other ethnic group, O9</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 5 - END -->
+
+                    <!-- OPTION 6 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="addSuspect_Form-SDO_5-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Are they a Serious Dangerous Offender (SDO)?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-SDO_5'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_5_Yes" name="addSuspect_Form-SDO_5" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_5_Yes" name="addSuspect_Form-SDO_5" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-SDO_5_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-SDO_5'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_5_No" name="addSuspect_Form-SDO_5" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-SDO_5_No" name="addSuspect_Form-SDO_5" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-SDO_5_No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 6 - END -->
+
+                    <!-- OPTION 7 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="newCase_Suspect-ASN_5">Do you have an Arrest Summons Number (ASN)? (optional)</label>
+                        {% if data['newCase_Suspect-ASN_5'] %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-ASN_5" name="newCase_Suspect-ASN_5" type="text" value="{{ data['newCase_Suspect-ASN_5'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Suspect-ASN_5" name="newCase_Suspect-ASN_5" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 7 - END -->
+
+                    <!-- OPTION 8 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect_Form-Type_5">What is the offender type?</label>
+                        <select class="govuk-select" id="addSuspect_Form-Type_5" name="addSuspect_Form-Type_5">
+                            {% if data['addSuspect_Form-Type_5'] == 'Unspecified' %}
+                                <option value="Unspecified" selected>Unspecified</option>
+                            {% else %}
+                                <option value="Unspecified">Unspecified</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_5'] == 'Both PPO and PYO' %}
+                                <option value="Both PPO and PYO" selected>Both PPO and PYO</option>
+                            {% else %}
+                                <option value="Both PPO and PYO">Both PPO and PYO</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_5'] == 'Prolific priority offender PPO' %}
+                                <option value="Prolific priority offender PPO" selected>Prolific priority offender (PPO)</option>
+                            {% else %}
+                                <option value="Prolific priority offender PPO">Prolific priority offender (PPO)</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_5'] == 'Prolific youth offender PYO' %}
+                                <option value="Prolific youth offender PYO" selected>Prolific youth offender (PYO)</option>
+                            {% else %}
+                                <option value="Prolific youth offender PYO">Prolific youth offender (PYO)</option>
+                            {% endif %}
+                            {% if data['addSuspect_Form-Type_5'] == 'Youth offender YO' %}
+                                <option value="Youth offender YO" selected>Youth offender (YO)</option>
+                            {% else %}
+                                <option value="Youth offender YO">Youth offender (YO)</option>
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-addSuspect_Form-Type">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="addSuspect_Form-ArrestDate_5-hint">
+                            <legend class="govuk-fieldset__legend">Arrest Date</legend>
+                            <div id="addSuspect_Form-ArrestDate_5-hint" class="govuk-hint">For example, 27 3 2007</div>
+                            <div class="govuk-date-input" id="addSuspect_Form-ArrestDate_5">
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-ArrestDate_5-Day">Day</label>
+                                        {% if data['addSuspect_Form-ArrestDate_5-Day'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_5-Day" name="addSuspect_Form-ArrestDate_5-Day" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-ArrestDate_5-Day'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_5-Day" name="addSuspect_Form-ArrestDate_5-Day" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-ArrestDate_5-Month">Month</label>
+                                        {% if data['addSuspect_Form-ArrestDate_5-Month'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_5-Month" name="addSuspect_Form-ArrestDate_5-Month" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-ArrestDate_5-Month'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="addSuspect_Form-ArrestDate_5-Month" name="addSuspect_Form-ArrestDate_5-Month" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="addSuspect_Form-ArrestDate_5-Year">Year</label>
+                                        {% if data['addSuspect_Form-ArrestDate_5-Year'] %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-ArrestDate_5-Year" name="addSuspect_Form-ArrestDate_5-Year" type="text" inputmode="numeric" value="{{ data['addSuspect_Form-ArrestDate_5-Year'] }}">
+                                        {% else %}
+                                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="addSuspect_Form-ArrestDate_5-Year" name="addSuspect_Form-ArrestDate_5-Year" type="text" inputmode="numeric">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <!-- OPTION 8 - END -->
+
+                    <!-- OPTION 9 - START -->
+<!--                     <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="addSuspect_Form-Charges_5-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Are there any charges?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Charges_5'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_5_Yes" name="addSuspect_Form-Charges_5" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_5_Yes" name="addSuspect_Form-Charges_5" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Charges_5_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Charges_5'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_5_No" name="addSuspect_Form-Charges_5" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Charges_5_No" name="addSuspect_Form-Charges_5" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Charges_5_No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+ -->                    <!-- OPTION 9 - END -->
+
+                    <!-- OPTION 9 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="addSuspect_Form-Alias_5-hint">
+                            <legend class="govuk-fieldset__legend">
+                                <h1 class="govuk-fieldset__heading">Do you have alias details?</h1>
+                            </legend>
+                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Alias_5'] == 'Yes' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_5_Yes" name="addSuspect_Form-Alias_5" type="radio" value="Yes" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_5_Yes" name="addSuspect_Form-Alias_5" type="radio" value="Yes">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Alias_5_Yes">Yes</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['addSuspect_Form-Alias_5'] == 'No' %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_5_No" name="addSuspect_Form-Alias_5" type="radio" value="No" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="addSuspect_Form-Alias_5_No" name="addSuspect_Form-Alias_5" type="radio" value="No">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Form-Alias_5_No">No</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 9 - END -->
+
+                    <!-- <a class="govuk-button govuk-button--secondary" style="" href="03D-suspect-aliases">Add Aliases</a> -->
+
+                    <p></p>
+
+                    <input id="createCase_Suspect_5_complete" name="createCase_Suspect_5_complete" type="text" value="true" style="display: none;">
+                    <button type="submit" class="govuk-button" style="">Save and continue</button>
+
+                </form>
+            {% else %}
+
+            {% endif %}
+            <!-- SUSPECT 5 -- END -->
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+        <div class="existing-contacts">
+            <h2 class="govuk-heading-s" style="">Aliases</h2>
+            <div class="contacts">
+                <div id="new-contacts">
+                    {% if data['createCase_Suspect_1_Aliases-LastName'] %}
+
+                    {% else %}
+                        <p class="holder">Aliases added for this suspect</p>
+                    {% endif %}
+                    {% if data['createCase_Suspect_1_Aliases-LastName'] %}
+                        <p class="witnessDetails-1">
+                            <span class="icon-new user"></span><span class="uppercase">{{ data['createCase_Suspect_1_Aliases-LastName'] }}</span>, {{ data['createCase_Suspect_1_Aliases-FirstName'] }}<br>
+                        </p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['createCase_Suspect_1_Aliases-LastName2'] %}
+                        <p class="witnessDetails-2">
+                            <span class="icon-new user"></span><span class="uppercase">{{ data['createCase_Suspect_1_Aliases-LastName2'] }}</span>, {{ data['createCase_Suspect_1_Aliases-FirstName2'] }}<br>
+                        </p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['createCase_Suspect_1_Aliases-LastName3'] %}
+                        <p class="witnessDetails-3">
+                            <span class="icon-new user"></span><span class="uppercase">{{ data['createCase_Suspect_1_Aliases-LastName3'] }}</span>, {{ data['createCase_Suspect_1_Aliases-FirstName3'] }}<br>
+                        </p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['createCase_Suspect_1_Aliases-LastName4'] %}
+                        <p class="witnessDetails-4">
+                            <span class="icon-new user"></span><span class="uppercase">{{ data['createCase_Suspect_1_Aliases-LastName4'] }}</span>, {{ data['createCase_Suspect_1_Aliases-FirstName4'] }}<br>
+                        </p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['createCase_Suspect_1_Aliases-LastName5'] %}
+                        <p class="witnessDetails-5">
+                            <span class="icon-new user"></span><span class="uppercase">{{ data['createCase_Suspect_1_Aliases-LastName5'] }}</span>, {{ data['createCase_Suspect_1_Aliases-FirstName5'] }}<br>
+                        </p>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

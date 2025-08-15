@@ -1,0 +1,413 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+{% if data['caseAccess'] == 'true' %}
+    <div class="govuk-grid-row">
+{% else %}
+    <div class="govuk-grid-row" id="create-case-journey">
+{% endif %}
+    <div class="govuk-grid-column-two-thirds">
+        <div class="wrapper gov-pages">
+
+            <h1 class="govuk-heading-xl" style="">Add CPS team members to {{ data['newCase_OperationName'] }}</h1>
+
+            <form method="get" action="5-case-overview" id="newCase_Form-D">  
+
+                <p> </p>
+
+                <!-- USER 1 -- START -->
+                <div id="userDetails-1">
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="removeUser1" onclick="removeUser1()">Remove user</a>
+                        <label class="govuk-label" for="newCase_Access-Email">Email address or workspace ID</label>
+                        {% if data['newCase_Access-Email'] %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Access-Email" name="newCase_Access-Email" type="text" value="{{ data['newCase_Access-Email'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Access-Email" name="newCase_Access-Email" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="newCase_Access-Permissions">What is their role on the case?</label>
+                        <select class="govuk-select" id="newCase_Access-Permissions" name="newCase_Access-Permissions">
+                            {% if data['newCase_Access-Permissions'] == 'Administrator' %}
+                                <option value="Administrator" selected>Administrator</option>
+                            {% else %}
+                                <option value="Administrator">Administrator</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions'] == 'Lead Prosecutor' %}
+                                <option value="Lead Prosecutor" selected>Lead Prosecutor</option>
+                            {% else %}
+                                <option value="Lead Prosecutor">Lead Prosecutor</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions'] == 'Prosecutor' %}
+                                <option value="Prosecutor" selected>Prosecutor</option>
+                            {% else %}
+                                <option value="Prosecutor">Prosecutor</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions'] == 'Lead Paralegal Officer' %}
+                                <option value="Lead Paralegal Officer" selected>Lead Paralegal Officer</option>
+                            {% else %}
+                                <option value="Lead Paralegal Officer">Lead Paralegal Officer</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions'] == 'Paralegal Officer' %}
+                                <option value="Paralegal Officer" selected>Paralegal Officer</option>
+                            {% else %}
+                                <option value="Paralegal Officer">Paralegal Officer</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions'] == 'Unit Manager' %}
+                                <option value="Unit Manager" selected>Unit Manager</option>
+                            {% else %}
+                                <option value="Unit Manager">Unit Manager</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions'] == 'Crown Advocate (HCA)' %}
+                                <option value="Crown Advocate (HCA)" selected>Crown Advocate (HCA)</option>
+                            {% else %}
+                                <option value="Crown Advocate (HCA)">Crown Advocate (HCA)</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addUser1" onclick="addUser1()">Add user</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- USER 1 -- END -->
+
+                <!-- USER 2 -- START -->
+                {% if data['newCase_Access-Email2'] %}
+                    <div id="userDetails-2" class="active">
+                {% else %}
+                    <div id="userDetails-2">
+                {% endif %}
+                        <!-- OPTION 1 - START -->
+                        <div class="govuk-form-group">
+                            <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="removeUser2" onclick="removeUser2()">Remove user</a>
+                            <label class="govuk-label" for="newCase_Access-Email2">Email address or workspace ID</label>
+                            {% if data['newCase_Access-Email2'] %}
+                                <input class="govuk-input govuk-input--width-20" id="newCase_Access-Email2" name="newCase_Access-Email2" type="text" value="{{ data['newCase_Access-Email2'] }}">
+                            {% else %}
+                                <input class="govuk-input govuk-input--width-20" id="newCase_Access-Email2" name="newCase_Access-Email2" type="text">
+                            {% endif %}
+                        </div>
+                        <!-- OPTION 1 - END -->
+
+                        <!-- OPTION 2 - START -->
+                        <div class="govuk-form-group">
+                            <label class="govuk-label" for="newCase_Access-Permissions2">What is their role on the case?</label>
+                            <select class="govuk-select" id="newCase_Access-Permissions2" name="newCase_Access-Permissions2">
+                                {% if data['newCase_Access-Permissions2'] == 'Administrator' %}
+                                    <option value="Administrator" selected>Administrator</option>
+                                {% else %}
+                                    <option value="Administrator">Administrator</option>
+                                {% endif %}
+                                {% if data['newCase_Access-Permissions2'] == 'Lead Prosecutor' %}
+                                    <option value="Lead Prosecutor" selected>Lead Prosecutor</option>
+                                {% else %}
+                                    <option value="Lead Prosecutor">Lead Prosecutor</option>
+                                {% endif %}
+                                {% if data['newCase_Access-Permissions2'] == 'Prosecutor' %}
+                                    <option value="Prosecutor" selected>Prosecutor</option>
+                                {% else %}
+                                    <option value="Prosecutor">Prosecutor</option>
+                                {% endif %}
+                                {% if data['newCase_Access-Permissions2'] == 'Lead Paralegal Officer' %}
+                                    <option value="Lead Paralegal Officer" selected>Lead Paralegal Officer</option>
+                                {% else %}
+                                    <option value="Lead Paralegal Officer">Lead Paralegal Officer</option>
+                                {% endif %}
+                                {% if data['newCase_Access-Permissions2'] == 'Paralegal Officer' %}
+                                    <option value="Paralegal Officer" selected>Paralegal Officer</option>
+                                {% else %}
+                                    <option value="Paralegal Officer">Paralegal Officer</option>
+                                {% endif %}
+                                {% if data['newCase_Access-Permissions2'] == 'Unit Manager' %}
+                                    <option value="Unit Manager" selected>Unit Manager</option>
+                                {% else %}
+                                    <option value="Unit Manager">Unit Manager</option>
+                                {% endif %}
+                                {% if data['newCase_Access-Permissions2'] == 'Crown Advocate (HCA)' %}
+                                    <option value="Crown Advocate (HCA)" selected>Crown Advocate (HCA)</option>
+                                {% else %}
+                                    <option value="Crown Advocate (HCA)">Crown Advocate (HCA)</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <!-- OPTION 2 - END -->
+
+                        <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addUser2" onclick="addUser2()">Add user</a>
+                        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                    </div>
+                <!-- USER 2 -- END -->
+
+                <!-- USER 3 -- START -->
+                {% if data['newCase_Access-Email3'] %}
+                    <div id="userDetails-3" class="active">
+                {% else %}
+                    <div id="userDetails-3">
+                {% endif %}
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="removeUser3" onclick="removeUser3()">Remove user</a>
+                        <label class="govuk-label" for="newCase_Access-Email3">Email address or workspace ID</label>
+                        {% if data['newCase_Access-Email3'] %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Access-Email3" name="newCase_Access-Email3" type="text" value="{{ data['newCase_Access-Email3'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Access-Email3" name="newCase_Access-Email3" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="newCase_Access-Permissions3">What is their role on the case?</label>
+                        <select class="govuk-select" id="newCase_Access-Permissions3" name="newCase_Access-Permissions3">
+                            {% if data['newCase_Access-Permissions3'] == 'Administrator' %}
+                                <option value="Administrator" selected>Administrator</option>
+                            {% else %}
+                                <option value="Administrator">Administrator</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions3'] == 'Lead Prosecutor' %}
+                                <option value="Lead Prosecutor" selected>Lead Prosecutor</option>
+                            {% else %}
+                                <option value="Lead Prosecutor">Lead Prosecutor</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions3'] == 'Prosecutor' %}
+                                <option value="Prosecutor" selected>Prosecutor</option>
+                            {% else %}
+                                <option value="Prosecutor">Prosecutor</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions3'] == 'Lead Paralegal Officer' %}
+                                <option value="Lead Paralegal Officer" selected>Lead Paralegal Officer</option>
+                            {% else %}
+                                <option value="Lead Paralegal Officer">Lead Paralegal Officer</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions3'] == 'Paralegal Officer' %}
+                                <option value="Paralegal Officer" selected>Paralegal Officer</option>
+                            {% else %}
+                                <option value="Paralegal Officer">Paralegal Officer</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions3'] == 'Unit Manager' %}
+                                <option value="Unit Manager" selected>Unit Manager</option>
+                            {% else %}
+                                <option value="Unit Manager">Unit Manager</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions3'] == 'Crown Advocate (HCA)' %}
+                                <option value="Crown Advocate (HCA)" selected>Crown Advocate (HCA)</option>
+                            {% else %}
+                                <option value="Crown Advocate (HCA)">Crown Advocate (HCA)</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addUser3" onclick="addUser3()">Add user</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- USER 3 -- END -->
+
+                <!-- USER 4 -- START -->
+                {% if data['newCase_Access-Email4'] %}
+                    <div id="userDetails-4" class="active">
+                {% else %}
+                    <div id="userDetails-4">
+                {% endif %}
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="removeUser4" onclick="removeUser4()">Remove user</a>
+                        <label class="govuk-label" for="newCase_Access-Email4">Email address or workspace ID</label>
+                        {% if data['newCase_Access-Email4'] %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Access-Email4" name="newCase_Access-Email4" type="text" value="{{ data['newCase_Access-Email4'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Access-Email4" name="newCase_Access-Email4" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="newCase_Access-Permissions4">What is their role on the case?</label>
+                        <select class="govuk-select" id="newCase_Access-Permissions4" name="newCase_Access-Permissions4">
+                            {% if data['newCase_Access-Permissions4'] == 'Administrator' %}
+                                <option value="Administrator" selected>Administrator</option>
+                            {% else %}
+                                <option value="Administrator">Administrator</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions4'] == 'Lead Prosecutor' %}
+                                <option value="Lead Prosecutor" selected>Lead Prosecutor</option>
+                            {% else %}
+                                <option value="Lead Prosecutor">Lead Prosecutor</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions4'] == 'Prosecutor' %}
+                                <option value="Prosecutor" selected>Prosecutor</option>
+                            {% else %}
+                                <option value="Prosecutor">Prosecutor</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions4'] == 'Lead Paralegal Officer' %}
+                                <option value="Lead Paralegal Officer" selected>Lead Paralegal Officer</option>
+                            {% else %}
+                                <option value="Lead Paralegal Officer">Lead Paralegal Officer</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions4'] == 'Paralegal Officer' %}
+                                <option value="Paralegal Officer" selected>Paralegal Officer</option>
+                            {% else %}
+                                <option value="Paralegal Officer">Paralegal Officer</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions4'] == 'Unit Manager' %}
+                                <option value="Unit Manager" selected>Unit Manager</option>
+                            {% else %}
+                                <option value="Unit Manager">Unit Manager</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions4'] == 'Crown Advocate (HCA)' %}
+                                <option value="Crown Advocate (HCA)" selected>Crown Advocate (HCA)</option>
+                            {% else %}
+                                <option value="Crown Advocate (HCA)">Crown Advocate (HCA)</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addUser4" onclick="addUser4()">Add user</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- USER 4 -- END -->
+
+                <!-- USER 5 -- START -->
+                {% if data['newCase_Access-Email5'] %}
+                    <div id="userDetails-5" class="active">
+                {% else %}
+                    <div id="userDetails-5">
+                {% endif %}
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="removeUser5" onclick="removeUser5()">Remove user</a>
+                        <label class="govuk-label" for="newCase_Access-Email5">Email address or workspace ID</label>
+                        {% if data['newCase_Access-Email5'] %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Access-Email5" name="newCase_Access-Email5" type="text" value="{{ data['newCase_Access-Email5'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Access-Email5" name="newCase_Access-Email5" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="newCase_Access-Permissions5">What is their role on the case?</label>
+                        <select class="govuk-select" id="newCase_Access-Permissions5" name="newCase_Access-Permissions5">
+                            {% if data['newCase_Access-Permissions5'] == 'Administrator' %}
+                                <option value="Administrator" selected>Administrator</option>
+                            {% else %}
+                                <option value="Administrator">Administrator</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions5'] == 'Lead Prosecutor' %}
+                                <option value="Lead Prosecutor" selected>Lead Prosecutor</option>
+                            {% else %}
+                                <option value="Lead Prosecutor">Lead Prosecutor</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions5'] == 'Prosecutor' %}
+                                <option value="Prosecutor" selected>Prosecutor</option>
+                            {% else %}
+                                <option value="Prosecutor">Prosecutor</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions5'] == 'Lead Paralegal Officer' %}
+                                <option value="Lead Paralegal Officer" selected>Lead Paralegal Officer</option>
+                            {% else %}
+                                <option value="Lead Paralegal Officer">Lead Paralegal Officer</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions5'] == 'Paralegal Officer' %}
+                                <option value="Paralegal Officer" selected>Paralegal Officer</option>
+                            {% else %}
+                                <option value="Paralegal Officer">Paralegal Officer</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions5'] == 'Unit Manager' %}
+                                <option value="Unit Manager" selected>Unit Manager</option>
+                            {% else %}
+                                <option value="Unit Manager">Unit Manager</option>
+                            {% endif %}
+                            {% if data['newCase_Access-Permissions5'] == 'Crown Advocate (HCA)' %}
+                                <option value="Crown Advocate (HCA)" selected>Crown Advocate (HCA)</option>
+                            {% else %}
+                                <option value="Crown Advocate (HCA)">Crown Advocate (HCA)</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" id="addUser5" onclick="addUser5()">Add user</a>
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                </div>
+                <!-- USER 5 -- END -->
+
+                <input id="caseAccessLockedDown" name="caseAccessLockedDown" type="text" value="true" style="display: none;">
+                <button type="submit" class="govuk-button" style="">Save and exit</button>
+                {% if data['caseAccess'] == 'true' %}
+                    <button type="button" onclick="location.href='5-case-overview';" class="non-button margin-left" id="">Cancel</button>
+                {% else %}
+                    <button type="button" onclick="location.href='2-homepage';" class="non-button margin-left" id="">Cancel</button>
+                {% endif %}
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+        <div class="existing-contacts">
+            <h2 class="govuk-heading-s" style="">CPS team members</h2>
+            <div class="contacts">
+                <div id="new-contacts">
+                    <p><span class="icon-new user"></span>{{ data['offCMS_Username'] }}<br>
+                        <strong class="govuk-tag govuk-tag--blue">
+                            {% if data['newCase_Access-Role'] %}
+                                {{ data['newCase_Access-Role'] }}
+                            {% else %}
+                                Administrator
+                            {% endif %}
+                        </strong>
+                    </p>
+                    {% if data['newCase_Access-Email'] %}
+                        <p class="userDetails-1"><span class="icon-new user"></span>{{ data['newCase_Access-Email'] }}<br><strong class="govuk-tag govuk-tag--blue">{{ data['newCase_Access-Permissions'] }}</strong></p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['newCase_Access-Email2'] %}
+                        <p class="userDetails-2"><span class="icon-new user"></span>{{ data['newCase_Access-Email2'] }}<br><strong class="govuk-tag govuk-tag--blue">{{ data['newCase_Access-Permissions2'] }}</strong></p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['newCase_Access-Email3'] %}
+                        <p class="userDetails-3"><span class="icon-new user"></span>{{ data['newCase_Access-Email3'] }}<br><strong class="govuk-tag govuk-tag--blue">{{ data['newCase_Access-Permissions3'] }}</strong></p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['newCase_Access-Email4'] %}
+                        <p class="userDetails-4"><span class="icon-new user"></span>{{ data['newCase_Access-Email4'] }}<br><strong class="govuk-tag govuk-tag--blue">{{ data['newCase_Access-Permissions4'] }}</strong></p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['newCase_Access-Email5'] %}
+                        <p class="userDetails-5"><span class="icon-new user"></span>{{ data['newCase_Access-Email5'] }}<br><strong class="govuk-tag govuk-tag--blue">{{ data['newCase_Access-Permissions5'] }}</strong></p>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
