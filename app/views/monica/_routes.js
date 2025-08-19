@@ -6,9 +6,7 @@ const version = 'monica'
 
 
 router.post('/B-off-system-MVP/create-case/03A-add-suspect-routes', function(req, res) {
-    console.log("Monica")
-    res.redirect('/monica/B-off-system-MVP/create-case/03A-add-suspect-name')
-})
+
 
 
 // router.post('/monica/B-off-system-MVP/create-case/03A-add-suspect-routes', function(req, res) {
