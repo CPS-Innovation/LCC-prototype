@@ -22,6 +22,11 @@ module.exports = {
   // Insert values here
 
   "employer.name": "Assurance Aerospace Engineering",
-   "employer.id": "RVRD8V",
+  "employer.id": "RVRD8V",
+  "suspectCount": 0,
+  "suspectFirstName": [],
+  "suspectLastName": [],
+  "suspectCompanyName": []
+
 
 }
