@@ -1,0 +1,74 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../../includes/banner-OFF-V5.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+  <main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <form action="" method="post" id="add-supects-choice-form" novalidate>
+          <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h1 class="govuk-fieldset__heading">
+                  Do you want to add a suspect?
+                </h1>
+              </legend>
+
+                <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
+                    <div class="govuk-radios__item">
+                        {% if data['addSuspect'] == 'Yes' %}
+                            <input class="govuk-radios__input" id="addSuspectYes" name="addSuspect" type="radio" value="Yes" checked>
+                        {% else %}
+                            <input class="govuk-radios__input" id="addSuspectYes" name="addSuspect" type="radio" value="Yes">
+                        {% endif %}  
+                        <label class="govuk-label govuk-radios__label" for="addSuspectYes">Yes</label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        {% if data['addSuspect'] == 'No' %}
+                            <input class="govuk-radios__input" id="addSuspectNo" name="addSuspect" type="radio" value="No" checked>
+                        {% else %}
+                            <input class="govuk-radios__input" id="addSuspectNo" name="addSuspect" type="radio" value="No">
+                        {% endif %}  
+                        <label class="govuk-label govuk-radios__label" for="addSuspectNo">No</label>
+                    </div>
+                </div>
+
+
+              <!-- <div class="govuk-radios" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="addSuspectYes" name="addSuspect" type="radio" value="Yes">
+                  <label class="govuk-label govuk-radios__label" for="addSuspectYes">
+                    Yes
+                  </label>
+                </div>
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="addSuspectNo" name="addSuspect" type="radio" value="No">
+                  <label class="govuk-label govuk-radios__label" for="addSuspectNo">
+                    No
+                  </label>
+                </div>
+              </div> -->
+            </fieldset>
+          </div>
+
+
+          <button type="submit" class="govuk-button" data-module="govuk-button">
+            Continue
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+{% endblock %}
