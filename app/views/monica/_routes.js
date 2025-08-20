@@ -5,6 +5,7 @@ const version = 'monica'
 // Add your routes here - above the module.exports line
 
 
+
 router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) {
     console.log("Monica in local routes")
     if (req.body['addSuspect'] === 'Yes') {
@@ -14,6 +15,7 @@ router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) 
         res.redirect('/monica/B-off-system-MVP/create-case/03A-create-suspects') 
     }    
 })
+
 
 router.post('/B-off-system-MVP/create-case/03A-add-suspect-name', function(req, res) {
     count = req.session.data.suspectCount
