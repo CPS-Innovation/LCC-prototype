@@ -3456,7 +3456,7 @@ $(document).ready(function () {
 
     $('input[name=newCase_Suspect_YesNo], input[name=newCase_Witness_YesNo]').on("click", function (e) {
         if ($('#newCase_Suspect_Yes').is(':checked') && $('#newCase_Witness_Yes').is(':checked') || $('#newCase_Suspect_Yes').is(':checked') && $('#newCase_Witness_No').is(':checked')) {
-            $('#newCase_Form-B').attr('action','03A-create-suspects');
+            $('#newCase_Form-B').attr('action','03A-add-suspect');
         } else if ($('#newCase_Suspect_No').is(':checked') && $('#newCase_Witness_Yes').is(':checked')) {
             $('#newCase_Form-B').attr('action','04A-create-witness');
         } else if ($('#newCase_Suspect_No').is(':checked') && $('#newCase_Witness_No').is(':checked')) {

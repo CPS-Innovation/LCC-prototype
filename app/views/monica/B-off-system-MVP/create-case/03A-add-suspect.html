@@ -19,24 +19,88 @@
         <form action="/monica/B-off-system-MVP/create-case/03A-add-suspect" method="post" novalidate>
 
           <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset">
+            <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <span class="govuk-caption-l">Suspect {{data['suspectCount'] + 1}}</span>
                 <h1 class="govuk-fieldset__heading">
-                  Do you want to add a suspect?
+                  Add suspect
                 </h1>
               </legend>
+              <!-- <div id="contact-hint" class="govuk-hint">
+                Suspect 1
+              </div> -->
               <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="addSuspectYes" name="addSuspect" type="radio" value="Yes">
-                  <label class="govuk-label govuk-radios__label" for="addSuspectYes">
-                    Yes
+                  <input class="govuk-radios__input" id="suspect-type-person" name="suspect-type" type="radio" value="Person" data-aria-controls="conditional-contact">
+                  <label class="govuk-label govuk-radios__label" for="suspect-type-person">
+                    Person
                   </label>
                 </div>
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="addSuspectNo" name="addSuspect" type="radio" value="No">
-                  <label class="govuk-label govuk-radios__label" for="addSuspectNo">
-                    No
+                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact">
+                  <div class="govuk-form-group">
+                    <label class="govuk-label" for="suspect-type-person-first-name">
+                      Suspect first name
+                    </label>
+                    <input class="govuk-input govuk-!-width-one-third" id="suspect-person-first-name" name="suspect-person-first-name" type="text" spellcheck="false" autocomplete="text">
+                  </div>
+                  <div class="govuk-form-group">
+                    <label class="govuk-label" for="suspect-person-last-name">
+                      Suspect last name
+                    </label>
+                    <input class="govuk-input govuk-!-width-one-third" id="suspect-person-last-name" name="suspect-person-last-name" type="text" spellcheck="false" autocomplete="text">
+                  </div>
+
+                <div class="govuk-form-group">
+                  <label class="govuk-label" for="suspect-person-last-name">
+                    Suspect date of birth
                   </label>
+                  <div id="passport-issued-hint" class="govuk-hint">
+                    For example, 27 3 2007
+                  </div>
+                  <div class="govuk-date-input" id="passport-issued">
+                    <div class="govuk-date-input__item">
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-date-input__label" for="passport-issued-day">
+                          Day
+                        </label>
+                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="passport-issued-day" name="passport-issued-day" type="text" inputmode="numeric">
+                      </div>
+                    </div>
+                    <div class="govuk-date-input__item">
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-date-input__label" for="passport-issued-month">
+                          Month
+                        </label>
+                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="passport-issued-month" name="passport-issued-month" type="text" inputmode="numeric">
+                      </div>
+                    </div>
+                    <div class="govuk-date-input__item">
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-date-input__label" for="passport-issued-year">
+                          Year
+                        </label>
+                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="passport-issued-year" name="passport-issued-year" type="text" inputmode="numeric">
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+
+                </div>
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="suspect-type-company" name="suspect-type" type="radio" value="Company" data-aria-controls="conditional-contact-2">
+                  <label class="govuk-label govuk-radios__label" for="suspect-type-company">
+                    Company
+                  </label>
+                </div>
+                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-2">
+                  <div class="govuk-form-group">
+                    <label class="govuk-label" for="suspect-company-name">
+                      Company name
+                    </label>
+                    <input class="govuk-input govuk-!-width-one-third" id="suspect-company-name" name="suspect-company-name" type="text" autocomplete="text">
+                  </div>
                 </div>
               </div>
             </fieldset>
