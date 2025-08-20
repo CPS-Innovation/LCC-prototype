@@ -5,33 +5,36 @@ const version = 'monica'
 // Add your routes here - above the module.exports line
 
 
-router.post('/B-off-system-MVP/create-case/03A-add-suspect-routes', function(req, res) {
+
+router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) {
+    console.log("Monica in local routes")
+    if (req.body['addSuspect'] === 'Yes') {
+        res.redirect('/monica/B-off-system-MVP/create-case/03A-add-suspect-name')
+    }
+    else {
+        res.redirect('/monica/B-off-system-MVP/create-case/03A-create-suspects') 
+    }    
+})
 
 
-
-// router.post('/monica/B-off-system-MVP/create-case/03A-add-suspect-routes', function(req, res) {
-//     console.log("Monica")
-//     res.redirect('/monica/B-off-system-MVP/create-case/03A-add-suspect-name')
-//     if (req.body['addSuspect'] === 'Yes') {
-//         res.redirect('/monica/B-off-system-MVP/create-case/03A-add-suspect-name')
-//     }
-//     else {
-//         res.redirect('/monica/B-off-system-MVP/create-case/03A-add-suspect-name') 
-//     }    
-// })
-
-
-// router.post('/monica/B-off-system-MVP/create-case/03A-create-suspects-monica', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03A-add-suspect-name', function(req, res) {
+    count = req.session.data.suspectCount
     
-//     count = req.session.data.suspectCount
+    req.session.data.suspectId[count] = count
+    req.session.data.suspectType[count] = req.body['suspect-type']
+
+    if (req.body['suspect-type'] == 'Person') {
+        req.session.data.suspectFirstName[count] = req.body['suspect-first-name']
+        req.session.data.suspectLastName[count] = req.body['suspect-last-name']
+    }
+    else {
+        req.session.data.suspectCompanyName[count] = req.body['suspect-company-name']
+    }
     
-//     req.session.data.suspectId[count] = count
-//     req.session.data.suspectFirstName[count] = req.body['suspect-first-name']
-//     req.session.data.suspectLastName[count] = req.body['suspect-last-name']
-//     req.session.data.suspectCompanyName[count] = req.body['suspect-company-name']
-    
-//     res.redirect('/monica/B-off-system-MVP/create-case/03B-suspects')
-// })
+    req.session.data.suspectCount = count++
+
+    res.redirect('/monica/B-off-system-MVP/create-case/03A-suspects-summary')
+})
 
 
 
