@@ -24,6 +24,7 @@ module.exports = {
   "employer.name": "Assurance Aerospace Engineering",
   "employer.id": "RVRD8V",
   "suspectCount": 0,
+  "suspectType": [],
   "suspectFirstName": [],
   "suspectLastName": [],
   "suspectCompanyName": []
