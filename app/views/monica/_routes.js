@@ -15,7 +15,6 @@ router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) 
     }    
 })
 
-
 router.post('/B-off-system-MVP/create-case/03A-add-suspect-name', function(req, res) {
     count = req.session.data.suspectCount
     
