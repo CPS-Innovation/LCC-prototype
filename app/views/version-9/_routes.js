@@ -5,9 +5,44 @@ const version = 'version-9'
 // Add your routes here - above the module.exports line
 
 
+router.post('/B-off-system-MVP/create-case/02-case-details', function(req, res) {
+
+    if (req.body['operation-name-yes-no'] === 'Yes') {
+        req.session.data.operationName = req.body['operation-name']
+    }
+
+    if (req.body['first-hearing-details-yes-no'] === 'Yes') {
+        req.session.data.courtLocation = req.body['court-location']
+        req.session.data.hearingDate = req.body['hearing-date']
+    }
+
+    req.session.data.operationNameYesNo = req.body['operation-name-yes-no']
+    req.session.data.suspectDetailsYesNo = req.body['suspect-details-yes-no']
+    req.session.data.hearingDetailsYesNo = req.body['first-hearing-details-yes-no']
+
+    console.log(req.session.data.operationNameYesNo)
+    console.log(req.session.data.suspectDetailsYesNo)
+    console.log(req.session.data.hearingDetailsYesNo)
+    console.log(req.session.data.courtLocation)
+    console.log(req.session.data.hearingDate)   
+    
+    res.redirect('/version-9/B-off-system-MVP/create-case/01-case-details')
+})
+
+router.post('/B-off-system-MVP/create-case/00-initial-checks', function(req, res) {
+
+    if (req.body['initial-checks'] === 'Yes') {
+        res.redirect('/version-9/B-off-system-MVP/create-case/01-case-details')
+    }
+    else {
+        res.redirect('/version-9/B-off-system-MVP/create-case/00B-end-journey') 
+    }    
+})
+
+
 router.post('/B-off-system-MVP/create-case/03A-add-suspect-start', function(req, res) {
-    if (req.body['addSuspect'] === 'Yes') {
-        res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect-name')
+    if (req.body['add-suspect'] === 'Yes') {
+        res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect')
     }
     else {
         res.redirect('/version-9/B-off-system-MVP/create-case/03A-create-suspects') 

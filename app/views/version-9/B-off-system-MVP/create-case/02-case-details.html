@@ -1,4 +1,5 @@
 {% extends "layoutCPS-OFF.html" %}
+
 {% block header %}
     {% include "../../includes/banner-OFF-V5.html" %}
 {% endblock %}
@@ -20,186 +21,124 @@
 
             <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-4" style="">Add the case details</h1>
 
-            <form method="get" action="" id="newCase_Form-B">  
+            <form action="/version-9/B-off-system-MVP/create-case/02-case-details" method="post" novalidate>
 
-                <fieldset class="govuk-fieldset">
-
-                    <!-- OPTION 1 - START -->
-                    <div class="govuk-form-group">
-                        <fieldset class="govuk-fieldset" aria-describedby="newCase_OperationName-hint">
-                            <legend class="govuk-fieldset__legend">
-                                <h1 class="govuk-fieldset__heading">Do you have an operation name?</h1>
-                            </legend>
-                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
-                                <div class="govuk-radios__item">
-                                    {% if data['newCase_OperationName_YesNo'] == 'Yes' %}
-                                        <input class="govuk-radios__input" id="newCase_OperationName_Yes" name="newCase_OperationName_YesNo" type="radio" value="Yes" data-aria-controls="conditional-newCase_OperationName" checked>
-                                    {% else %}
-                                        <input class="govuk-radios__input" id="newCase_OperationName_Yes" name="newCase_OperationName_YesNo" type="radio" value="Yes" data-aria-controls="conditional-newCase_OperationName">
-                                    {% endif %}  
-                                    <label class="govuk-label govuk-radios__label" for="newCase_OperationName_Yes">Yes</label>
-                                </div>
-                                <div class="govuk-radios__item">
-                                    {% if data['newCase_OperationName_YesNo'] == 'No' %}
-                                        <input class="govuk-radios__input" id="newCase_OperationName_No" name="newCase_OperationName_YesNo" type="radio" value="No" checked>
-                                    {% else %}
-                                        <input class="govuk-radios__input" id="newCase_OperationName_No" name="newCase_OperationName_YesNo" type="radio" value="No">
-                                    {% endif %}  
-                                    <label class="govuk-label govuk-radios__label" for="newCase_OperationName_No">No</label>
-                                </div>
-                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-newCase_OperationName">
-                                    <div class="govuk-form-group" id="newCase_OperationName-Value">
-                                        <label class="govuk-label" for="newCase_OperationName">Operation name</label>
-                                        {% if data['newCase_OperationName'] %}
-                                            <input class="govuk-input govuk-input--width-20" id="newCase_OperationName" name="newCase_OperationName" type="text" value="{{ data['newCase_OperationName'] }}">
-                                        {% else %}
-                                            <input class="govuk-input govuk-input--width-20" id="newCase_OperationName" name="newCase_OperationName" type="text">
-                                        {% endif %}  
-                                    </div>                                
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>                    
-                    <!-- OPTION 1 - END -->
-
-                    <!-- OPTION 2 - START -->
-                    <div class="govuk-form-group">
-                        <fieldset class="govuk-fieldset" aria-describedby="newCase_Suspect-hint">
-                            <legend class="govuk-fieldset__legend">
-                                <h1 class="govuk-fieldset__heading">Do you have any suspect details?</h1>
-                            </legend>
-                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
-                                <div class="govuk-radios__item">
-                                    {% if data['newCase_Suspect_YesNo'] == 'Yes' %}
-                                        <input class="govuk-radios__input" id="newCase_Suspect_Yes" name="newCase_Suspect_YesNo" type="radio" value="Yes" checked>
-                                    {% else %}
-                                        <input class="govuk-radios__input" id="newCase_Suspect_Yes" name="newCase_Suspect_YesNo" type="radio" value="Yes">
-                                    {% endif %}  
-                                    <label class="govuk-label govuk-radios__label" for="newCase_Suspect_Yes">Yes</label>
-                                </div>
-                                <div class="govuk-radios__item">
-                                    {% if data['newCase_Suspect_YesNo'] == 'No' %}
-                                        <input class="govuk-radios__input" id="newCase_Suspect_No" name="newCase_Suspect_YesNo" type="radio" value="No" checked>
-                                    {% else %}
-                                        <input class="govuk-radios__input" id="newCase_Suspect_No" name="newCase_Suspect_YesNo" type="radio" value="No">
-                                    {% endif %}  
-                                    <label class="govuk-label govuk-radios__label" for="newCase_Suspect_No">No</label>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>                    
-                    <!-- OPTION 2 - END -->
-
-                    <!-- OPTION 3 - START -->
-                    <div class="govuk-form-group">
-                        <fieldset class="govuk-fieldset" aria-describedby="newCase_Witness_YesNo-hint">
-                            <legend class="govuk-fieldset__legend">
-                                <h1 class="govuk-fieldset__heading">Do you have any witness details?</h1>
-                            </legend>
-                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
-                                <div class="govuk-radios__item">
-                                    {% if data['newCase_Witness_YesNo'] == 'Yes' %}
-                                        <input class="govuk-radios__input" id="newCase_Witness_Yes" name="newCase_Witness_YesNo" type="radio" value="Yes" checked>
-                                    {% else %}
-                                        <input class="govuk-radios__input" id="newCase_Witness_Yes" name="newCase_Witness_YesNo" type="radio" value="Yes">
-                                    {% endif %}  
-                                    <label class="govuk-label govuk-radios__label" for="newCase_Witness_Yes">Yes</label>
-                                </div>
-                                <div class="govuk-radios__item">
-                                    {% if data['newCase_Witness_YesNo'] == 'No' %}
-                                        <input class="govuk-radios__input" id="newCase_Witness_No" name="newCase_Witness_YesNo" type="radio" value="No" checked>
-                                    {% else %}
-                                        <input class="govuk-radios__input" id="newCase_Witness_No" name="newCase_Witness_YesNo" type="radio" value="No">
-                                    {% endif %}  
-                                    <label class="govuk-label govuk-radios__label" for="newCase_Witness_No">No</label>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>                    
-                    <!-- OPTION 3 - END -->                    
-
-                    <!-- OPTION 4 - START -->
-                    <div class="govuk-form-group">
-                        <fieldset class="govuk-fieldset" aria-describedby="newCase_FirstHearing-hint">
-                            <legend class="govuk-fieldset__legend">
-                                <h1 class="govuk-fieldset__heading">Do you have details of the first hearing?</h1>
-                            </legend>
-                            <div class="govuk-radios  govuk-radios--inline" data-module="govuk-radios">
-                                <div class="govuk-radios__item">
-                                    {% if data['newCase_FirstHearing_YesNo'] == 'Yes' %}
-                                        <input class="govuk-radios__input" id="newCase_FirstHearing_Yes" name="newCase_FirstHearing_YesNo" type="radio" value="Yes" data-aria-controls="conditional-newCase_FirstHearing" checked>
-                                    {% else %}
-                                        <input class="govuk-radios__input" id="newCase_FirstHearing_Yes" name="newCase_FirstHearing_YesNo" type="radio" value="Yes" data-aria-controls="conditional-newCase_FirstHearing">
-                                    {% endif %}  
-                                    <label class="govuk-label govuk-radios__label" for="newCase_FirstHearing_Yes">Yes</label>
-                                </div>
-                                <div class="govuk-radios__item">
-                                    {% if data['newCase_FirstHearing_YesNo'] == 'No' %}
-                                        <input class="govuk-radios__input" id="newCase_FirstHearing_No" name="newCase_FirstHearing_YesNo" type="radio" value="No" checked>
-                                    {% else %}
-                                        <input class="govuk-radios__input" id="newCase_FirstHearing_No" name="newCase_FirstHearing_YesNo" type="radio" value="No">
-                                    {% endif %}  
-                                    <label class="govuk-label govuk-radios__label" for="newCase_FirstHearing_No">No</label>
-                                </div>
-                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-newCase_FirstHearing">
-                                    <div class="govuk-form-group" id="newCase_CourtLocation-Value">
-                                        <label class="govuk-label" for="newCase_CourtLocation">Court location</label>
-                                        {% if data['newCase_CourtLocation'] %}
-                                            <input class="govuk-input govuk-input--width-20" id="newCase_CourtLocation" name="newCase_CourtLocation" type="text" value="{{ data['newCase_CourtLocation'] }}">
-                                        {% else %}
-                                            <input class="govuk-input govuk-input--width-20" id="newCase_CourtLocation" name="newCase_CourtLocation" type="text">
-                                        {% endif %}  
-                                    </div>                                
-                                    <div class="moj-datepicker" data-module="moj-date-picker">
-                                        <div class="govuk-form-group">
-                                            <label class="govuk-label" for="newCase_FirstHearing_Date">Date</label>
-                                            <div id="newCase_FirstHearing_Date-hint" class="govuk-hint">For example, 17/5/2024.</div>
-                                            <div class="date_range_wrapper create_case">
-                                                {% if data['newCase_FirstHearing_Date'] %}
-                                                    <input class="govuk-input moj-js-datepicker-input govuk-input--width-10" id="newCase_FirstHearing_Date" name="newCase_FirstHearing_Date" type="text" aria-describedby="date-hint" autocomplete="off" value="{{ data['newCase_FirstHearing_Date'] }}">
-                                                {% else %}
-                                                    <input class="govuk-input moj-js-datepicker-input govuk-input--width-10" id="newCase_FirstHearing_Date" name="newCase_FirstHearing_Date" type="text" aria-describedby="date-hint" autocomplete="off">
-                                                {% endif %}  
-                                                <button class="moj-datepicker__toggle moj-js-datepicker-toggle" type="button" aria-haspopup="dialog" aria-controls="datepicker-date" aria-expanded="true">
-                                                    <span class="govuk-visually-hidden">Choose date</span>
-                                                    <svg width="32" height="24" focusable="false" class="moj-datepicker-icon" aria-hidden="true" role="img" viewBox="0 0 22 22">
-                                                        <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M16.1333 2.93333H5.86668V4.4C5.86668 5.21002 5.21003 5.86667 4.40002 5.86667C3.59 5.86667 2.93335 5.21002 2.93335 4.4V2.93333H2C0.895431 2.93333 0 3.82877 0 4.93334V19.2667C0 20.3712 0.89543 21.2667 2 21.2667H20C21.1046 21.2667 22 20.3712 22 19.2667V4.93333C22 3.82876 21.1046 2.93333 20 2.93333H19.0667V4.4C19.0667 5.21002 18.41 5.86667 17.6 5.86667C16.79 5.86667 16.1333 5.21002 16.1333 4.4V2.93333ZM20.5333 8.06667H1.46665V18.8C1.46665 19.3523 1.91436 19.8 2.46665 19.8H19.5333C20.0856 19.8 20.5333 19.3523 20.5333 18.8V8.06667Z"></path>
-                                                        <rect x="3.66669" width="1.46667" height="5.13333" rx="0.733333" fill="currentColor"></rect>
-                                                        <rect x="16.8667" width="1.46667" height="5.13333" rx="0.733333" fill="currentColor"></rect>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                            <img src="../../../../public/images/date_picker.png" alt="Date picker" class="create_case_date_picker">
-                                        </div>
-                                    </div>                                
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>                    
-                    <!-- OPTION 4 - END -->
-
-                    <!-- OPTION 5 - START -->
-                    <div class="govuk-form-group govuk-!-margin-top-4">
-                        <fieldset class="govuk-fieldset">
-                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
-                                <div class="govuk-checkboxes__item">
-                                    {% if data['newCase_LongTerm'] %}
-                                        <input class="govuk-checkboxes__input" id="newCase_LongTerm" name="newCase_LongTerm" type="checkbox" value="newCase_LongTerm" checked>
-                                    {% else %}
-                                        <input class="govuk-checkboxes__input" id="newCase_LongTerm" name="newCase_LongTerm" type="checkbox" value="newCase_LongTerm">
-                                    {% endif %}  
-                                    <label class="govuk-label govuk-checkboxes__label" for="newCase_LongTerm">Long term interest</label>
-                                </div>
-                            </div>
-                        </fieldset>
+                <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                    <h2 class="govuk-fieldset__heading">
+                        Do you have an operation name?
+                    </h2>
+                    </legend>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="operation-name-yes" name="operation-name-yes-no" type="radio" value="Yes" data-aria-controls="conditional-contact">
+                        <label class="govuk-label govuk-radios__label" for="operation-name-yes">
+                        Yes
+                        </label>
                     </div>
-                    <!-- OPTION 5 - END -->
-
+                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact">
+                        <div class="govuk-form-group">
+                        <label class="govuk-label" for="operation-name">
+                            Operation name
+                        </label>
+                        <input class="govuk-input govuk-!-width-one-third" id="operation-name" name="operation-name" type="text" spellcheck="false" autocomplete="text">
+                        </div>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="operation-name-no" name="operation-name-yes-no" type="radio" value="No" data-aria-controls="conditional-contact-2">
+                        <label class="govuk-label govuk-radios__label" for="operation-name-no">
+                        No
+                        </label>
+                    </div>
+                    </div>
                 </fieldset>
+                </div>
 
-                <input id="createCase_B_Complete" name="createCase_B_Complete" type="text" value="true" style="display: none;">
-                <button type="submit" class="govuk-button" style="">Continue</button>
-                <button type="button" onclick="location.href='01-search';" class="non-button margin-left" id="">Cancel</button>
+                <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                    <h2 class="govuk-fieldset__heading">
+                        Do you have any suspect details?
+                    </h2>
+                    </legend>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="suspect-details-yes" name="suspect-details-yes-no" type="radio" value="Yes">
+                        <label class="govuk-label govuk-radios__label" for="suspect-details-yes">
+                        Yes
+                        </label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="suspect-details-no" name="suspect-details-yes-no" type="radio" value="No">
+                        <label class="govuk-label govuk-radios__label" for="suspect-details-no">
+                        No
+                        </label>
+                    </div>
+                    </div>
+                </fieldset>
+                </div>
+
+                <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                    <h2 class="govuk-fieldset__heading">
+                        Do you have details for the first hearing?
+                    </h2>
+                    </legend>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="first-hearing-yes" name="first-hearing-details" type="radio" value="Yes" data-aria-controls="first-hearing-controls">
+                        <label class="govuk-label govuk-radios__label" for="first-hearing-yes">
+                        Yes
+                        </label>
+                    </div>
+                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="first-hearing-controls">
+                        <div class="govuk-form-group">
+                        <label class="govuk-label" for="court-location">
+                            Court location
+                        </label>
+                        <input class="govuk-input govuk-!-width-one-third" id="court-location" name="court-location" type="text" spellcheck="false" autocomplete="text">
+                        </div>
+
+                        <div class="moj-datepicker" data-module="moj-date-picker">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="newCase_FirstHearing_Date">Date</label>
+                                <div id="newCase_FirstHearing_Date-hint" class="govuk-hint">For example, 17/5/2024.</div>
+                                <div class="date_range_wrapper create_case">
+                                    {% if data['newCase_FirstHearing_Date'] %}
+                                        <input class="govuk-input moj-js-datepicker-input govuk-input--width-10" id="newCase_FirstHearing_Date" name="newCase_FirstHearing_Date" type="text" aria-describedby="date-hint" autocomplete="off" value="{{ data['newCase_FirstHearing_Date'] }}">
+                                    {% else %}
+                                        <input class="govuk-input moj-js-datepicker-input govuk-input--width-10" id="newCase_FirstHearing_Date" name="newCase_FirstHearing_Date" type="text" aria-describedby="date-hint" autocomplete="off">
+                                    {% endif %}  
+                                    <button class="moj-datepicker__toggle moj-js-datepicker-toggle" type="button" aria-haspopup="dialog" aria-controls="datepicker-date" aria-expanded="true">
+                                        <span class="govuk-visually-hidden">Choose date</span>
+                                        <svg width="32" height="24" focusable="false" class="moj-datepicker-icon" aria-hidden="true" role="img" viewBox="0 0 22 22">
+                                            <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M16.1333 2.93333H5.86668V4.4C5.86668 5.21002 5.21003 5.86667 4.40002 5.86667C3.59 5.86667 2.93335 5.21002 2.93335 4.4V2.93333H2C0.895431 2.93333 0 3.82877 0 4.93334V19.2667C0 20.3712 0.89543 21.2667 2 21.2667H20C21.1046 21.2667 22 20.3712 22 19.2667V4.93333C22 3.82876 21.1046 2.93333 20 2.93333H19.0667V4.4C19.0667 5.21002 18.41 5.86667 17.6 5.86667C16.79 5.86667 16.1333 5.21002 16.1333 4.4V2.93333ZM20.5333 8.06667H1.46665V18.8C1.46665 19.3523 1.91436 19.8 2.46665 19.8H19.5333C20.0856 19.8 20.5333 19.3523 20.5333 18.8V8.06667Z"></path>
+                                            <rect x="3.66669" width="1.46667" height="5.13333" rx="0.733333" fill="currentColor"></rect>
+                                            <rect x="16.8667" width="1.46667" height="5.13333" rx="0.733333" fill="currentColor"></rect>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <img src="../../../../public/images/date_picker.png" alt="Date picker" class="create_case_date_picker">
+                            </div>
+                        </div>                                
+
+
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="operation-name-no" name="first-hearing-details" type="radio" value="No" data-aria-controls="conditional-contact-2">
+                        <label class="govuk-label govuk-radios__label" for="operation-name-no">
+                        No
+                        </label>
+                    </div>
+                    </div>
+                </fieldset>
+                </div>
+
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+                </button>
 
             </form>
 
