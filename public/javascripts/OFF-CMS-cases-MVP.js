@@ -3456,22 +3456,11 @@ $(document).ready(function () {
 
     $('input[name=newCase_Suspect_YesNo], input[name=newCase_Witness_YesNo]').on("click", function (e) {
         if ($('#newCase_Suspect_Yes').is(':checked') && $('#newCase_Witness_Yes').is(':checked') || $('#newCase_Suspect_Yes').is(':checked') && $('#newCase_Witness_No').is(':checked')) {
-            $('#newCase_Form-B').attr('action','03A-add-suspect');
+            $('#newCase_Form-B').attr('action','03A-create-suspects');
         } else if ($('#newCase_Suspect_No').is(':checked') && $('#newCase_Witness_Yes').is(':checked')) {
             $('#newCase_Form-B').attr('action','04A-create-witness');
         } else if ($('#newCase_Suspect_No').is(':checked') && $('#newCase_Witness_No').is(':checked')) {
             $('#newCase_Form-B').attr('action','05-monitoring-codes');
-        } 
-    }); 
-
-
-
-    // Add suspects (Monica)
-    $('input[name=addSuspect]').on("click", function (e) {
-        if ($('#addSuspectYes').is(':checked')) {
-            $('#add-supects-choice-form').attr('action','03A-add-suspect-name');
-        } else {
-            $('#add-supects-choice-form').attr('action','03A-create-suspects-monica');
         } 
     }); 
 

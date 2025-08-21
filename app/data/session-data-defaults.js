@@ -29,7 +29,14 @@ module.exports = {
   "suspectFirstName": [],
   "suspectLastName": [],
   "suspectDOB": [],
-  "suspectCompanyName": []
+  "suspectCompanyName": [],
+
+  "operationNameYesNo": "",
+  "operationName": "",
+  "suspectDetailsYesNo": "",
+  "hearingDetailsYesNo": "",
+  "courtLocation": "",
+  "hearingDate": ""
 
 
 }

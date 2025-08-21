@@ -7,35 +7,38 @@
 {% endblock %}
 {% block content %}
 
-<div class="govuk-grid-row">
+<!-- <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
         <a href="javascript:history.back()" class="govuk-back-link">Back</a>
     </div>
-</div>
+</div> -->
 
   <main class="govuk-main-wrapper " id="main-content" role="main">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-        <form action="/version-9/B-off-system-MVP/create-case/03A-add-suspect-start" method="post" novalidate>
+        <h1 class="govuk-heading-l">Register a case</h1>
+        <p class="govuk-body">To register a case you need to have an operation name and/or suspect details and whatever else Phil wants to say here. </p>
+
+        <form action="/version-9/B-off-system-MVP/create-case/00-initial-checks" method="post" novalidate>
 
           <div class="govuk-form-group">
             <fieldset class="govuk-fieldset">
-              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                <h1 class="govuk-fieldset__heading">
-                  Do you want to add a suspect?
-                </h1>
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                <h2 class="govuk-fieldset__heading">
+                  Do you have an operation name or suspect details? 
+                </h2>
               </legend>
 
               <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="addSuspectYes" name="add-suspect" type="radio" value="Yes">
-                  <label class="govuk-label govuk-radios__label" for="addSuspectYes">
+                  <input class="govuk-radios__input" id="initialChecks" name="initial-checks" type="radio" value="Yes">
+                  <label class="govuk-label govuk-radios__label" for="initialChecksYes">
                     Yes
                   </label>
                 </div>
                 <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="addSuspectNo" name="add-suspect" type="radio" value="No">
-                  <label class="govuk-label govuk-radios__label" for="addSuspectNo">
+                  <input class="govuk-radios__input" id="initialChecksNo" name="initial-checks" type="radio" value="No">
+                  <label class="govuk-label govuk-radios__label" for="initialChecksYes">
                     No
                   </label>
                 </div>
