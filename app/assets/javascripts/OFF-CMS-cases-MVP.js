@@ -3466,12 +3466,12 @@ $(document).ready(function () {
 
 
 
-    // Add suspects (Monica)
+    // Add suspects (version-9)
     $('input[name=addSuspect]').on("click", function (e) {
         if ($('#addSuspectYes').is(':checked')) {
             $('#add-supects-choice-form').attr('action','03A-add-suspect-name');
         } else {
-            $('#add-supects-choice-form').attr('action','03A-create-suspects-monica');
+            $('#add-supects-choice-form').attr('action','03A-create-suspects-version-9');
         } 
     }); 
 

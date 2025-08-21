@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const version = 'monica'
+const version = 'version-9'
 
 // Add your routes here - above the module.exports line
 
 
 router.post('/B-off-system-MVP/create-case/03A-add-suspect-start', function(req, res) {
     if (req.body['addSuspect'] === 'Yes') {
-        res.redirect('/monica/B-off-system-MVP/create-case/03A-add-suspect-name')
+        res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect-name')
     }
     else {
-        res.redirect('/monica/B-off-system-MVP/create-case/03A-create-suspects') 
+        res.redirect('/version-9/B-off-system-MVP/create-case/03A-create-suspects') 
     }    
 })
 
@@ -33,15 +33,15 @@ router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) 
     
     req.session.data.suspectCount = count + 1
     
-    res.redirect('/monica/B-off-system-MVP/create-case/03A-suspect-summary')
+    res.redirect('/version-9/B-off-system-MVP/create-case/03A-suspect-summary')
 })
 
 router.post('/B-off-system-MVP/create-case/03A-suspect-summary', function(req, res) {
     if (req.body['add-another'] === 'Yes') {
-        res.redirect('/monica/B-off-system-MVP/create-case/03A-add-suspect')
+        res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect')
     }
     else {
-        res.redirect('/monica/B-off-system-MVP/create-case/05-monitoring-codes') 
+        res.redirect('/version-9/B-off-system-MVP/create-case/05-monitoring-codes') 
     }    
 })
 
