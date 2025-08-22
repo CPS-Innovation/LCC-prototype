@@ -1,0 +1,119 @@
+{% extends "layoutCPS-OFF.html" %}
+{% block header %}
+    {% include "../../includes/banner-OFF-V7.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+<div class="govuk-grid-row" id="create-case-journey">
+
+    <div class="govuk-grid-column-two-thirds">
+        <div class="gov-pages">
+
+
+            <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-4" style="">Case details</h1>
+
+
+            <form method="post" action="/version-9/B-off-system-MVP/create-case/02A-case-details" id="newCase_Form-A">  
+
+                <fieldset class="govuk-fieldset">
+                    <!-- ITEM 1 - START -->
+                    <div class="govuk-form-group" id="newCase_URN-Value">
+                        <label class="govuk-label" for="newCase_URN">What is the URN?</label>
+                        <p id="newCase_URN_Error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter a URN</p>
+                        <p id="newCase_URN_Error_DUPLICATE" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> This URN already exisits in CMS</p>
+                        <div class="form-wrapper">
+                            {% if data['newCase_URN-A'] %}
+                                <input class="govuk-input govuk-input--width-2" id="newCase_URN-A" name="newCase_URN-A" type="text" value="{{ data['newCase_URN-A'] }}">
+                            {% else %}
+                                <input class="govuk-input govuk-input--width-2" id="newCase_URN-A" name="newCase_URN-A" type="text" value="84">
+                            {% endif %}  
+                            {% if data['newCase_URN-B'] %}
+                                <input class="govuk-input govuk-input--width-2" id="newCase_URN-B" name="newCase_URN-B" type="text" value="{{ data['newCase_URN-B'] }}">
+                            {% else %}
+                                <input class="govuk-input govuk-input--width-2" id="newCase_URN-B" name="newCase_URN-B" type="text" value="">
+                            {% endif %} 
+                            {% if data['newCase_URN-C'] %}
+                                <input class="govuk-input govuk-input--width-4" id="newCase_URN-C" name="newCase_URN-C" type="text" value="{{ data['newCase_URN-C'] }}">
+                            {% else %}
+                                <input class="govuk-input govuk-input--width-4" id="newCase_URN-C" name="newCase_URN-C" type="text" value="20982">
+                            {% endif %}        
+                            <p>/</p>
+                            {% if data['newCase_URN-D'] %}
+                                <input class="govuk-input govuk-input--width-2" id="newCase_URN-D" name="newCase_URN-D" type="text" value="{{ data['newCase_URN-D'] }}">
+                            {% else %}
+                                <input class="govuk-input govuk-input--width-2" id="newCase_URN-D" name="newCase_URN-D" type="text" value="25">
+                            {% endif %}        
+                        </div>
+
+                    </div>                                
+                    <!-- ITEM 1 - END -->
+
+                    <!-- ITEM 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="newCase_LocalRef">What is the local reference? (optional)</label>
+                        {% if data['newCase_LocalRef'] %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_LocalRef" name="newCase_LocalRef" type="text" value="{{ data['newCase_LocalRef'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_LocalRef" name="newCase_LocalRef" type="text">
+                        {% endif %}        
+                    </div>
+                    <!-- ITEM 2 - END -->
+
+                    <!-- ITEM 4 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="newCase_RegisteringUnit">What is the registering unit? (optional)</label>
+                        {% if data['newCase_RegisteringUnit'] %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_RegisteringUnit" name="newCase_RegisteringUnit" type="text" value="{{ data['newCase_RegisteringUnit'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_RegisteringUnit" name="newCase_RegisteringUnit" type="text">
+                        {% endif %}        
+                    </div>
+                    <!-- ITEM 4 - END -->
+
+                    <!-- ITEM 5 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="newCase_WCU">What is the witness care unit (WCU)? (optional)</label>
+                        {% if data['newCase_WCU'] %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_WCU" name="newCase_WCU" type="text" value="{{ data['newCase_WCU'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_WCU" name="newCase_WCU" type="text">
+                        {% endif %}        
+                    </div>
+                    <!-- ITEM 5 - END -->
+
+                    <!-- ITEM 6 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="newCase_Crest">What is the Crest? (optional)</label>
+                        {% if data['newCase_Crest'] %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Crest" name="newCase_Crest" type="text" value="{{ data['newCase_Crest'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="newCase_Crest" name="newCase_Crest" type="text">
+                        {% endif %}        
+                    </div>
+                    <!-- ITEM 6 - END -->
+
+                </fieldset>
+
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Continue
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}
