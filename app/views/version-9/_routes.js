@@ -61,6 +61,8 @@ router.post('/B-off-system-MVP/create-case/00-initial-checks', function(req, res
 router.post('/B-off-system-MVP/create-case/03A-add-suspect-start', function(req, res) {
     if (req.body['add-suspect'] === 'Yes') {
         res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect')
+    if (req.body['add-suspect'] === 'Yes') {
+        res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect')
     }
     else {
         res.redirect('/version-9/B-off-system-MVP/create-case/03A-create-suspects') 
