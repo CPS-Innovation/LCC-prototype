@@ -5,28 +5,46 @@ const version = 'version-9'
 // Add your routes here - above the module.exports line
 
 
-router.post('/B-off-system-MVP/create-case/02-case-details', function(req, res) {
+router.post('/B-off-system-MVP/create-case/01-register-case', function(req, res) {
 
     if (req.body['operation-name-yes-no'] === 'Yes') {
         req.session.data.operationName = req.body['operation-name']
     }
 
-    if (req.body['first-hearing-details-yes-no'] === 'Yes') {
+    if (req.body['first-hearing-details'] === 'Yes') {
         req.session.data.courtLocation = req.body['court-location']
-        req.session.data.hearingDate = req.body['hearing-date']
+        req.session.data.hearingDate = req.body['newCase_FirstHearing_Date']
     }
 
     req.session.data.operationNameYesNo = req.body['operation-name-yes-no']
     req.session.data.suspectDetailsYesNo = req.body['suspect-details-yes-no']
-    req.session.data.hearingDetailsYesNo = req.body['first-hearing-details-yes-no']
+    req.session.data.hearingDetailsYesNo = req.body['first-hearing-details']
 
-    console.log(req.session.data.operationNameYesNo)
-    console.log(req.session.data.suspectDetailsYesNo)
-    console.log(req.session.data.hearingDetailsYesNo)
-    console.log(req.session.data.courtLocation)
-    console.log(req.session.data.hearingDate)   
-    
-    res.redirect('/version-9/B-off-system-MVP/create-case/01-case-details')
+    console.log("Operation name yes / no:",req.session.data.operationNameYesNo)
+    console.log("Operation name:",req.session.data.operationName)
+    console.log("Suspect details yes / no:",req.session.data.suspectDetailsYesNo)
+    console.log("Hearing details yes / no:",req.session.data.hearingDetailsYesNo)
+    console.log("Court location:",req.session.data.courtLocation)
+    console.log("Hearing date:",req.session.data.hearingDate)   
+
+    res.redirect('/version-9/B-off-system-MVP/create-case/02-area')
+})
+
+router.post('/B-off-system-MVP/create-case/02-area', function(req, res) {
+    req.session.data.area = req.body['docType-Area']
+    console.log("Area:",req.session.data.area)
+    res.redirect('/version-9/B-off-system-MVP/create-case/02A-case-details')
+})
+
+router.post('/B-off-system-MVP/create-case/02A-case-details', function(req, res) {
+    console.log("Case details page submitted")
+
+    if (req.session.data.suspectDetailsYesNo === 'Yes') {
+        res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect')
+    }
+    else {
+        res.redirect('/version-9/B-off-system-MVP/create-case/05-monitoring-codes') 
+    }    
 })
 
 router.post('/B-off-system-MVP/create-case/00-initial-checks', function(req, res) {
