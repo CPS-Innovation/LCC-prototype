@@ -72,9 +72,9 @@
                     <div class="govuk-form-group">
                         <label class="govuk-label" for="newCase_RegisteringUnit">What is the registering unit? (optional)</label>
                         {% if data['newCase_RegisteringUnit'] %}
-                            <input class="govuk-input govuk-input--width-20" id="newCase_RegisteringUnit" name="newCase_RegisteringUnit" type="text" value="{{ data['newCase_RegisteringUnit'] }}">
+                            <input class="govuk-input govuk-input--width-20" id="docType-Unit" name="newCase_RegisteringUnit" type="text" value="{{ data['newCase_RegisteringUnit'] }}">
                         {% else %}
-                            <input class="govuk-input govuk-input--width-20" id="newCase_RegisteringUnit" name="newCase_RegisteringUnit" type="text">
+                            <input class="govuk-input govuk-input--width-20" id="docType-Unit" name="newCase_RegisteringUnit" type="text">
                         {% endif %}        
                     </div>
                     <!-- ITEM 4 - END -->
@@ -83,9 +83,9 @@
                     <div class="govuk-form-group">
                         <label class="govuk-label" for="newCase_WCU">What is the witness care unit (WCU)? (optional)</label>
                         {% if data['newCase_WCU'] %}
-                            <input class="govuk-input govuk-input--width-20" id="newCase_WCU" name="newCase_WCU" type="text" value="{{ data['newCase_WCU'] }}">
+                            <input class="govuk-input govuk-input--width-20" id="docType-WCU" name="newCase_WCU" type="text" value="{{ data['newCase_WCU'] }}">
                         {% else %}
-                            <input class="govuk-input govuk-input--width-20" id="newCase_WCU" name="newCase_WCU" type="text">
+                            <input class="govuk-input govuk-input--width-20" id="docType-WCU" name="newCase_WCU" type="text">
                         {% endif %}        
                     </div>
                     <!-- ITEM 5 - END -->
