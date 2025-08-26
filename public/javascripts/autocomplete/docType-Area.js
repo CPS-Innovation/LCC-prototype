@@ -1,15 +1,11 @@
 $(function() {
     var areas = [
-        { value: "SEOCID Int London and SE Div" },
-        { value: "SEOCID Regional and Wales Div" },
-        { value: "Counter Terrorism Division" },
-        { value: "Special Crime Division" },
-        { value: "Specialist Fraud Division" },
         { value: "Avon & Somerset" },
         { value: "Bedfordshire" },
         { value: "Cambridgeshire" },
         { value: "Cheshire" },
         { value: "Cleveland" },
+        { value: "Counter Terrorism Division" },
         { value: "Cumbria" },
         { value: "Derbyshire" },
         { value: "Devon and Cornwall" },
@@ -41,8 +37,12 @@ $(function() {
         { value: "Nottinghamshire" },
         { value: "Records Management Team (RMT)" },
         { value: "RMU Area" },
+        { value: "SEOCID Int London and SE Div" },
+        { value: "SEOCID Regional and Wales Div" },
         { value: "South Wales" },
         { value: "South Yorkshire" },
+        { value: "Special Crime Division" },
+        { value: "Specialist Fraud Division" },
         { value: "Stafford" },
         { value: "Suffolk" },
         { value: "Surrey" },
@@ -52,7 +52,7 @@ $(function() {
         { value: "West Mercia" },
         { value: "West Midlands" },
         { value: "West Yorkshire" },
-        { value: "Wilstshire" }
+        { value: "Wiltshire" }
     ];
 
      // setup autocomplete function pulling from area[] array
