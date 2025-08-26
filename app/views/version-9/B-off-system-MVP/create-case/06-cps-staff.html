@@ -18,7 +18,7 @@
     <div class="govuk-grid-column-two-thirds">
         <div class="gov-pages">
 
-            <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-4" style="">Add people working on the case</h1>
+            <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-4">Add people working on the case</h1>
 
             <p class="govuk-hint govuk-!-margin-bottom-6">Adding this information is optional. You can continue without adding any details.</p>
 
@@ -55,7 +55,10 @@
                                         <fieldset class="govuk-fieldset" aria-describedby="newCase_Prosecutor-hint">
                                             <div class="govuk-form-group">
                                                 <label class="govuk-label" for="newCase_Prosecutor">Prosecutor</label>
-                                                <select class="govuk-select" id="newCase_Prosecutor" name="newCase_Prosecutor">
+
+                                                <input class="govuk-input govuk-input--width-20" id="docType-Prosecutor" name="newCase_Prosecutor" type="text" value="{{ data['newCase_Prosecutor'] }}">
+                        
+                                                <!-- <select class="govuk-select" id="newCase_Prosecutor" name="newCase_Prosecutor">
                                                     {% if data['newCase_Prosecutor'] == 'Not yet assigned' %}
                                                         <option value="Not yet assigned" selected>Not yet assigned</option>
                                                     {% else %}
@@ -96,7 +99,7 @@
                                                     {% else %}
                                                         <option value="dwight.schrute@cps.gov.uk">dwight.schrute@cps.gov.uk</option>
                                                     {% endif %}
-                                                </select>
+                                                </select> -->
                                             </div>                        
                                         </fieldset>
                                     </div>                    
@@ -105,7 +108,9 @@
                                         <fieldset class="govuk-fieldset" aria-describedby="newCase_Caseworker-hint">
                                             <div class="govuk-form-group">
                                                 <label class="govuk-label" for="newCase_Caseworker">Caseworker</label>
-                                                <select class="govuk-select" id="newCase_Caseworker" name="newCase_Caseworker">
+                                                <input class="govuk-input govuk-input--width-20" id="docType-Caseworker" name="newCase_Caseworker" type="text" value="{{ data['newCase_Caseworker'] }}">
+
+                                                <!-- <select class="govuk-select" id="newCase_Caseworker" name="newCase_Caseworker">
                                                     {% if data['newCase_Caseworker'] == 'Not yet assigned' %}
                                                         <option value="Not yet assigned" selected>Not yet assigned</option>
                                                     {% else %}
@@ -146,7 +151,7 @@
                                                     {% else %}
                                                         <option value="dwight.schrute@cps.gov.uk">dwight.schrute@cps.gov.uk</option>
                                                     {% endif %}
-                                                </select>
+                                                </select> -->
                                             </div>                        
                                         </fieldset>
                                     </div>                    
@@ -288,7 +293,7 @@
                 </fieldset>
 
                 <input id="createCase_F_Complete" name="createCase_F_Complete" type="text" value="true" style="display: none;">
-                <button type="submit" class="govuk-button" style="">Continue</button>
+                <button type="submit" class="govuk-button">Continue</button>
                 <button type="button" onclick="location.href='01-search';" class="non-button margin-left" id="">Cancel</button>
 
             </form>
