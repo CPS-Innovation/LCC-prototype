@@ -37,7 +37,10 @@ module.exports = {
   "hearingDetailsYesNo": "",
   "courtLocation": "",
   "hearingDate": "",
-  "area": ""
+  "area": "",
+  "localReference1": "",
+  "localReference2": ""
+
 
 
 }
