@@ -77,7 +77,8 @@ router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) 
     if (req.body['suspect-type'] == 'Person') {
         req.session.data.suspectFirstName[count] = req.body['suspect-person-first-name']
         req.session.data.suspectLastName[count] = req.body['suspect-person-last-name']
-        // req.session.data.suspectDOB[count] = req.body['suspect-person-DOB']
+        req.session.data.suspectDOB[count] = req.body['suspect-date-of-birth']
+        console.log("Date of birth:",req.session.data.suspectDOB[count])
     }
     else {
         req.session.data.suspectCompanyName[count] = req.body['suspect-company-name']
