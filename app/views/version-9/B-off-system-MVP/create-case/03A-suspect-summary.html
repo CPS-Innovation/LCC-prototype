@@ -26,13 +26,16 @@
               {% if (data['suspectType'][id] == 'Person') %}
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
-                  <span class="icon-new user"></span> <span class="uppercase">{{data['suspectLastName'][id]}}</span>, {{data['suspectFirstName'][id]}}
+
+                  <span class="icon-new user"></span> <span class="uppercase">{{data['suspectLastName'][id]}}</span>, {{data['suspectFirstName'][id]}} <span class="govuk-body">| born {{data['suspectDOB'][id]}}</span>
+
                 </dt>
                 <dd class="govuk-summary-list__actions hmrc-summary-list__actions">
                   <ul class="govuk-summary-list__actions-list">
                     <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Edit</span><span class="govuk-visually-hidden">Edit {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}'s details</span></a></li>
-                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Add charges</span><span class="govuk-visually-hidden">Add charges to {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}</span></a></li>
-                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Add details</span><span class="govuk-visually-hidden">Add details to {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}</span></a></li>                    
+
+                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Remove</span><span class="govuk-visually-hidden">Remove {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}</span></a></li>
+
                   </ul>
                 </dd>
               </div>
@@ -43,7 +46,8 @@
                 </dt>
                 <dd class="govuk-summary-list__actions hmrc-summary-list__actions">
                   <ul class="govuk-summary-list__actions-list">
-                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Edit</span><span class="govuk-visually-hidden">Edit {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}'s details</span></a></li>
+                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Edit</span><span class="govuk-visually-hidden">Edit {{ data['suspectCompanyName'][id]}}'s details</span></a></li>
+                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Remove</span><span class="govuk-visually-hidden">Remove {{ data['suspectCompanyName'][id]}}</span></a></li>
                   </ul>
                 </dd>
               </div>
