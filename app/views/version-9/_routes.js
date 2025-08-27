@@ -39,6 +39,11 @@ router.post('/B-off-system-MVP/create-case/02-area', function(req, res) {
 router.post('/B-off-system-MVP/create-case/02A-case-details', function(req, res) {
     console.log("Case details page submitted")
 
+    req.session.data.localReference1 = req.body['local-reference-1']
+    req.session.data.localReference2 = req.body['local-reference-2']
+    console.log("Local reference 1:",req.session.data.localReference1)
+    console.log("Local reference 2:",req.session.data.localReference2)  
+
     if (req.session.data.suspectDetailsYesNo === 'Yes') {
         res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect')
     }
@@ -78,7 +83,6 @@ router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) 
         req.session.data.suspectFirstName[count] = req.body['suspect-person-first-name']
         req.session.data.suspectLastName[count] = req.body['suspect-person-last-name']
         req.session.data.suspectDOB[count] = req.body['suspect-date-of-birth']
-        console.log("Date of birth:",req.session.data.suspectDOB[count])
     }
     else {
         req.session.data.suspectCompanyName[count] = req.body['suspect-company-name']

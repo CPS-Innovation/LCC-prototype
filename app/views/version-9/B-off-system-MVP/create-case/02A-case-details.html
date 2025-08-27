@@ -29,7 +29,7 @@
                     <div class="govuk-form-group" id="newCase_URN-Value">
                         <label class="govuk-label" for="newCase_URN">What is the URN?</label>
                         <p id="newCase_URN_Error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter a URN</p>
-                        <p id="newCase_URN_Error_DUPLICATE" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> This URN already exisits in CMS</p>
+                        <p id="newCase_URN_Error_DUPLICATE" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> This URN already exists in CMS</p>
                         <div class="form-wrapper">
                             {% if data['newCase_URN-A'] %}
                                 <input class="govuk-input govuk-input--width-2" id="newCase_URN-A" name="newCase_URN-A" type="text" value="{{ data['newCase_URN-A'] }}">
@@ -60,11 +60,10 @@
                     <!-- ITEM 2 - START -->
                     <div class="govuk-form-group">
                         <label class="govuk-label" for="newCase_LocalRef">What is the local reference? (optional)</label>
-                        {% if data['newCase_LocalRef'] %}
-                            <input class="govuk-input govuk-input--width-20" id="newCase_LocalRef" name="newCase_LocalRef" type="text" value="{{ data['newCase_LocalRef'] }}">
-                        {% else %}
-                            <input class="govuk-input govuk-input--width-20" id="newCase_LocalRef" name="newCase_LocalRef" type="text">
-                        {% endif %}        
+                        <div class="form-wrapper">
+                            <input class="govuk-input govuk-input--width-5" id="local-reference-1" name="local-reference-1" type="text" value="{{ data['local-reference-1'] }}">
+                            <input class="govuk-input govuk-input--width-5" id="local-reference-2" name="local-reference-2" type="text" value="{{ data['local-reference-2'] }}">
+                        </div>
                     </div>
                     <!-- ITEM 2 - END -->
 
