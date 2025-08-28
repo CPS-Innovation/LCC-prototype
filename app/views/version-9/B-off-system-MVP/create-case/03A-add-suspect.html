@@ -31,7 +31,7 @@
               </div> -->
               <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="suspect-type-person" name="suspect-type" type="radio" value="Person" data-aria-controls="conditional-contact">
+                  <input class="govuk-radios__input" id="suspect-type-person" name="suspect-type" type="radio" value="Person" data-aria-controls="conditional-contact" {% if data['suspectFirstName'][data['id']] %} checked {% endif %} >
                   <label class="govuk-label govuk-radios__label" for="suspect-type-person">
                     Person
                   </label>
@@ -41,14 +41,14 @@
                     <label class="govuk-label" for="suspect-type-person-first-name">
                       First name
                     </label>
-                    <input class="govuk-input govuk-!-width-one-third" id="suspect-person-first-name" name="suspect-person-first-name" type="text" spellcheck="false" autocomplete="text">
+                    <input class="govuk-input govuk-!-width-one-third" id="suspect-person-first-name" name="suspect-person-first-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['suspectFirstName'][data['id']]}}">
                   </div>
                   
                   <div class="govuk-form-group">
                     <label class="govuk-label" for="suspect-person-last-name">
                       Last name
                     </label>
-                    <input class="govuk-input govuk-!-width-one-third" id="suspect-person-last-name" name="suspect-person-last-name" type="text" spellcheck="false" autocomplete="text">
+                    <input class="govuk-input govuk-!-width-one-third" id="suspect-person-last-name" name="suspect-person-last-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['suspectLastName'][data['id']]}}">
                   </div>
 
                   <div class="moj-datepicker" data-module="moj-date-picker">
@@ -56,7 +56,7 @@
                           <label class="govuk-label" for="newCase_FirstHearing_Date">Date of birth</label>
                           <div id="newCase_FirstHearing_Date-hint" class="govuk-hint">For example, 17/5/2024.</div>
                           <div class="date_range_wrapper create_case">
-                              <input class="govuk-input moj-js-datepicker-input govuk-input--width-10" id="newCase_FirstHearing_Date" name="suspect-date-of-birth" type="text" aria-describedby="date-hint" autocomplete="off">
+                              <input class="govuk-input moj-js-datepicker-input govuk-input--width-10" id="newCase_FirstHearing_Date" name="suspect-date-of-birth" type="text" aria-describedby="date-hint" autocomplete="off" value="{{ data['suspectDOB'][data['id']]}}">
                               <button class="moj-datepicker__toggle moj-js-datepicker-toggle" type="button" aria-haspopup="dialog" aria-controls="datepicker-date" aria-expanded="true">
                                   <span class="govuk-visually-hidden">Choose date</span>
                                   <svg width="32" height="24" focusable="false" class="moj-datepicker-icon" aria-hidden="true" role="img" viewBox="0 0 22 22">
@@ -108,7 +108,7 @@
 
 
                 <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="suspect-type-company" name="suspect-type" type="radio" value="Company" data-aria-controls="conditional-contact-2">
+                  <input class="govuk-radios__input" id="suspect-type-company" name="suspect-type" type="radio" value="Company" data-aria-controls="conditional-contact-2" {% if data['suspectCompanyName'][data['id']] %} checked {% endif %}>
                   <label class="govuk-label govuk-radios__label" for="suspect-type-company">
                     Company
                   </label>
@@ -118,12 +118,17 @@
                     <label class="govuk-label" for="suspect-company-name">
                       Company name
                     </label>
-                    <input class="govuk-input govuk-!-width-one-third" id="suspect-company-name" name="suspect-company-name" type="text" autocomplete="text">
+                    <input class="govuk-input govuk-!-width-one-third" id="suspect-company-name" name="suspect-company-name" type="text" autocomplete="text" value="{{ data['suspectCompanyName'][data['id']]}}">
                   </div>
                 </div>
               </div>
             </fieldset>
+
+            <input type="hidden" name="id" value="{{ data['suspectId'][data['id']]}}">
+            <input type="hidden" name="update" value="{{data['id']}}">
+
           </div>
+
 
           <button type="submit" class="govuk-button" data-module="govuk-button">
             Continue

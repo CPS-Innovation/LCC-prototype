@@ -3,22 +3,15 @@ const router = new express.Router()
 
 // Add your routes here - above the module.exports line
 
-
-// router.post('/version-9/B-off-system-MVP/create-case/03A-add-suspect-routes', function(req, res) {
-//     console.log("version-9")
-//     res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect-name')
-// })
-
-
 // GET SPRINT NAME - useful for relative templates
 
 // route middleware that will happen on every request
-// router.use('/', (req, res, next) => {
-//      res.locals.currentURL = req.originalUrl; //current screen
-//      res.locals.prevURL = req.get('Referrer'); // previous screen
-//      console.log('previous page is: ' + res.locals.prevURL + " and current page is " + req.url + " " + res.locals.currentURL );
-//      next();
-// });
+router.use('/', (req, res, next) => {
+     res.locals.currentURL = req.originalUrl; //current screen
+     res.locals.prevURL = req.get('Referrer'); // previous screen
+    //  console.log('previous page is: ' + res.locals.prevURL + " and current page is " + req.url + " " + res.locals.currentURL );
+     next();
+});
 
 ///////////////////////////////////////// New router functionality /////////////////////////////////////////
 
