@@ -72,7 +72,6 @@ router.post('/B-off-system-MVP/create-case/03A-add-suspect-start', function(req,
     }    
 })
 
-
 router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) {
     count = req.session.data.suspectCount
     
@@ -92,6 +91,52 @@ router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) 
     
     res.redirect('/version-9/B-off-system-MVP/create-case/03A-suspect-summary')
 })
+
+// router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) {
+//     update = req.session.data.updateDefault
+//     console.log("Update value 1st:", update)
+//     update = req.body['update']
+//     count  = req.session.data.suspectCount
+//     console.log("Update value:",update)
+//     console.log("Id value:", req.body['id'])
+//     console.log("Suspect count:",count) 
+
+//     // Check if this is an update
+//     if (update != "No") { 
+//         console.log("This is an update")
+//         req.session.data.suspectType[update] = req.body['suspect-type']
+
+//         if (req.body['suspect-type'] == 'Person') {
+//             req.session.data.suspectFirstName[update] = req.body['suspect-person-first-name']
+//             req.session.data.suspectLastName[update] = req.body['suspect-person-last-name']
+//             req.session.data.suspectDOB[update] = req.body['suspect-date-of-birth']
+//         }
+//         else {
+//             req.session.data.suspectCompanyName[update] = req.body['suspect-company-name']
+//         }
+        
+//         req.session.data.update = "No"
+//     }
+//     else {
+//         console.log("This is a new suspect")
+//         req.session.data.suspectType[count] = req.body['suspect-type']
+//         req.session.data.suspectId[count] = count
+
+//         if (req.body['suspect-type'] == 'Person') {
+//             req.session.data.suspectFirstName[count] = req.body['suspect-person-first-name']
+//             req.session.data.suspectLastName[count] = req.body['suspect-person-last-name']
+//             req.session.data.suspectDOB[count] = req.body['suspect-date-of-birth']
+//         }
+//         else {
+//             req.session.data.suspectCompanyName[count] = req.body['suspect-company-name']
+//         }
+        
+//         req.session.data.suspectCount = count + 1
+//     }
+    
+//     res.redirect('/version-9/B-off-system-MVP/create-case/03A-suspect-summary')
+// })
+
 
 router.post('/B-off-system-MVP/create-case/03A-suspect-summary', function(req, res) {
     if (req.body['add-another'] === 'Yes') {

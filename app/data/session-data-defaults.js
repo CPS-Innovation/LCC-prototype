@@ -39,8 +39,8 @@ module.exports = {
   "hearingDate": "",
   "area": "",
   "localReference1": "",
-  "localReference2": ""
-
-
+  "localReference2": "",
+  "updateDefault": "No"
+  
 
 }

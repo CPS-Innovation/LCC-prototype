@@ -27,8 +27,8 @@
                 <!-- ITEM 1 - START -->
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Area</dt>
-                    <dd class="govuk-summary-list__value">{{ data['newCase_Operation_AREA'] }}</dd>
-                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> area</span></a></dd>
+                    <dd class="govuk-summary-list__value">{{ data['docType-Area'] }}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-area">Change<span class="govuk-visually-hidden"> area</span></a></dd>
                 </div>
                 <!-- ITEM 1 - END -->
 
@@ -49,11 +49,11 @@
                 <!-- ITEM 2 - END -->
 
                 <!-- ITEM 3 - START -->
-                {% if data['newCase_LocalRef'] %}
+                {% if data['local-reference-1'] %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Local Ref</dt>
-                        <dd class="govuk-summary-list__value">{{ data['newCase_LocalRef'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> Local Ref</span></a></dd>
+                        <dd class="govuk-summary-list__value">{{ data['local-reference-1'] }}-{{ data['local-reference-2'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02A-case-details">Change<span class="govuk-visually-hidden"> Local Ref</span></a></dd>
                     </div>
                 {% else %}
 
@@ -116,11 +116,11 @@
             <dl class="govuk-summary-list govuk-!-margin-bottom-9">
 
                 <!-- ITEM 1 - START -->
-                {% if data['newCase_OperationName_YesNo'] == 'Yes' %}
+                {% if data['operationNameYesNo'] == 'Yes' %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Operation name</dt>
-                        <dd class="govuk-summary-list__value">{{ data['newCase_OperationName'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> Operation name</span></a></dd>
+                        <dd class="govuk-summary-list__value">{{ data['operationName'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-register-case">Change<span class="govuk-visually-hidden"> Operation name</span></a></dd>
                     </div>
                 {% else %}
                     <div class="govuk-summary-list__row">
@@ -1256,11 +1256,11 @@
             <!-- //////////////////////////////////////////////////// SECTION 6 - END //////////////////////////////////////////////////// -->
 
             <!-- //////////////////////////////////////////////////// SECTION 7 - START //////////////////////////////////////////////////// -->
-            <h2 class="govuk-heading-m">Material locations</h2>
-            <dl class="govuk-summary-list no_list govuk-!-margin-bottom-9">
+            <!-- <h2 class="govuk-heading-m">Material locations</h2>
+            <dl class="govuk-summary-list no_list govuk-!-margin-bottom-9"> -->
 
                 <!-- ITEM 1 - START -->
-                {% if data['newCase_ExistingEgress_YesNo'] == 'No' %}
+                <!-- {% if data['newCase_ExistingEgress_YesNo'] == 'No' %}
                     <div class="govuk-summary-list__row no_border">
                         <dt class="govuk-summary-list__key">Egress location</dt>
                         <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07-egress-shared-drive">Change<span class="govuk-visually-hidden"> Egress location</span></a></dd>
@@ -1276,11 +1276,11 @@
                     <div class="govuk-summary-list__row">
                         <dd class="govuk-summary-list__full_width"><span class="url-text small_text">https://cps.egresscloud.com/w/edit/66fd8bd1158de0c2ca41b172/</span></dd>
                     </div>
-                {% endif %}        
+                {% endif %}         -->
                 <!-- ITEM 1 - END -->
 
                 <!-- ITEM 2 - START -->
-                {% if data['newCase_ExistingSharedDrive_YesNo'] == 'No' %}
+                <!-- {% if data['newCase_ExistingSharedDrive_YesNo'] == 'No' %}
                     <div class="govuk-summary-list__row no_border">
                         <dt class="govuk-summary-list__key">Shared drive location</dt>
                         <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07-egress-shared-drive">Change<span class="govuk-visually-hidden"> Shared drive location</span></a></dd>
@@ -1296,13 +1296,14 @@
                     <div class="govuk-summary-list__row">
                         <dd class="govuk-summary-list__full_width"><span class="url-text small_text">\\ Public (P:) > RCTCaseData > SCCTD > CTD > Live Op > {{ data['newCase_OperationName'] }}</span></dd>
                     </div>
-                {% endif %}        
+                {% endif %}         -->
                 <!-- ITEM 2 - END -->
 
             </dl>
             <!-- //////////////////////////////////////////////////// SECTION 7 - END //////////////////////////////////////////////////// -->
 
-            <form method="get" action="../03-case-overview" id="newCase_Form-H">  
+            <form method="get" action="07-egress-shared-drive" id="newCase_Form-H">  
+            <!-- <form method="get" action="../03-case-overview" id="newCase_Form-H">   -->
                 <input id="createCase_H_Complete" name="createCase_H_Complete" type="text" value="true" style="display: none;">
                 <button type="submit" class="govuk-button" >Accept and create</button>
                 <button type="button" onclick="location.href='01-search';" class="non-button margin-left" id="">Cancel</button>
