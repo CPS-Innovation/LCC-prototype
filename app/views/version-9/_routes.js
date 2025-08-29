@@ -6,6 +6,9 @@ const version = 'version-9'
 
 
 router.post('/B-off-system-MVP/create-case/01-register-case', function(req, res) {
+    req.session.data.operationNameYesNo = req.body['operation-name-yes-no']
+    req.session.data.suspectDetailsYesNo = req.body['suspect-details-yes-no']
+    req.session.data.hearingDetailsYesNo = req.body['first-hearing-details']
 
     if (req.body['operation-name-yes-no'] === 'Yes') {
         req.session.data.operationName = req.body['operation-name']

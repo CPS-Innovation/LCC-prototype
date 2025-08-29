@@ -126,7 +126,7 @@
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Operation name</dt>
                         <dd class="govuk-summary-list__value">No</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> area</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-register-case">Change<span class="govuk-visually-hidden"> area</span></a></dd>
                     </div>
                 {% endif %}        
                 <!-- ITEM 1 - END -->
@@ -134,42 +134,42 @@
                 <!-- ITEM 2 - START -->
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Suspects</dt>
-                    <dd class="govuk-summary-list__value">{{ data['newCase_Suspect_YesNo'] }}</dd>
-                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> Suspects</span></a></dd>
+                    <dd class="govuk-summary-list__value">{{ data['suspectDetailsYesNo'] }}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-register-case">Change<span class="govuk-visually-hidden"> Suspects</span></a></dd>
                 </div>
                 <!-- ITEM 2 - END -->
 
                 <!-- ITEM 3 - START -->
-                {% if data['newCase_FirstHearing_YesNo'] == 'Yes' %}
+                {% if data['hearingDetailsYesNo'] == 'Yes' %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">First hearing court location</dt>
-                        <dd class="govuk-summary-list__value">{{ data['newCase_CourtLocation'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> First Hearing court location</span></a></dd>
+                        <dd class="govuk-summary-list__value">{{ data['courtLocation'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-register-case">Change<span class="govuk-visually-hidden"> First Hearing court location</span></a></dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">First hearing date</dt>
-                        <dd class="govuk-summary-list__value">{{ data['newCase_FirstHearing_Date'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> First Hearing date</span></a></dd>
+                        <dd class="govuk-summary-list__value">{{ data['hearingDate'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-register-case">Change<span class="govuk-visually-hidden"> First Hearing date</span></a></dd>
                     </div>
                 {% else %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">First Hearing</dt>
                         <dd class="govuk-summary-list__value">No</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> First Hearing</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-register-case">Change<span class="govuk-visually-hidden"> First Hearing</span></a></dd>
                     </div>
                 {% endif %}        
                 <!-- ITEM 3 - END -->
 
                 <!-- ITEM 4 - START -->
-                <div class="govuk-summary-list__row">
+                <!-- <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Witnesses</dt>
                     <dd class="govuk-summary-list__value">{{ data['newCase_Witness_YesNo'] }}</dd>
                     <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> Witnesses</span></a></dd>
-                </div>
+                </div> -->
                 <!-- ITEM 4 - END -->
 
                 <!-- ITEM 5 - START -->
-                {% if data['newCase_LongTerm'] %}
+                <!-- {% if data['newCase_LongTerm'] %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Long term interest</dt>
                         <dd class="govuk-summary-list__value">Yes</dd>
@@ -181,15 +181,49 @@
                         <dd class="govuk-summary-list__value">No</dd>
                         <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> Long term interest</span></a></dd>
                     </div>
-                {% endif %}        
+                {% endif %}         -->
                 <!-- ITEM 5 - END -->
 
             </dl>
             <!-- //////////////////////////////////////////////////// SECTION 2 - END //////////////////////////////////////////////////// -->
 
             <!-- //////////////////////////////////////////////////// SECTION 3 - START //////////////////////////////////////////////////// -->
-            {% if data['newCase_Suspect_YesNo'] == 'Yes' %}
+            {% if data['suspectDetailsYesNo'] == 'Yes' %}
                 <h2 class="govuk-heading-m">Suspects</h2>
+                    <dl class="govuk-summary-list hmrc-list-with-actions hmrc-list-with-actions--short">
+
+                        {% for id in data['suspectId'] %}            
+                        {% if (data['suspectType'][id] == 'Person') %}
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
+
+                            <span class="icon-new user"></span> <span class="uppercase">{{data['suspectLastName'][id]}}</span>, {{data['suspectFirstName'][id]}} <span class="govuk-body">| born {{data['suspectDOB'][id]}}</span>
+
+                            </dt>
+                            <dd class="govuk-summary-list__actions hmrc-summary-list__actions">
+                            <ul class="govuk-summary-list__actions-list">
+                                <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="03A-add-suspect.html?id={{data['suspectId'][id]}}"><span aria-hidden="true">Change</span><span class="govuk-visually-hidden">Change {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}'s details</span></a></li>
+
+
+                            </ul>
+                            </dd>
+                        </div>
+                        {% else %}
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
+                            <span class="icon-new company"></span> {{ data['suspectCompanyName'][id]}}
+                            </dt>
+                            <dd class="govuk-summary-list__actions hmrc-summary-list__actions">
+                            <ul class="govuk-summary-list__actions-list">
+                                <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="03A-add-suspect.html?id={{data['suspectId'][id]}}"><span aria-hidden="true">Change</span><span class="govuk-visually-hidden">Change {{ data['suspectCompanyName'][id]}}'s details</span></a></li>
+                            </ul>
+                            </dd>
+                        </div>
+
+                        {% endif %}
+                        {% endfor %}
+                    </dl>
+
 
                 <!-- SUSPECT 1 - START -->
                 {% if data['newCase_Suspect-LastName'] or data['newCase_Suspect-CompanyName'] %}
