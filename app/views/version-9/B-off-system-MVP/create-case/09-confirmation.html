@@ -1,0 +1,37 @@
+{% extends "layoutCPS-OFF.html" %}
+{% block header %}
+    {% include "../../includes/banner-OFF-V7.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-panel govuk-panel--confirmation">
+          <h1 class="govuk-panel__title">
+            Case registered
+          </h1>
+          <div class="govuk-panel__body">
+            URN<br><strong>HDJ2123F</strong>
+          </div>
+        </div>
+        <p class="govuk-body">We have sent you a confirmation email.</p>
+        <h2 class="govuk-heading-m">What happens next</h2>
+        <p class="govuk-body">
+          You need to <a href="07-egress-shared-drive" class="govuk-link">add materials</a> blah blah.
+        </p>
+        <p class="govuk-body">
+          You can edit your case details in the future blah blah.
+        </p>
+        <p class="govuk-body">
+          <a href="#" class="govuk-link">What did you think of this service?</a> (takes 30 seconds)
+        </p>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}
