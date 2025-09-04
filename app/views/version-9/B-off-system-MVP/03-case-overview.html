@@ -40,14 +40,14 @@
         <div class="title-wrapper"> 
             <!-- //////////// NEW CASE CREATED //////////// -->
             {% if data['createCaseStarted'] == 'true' %}
-                {% if data['newCase_OperationName'] %}
-                    <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['newCase_OperationName'] }}</h1>
-                {% elseif data['newCase_DefendantName-Surname'] or data['newCase_DefendantName-Forename'] %}
+                {% if data['operationName'] %}
+                    <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['operationName'] }}</h1>
+                {% elseif data['suspectLastName'] or data['suspectFistName'] %}
                     <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">
-                        <span class="uppercase">{{ data['newCase_DefendantName-Surname'] }}</span>, {{ data['newCase_DefendantName-Forename'] }}
+                        <span class="uppercase">{{ data['suspectLastName'] }}</span>, {{ data['suspectFirstName'] }}
                     </h1>
-                {% elseif data['newCase_DefendantName-CompanyName'] %}
-                    <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['newCase_DefendantName-CompanyName'] }}</h1>
+                {% elseif data['suspectCompanyName'] %}
+                    <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['suspectCompanyName'] }}</h1>
                 {% endif %}
                 <span class="govuk-caption-m govuk-!-margin-bottom-4">
                     {% if data['newCase_URN-Compass_ID'] %}
@@ -141,22 +141,29 @@
         <div class="govuk-tabs off-cms-overview" id="new-tabs">
 
             <ul class="govuk-tabs__list">
+                <li class="govuk-tabs__list-item govuk-tabs__list-item--selected" id="tab-1"><a class="tab-link tab-1-content">Case details</a></li>
                 {% if data['shared_drive_NewFolder'] %}
-                    <li class="govuk-tabs__list-item" id="tab-1"><a class="tab-link tab-1-content">Transfer materials</a></li>
-                    <li class="govuk-tabs__list-item govuk-tabs__list-item--selected" id="tab-2"><a class="tab-link tab-2-content">Manage materials</a></li>
+                    <li class="govuk-tabs__list-item" id="tab-2"><a class="tab-link tab-2-content">Transfer materials</a></li>
+                    <li class="govuk-tabs__list-item" id="tab-3"><a class="tab-link tab-3-content">Manage materials</a></li>
                 {% else %}
-                    <li class="govuk-tabs__list-item govuk-tabs__list-item--selected" id="tab-1"><a class="tab-link tab-1-content">Transfer materials</a></li>
-                    <li class="govuk-tabs__list-item" id="tab-2"><a class="tab-link tab-2-content">Manage materials</a></li>
+                    <li class="govuk-tabs__list-item" id="tab-2"><a class="tab-link tab-2-content">Transfer materials</a></li>
+                    <li class="govuk-tabs__list-item" id="tab-3"><a class="tab-link tab-3-content">Manage materials</a></li>
                 {% endif %}
-                <li class="govuk-tabs__list-item" id="tab-3"><a class="tab-link tab-3-content">Bundles (1)</a></li>
-                <li class="govuk-tabs__list-item" id="tab-4"><a class="tab-link tab-4-content">Activity log</a></li>
+                <li class="govuk-tabs__list-item" id="tab-4"><a class="tab-link tab-4-content">Bundles (1)</a></li>
+                <li class="govuk-tabs__list-item" id="tab-5"><a class="tab-link tab-5-content">Activity log</a></li>
             </ul>
 
             <!-- /////////////// TAB CONTENT 1 - START /////////////// -->
+            <div class="panel" id="tab-1-content">
+                {% include "../includes/off-system-MVP/overview-case-details.html" %}
+            </div>
+            <!-- /////////////// TAB CONTENT 1 - END /////////////// -->
+
+            <!-- /////////////// TAB CONTENT 2 - START /////////////// -->
             {% if data['shared_drive_NewFolder'] %}
-                <div class="panel" id="tab-1-content" style="display: none;">
+                <div class="panel" id="tab-2-content" style="display: none;">
             {% else %}
-                <div class="panel" id="tab-1-content">
+                <div class="panel" id="tab-2-content">
             {% endif %}
             {% if data['shared_Drive_Indexing'] == 'true' or data['shared_Drive_Transferring'] == 'true' or data['shared_Drive_Copying'] == 'true' %}
                 {% include "../includes/off-system-MVP/overview-materials_SD.html" %}
@@ -164,13 +171,13 @@
                 {% include "../includes/off-system-MVP/overview-materials.html" %}
             {% endif %}
             </div>
-            <!-- /////////////// TAB CONTENT 1 - END /////////////// -->
+            <!-- /////////////// TAB CONTENT 2 - END /////////////// -->
 
-            <!-- /////////////// TAB CONTENT 2 - START /////////////// -->
+            <!-- /////////////// TAB CONTENT 3 - START /////////////// -->
             {% if data['shared_drive_NewFolder'] %}
-                <div class="panel" id="tab-2-content">
+                <div class="panel" id="tab-3-content">
             {% else %}
-                <div class="panel" id="tab-2-content" style="display: none;">
+                <div class="panel" id="tab-3-content" style="display: none;">
             {% endif %}
             {% if data['shared_Drive_Indexing'] == 'true' or data['shared_Drive_Transferring'] == 'true' or data['shared_Drive_Copying'] == 'true' %}
                 {% include "../includes/off-system-MVP/overview-manage_SD.html" %}
@@ -178,19 +185,19 @@
                 {% include "../includes/off-system-MVP/overview-manage.html" %}
             {% endif %}
             </div>
-            <!-- /////////////// TAB CONTENT 2 - END /////////////// -->
-
-            <!-- /////////////// TAB CONTENT 3 - START /////////////// -->
-            <div class="panel" id="tab-3-content" style="display: none;">
-                {% include "../includes/off-system-MVP/overview-bundles.html" %}
-            </div>
             <!-- /////////////// TAB CONTENT 3 - END /////////////// -->
 
             <!-- /////////////// TAB CONTENT 4 - START /////////////// -->
             <div class="panel" id="tab-4-content" style="display: none;">
-                {% include "../includes/off-system-MVP/overview-audit.html" %}
+                {% include "../includes/off-system-MVP/overview-bundles.html" %}
             </div>
             <!-- /////////////// TAB CONTENT 4 - END /////////////// -->
+
+            <!-- /////////////// TAB CONTENT 5 - START /////////////// -->
+            <div class="panel" id="tab-5-content" style="display: none;">
+                {% include "../includes/off-system-MVP/overview-audit.html" %}
+            </div>
+            <!-- /////////////// TAB CONTENT 5 - END /////////////// -->
 
         </div>
 

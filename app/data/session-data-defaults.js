@@ -40,7 +40,8 @@ module.exports = {
   "area": "",
   "localReference1": "",
   "localReference2": "",
-  "updateDefault": "No"
+  "updateDefault": "No",
+  "userType": "LCC"
   
 
 }

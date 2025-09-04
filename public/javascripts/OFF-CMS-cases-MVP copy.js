@@ -639,7 +639,7 @@ $(document).ready(function () {
     // NEW CASE - EGRESS
     $("input[name=offCMS_Egress_files]").on("change", function (e) {
         if ($(this).val() == 'Yes') {
-            $('#createCaseStarted_Egress').attr('action','./create-case/08-check-answers');
+            $('#createCaseStarted_Egress').attr('action','./03-case-overview');
         } else if ($(this).val() == 'No') {
             $('#createCaseStarted_Egress').attr('action','04A-egress-files');
         }
@@ -648,7 +648,7 @@ $(document).ready(function () {
     // NEW CASE - SD
     $("input[name=offCMS_Egress_files]").on("change", function (e) {
         if ($(this).val() == 'Yes') {
-            $('#createCaseStarted_SD').attr('action','./create-case/08-check-answers');
+            $('#createCaseStarted_SD').attr('action','./03-case-overview');
         } else if ($(this).val() == 'No') {
             $('#createCaseStarted_SD').attr('action','04A-egress-files');
         }
@@ -1860,7 +1860,7 @@ $(document).ready(function () {
     // SD
     $("input[name=offCMS_PDrive_files]").on("change", function (e) {
         if ($(this).val() == 'Yes') {
-            $('#createCaseStarted_SD').attr('action','./create-case/08-check-answers');
+            $('#createCaseStarted_SD').attr('action','./03-case-overview');
         } else if ($(this).val() == 'No') {
             $('#createCaseStarted_SD').attr('action','05A-p-drive-files');
         }
@@ -3466,17 +3466,6 @@ $(document).ready(function () {
 
 
 
-    // Add suspects (Monica)
-    $('input[name=addSuspect]').on("click", function (e) {
-        if ($('#addSuspectYes').is(':checked')) {
-            $('#add-supects-choice-form').attr('action','03A-add-suspect-name');
-        } else {
-            $('#add-supects-choice-form').attr('action','03A-create-suspects-monica');
-        } 
-    }); 
-
-
-
 
 
 
@@ -3499,7 +3488,7 @@ $(document).ready(function () {
         } else if ($('#newCase_ExistingEgress_No').is(':checked') && $('#newCase_ExistingSharedDrive_Yes').is(':checked')) {
             $('#newCase_Form-G').attr('action','../05A-p-drive-files');
         } else if ($('#newCase_ExistingEgress_No').is(':checked') && $('#newCase_ExistingSharedDrive_No').is(':checked')) {
-            $('#newCase_Form-G').attr('action','08-check-answers');
+            $('#newCase_Form-G').attr('action','../03-case-overview');
         } 
     }); 
 
