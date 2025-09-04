@@ -150,6 +150,25 @@ router.post('/B-off-system-MVP/create-case/03A-suspect-summary', function(req, r
     }    
 })
 
+router.post('/B-off-system-MVP/create-case/06-cps-staff', function(req, res) {
+    console.log("User type:",req.session.data.userType)
+    if (req.session.data.userType === 'LCC') {
+        res.redirect('/version-9/B-off-system-MVP/create-case/07A-pre-existing-materials')
+    }
+    else {
+        res.redirect('/version-9/B-off-system-MVP/create-case/08-check-your-answers') 
+    }    
+})
+
+router.post('/B-off-system-MVP/create-case/07A-pre-existing-material', function(req, res) {
+    if (req.body['pre-existing-material'] === 'Yes') {
+        res.redirect('/version-9/B-off-system-MVP/04A-egress-files')
+    }
+    else {
+        res.redirect('/version-9/B-off-system-MVP/create-case/08-check-your-answers') 
+    }    
+})
+
 
 
 // // Version 3 routes

@@ -3466,6 +3466,17 @@ $(document).ready(function () {
 
 
 
+    // Add suspects (Monica)
+    $('input[name=addSuspect]').on("click", function (e) {
+        if ($('#addSuspectYes').is(':checked')) {
+            $('#add-supects-choice-form').attr('action','03A-add-suspect-name');
+        } else {
+            $('#add-supects-choice-form').attr('action','03A-create-suspects-monica');
+        } 
+    }); 
+
+
+
 
 
 

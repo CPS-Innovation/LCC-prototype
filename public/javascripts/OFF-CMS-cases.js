@@ -294,12 +294,12 @@ $(document).ready(function () {
         $('.panel').hide();
         $('#tab-2-content').show();
     });
-    
+
     $("#new-tabs .tab-3-content").on("click", function (e) {
         $('.panel').hide();
         $('#tab-3-content').show();
     });
-
+    
     $("#new-tabs .tab-4-content").on("click", function (e) {
         $('.panel').hide();
         $('#tab-4-content').show();
@@ -318,9 +318,6 @@ $(document).ready(function () {
     $("#new-tabs .tab-7-content").on("click", function (e) {
         $('.panel').hide();
         $('#tab-7-content').show();
-
-        $('nav.secondaryTabs li a').removeAttr('aria-current');
-        $('nav.secondaryTabs li#secondaryTab-1 a').attr('aria-current','page');
     });
 
     $("#new-tabs .tab-8-content").on("click", function (e) {
@@ -328,36 +325,44 @@ $(document).ready(function () {
         $('#tab-8-content').show();
 
         $('nav.secondaryTabs li a').removeAttr('aria-current');
-        $('nav.secondaryTabs li#secondaryTab-4 a').attr('aria-current','page');
+        $('nav.secondaryTabs li#secondarytab-2 a').attr('aria-current','page');
     });
 
     $("#new-tabs .tab-9-content").on("click", function (e) {
-        $('.panel, .extra-nav').hide();
-        $('#tab-9-content').show();
-        $('.show-hide').removeClass('active');
-        $('.extended-navigation').removeClass('list-item--selected');
-
-        $(this).parent().parent().hide();
-    });
-
-    $("#new-tabs .tab-10-content").on("click", function (e) {
-        $('.panel, .extra-nav').hide();
-        $('#tab-10-content').show();
-        $('.show-hide').removeClass('active');
-        $('.extended-navigation').removeClass('list-item--selected');
-
-        $(this).parent().parent().hide();
-    });
-
-    $("#new-tabs .tab-11-content").on("click", function (e) {
         $('.panel').hide();
-        $('#tab-11-content').show();
+        $('#tab-9-content').show();
+
+        $('nav.secondaryTabs li a').removeAttr('aria-current');
+        $('nav.secondaryTabs li#secondarytab-5 a').attr('aria-current','page');
+    });
+
+    $("#new-tabs .tab-20-content").on("click", function (e) {
+        $('.panel, .extra-nav').hide();
+        $('#tab-20-content').show();
+        $('.show-hide').removeClass('active');
+        $('.extended-navigation').removeClass('list-item--selected');
+
+        $(this).parent().parent().hide();
+    });
+
+    $("#new-tabs .tab-21-content").on("click", function (e) {
+        $('.panel, .extra-nav').hide();
+        $('#tab-21-content').show();
+        $('.show-hide').removeClass('active');
+        $('.extended-navigation').removeClass('list-item--selected');
+
+        $(this).parent().parent().hide();
+    });
+
+    $("#new-tabs .tab-22-content").on("click", function (e) {
+        $('.panel').hide();
+        $('#tab-22-content').show();
     });
 
     $("#new-tabs .extended-navigation .show-hide").on("click", function (e) {
         $(this).toggleClass('active');
         $(this).parent().find('.extra-nav').toggle();
-        // $('#tab-11-content').show();
+        // $('#tab-22-content').show();
     });
 
 
@@ -370,7 +375,7 @@ $(document).ready(function() {
     // $('#last-action-hero .hods-timeline__item.last-action-hero-CREATED').show();
 
     // 1 - Overview
-    if (window.location.href.indexOf("overviewTab") > -1) {
+    if (window.location.href.indexOf("overviewDetailsTab") > -1) {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
@@ -380,39 +385,50 @@ $(document).ready(function() {
         $('#last-action-hero .hods-timeline__item.last-action-hero-CREATED').show();
     }
 
-    // 2 - Case progression
-    if (window.location.href.indexOf("eaTab") > -1) {
+    // 2 - Transfer materials
+    if (window.location.href.indexOf("overviewTab") > -1) {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
         $('#new-tabs .govuk-tabs__list-item#tab-2').addClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel#tab-2-content').show();
 
-        $('#last-action-hero .hods-timeline__item.last-action-hero-EARLY_ADVICE').show();
-        $('#last-action-hero .hods-timeline__item.last-action-hero-CREATED').hide();
+        $('#last-action-hero .hods-timeline__item.last-action-hero-CREATED').show();
     }
 
-    // 3 - Case strategy
-    if (window.location.href.indexOf("strategyTab") > -1) {
+    // 3 - Manage materials
+    if (window.location.href.indexOf("eaTab") > -1) {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
         $('#new-tabs .govuk-tabs__list-item#tab-3').addClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel#tab-3-content').show();
+
+        $('#last-action-hero .hods-timeline__item.last-action-hero-EARLY_ADVICE').show();
+        $('#last-action-hero .hods-timeline__item.last-action-hero-CREATED').hide();
+    }
+
+    // 4 - Bundles
+    if (window.location.href.indexOf("strategyTab") > -1) {
+        $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel').hide();
+
+        $('#new-tabs .govuk-tabs__list-item#tab-4').addClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel#tab-4-content').show();
     }
 
     if (window.location.href.indexOf("strategyTab_subTab_1") > -1) {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
-        $('#new-tabs .govuk-tabs__list-item#tab-3').addClass('govuk-tabs__list-item--selected');
-        $('#new-tabs .panel#tab-3-content').show();
+        $('#new-tabs .govuk-tabs__list-item#tab-4').addClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel#tab-4-content').show();
 
 
         $('.moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-        $('.moj-sub-navigation__item#secondaryTab-1').addClass('secondaryTab-Selected');
+        $('.moj-sub-navigation__item#secondarytab-2').addClass('secondaryTab-Selected');
         $('#strategy_Nav a').removeAttr('aria-current');
-        $('#strategy_Nav #secondaryTab-1 a').attr('aria-current','page');
+        $('#strategy_Nav #secondarytab-2 a').attr('aria-current','page');
         $('.secondaryTabContent').hide();
         $('.secondaryTabContent#secondaryTabContent-1').show();
     }
@@ -421,13 +437,13 @@ $(document).ready(function() {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
-        $('#new-tabs .govuk-tabs__list-item#tab-3').addClass('govuk-tabs__list-item--selected');
-        $('#new-tabs .panel#tab-3-content').show();
+        $('#new-tabs .govuk-tabs__list-item#tab-4').addClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel#tab-4-content').show();
 
         $('.moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-        $('.moj-sub-navigation__item#secondaryTab-2').addClass('secondaryTab-Selected');
+        $('.moj-sub-navigation__item#secondarytab-3').addClass('secondaryTab-Selected');
         $('#strategy_Nav a').removeAttr('aria-current');
-        $('#strategy_Nav #secondaryTab-2 a').attr('aria-current','page');
+        $('#strategy_Nav #secondarytab-3 a').attr('aria-current','page');
         $('.secondaryTabContent').hide();
         $('.secondaryTabContent#secondaryTabContent-2').show();
     }
@@ -436,13 +452,13 @@ $(document).ready(function() {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
-        $('#new-tabs .govuk-tabs__list-item#tab-3').addClass('govuk-tabs__list-item--selected');
-        $('#new-tabs .panel#tab-3-content').show();
+        $('#new-tabs .govuk-tabs__list-item#tab-4').addClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel#tab-4-content').show();
 
         $('.moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-        $('.moj-sub-navigation__item#secondaryTab-3').addClass('secondaryTab-Selected');
+        $('.moj-sub-navigation__item#secondarytab-4').addClass('secondaryTab-Selected');
         $('#strategy_Nav a').removeAttr('aria-current');
-        $('#strategy_Nav #secondaryTab-3 a').attr('aria-current','page');
+        $('#strategy_Nav #secondarytab-4 a').attr('aria-current','page');
         $('.secondaryTabContent').hide();
         $('.secondaryTabContent#secondaryTabContent-3').show();
     }
@@ -451,13 +467,13 @@ $(document).ready(function() {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
-        $('#new-tabs .govuk-tabs__list-item#tab-3').addClass('govuk-tabs__list-item--selected');
-        $('#new-tabs .panel#tab-3-content').show();
+        $('#new-tabs .govuk-tabs__list-item#tab-4').addClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel#tab-4-content').show();
 
         $('.moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-        $('.moj-sub-navigation__item#secondaryTab-4').addClass('secondaryTab-Selected');
+        $('.moj-sub-navigation__item#secondarytab-5').addClass('secondaryTab-Selected');
         $('#strategy_Nav a').removeAttr('aria-current');
-        $('#strategy_Nav #secondaryTab-4 a').attr('aria-current','page');
+        $('#strategy_Nav #secondarytab-5 a').attr('aria-current','page');
         $('.secondaryTabContent').hide();
         $('.secondaryTabContent#secondaryTabContent-4').show();
     }
@@ -466,13 +482,13 @@ $(document).ready(function() {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
-        $('#new-tabs .govuk-tabs__list-item#tab-3').addClass('govuk-tabs__list-item--selected');
-        $('#new-tabs .panel#tab-3-content').show();
+        $('#new-tabs .govuk-tabs__list-item#tab-4').addClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel#tab-4-content').show();
 
         $('.moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-        $('.moj-sub-navigation__item#secondaryTab-5').addClass('secondaryTab-Selected');
+        $('.moj-sub-navigation__item#secondarytab-6').addClass('secondaryTab-Selected');
         $('#strategy_Nav a').removeAttr('aria-current');
-        $('#strategy_Nav #secondaryTab-5 a').attr('aria-current','page');
+        $('#strategy_Nav #secondarytab-6 a').attr('aria-current','page');
         $('.secondaryTabContent').hide();
         $('.secondaryTabContent#secondaryTabContent-5').show();
     }
@@ -481,13 +497,13 @@ $(document).ready(function() {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
-        $('#new-tabs .govuk-tabs__list-item#tab-3').addClass('govuk-tabs__list-item--selected');
-        $('#new-tabs .panel#tab-3-content').show();
+        $('#new-tabs .govuk-tabs__list-item#tab-4').addClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel#tab-4-content').show();
 
         $('.moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-        $('.moj-sub-navigation__item#secondaryTab-6').addClass('secondaryTab-Selected');
+        $('.moj-sub-navigation__item#secondarytab-7').addClass('secondaryTab-Selected');
         $('#strategy_Nav a').removeAttr('aria-current');
-        $('#strategy_Nav #secondaryTab-6 a').attr('aria-current','page');
+        $('#strategy_Nav #secondarytab-7 a').attr('aria-current','page');
         $('.secondaryTabContent').hide();
         $('.secondaryTabContent#secondaryTabContent-6').show();
     }
@@ -496,13 +512,13 @@ $(document).ready(function() {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
-        $('#new-tabs .govuk-tabs__list-item#tab-3').addClass('govuk-tabs__list-item--selected');
-        $('#new-tabs .panel#tab-3-content').show();
+        $('#new-tabs .govuk-tabs__list-item#tab-4').addClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel#tab-4-content').show();
 
         $('.moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-        $('.moj-sub-navigation__item#secondaryTab-7').addClass('secondaryTab-Selected');
+        $('.moj-sub-navigation__item#secondarytab-8').addClass('secondaryTab-Selected');
         $('#strategy_Nav a').removeAttr('aria-current');
-        $('#strategy_Nav #secondaryTab-7 a').attr('aria-current','page');
+        $('#strategy_Nav #secondarytab-8 a').attr('aria-current','page');
         $('.secondaryTabContent').hide();
         $('.secondaryTabContent#secondaryTabContent-7').show();
     }
@@ -511,13 +527,13 @@ $(document).ready(function() {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
-        $('#new-tabs .govuk-tabs__list-item#tab-3').addClass('govuk-tabs__list-item--selected');
-        $('#new-tabs .panel#tab-3-content').show();
+        $('#new-tabs .govuk-tabs__list-item#tab-4').addClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel#tab-4-content').show();
 
         $('.moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-        $('.moj-sub-navigation__item#secondaryTab-8').addClass('secondaryTab-Selected');
+        $('.moj-sub-navigation__item#secondarytab-9').addClass('secondaryTab-Selected');
         $('#strategy_Nav a').removeAttr('aria-current');
-        $('#strategy_Nav #secondaryTab-8 a').attr('aria-current','page');
+        $('#strategy_Nav #secondarytab-9 a').attr('aria-current','page');
         $('.secondaryTabContent').hide();
         $('.secondaryTabContent#secondaryTabContent-8').show();
     }
@@ -527,8 +543,8 @@ $(document).ready(function() {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
-        $('#new-tabs .govuk-tabs__list-item#tab-4').addClass('govuk-tabs__list-item--selected');
-        $('#new-tabs .panel#tab-4-content').show();
+        $('#new-tabs .govuk-tabs__list-item#tab-5').addClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel#tab-5-content').show();
 
         $('#last-action-hero .hods-timeline__item.last-action-hero-SUSPECT').show();
         $('#last-action-hero .hods-timeline__item.last-action-hero-CREATED').hide();
@@ -539,8 +555,8 @@ $(document).ready(function() {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
-        $('#new-tabs .govuk-tabs__list-item#tab-5').addClass('govuk-tabs__list-item--selected');
-        $('#new-tabs .panel#tab-5-content').show();
+        $('#new-tabs .govuk-tabs__list-item#tab-6').addClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel#tab-6-content').show();
 
         $('#last-action-hero .hods-timeline__item.last-action-hero-WITNESS').show();
         $('#last-action-hero .hods-timeline__item.last-action-hero-CREATED').hide();
@@ -551,8 +567,8 @@ $(document).ready(function() {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
-        $('#new-tabs .govuk-tabs__list-item#tab-6').addClass('govuk-tabs__list-item--selected');
-        $('#new-tabs .panel#tab-6-content').show();
+        $('#new-tabs .govuk-tabs__list-item#tab-7').addClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel#tab-7-content').show();
 
         $('#last-action-hero .hods-timeline__item.last-action-hero-MATERAILS').show();
         $('#last-action-hero .hods-timeline__item.last-action-hero-CREATED').hide();
@@ -563,8 +579,8 @@ $(document).ready(function() {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
-        $('#new-tabs .govuk-tabs__list-item#tab-7').addClass('govuk-tabs__list-item--selected');
-        $('#new-tabs .panel#tab-7-content').show();
+        $('#new-tabs .govuk-tabs__list-item#tab-8').addClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel#tab-8-content').show();
 
         $('#last-action-hero .hods-timeline__item.last-action-hero-COMMS').show();
         $('#last-action-hero .hods-timeline__item.last-action-hero-CREATED').hide();
@@ -575,8 +591,8 @@ $(document).ready(function() {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
-        $('#new-tabs .govuk-tabs__list-item#tab-8').addClass('govuk-tabs__list-item--selected');
-        $('#new-tabs .panel#tab-8-content').show();
+        $('#new-tabs .govuk-tabs__list-item#tab-9').addClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel#tab-9-content').show();
 
         $('#last-action-hero .hods-timeline__item.last-action-hero-CONTACTS').show();
         $('#last-action-hero .hods-timeline__item.last-action-hero-CREATED').hide();
@@ -587,8 +603,8 @@ $(document).ready(function() {
         $('#new-tabs .govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
         $('#new-tabs .panel').hide();
 
-        $('#new-tabs .govuk-tabs__list-item#tab-9').addClass('govuk-tabs__list-item--selected');
-        $('#new-tabs .panel#tab-9-content').show();
+        $('#new-tabs .govuk-tabs__list-item#tab-20').addClass('govuk-tabs__list-item--selected');
+        $('#new-tabs .panel#tab-20-content').show();
 
         $('#last-action-hero .hods-timeline__item.last-action-hero-PERMISSIONS').show();
         $('#last-action-hero .hods-timeline__item.last-action-hero-CREATED').hide();
@@ -695,8 +711,8 @@ function closeConfirmRemoveUser() {
 function confirmRemoveUsers() {
     $('#confirmRemoveUser').addClass('rj-dont-display');
     $('table.contacts-table tbody tr.removeContact-Row').hide();
-    var userNumbers = parseInt($('.tab-8-content .contacts-number').text());
-    $('.tab-8-content .contacts-number').text(userNumbers-1);
+    var userNumbers = parseInt($('.tab-9-content .contacts-number').text());
+    $('.tab-9-content .contacts-number').text(userNumbers-1);
 
 }
 
@@ -966,8 +982,8 @@ function closeConfirmRemoveContact() {
 function confirmRemoveContact() {
     $('#confirmRemoveContact').addClass('rj-dont-display');
     $('table.key_contacts-table tbody tr.removeContact-Row').hide();
-    var userNumbers = parseInt($('.tab-8-content .contacts-number').text());
-    $('.tab-8-content .contacts-number').text(userNumbers-1);
+    var userNumbers = parseInt($('.tab-9-content .contacts-number').text());
+    $('.tab-9-content .contacts-number').text(userNumbers-1);
 
     $('tr#no_key_contacts').show();
 }
@@ -1028,9 +1044,9 @@ function secondaryTab1() {
     $('.tabsGroup-1.secondaryTabContent#secondaryTabContent-1').show();
 
     $('.tabsGroup-1 .moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-1').addClass('secondaryTab-Selected');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-2').addClass('secondaryTab-Selected');
     $('.tabsGroup-1 .moj-sub-navigation__item a').removeAttr('aria-current');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-1 a').attr('aria-current','page');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-2 a').attr('aria-current','page');
 }
 
 function secondaryTab2() {
@@ -1038,9 +1054,9 @@ function secondaryTab2() {
     $('.tabsGroup-1.secondaryTabContent#secondaryTabContent-2').show();
 
     $('.tabsGroup-1 .moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-2').addClass('secondaryTab-Selected');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-3').addClass('secondaryTab-Selected');
     $('.tabsGroup-1 .moj-sub-navigation__item a').removeAttr('aria-current');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-2 a').attr('aria-current','page');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-3 a').attr('aria-current','page');
 }
 
 function secondaryTab3() {
@@ -1048,9 +1064,9 @@ function secondaryTab3() {
     $('.tabsGroup-1.secondaryTabContent#secondaryTabContent-3').show();
 
     $('.tabsGroup-1 .moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-3').addClass('secondaryTab-Selected');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-4').addClass('secondaryTab-Selected');
     $('.tabsGroup-1 .moj-sub-navigation__item a').removeAttr('aria-current');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-3 a').attr('aria-current','page');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-4 a').attr('aria-current','page');
 }
 
 function secondaryTab4_V2() {
@@ -1058,9 +1074,9 @@ function secondaryTab4_V2() {
     $('.tabsGroup-1.secondaryTabContent#secondaryTabContent-4').show();
 
     $('.tabsGroup-1 .moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-4').addClass('secondaryTab-Selected');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-5').addClass('secondaryTab-Selected');
     $('.tabsGroup-1 .moj-sub-navigation__item a').removeAttr('aria-current');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-4 a').attr('aria-current','page');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-5 a').attr('aria-current','page');
 }
 
 function secondaryTab5_V2() {
@@ -1068,9 +1084,9 @@ function secondaryTab5_V2() {
     $('.tabsGroup-1.secondaryTabContent#secondaryTabContent-5').show();
 
     $('.tabsGroup-1 .moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-5').addClass('secondaryTab-Selected');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-6').addClass('secondaryTab-Selected');
     $('.tabsGroup-1 .moj-sub-navigation__item a').removeAttr('aria-current');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-5 a').attr('aria-current','page');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-6 a').attr('aria-current','page');
 }
 
 function secondaryTab6_V2() {
@@ -1078,9 +1094,9 @@ function secondaryTab6_V2() {
     $('.tabsGroup-1.secondaryTabContent#secondaryTabContent-6').show();
 
     $('.tabsGroup-1 .moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-6').addClass('secondaryTab-Selected');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-7').addClass('secondaryTab-Selected');
     $('.tabsGroup-1 .moj-sub-navigation__item a').removeAttr('aria-current');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-6 a').attr('aria-current','page');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-7 a').attr('aria-current','page');
 }
 
 function secondaryTab7_V2() {
@@ -1088,9 +1104,9 @@ function secondaryTab7_V2() {
     $('.tabsGroup-1.secondaryTabContent#secondaryTabContent-7').show();
 
     $('.tabsGroup-1 .moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-7').addClass('secondaryTab-Selected');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-8').addClass('secondaryTab-Selected');
     $('.tabsGroup-1 .moj-sub-navigation__item a').removeAttr('aria-current');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-7 a').attr('aria-current','page');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-8 a').attr('aria-current','page');
 }
 
 function secondaryTab8_V2() {
@@ -1098,9 +1114,9 @@ function secondaryTab8_V2() {
     $('.tabsGroup-1.secondaryTabContent#secondaryTabContent-8').show();
 
     $('.tabsGroup-1 .moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-8').addClass('secondaryTab-Selected');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-9').addClass('secondaryTab-Selected');
     $('.tabsGroup-1 .moj-sub-navigation__item a').removeAttr('aria-current');
-    $('.tabsGroup-1 .moj-sub-navigation__item#secondaryTab-8 a').attr('aria-current','page');
+    $('.tabsGroup-1 .moj-sub-navigation__item#secondarytab-9 a').attr('aria-current','page');
 }
 
 function secondaryTab4() {
@@ -1108,9 +1124,9 @@ function secondaryTab4() {
     $('.tabsGroup-2.secondaryTabContent#secondaryTabContent-4').show();
 
     $('.tabsGroup-2 .moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-    $('.tabsGroup-2 .moj-sub-navigation__item#secondaryTab-4').addClass('secondaryTab-Selected');
+    $('.tabsGroup-2 .moj-sub-navigation__item#secondarytab-5').addClass('secondaryTab-Selected');
     $('.tabsGroup-2 .moj-sub-navigation__item a').removeAttr('aria-current');
-    $('.tabsGroup-2 .moj-sub-navigation__item#secondaryTab-4 a').attr('aria-current','page');
+    $('.tabsGroup-2 .moj-sub-navigation__item#secondarytab-5 a').attr('aria-current','page');
 }
 
 function secondaryTab5() {
@@ -1118,9 +1134,9 @@ function secondaryTab5() {
     $('.tabsGroup-2.secondaryTabContent#secondaryTabContent-5').show();
 
     $('.tabsGroup-2 .moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-    $('.tabsGroup-2 .moj-sub-navigation__item#secondaryTab-5').addClass('secondaryTab-Selected');
+    $('.tabsGroup-2 .moj-sub-navigation__item#secondarytab-6').addClass('secondaryTab-Selected');
     $('.tabsGroup-2 .moj-sub-navigation__item a').removeAttr('aria-current');
-    $('.tabsGroup-2 .moj-sub-navigation__item#secondaryTab-5 a').attr('aria-current','page');
+    $('.tabsGroup-2 .moj-sub-navigation__item#secondarytab-6 a').attr('aria-current','page');
 }
 
 function secondaryTab6() {
@@ -1128,9 +1144,9 @@ function secondaryTab6() {
     $('.tabsGroup-2.secondaryTabContent#secondaryTabContent-6').show();
 
     $('.tabsGroup-2 .moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-    $('.tabsGroup-2 .moj-sub-navigation__item#secondaryTab-6').addClass('secondaryTab-Selected');
+    $('.tabsGroup-2 .moj-sub-navigation__item#secondarytab-7').addClass('secondaryTab-Selected');
     $('.tabsGroup-2 .moj-sub-navigation__item a').removeAttr('aria-current');
-    $('.tabsGroup-2 .moj-sub-navigation__item#secondaryTab-6 a').attr('aria-current','page');
+    $('.tabsGroup-2 .moj-sub-navigation__item#secondarytab-7 a').attr('aria-current','page');
 }
 
 function secondaryTab7() {
@@ -1138,9 +1154,9 @@ function secondaryTab7() {
     $('.tabsGroup-2.secondaryTabContent#secondaryTabContent-7').show();
 
     $('.tabsGroup-2 .moj-sub-navigation__item').removeClass('secondaryTab-Selected');
-    $('.tabsGroup-2 .moj-sub-navigation__item#secondaryTab-7').addClass('secondaryTab-Selected');
+    $('.tabsGroup-2 .moj-sub-navigation__item#secondarytab-8').addClass('secondaryTab-Selected');
     $('.tabsGroup-2 .moj-sub-navigation__item a').removeAttr('aria-current');
-    $('.tabsGroup-2 .moj-sub-navigation__item#secondaryTab-7 a').attr('aria-current','page');
+    $('.tabsGroup-2 .moj-sub-navigation__item#secondarytab-8 a').attr('aria-current','page');
 }
 
 
