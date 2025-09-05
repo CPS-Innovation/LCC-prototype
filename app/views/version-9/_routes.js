@@ -95,53 +95,8 @@ router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) 
     res.redirect('/version-9/B-off-system-MVP/create-case/03A-suspect-summary')
 })
 
-// router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) {
-//     update = req.session.data.updateDefault
-//     console.log("Update value 1st:", update)
-//     update = req.body['update']
-//     count  = req.session.data.suspectCount
-//     console.log("Update value:",update)
-//     console.log("Id value:", req.body['id'])
-//     console.log("Suspect count:",count) 
 
-//     // Check if this is an update
-//     if (update != "No") { 
-//         console.log("This is an update")
-//         req.session.data.suspectType[update] = req.body['suspect-type']
-
-//         if (req.body['suspect-type'] == 'Person') {
-//             req.session.data.suspectFirstName[update] = req.body['suspect-person-first-name']
-//             req.session.data.suspectLastName[update] = req.body['suspect-person-last-name']
-//             req.session.data.suspectDOB[update] = req.body['suspect-date-of-birth']
-//         }
-//         else {
-//             req.session.data.suspectCompanyName[update] = req.body['suspect-company-name']
-//         }
-        
-//         req.session.data.update = "No"
-//     }
-//     else {
-//         console.log("This is a new suspect")
-//         req.session.data.suspectType[count] = req.body['suspect-type']
-//         req.session.data.suspectId[count] = count
-
-//         if (req.body['suspect-type'] == 'Person') {
-//             req.session.data.suspectFirstName[count] = req.body['suspect-person-first-name']
-//             req.session.data.suspectLastName[count] = req.body['suspect-person-last-name']
-//             req.session.data.suspectDOB[count] = req.body['suspect-date-of-birth']
-//         }
-//         else {
-//             req.session.data.suspectCompanyName[count] = req.body['suspect-company-name']
-//         }
-        
-//         req.session.data.suspectCount = count + 1
-//     }
-    
-//     res.redirect('/version-9/B-off-system-MVP/create-case/03A-suspect-summary')
-// })
-
-
-router.post('/B-off-system-MVP/create-case/03A-suspect-summary', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function(req, res) {
     if (req.body['add-another'] === 'Yes') {
         res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect')
     }
@@ -152,8 +107,11 @@ router.post('/B-off-system-MVP/create-case/03A-suspect-summary', function(req, r
 
 router.post('/B-off-system-MVP/create-case/06-cps-staff', function(req, res) {
     console.log("User type:",req.session.data.userType)
+
+
+    // If user is LCC check if there are materials. If not, go to check your answers.
     if (req.session.data.userType === 'LCC') {
-        res.redirect('/version-9/B-off-system-MVP/create-case/07A-pre-existing-materials')
+        res.redirect('/version-9/B-off-system-MVP/create-case/07A-pre-existing-material')
     }
     else {
         res.redirect('/version-9/B-off-system-MVP/create-case/08-check-your-answers') 
@@ -161,36 +119,18 @@ router.post('/B-off-system-MVP/create-case/06-cps-staff', function(req, res) {
 })
 
 router.post('/B-off-system-MVP/create-case/07A-pre-existing-material', function(req, res) {
-    if (req.body['pre-existing-material'] === 'Yes') {
+    req.session.data.existingEgressFolder = req.body['existing-egress-folder']
+    req.session.data.existingDriveFolder = req.body['existing-drive-folder']
+    if (req.body['existing-egress-folder'] === 'Egress folder') {
         res.redirect('/version-9/B-off-system-MVP/04A-egress-files')
     }
+    else if (req.body['existing-drive-folder'] === 'Shared drive folder') {
+        res.redirect('/version-9/B-off-system-MVP/05A-p-drive-files') 
+    }
     else {
-        res.redirect('/version-9/B-off-system-MVP/create-case/08-check-your-answers') 
+        res.redirect('/version-9/B-off-system-MVP/03-case-overview') 
     }    
 })
-
-
-
-// // Version 3 routes
-//  router.post('/' + version + '/3-case-materials/change-category', function (req, res) {
-//     if(req.query.returnUrl) {
-//         res.redirect(req.query.returnUrl)
-//     } else {
-// 	    res.redirect('/' + version + '/3-case-materials/case-materials-recategorised')
-//     }
-// })
-
-// router.post('/3-case-materials/changeStatus', function (req, res) {
-//     res.redirect('/' + version + '/3-case-materials/D-case-materials-status')
-// })
-
-// router.post('/' + version + '/3-case-materials/case-materials', function (req, res) {
-//     if(req.query.returnUrl) {
-//         res.redirect(req.query.returnUrl)
-//     } else {
-//     res.redirect('/' + version + '/3-case-materials/case-materials-renamed')
-//     }
-// })
 
 
 module.exports = router

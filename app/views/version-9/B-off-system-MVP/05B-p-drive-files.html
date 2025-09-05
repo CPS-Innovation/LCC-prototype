@@ -18,11 +18,12 @@
         <div class="wrapper main-cotent">
 
 
-            {% if data['createCaseStarted'] == 'true' and data['newCase_ExistingSharedDrive_YesNo'] == 'Yes' %}
+            <!-- {% if data['createCaseStarted'] == 'true' and data['newCase_ExistingSharedDrive_YesNo'] == 'Yes' %}
                 <form method="post" action="" id="createCaseStarted_SD">  
             {% else %}
                 <form method="post" action="" id="confirm_prdive_transfer">  
-            {% endif %}
+            {% endif %} -->
+            <form method="post" action="create-case/08-check-answers" id="">
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset" aria-describedby="offCMS_Egress_files-hint">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl"><h1 class="govuk-fieldset__heading">Confirm folder link</h1></legend>

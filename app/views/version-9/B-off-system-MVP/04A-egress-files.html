@@ -17,9 +17,9 @@
     <div class="govuk-grid-column-two-thirds">
         <div class="wrapper main-cotent">
             {% if data['createCaseStarted'] == 'true' %}
-                <h2 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Link an Egress folder to the case</h2>
+                <h1 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Link an Egress folder to the case</h1>
             {% else %}
-                <h2 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Select an Egress folder to link to the case</h2>
+                <h1 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Select an Egress folder to link to the case</h1>
             {% endif %}
 
             <div class="govuk-inset-text">
@@ -31,8 +31,8 @@
                     <div class="govuk-form-group">
                         <label class="govuk-label govuk-label--s" for="searchOFF_EGRESS_VALUE">Search</label>
                         {% if data['createCaseStarted'] == 'true' %}
-                            {% if data['newCase_OperationName'] %}
-                                <input class="govuk-input govuk-!-width-one-half" id="searchOFF_EGRESS_VALUE" name="searchOFF_EGRESS_VALUE" type="text" value="{{ data['newCase_OperationName'] }}" />
+                            {% if data['operationName'] %}
+                                <input class="govuk-input govuk-!-width-one-half" id="searchOFF_EGRESS_VALUE" name="searchOFF_EGRESS_VALUE" type="text" value="{{ data['operationName'] }}" />
                             {% elseif data['newCase_DefendantName-Surname'] or data['newCase_DefendantName-Forename'] %}
                                 <input class="govuk-input govuk-!-width-one-half" id="searchOFF_EGRESS_VALUE" name="searchOFF_EGRESS_VALUE" type="text" value="{{ data['newCase_DefendantName-Surname'] }}, {{ data['newCase_DefendantName-Forename'] }}" />
                             {% elseif data['newCase_DefendantName-CompanyName'] %}
@@ -45,8 +45,8 @@
                     </div>
                     <p class="search_headline">
                         {% if data['createCaseStarted'] == 'true' %}
-                            {% if data['newCase_OperationName'] %}
-                                <span class="line_1">There are <strong>4 folders</strong> matching <strong>{{ data['newCase_OperationName'] }}</strong> on Egress.</span>
+                            {% if data['operationName'] %}
+                                <span class="line_1">There are <strong>4 folders</strong> matching <strong>{{ data['operationName'] }}</strong> on Egress.</span>
                             {% elseif data['newCase_DefendantName-Surname'] or data['newCase_DefendantName-Forename'] %}
                                 <span class="line_1">There are <strong>4 folders</strong> matching <strong><span class="uppercase">{{ data['newCase_DefendantName-Surname'] }}</span>, {{ data['newCase_DefendantName-Forename'] }}</strong> on Egress.</span>
                             {% elseif data['newCase_DefendantName-CompanyName'] %}
@@ -109,8 +109,8 @@
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">
                             {% if data['createCaseStarted'] == 'true' %}
-                                {% if data['newCase_OperationName'] %}
-                                    <strong class="operation_name">Captain {{ data['newCase_OperationName'] }}</strong>
+                                {% if data['operationName'] %}
+                                    <strong class="operation_name">Captain {{ data['operationName'] }}</strong>
                                 {% elseif data['newCase_DefendantName-Surname'] or data['newCase_DefendantName-Forename'] %}
                                     <strong class="operation_name">Captain <span class="uppercase">{{ data['newCase_DefendantName-Surname'] }}</span>, {{ data['newCase_DefendantName-Forename'] }}</strong>
                                 {% elseif data['newCase_DefendantName-CompanyName'] %}
@@ -137,8 +137,8 @@
                         <td class="govuk-table__cell">
                             <form method="post" action="04B-egress-files" id="">  
                                 {% if data['createCaseStarted'] == 'true' %}
-                                    {% if data['newCase_OperationName'] %}
-                                        <input id="egress_file_link_3" name="egress_file_link" type="text" value="Captain {{ data['newCase_OperationName'] }}" style="display: none;">
+                                    {% if data['operationName'] %}
+                                        <input id="egress_file_link_3" name="egress_file_link" type="text" value="Captain {{ data['operationName'] }}" style="display: none;">
                                     {% elseif data['newCase_DefendantName-Surname'] or data['newCase_DefendantName-Forename'] %}
                                         <input id="egress_file_link_3" name="egress_file_link" type="text" value="Captain {{ data['newCase_DefendantName-Surname'] }}, {{ data['newCase_DefendantName-Forename'] }}" style="display: none;">
                                     {% elseif data['newCase_DefendantName-CompanyName'] %}
@@ -335,8 +335,8 @@
                     <tr class="govuk-table__row"> 
                         <th scope="row" class="govuk-table__header">
                             {% if data['createCaseStarted'] == 'true' %}
-                                {% if data['newCase_OperationName'] %}
-                                    <strong class="operation_name">{{ data['newCase_OperationName'] }}</strong>
+                                {% if data['operationName'] %}
+                                    <strong class="operation_name">{{ data['operationName'] }}</strong>
                                 {% elseif data['newCase_DefendantName-Surname'] or data['newCase_DefendantName-Forename'] %}
                                     <strong class="operation_name"><span class="uppercase">{{ data['newCase_DefendantName-Surname'] }}</span>, {{ data['newCase_DefendantName-Forename'] }}</strong>
                                 {% elseif data['newCase_DefendantName-CompanyName'] %}
@@ -363,8 +363,8 @@
                         <td class="govuk-table__cell">
                             <form method="post" action="04B-egress-files" id="">  
                                 {% if data['createCaseStarted'] == 'true' %}
-                                    {% if data['newCase_OperationName'] %}
-                                        <input id="egress_file_link_3" name="egress_file_link" type="text" value="{{ data['newCase_OperationName'] }}" style="display: none;">
+                                    {% if data['operationName'] %}
+                                        <input id="egress_file_link_3" name="egress_file_link" type="text" value="{{ data['operationName'] }}" style="display: none;">
                                     {% elseif data['newCase_DefendantName-Surname'] or data['newCase_DefendantName-Forename'] %}
                                         <input id="egress_file_link_3" name="egress_file_link" type="text" value="{{ data['newCase_DefendantName-Surname'] }}, {{ data['newCase_DefendantName-Forename'] }}" style="display: none;">
                                     {% elseif data['newCase_DefendantName-CompanyName'] %}
@@ -391,8 +391,8 @@
                     <tr class="govuk-table__row"> 
                         <th scope="row" class="govuk-table__header">
                             {% if data['createCaseStarted'] == 'true' %}
-                                {% if data['newCase_OperationName'] %}
-                                    <strong class="operation_name">{{ data['newCase_OperationName'] }} Office</strong>
+                                {% if data['operationName'] %}
+                                    <strong class="operation_name">{{ data['operationName'] }} Office</strong>
                                 {% elseif data['newCase_DefendantName-Surname'] or data['newCase_DefendantName-Forename'] %}
                                     <strong class="operation_name"><span class="uppercase">{{ data['newCase_DefendantName-Surname'] }}</span>, {{ data['newCase_DefendantName-Forename'] }} Office</strong>
                                 {% elseif data['newCase_DefendantName-CompanyName'] %}
@@ -419,8 +419,8 @@
                         <td class="govuk-table__cell">
                             <form method="post" action="04B-egress-files" id=""> 
                                 {% if data['createCaseStarted'] == 'true' %}
-                                    {% if data['newCase_OperationName'] %}
-                                        <input id="egress_file_link_3" name="egress_file_link" type="text" value="{{ data['newCase_OperationName'] }} Office" style="display: none;">
+                                    {% if data['operationName'] %}
+                                        <input id="egress_file_link_3" name="egress_file_link" type="text" value="{{ data['operationName'] }} Office" style="display: none;">
                                     {% elseif data['newCase_DefendantName-Surname'] or data['newCase_DefendantName-Forename'] %}
                                         <input id="egress_file_link_3" name="egress_file_link" type="text" value="{{ data['newCase_DefendantName-Surname'] }}, {{ data['newCase_DefendantName-Forename'] }} Office" style="display: none;">
                                     {% elseif data['newCase_DefendantName-CompanyName'] %}
@@ -447,8 +447,8 @@
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">
                             {% if data['createCaseStarted'] == 'true' %}
-                                {% if data['newCase_OperationName'] %}
-                                    <strong class="operation_name">{{ data['newCase_OperationName'] }} Traffic</strong>
+                                {% if data['operationName'] %}
+                                    <strong class="operation_name">{{ data['operationName'] }} Traffic</strong>
                                 {% elseif data['newCase_DefendantName-Surname'] or data['newCase_DefendantName-Forename'] %}
                                     <strong class="operation_name"><span class="uppercase">{{ data['newCase_DefendantName-Surname'] }}</span>, {{ data['newCase_DefendantName-Forename'] }} Traffic</strong>
                                 {% elseif data['newCase_DefendantName-CompanyName'] %}
@@ -479,8 +479,8 @@
                         <td class="govuk-table__cell">
                             <form method="post" action="04B-egress-files" id="">  
                                 {% if data['createCaseStarted'] == 'true' %}
-                                    {% if data['newCase_OperationName'] %}
-                                        <input id="egress_file_link_3" name="egress_file_link" type="text" value="{{ data['newCase_OperationName'] }} Traffic" style="display: none;">
+                                    {% if data['operationName'] %}
+                                        <input id="egress_file_link_3" name="egress_file_link" type="text" value="{{ data['operationName'] }} Traffic" style="display: none;">
                                     {% elseif data['newCase_DefendantName-Surname'] or data['newCase_DefendantName-Forename'] %}
                                         <input id="egress_file_link_3" name="egress_file_link" type="text" value="{{ data['newCase_DefendantName-Surname'] }}, {{ data['newCase_DefendantName-Forename'] }} Traffic" style="display: none;">
                                     {% elseif data['newCase_DefendantName-CompanyName'] %}
