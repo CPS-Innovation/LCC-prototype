@@ -44,6 +44,7 @@ module.exports = {
   "userType": "LCC",
   "existingEgressFolder": "",
   "existingDriveFolder": ""
+
   
 
 }
