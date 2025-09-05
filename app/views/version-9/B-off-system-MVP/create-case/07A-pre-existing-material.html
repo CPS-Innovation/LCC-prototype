@@ -20,7 +20,7 @@
 
           <div class="govuk-form-group">
             <fieldset class="govuk-fieldset">
-              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
                 <h1 class="govuk-fieldset__heading">
                   Is there pre-existing material on the case?
                 </h1>
@@ -28,13 +28,42 @@
 
               <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="pre-existing-material-yes" name="pre-existing-material" type="radio" value="Yes">
+                  <input class="govuk-radios__input" id="pre-existing-material-yes" name="pre-existing-material" type="radio" value="Yes" data-aria-controls="conditional-contact" {% if data['pre-existing-material'] == 'Yes' %}checked{% endif %}>
                   <label class="govuk-label govuk-radios__label" for="pre-existing-material-yes">
                     Yes
                   </label>
                 </div>
+                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact">
+                  <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
+                      <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                        <label class="govuk-label" for="folders">
+                          What folders exist for this case?
+                        </label>
+                      </legend>
+                      <div class="govuk-hint">
+                        Select all that apply
+                      </div>
+                      <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                        <div class="govuk-checkboxes__item">
+                          <input class="govuk-checkboxes__input" id="existing-egress-folder" name="existing-egress-folder" type="checkbox" value="Egress folder" {% if data['existingDriveFolder'] == 'Egress folder' %}checked{% endif %}>
+                          <label class="govuk-label govuk-checkboxes__label" for="existing-egress-folder">
+                            Egress folder
+                          </label>
+                        </div>
+                        <div class="govuk-checkboxes__item">
+                          <input class="govuk-checkboxes__input" id="existing-drive-folder" name="existing-drive-folder" type="checkbox" value="Shared drive folder" {% if data['existingDriveFolder'] == 'Shared drive folder' %}checked{% endif %}>
+                          <label class="govuk-label govuk-checkboxes__label" for="existing-drive-folder">
+                            Shared drive folder
+                          </label>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>                
+                </div>
+
                 <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="pre-existing-material-no" name="pre-existing-material" type="radio" value="No">
+                  <input class="govuk-radios__input" id="pre-existing-material-no" name="pre-existing-material" type="radio" value="No" {% if data['pre-existing-material'] == 'No' %}checked{% endif %}>
                   <label class="govuk-label govuk-radios__label" for="pre-existing-material-no">
                     No
                   </label>
@@ -43,9 +72,8 @@
             </fieldset>
           </div>
 
-          <button type="submit" class="govuk-button" data-module="govuk-button">
-            Continue
-          </button>
+          <button type="submit" class="govuk-button">Continue</button>
+          <button type="button" onclick="location.href='../../../';" class="non-button margin-left" id="">Cancel</button>
         </form>
       </div>
     </div>

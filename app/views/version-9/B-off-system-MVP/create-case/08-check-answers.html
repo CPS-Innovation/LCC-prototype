@@ -1290,14 +1290,14 @@
             <!-- //////////////////////////////////////////////////// SECTION 6 - END //////////////////////////////////////////////////// -->
 
             <!-- //////////////////////////////////////////////////// SECTION 7 - START //////////////////////////////////////////////////// -->
-            <!-- <h2 class="govuk-heading-m">Material locations</h2>
-            <dl class="govuk-summary-list no_list govuk-!-margin-bottom-9"> -->
+            <h2 class="govuk-heading-m">Material locations</h2>
+            <dl class="govuk-summary-list no_list govuk-!-margin-bottom-9">
 
                 <!-- ITEM 1 - START -->
-                <!-- {% if data['newCase_ExistingEgress_YesNo'] == 'No' %}
+                {% if data['newCase_ExistingEgress_YesNo'] == 'No' %}
                     <div class="govuk-summary-list__row no_border">
                         <dt class="govuk-summary-list__key">Egress location</dt>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07-egress-shared-drive">Change<span class="govuk-visually-hidden"> Egress location</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07A-pre-existing-material">Change<span class="govuk-visually-hidden"> Egress location</span></a></dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dd class="govuk-summary-list__full_width"><span class="url-text small_text">https://cps.egresscloud.com/w/edit/66fd8bd1158de0c2ca41b172/</span></dd>
@@ -1305,19 +1305,19 @@
                 {% else %}
                     <div class="govuk-summary-list__row no_border">
                         <dt class="govuk-summary-list__key">Egress location</dt>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07-egress-shared-drive">Change<span class="govuk-visually-hidden"> Egress location</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07A-pre-existing-material">Change<span class="govuk-visually-hidden"> Egress location</span></a></dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dd class="govuk-summary-list__full_width"><span class="url-text small_text">https://cps.egresscloud.com/w/edit/66fd8bd1158de0c2ca41b172/</span></dd>
                     </div>
-                {% endif %}         -->
+                {% endif %}        
                 <!-- ITEM 1 - END -->
 
                 <!-- ITEM 2 - START -->
-                <!-- {% if data['newCase_ExistingSharedDrive_YesNo'] == 'No' %}
+                {% if data['newCase_ExistingSharedDrive_YesNo'] == 'No' %}
                     <div class="govuk-summary-list__row no_border">
                         <dt class="govuk-summary-list__key">Shared drive location</dt>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07-egress-shared-drive">Change<span class="govuk-visually-hidden"> Shared drive location</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07A-pre-existing-material">Change<span class="govuk-visually-hidden"> Shared drive location</span></a></dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dd class="govuk-summary-list__full_width"><span class="url-text small_text">\\ Public (P:) > RCTCaseData > SCCTD > CTD > Live Op > {{ data['newCase_OperationName'] }}</span></dd>
@@ -1325,12 +1325,12 @@
                 {% else %}
                     <div class="govuk-summary-list__row no_border">
                         <dt class="govuk-summary-list__key">Shared drive location</dt>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07-egress-shared-drive">Change<span class="govuk-visually-hidden"> Shared drive location</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07A-pre-existing-material">Change<span class="govuk-visually-hidden"> Shared drive location</span></a></dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dd class="govuk-summary-list__full_width"><span class="url-text small_text">\\ Public (P:) > RCTCaseData > SCCTD > CTD > Live Op > {{ data['newCase_OperationName'] }}</span></dd>
                     </div>
-                {% endif %}         -->
+                {% endif %}        
                 <!-- ITEM 2 - END -->
 
             </dl>

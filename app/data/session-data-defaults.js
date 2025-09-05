@@ -41,7 +41,9 @@ module.exports = {
   "localReference1": "",
   "localReference2": "",
   "updateDefault": "No",
-  "userType": "LCC"
+  "userType": "LCC",
+  "existingEgressFolder": "",
+  "existingDriveFolder": ""
   
 
 }
