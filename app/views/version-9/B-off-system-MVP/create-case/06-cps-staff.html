@@ -18,7 +18,7 @@
     <div class="govuk-grid-column-two-thirds">
         <div class="gov-pages">
 
-            <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-4">Add people working on the case</h1>
+            <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-4">Who is working on the case?</h1>
 
             <p class="govuk-hint govuk-!-margin-bottom-6">Adding this information is optional. You can continue without adding any details.</p>
 
@@ -29,7 +29,7 @@
                     <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                         <h2 class="govuk-fieldset__heading">
-                            Do you want to add people working on the case?
+                            Do you want to add a prosecutor or caseworker?
                         </h2>
                         </legend>
                         <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
@@ -49,7 +49,7 @@
                                 <div class="govuk-form-group">
                                     <fieldset class="govuk-fieldset" aria-describedby="newCase_Prosecutor-hint">
                                         <div class="govuk-form-group">
-                                            <label class="govuk-label" for="newCase_Prosecutor">Prosecutor</label>
+                                            <label class="govuk-label" for="newCase_Prosecutor">Prosecutor name</label>
                                             <input class="govuk-input govuk-input--width-20" id="docType-Prosecutor" name="newCase_Prosecutor" type="text" value="{{ data['newCase_Prosecutor'] }}">
                                         </div>
                                     </fieldset>
@@ -57,7 +57,7 @@
                                 <div class="govuk-form-group">
                                     <fieldset class="govuk-fieldset" aria-describedby="newCase_Caseworker-hint">
                                         <div class="govuk-form-group">
-                                            <label class="govuk-label" for="newCase_Caseworker">Caseworker</label>
+                                            <label class="govuk-label" for="newCase_Caseworker">Caseworker name</label>
                                             <input class="govuk-input govuk-input--width-20" id="docType-Caseworker" name="newCase_Caseworker" type="text" value="{{ data['newCase_Caseworker'] }}">
                                         </div>
                                     </fieldset>

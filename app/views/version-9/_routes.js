@@ -92,7 +92,7 @@ router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) 
     
     req.session.data.suspectCount = count + 1
     
-    res.redirect('/version-9/B-off-system-MVP/create-case/03A-suspect-summary')
+    res.redirect('/version-9/B-off-system-MVP/create-case/03B-suspect-summary')
 })
 
 
