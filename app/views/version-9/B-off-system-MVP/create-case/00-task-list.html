@@ -1,0 +1,162 @@
+{% extends "layoutCPS-OFF.html" %}
+{% block header %}
+    {% include "../../includes/banner-OFF-V7.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+
+
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Service name</h1>
+        <h2 class="govuk-heading-m">Check before you start</h2>
+        <ul class="govuk-task-list">
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="#" aria-describedby="before-you-start-1-status">
+                Check eligibility
+              </a>
+            </div>
+            <div class="govuk-task-list__status" id="before-you-start-1-status">
+              Completed
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="#" aria-describedby="before-you-start-2-status">
+                Read declaration
+              </a>
+            </div>
+            <div class="govuk-task-list__status" id="before-you-start-2-status">
+              <strong class="govuk-tag govuk-tag--blue">
+                Incomplete
+              </strong>
+            </div>
+          </li>
+        </ul>
+        <h2 class="govuk-heading-m govuk-!-margin-top-5">Prepare application</h2>
+        <ul class="govuk-task-list">
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="#" aria-describedby="prepare-application-1-status">
+                Company information
+              </a>
+            </div>
+            <div class="govuk-task-list__status" id="prepare-application-1-status">
+              Completed
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="#" aria-describedby="prepare-application-2-status">
+                Your contact details
+              </a>
+            </div>
+            <div class="govuk-task-list__status" id="prepare-application-2-status">
+              <strong class="govuk-tag govuk-tag--blue">
+                Incomplete
+              </strong>
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="#" aria-describedby="prepare-application-3-status">
+                List convictions
+              </a>
+            </div>
+            <div class="govuk-task-list__status" id="prepare-application-3-status">
+              Completed
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="#" aria-describedby="prepare-application-4-status">
+                Provide financial evidence
+              </a>
+            </div>
+            <div class="govuk-task-list__status" id="prepare-application-4-status">
+              <strong class="govuk-tag govuk-tag--blue">
+                Incomplete
+              </strong>
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="#" aria-describedby="prepare-application-5-status">
+                Give medical information
+              </a>
+            </div>
+            <div class="govuk-task-list__status" id="prepare-application-5-status">
+              <strong class="govuk-tag govuk-tag--blue">
+                Incomplete
+              </strong>
+            </div>
+          </li>
+        </ul>
+        <div class="govuk-button-group">
+          <button type="submit" class="govuk-button" data-module="govuk-button">
+            Apply
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+
+
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+<div class="govuk-grid-row" id="create-case-journey">
+
+    <div class="govuk-grid-column-two-thirds">
+        <div class="gov-pages">
+
+
+            <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-4" style="">Area details</h1>
+
+
+            <form method="post" action="/version-9/B-off-system-MVP/create-case/02-area" id="newCase_Form-A">  
+
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                    <h2 class="govuk-fieldset__heading">
+                        What is the division or area?
+                    </h2>
+                    </legend>
+
+
+                    <div class="govuk-form-group" id="newCase_Operation_AREA-Value">
+                        <!-- <label class="govuk-label" for="newCase_Operation_AREA">Select an area</label> -->
+                        <p id="newCase_Area-error" class="govuk-error-message govuk-!-margin-bottom-2"><span class="govuk-visually-hidden">Error:</span> Select an area</p>
+                        <input class="govuk-input govuk-input--width-20" id="docType-Area" name="docType-Area" type="text" value="{{ data['docType-Area'] }}">
+                    </div>
+                </fieldset>
+
+                <div class="moj-datepicker" data-module="moj-date-picker">
+
+                <button type="submit" class="govuk-button">Continue</button>
+                <button type="button" onclick="location.href='../../../';" class="non-button margin-left" id="">Cancel</button>
+
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}
