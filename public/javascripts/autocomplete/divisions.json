@@ -1,0 +1,16 @@
+{
+  "test1": {
+    "urn": ["84", "20982", "25"],
+    "localRef": ["AB", "123"],
+    "registeringUnit": "Unit A",
+    "witnessCare": "WCU A",
+    "crest": "Crest A"
+  },
+  "test2": {
+    "urn": ["85", "30495", "20"],
+    "localRef": ["CD", "456"],
+    "registeringUnit": "Unit B",
+    "witnessCare": "WCU B",
+    "crest": "Crest B"
+  }
+}

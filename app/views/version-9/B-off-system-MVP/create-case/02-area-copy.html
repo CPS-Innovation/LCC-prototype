@@ -18,7 +18,9 @@
 </head>
 <body>
   <label for="fruit">Choose a fruit:</label>
-  <input id="fruit" list="fruits" placeholder="Type to search…">
+
+  <input class="govuk-input govuk-input--width-20" id="fruit" list="fruits" placeholder="Type to search…">
+
   
   <!-- Autocomplete options -->
   <datalist id="fruits">
@@ -30,7 +32,9 @@
   </datalist>
 
   <div id="extra" class="extra-items">
-    <p>Extra details about your choice will appear here 🎉 {{data['validValues'][2]}}</p>
+
+    <p>Extra details about your choice will appear here 🎉 </p>
+
   </div>
 
   <script>
