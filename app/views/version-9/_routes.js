@@ -5,6 +5,7 @@ const version = 'version-9'
 // Add your routes here - above the module.exports line
 
 
+// Register a case - start of journey
 router.post('/B-off-system-MVP/create-case/01-register-case', function(req, res) {
     req.session.data.operationNameYesNo = req.body['operation-name-yes-no']
     req.session.data.suspectDetailsYesNo = req.body['suspect-details-yes-no']
@@ -30,7 +31,7 @@ router.post('/B-off-system-MVP/create-case/01-register-case', function(req, res)
     console.log("Court location:",req.session.data.courtLocation)
     console.log("Hearing date:",req.session.data.hearingDate)   
 
-    res.redirect('/version-9/B-off-system-MVP/create-case/02-area')
+    res.redirect('/version-9/B-off-system-MVP/create-case/02-case-details')
 })
 
 router.post('/B-off-system-MVP/create-case/02-area', function(req, res) {
@@ -39,9 +40,11 @@ router.post('/B-off-system-MVP/create-case/02-area', function(req, res) {
     res.redirect('/version-9/B-off-system-MVP/create-case/02A-case-details')
 })
 
-router.post('/B-off-system-MVP/create-case/02A-case-details', function(req, res) {
+// Case details page
+router.post('/B-off-system-MVP/create-case/02-case-details', function(req, res) {
     console.log("Case details page submitted")
 
+    req.session.data.area = req.body['docType-Area']
     req.session.data.localReference1 = req.body['local-reference-1']
     req.session.data.localReference2 = req.body['local-reference-2']
     console.log("Local reference 1:",req.session.data.localReference1)
@@ -51,7 +54,7 @@ router.post('/B-off-system-MVP/create-case/02A-case-details', function(req, res)
         res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect')
     }
     else {
-        res.redirect('/version-9/B-off-system-MVP/create-case/05-monitoring-codes') 
+        res.redirect('/version-9/B-off-system-MVP/create-case/05-complexity-weight') 
     }    
 })
 
@@ -101,8 +104,18 @@ router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function(req, r
         res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect')
     }
     else {
-        res.redirect('/version-9/B-off-system-MVP/create-case/05-monitoring-codes') 
+        res.redirect('/version-9/B-off-system-MVP/create-case/05-complexity-weight') 
     }    
+})
+
+router.post('/B-off-system-MVP/create-case/05-complexity-weight', function(req, res) {
+    req.session.data.caseComplexity = req.body['newCase_Complexity']
+    req.session.data.caseWeight = req.body['newCase_Weight']
+    res.redirect('/version-9/B-off-system-MVP/create-case/05A-monitoring-codes') 
+})
+
+router.post('/B-off-system-MVP/create-case/05A-monitoring-codes', function(req, res) {
+    res.redirect('/version-9/B-off-system-MVP/create-case/06-cps-staff') 
 })
 
 router.post('/B-off-system-MVP/create-case/06-cps-staff', function(req, res) {

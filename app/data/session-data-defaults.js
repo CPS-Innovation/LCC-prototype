@@ -43,7 +43,9 @@ module.exports = {
   "updateDefault": "No",
   "userType": "LCC",
   "existingEgressFolder": "",
-  "existingDriveFolder": ""
+  "existingDriveFolder": "",
+  "caseComplexity": "",
+  "caseWeight": ""
 
   
 
