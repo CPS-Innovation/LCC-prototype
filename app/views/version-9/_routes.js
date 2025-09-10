@@ -120,16 +120,52 @@ router.post('/B-off-system-MVP/create-case/05A-monitoring-codes', function(req, 
 
 router.post('/B-off-system-MVP/create-case/06-cps-staff', function(req, res) {
     console.log("User type:",req.session.data.userType)
+    req.session.data.prosecutorCaseworkerYesNo = req.body['prosecutor-caseworker-yes-no']
+    req.session.data.prosecutor = req.body['newCase_Prosecutor']
+    req.session.data.caseworker = req.body['newCase_Caseworker']
+    req.session.data.policeYesNo = req.body['police-yes-no']
+    req.session.data.policeRank = req.body['newCase_Police_Rank']
+    req.session.data.policeFirstName = req.body['newCase_Police_FirstName']
+    req.session.data.policeLastName = req.body['newCase_Police_LastName']
+    req.session.data.policeShoulderNumber = req.body['newCase_Police_Number']
+    req.session.data.policeUnit = req.body['newCase_Police_Unit']       
 
 
     // If user is LCC check if there are materials. If not, go to check your answers.
     if (req.session.data.userType === 'LCC') {
-        res.redirect('/version-9/B-off-system-MVP/create-case/07A-pre-existing-material')
+        res.redirect('/version-9/B-off-system-MVP/create-case/07-want-to-create-folders')
     }
     else {
         res.redirect('/version-9/B-off-system-MVP/create-case/08-check-your-answers') 
     }    
 })
+
+// Wanted folders
+router.post('/B-off-system-MVP/create-case/07-want-to-create-folders', function(req, res) {
+    req.session.data.wantedFolders = req.body['want-folders']
+    if (req.session.data.wantedFolders === 'Yes') {
+        req.session.data.wantedEgressFolder = req.body['wanted-egress-folder']
+        req.session.data.wantedDriveFolder = req.body['wanted-drive-folder']
+        if (req.session.data.wantedEgressFolder === 'Egress folder') {
+            res.redirect('/version-9/B-off-system-MVP/create-case/07A-create-egress-folder')
+        }
+        else if (req.session.data.wantedDriveFolder === 'Shared drive folder') {
+            res.redirect('/version-9/B-off-system-MVP/create-case/08-check-answers') 
+        }
+        else {
+            res.redirect('/version-9/B-off-system-MVP/create-case/08-check-answers') 
+        }
+    }
+    else {
+        res.redirect('/version-9/B-off-system-MVP/create-case/08-check-answers') 
+    }    
+})
+
+router.post('/B-off-system-MVP/create-case/07A-create-egress-folder', function(req, res) {
+    console.log("Egress folder created")
+    res.redirect('/version-9/B-off-system-MVP/create-case/08-check-answers') 
+})
+
 
 router.post('/B-off-system-MVP/create-case/07A-pre-existing-material', function(req, res) {
     req.session.data.existingEgressFolder = req.body['existing-egress-folder']
@@ -141,7 +177,7 @@ router.post('/B-off-system-MVP/create-case/07A-pre-existing-material', function(
         res.redirect('/version-9/B-off-system-MVP/05A-p-drive-files') 
     }
     else {
-        res.redirect('/version-9/B-off-system-MVP/03-case-overview') 
+        res.redirect('/version-9/B-off-system-MVP/create-case/08-check-your-answers') 
     }    
 })
 

@@ -23,7 +23,24 @@ module.exports = {
 
   "employer.name": "Assurance Aerospace Engineering",
   "employer.id": "RVRD8V",
+
+  // Register a case
+  "operationNameYesNo": "",
+  "operationName": "",
+  "firstHearingDetailsYesNo": "",
+  "courtLocation": "",
+  "firstHearingDate": "",
+  
+// Case details
+  "area": "",
+  "localReference1": "",
+  "localReference2": "",
+  "updateDefault": "No",
+  "userType": "LCC",
+  
+  // Suspects
   "suspectCount": 0,
+  "suspectDetailsYesNo": "",
   "suspectId": [],
   "suspectType": [],
   "suspectFirstName": [],
@@ -31,21 +48,26 @@ module.exports = {
   "suspectDOB": [],
   "suspectCompanyName": [],
 
-  "operationNameYesNo": "",
-  "operationName": "",
-  "suspectDetailsYesNo": "",
-  "firstHearingDetailsYesNo": "",
-  "courtLocation": "",
-  "hearingDate": "",
-  "area": "",
-  "localReference1": "",
-  "localReference2": "",
-  "updateDefault": "No",
-  "userType": "LCC",
-  "existingEgressFolder": "",
-  "existingDriveFolder": "",
+  // Case complexity and weight
   "caseComplexity": "",
-  "caseWeight": ""
+  "caseWeight": "",
+
+  // CPS and police staff
+  "prosecutorCaseworkerYesNo": "",
+  "prosecutor": "",
+  "caseworker": "",
+  "policeYesNo": "",
+  "policeRank": "",
+  "policeFirstName": "",
+  "policeLastName": "",
+  "policeShoulderNumber": "",
+  "policeUnit": "",
+
+  // Wanted folders
+  "wantedFolders": "",
+  "wantedEgressFolder": "",
+  "wantedDriveFolder": ""
+  
 
   
 
