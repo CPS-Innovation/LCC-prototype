@@ -9,7 +9,7 @@ const version = 'version-9'
 router.post('/B-off-system-MVP/create-case/01-register-case', function(req, res) {
     req.session.data.operationNameYesNo = req.body['operation-name-yes-no']
     req.session.data.suspectDetailsYesNo = req.body['suspect-details-yes-no']
-    req.session.data.hearingDetailsYesNo = req.body['first-hearing-details']
+    req.session.data.firstHearingDetailsYesNo = req.body['first-hearing-details']
 
     if (req.body['operation-name-yes-no'] === 'Yes') {
         req.session.data.operationName = req.body['operation-name']
@@ -22,12 +22,12 @@ router.post('/B-off-system-MVP/create-case/01-register-case', function(req, res)
 
     req.session.data.operationNameYesNo = req.body['operation-name-yes-no']
     req.session.data.suspectDetailsYesNo = req.body['suspect-details-yes-no']
-    req.session.data.hearingDetailsYesNo = req.body['first-hearing-details']
+    req.session.data.firstHearingDetailsYesNo = req.body['first-hearing-details']
 
     console.log("Operation name yes / no:",req.session.data.operationNameYesNo)
     console.log("Operation name:",req.session.data.operationName)
     console.log("Suspect details yes / no:",req.session.data.suspectDetailsYesNo)
-    console.log("Hearing details yes / no:",req.session.data.hearingDetailsYesNo)
+    console.log("Hearing details yes / no:",req.session.data.firstHearingDetailsYesNo)
     console.log("Court location:",req.session.data.courtLocation)
     console.log("Hearing date:",req.session.data.hearingDate)   
 

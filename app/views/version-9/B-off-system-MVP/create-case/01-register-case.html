@@ -19,10 +19,13 @@
     <div class="govuk-grid-column-two-thirds">
         <div class="gov-pages">
 
-            <!-- <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-4" style="">Add the case details</h1> -->
+            <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-4" style="">Register a case</h1>
 
-            <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-4">Register a case</h1>
-
+            <!-- <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl govuk-!-margin-top-4 govuk-!-margin-bottom-4">
+            <h1 class="govuk-fieldset__heading">
+                Register a case
+            </h1>
+            </legend> -->
 
             <form action="/version-9/B-off-system-MVP/create-case/01-register-case" method="post" novalidate>
 
@@ -33,17 +36,11 @@
                         Do you have an operation name?
                     </h2>
                     </legend>
-                    <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                    <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="operation-name-yes" name="operation-name-yes-no" type="radio" value="Yes" data-aria-controls="conditional-contact">
+                            <input class="govuk-radios__input" id="operation-name-yes" name="operation-name-yes-no" type="radio" value="Yes" data-aria-controls="conditional-contact" {% if data['operationNameYesNo'] === 'Yes' %}checked {% endif %}>
                             <label class="govuk-label govuk-radios__label" for="operation-name-yes">
                             Yes
-                            </label>
-                        </div>
-                        <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="operation-name-no" name="operation-name-yes-no" type="radio" value="No" data-aria-controls="conditional-contact-2">
-                            <label class="govuk-label govuk-radios__label" for="operation-name-no">
-                            No
                             </label>
                         </div>
                         <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact">
@@ -51,8 +48,14 @@
                             <label class="govuk-label" for="operation-name">
                                 Operation name
                             </label>
-                            <input class="govuk-input govuk-input--width-20" id="operation-name" name="operation-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['operationName'] }}">
+                            <input class="govuk-input govuk-input--width-20" id="operation-name" name="operation-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['operation-name'] }}">
                             </div>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="operation-name-no" name="operation-name-yes-no" type="radio" value="No" data-aria-controls="conditional-contact-2" {% if not data['operationNameYesNo'] === 'No' %}checked{% endif %}>
+                            <label class="govuk-label govuk-radios__label" for="operation-name-no">
+                            No
+                            </label>
                         </div>
                     </div>
                 </fieldset>
@@ -65,15 +68,15 @@
                         Do you have any suspect details?
                     </h2>
                     </legend>
-                    <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                    <div class="govuk-radios" data-module="govuk-radios">
                     <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="suspect-details-yes" name="suspect-details-yes-no" type="radio" value="Yes">
+                        <input class="govuk-radios__input" id="suspect-details-yes" name="suspect-details-yes-no" type="radio" value="Yes" {% if data['suspectDetailsYesNo'] === 'Yes' %}checked{% endif %}>
                         <label class="govuk-label govuk-radios__label" for="suspect-details-yes">
                         Yes
                         </label>
                     </div>
                     <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="suspect-details-no" name="suspect-details-yes-no" type="radio" value="No">
+                        <input class="govuk-radios__input" id="suspect-details-no" name="suspect-details-yes-no" type="radio" value="No" {% if not data['suspectDetailsYesNo'] === 'No' %}checked{% endif %}>
                         <label class="govuk-label govuk-radios__label" for="suspect-details-no">
                         No
                         </label>
@@ -89,18 +92,11 @@
                         Do you have details of the first hearing?
                     </h2>
                     </legend>
-                    <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                    <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="first-hearing-yes" name="first-hearing-details" type="radio" value="Yes" data-aria-controls="first-hearing-controls">
+                            <input class="govuk-radios__input" id="first-hearing-yes" name="first-hearing-details" type="radio" value="Yes" data-aria-controls="first-hearing-controls" {% if data['firstHearingDetailsYesNo'] === 'Yes' %}checked {% endif %}>
                             <label class="govuk-label govuk-radios__label" for="first-hearing-yes">
                             Yes
-                            </label>
-                        </div>
-                        
-                        <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="operation-name-no" name="first-hearing-details" type="radio" value="No" data-aria-controls="conditional-contact-2">
-                            <label class="govuk-label govuk-radios__label" for="operation-name-no">
-                                No
                             </label>
                         </div>
                         
@@ -109,7 +105,7 @@
                             <label class="govuk-label" for="court-location">
                                 Court location
                             </label>
-                            <input class="govuk-input govuk-!-width-one-third" id="docType-LCCCourt" name="court-location" type="text" spellcheck="false" autocomplete="text">
+                            <input class="govuk-input govuk-!-width-one-third" id="docType-LCCCourt" name="court-location" type="text" spellcheck="false" autocomplete="text" >
                             </div>
 
                             <div class="moj-datepicker" data-module="moj-date-picker">
@@ -134,9 +130,15 @@
                                     <img src="../../../../public/images/date_picker.png" alt="Date picker" class="create_case_date_picker">
                                 </div>
                             </div>                                
-
-
                         </div>
+
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="operation-name-no" name="first-hearing-details" type="radio" value="No" data-aria-controls="conditional-contact-2" {% if not data['firstHearingDetailsYesNo'] === 'No' %}checked{% endif %}>
+                            <label class="govuk-label govuk-radios__label" for="operation-name-no">
+                                No
+                            </label>
+                        </div>
+                        
                     </div>
                 </fieldset>
                 </div>
