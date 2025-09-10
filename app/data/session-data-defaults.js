@@ -48,6 +48,10 @@ module.exports = {
   "suspectDOB": [],
   "suspectCompanyName": [],
 
+
+  // Edit suspect
+  "editSuspect": 999,
+
   // Case complexity and weight
   "caseComplexity": "",
   "caseWeight": "",

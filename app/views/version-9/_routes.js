@@ -11,25 +11,21 @@ router.post('/B-off-system-MVP/create-case/01-register-case', function(req, res)
     req.session.data.suspectDetailsYesNo = req.body['suspect-details-yes-no']
     req.session.data.firstHearingDetailsYesNo = req.body['first-hearing-details']
 
-    if (req.body['operation-name-yes-no'] === 'Yes') {
+    if (req.session.data.operationNameYesNo === 'Yes') {
         req.session.data.operationName = req.body['operation-name']
     }
 
-    if (req.body['first-hearing-details'] === 'Yes') {
+    if (req.session.data.firstHearingDetailsYesNo === 'Yes') {
         req.session.data.courtLocation = req.body['court-location']
-        req.session.data.hearingDate = req.body['newCase_FirstHearing_Date']
+        req.session.data.firstHearingDate = req.body['newCase_FirstHearing_Date']
     }
-
-    req.session.data.operationNameYesNo = req.body['operation-name-yes-no']
-    req.session.data.suspectDetailsYesNo = req.body['suspect-details-yes-no']
-    req.session.data.firstHearingDetailsYesNo = req.body['first-hearing-details']
 
     console.log("Operation name yes / no:",req.session.data.operationNameYesNo)
     console.log("Operation name:",req.session.data.operationName)
     console.log("Suspect details yes / no:",req.session.data.suspectDetailsYesNo)
     console.log("Hearing details yes / no:",req.session.data.firstHearingDetailsYesNo)
     console.log("Court location:",req.session.data.courtLocation)
-    console.log("Hearing date:",req.session.data.hearingDate)   
+    console.log("Hearing date:",req.session.data.firstHearingDate)   
 
     res.redirect('/version-9/B-off-system-MVP/create-case/02-case-details')
 })
@@ -99,6 +95,12 @@ router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) 
 })
 
 
+router.post('/B-off-system-MVP/create-case/03-edit-suspect', function(req, res) {
+    req.session.data.editSuspect = req.body['idSuspect'] + 1
+    console.log("Edit suspect ID:",req.session.data.editSuspect)
+    res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect')
+})
+
 router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function(req, res) {
     if (req.body['add-another'] === 'Yes') {
         res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect')
@@ -110,7 +112,7 @@ router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function(req, r
 
 router.post('/B-off-system-MVP/create-case/05-complexity-weight', function(req, res) {
     req.session.data.caseComplexity = req.body['newCase_Complexity']
-    req.session.data.caseWeight = req.body['newCase_Weight']
+    req.session.data.caseWeight = req.body['newCase_CaseWeight']
     res.redirect('/version-9/B-off-system-MVP/create-case/05A-monitoring-codes') 
 })
 
