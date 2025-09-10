@@ -1156,29 +1156,21 @@
                 <!-- ITEM 1 - END -->
 
                 <!-- ITEM 2 - START -->
-                {% if data['newCase_CaseWeight_YesNo'] == 'No' %}
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Case weight</dt>
-                        <dd class="govuk-summary-list__value">None</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="05-complexity-weight">Change<span class="govuk-visually-hidden"> Case weight</span></a></dd>
-                    </div>
-                {% else %}
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Case weight</dt>
-                        {% if data['newCase_CaseWeight'] == 'N/A' %}
-                            <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--grey">{{ data['newCase_CaseWeight'] }}</strong></dd>
-                        {% elseif data['newCase_CaseWeight'] == 'Low' %}
-                            <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--light-blue">{{ data['newCase_CaseWeight'] }}</strong></dd>
-                        {% elseif data['newCase_CaseWeight'] == 'Medium' %}
-                            <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--yellow">{{ data['newCase_CaseWeight'] }}</strong></dd>
-                        {% elseif data['newCase_CaseWeight'] == 'High' %}
-                            <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--orange">{{ data['newCase_CaseWeight'] }}</strong></dd>
-                        {% elseif data['newCase_CaseWeight'] == 'Exceptional' %}
-                            <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--red">{{ data['newCase_CaseWeight'] }}</strong></dd>
-                        {% endif %}        
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="05-complexity-weight">Change<span class="govuk-visually-hidden"> Case weight</span></a></dd>
-                    </div>
-                {% endif %}        
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Case weight</dt>
+                    {% if data['caseWeight'] == 'N/A' %}
+                        <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--grey">{{ data['caseWeight'] }}</strong></dd>
+                    {% elseif data['caseWeight'] == 'Low' %}
+                        <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--light-blue">{{ data['caseWeight'] }}</strong></dd>
+                    {% elseif data['caseWeight'] == 'Medium' %}
+                        <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--yellow">{{ data['caseWeight'] }}</strong></dd>
+                    {% elseif data['caseWeight'] == 'High' %}
+                        <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--orange">{{ data['caseWeight'] }}</strong></dd>
+                    {% elseif data['caseWeight'] == 'Exceptional' %}
+                        <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--red">{{ data['caseWeight'] }}</strong></dd>
+                    {% endif %}        
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="05-complexity-weight">Change<span class="govuk-visually-hidden"> Case weight</span></a></dd>
+                </div>
                 <!-- ITEM 2 - END -->
 
                 <!-- ITEM 3 - START -->
@@ -1241,7 +1233,7 @@
                 <!-- ITEM 1 - START -->
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Prosecutor</dt>
-                    <dd class="govuk-summary-list__value">{{ data['newCase_Prosecutor'] }}</dd>
+                    <dd class="govuk-summary-list__value">{% if data['prosecutor'] %} {{data['prosecutor']}} {% else %} Not entered {% endif %}</dd>
                     <dd class="govuk-summary-list__actions"><a class="govuk-link" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Prosecutor</span></a></dd>
                 </div>
                 <!-- ITEM 1 - END -->
@@ -1249,38 +1241,38 @@
                 <!-- ITEM 2 - START -->
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Caseworker</dt>
-                    <dd class="govuk-summary-list__value">{{ data['newCase_Caseworker'] }}</dd>
+                    <dd class="govuk-summary-list__value">{% if data['caseworker'] %} {{ data['caseworker'] }} {% else %} Not entered {% endif %}</dd>
                     <dd class="govuk-summary-list__actions"><a class="govuk-link" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Caseworker</span></a></dd>
                 </div>
                 <!-- ITEM 2 - END -->
 
                 <!-- ITEM 3 - START -->
-                {% if data['newCase_Police_YesNo'] == 'Yes' %}
+                {% if data['policeYesNo'] == 'Yes' %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Police officer or investigator</dt>
-                        <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--blue">{{ data['newCase_Police_Rank'] }}</strong> - <span class="uppercase">{{ data['newCase_Police_LastName'] }}</span>, {{ data['newCase_Police_FirstName'] }}</dd>
+                        <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--blue">{{ data['policeRank'] }}</strong> - <span class="uppercase">{{ data['policeLastName'] }}</span>, {{ data['policeFirstName'] }}</dd>
                         <dd class="govuk-summary-list__actions"><a class="govuk-link" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Police officer or investigator</span></a></dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Shoulder number</dt>
-                        <dd class="govuk-summary-list__value">{{ data['newCase_Police_Number'] }}</dd>
+                        <dd class="govuk-summary-list__value">{{ data['policeShoulderNumber'] }}</dd>
                         <dd class="govuk-summary-list__actions"><a class="govuk-link" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Shoulder no.</span></a></dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Police unit</dt>
-                        <dd class="govuk-summary-list__value">{{ data['newCase_Police_Unit'] }}</dd>
+                        <dd class="govuk-summary-list__value">{{ data['policeUnit'] }}</dd>
                         <dd class="govuk-summary-list__actions"><a class="govuk-link" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Police unit</span></a></dd>
                     </div>
-                {% elseif data['newCase_Police_YesNo'] == 'No' %}
+                {% elseif data['policeYesNo'] == 'No' %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Police officer or investigator</dt>
-                        <dd class="govuk-summary-list__value">No</dd>
+                        <dd class="govuk-summary-list__value">Not entered</dd>
                         <dd class="govuk-summary-list__actions"><a class="govuk-link" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Police officer or investigator</span></a></dd>
                     </div>
                 {% else %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Police officer or investigator</dt>
-                        <dd class="govuk-summary-list__value">No</dd>
+                        <dd class="govuk-summary-list__value">Not entered</dd>
                         <dd class="govuk-summary-list__actions"><a class="govuk-link" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Police officer or investigator</span></a></dd>
                     </div>
                 {% endif %}        
@@ -1292,12 +1284,11 @@
             <!-- //////////////////////////////////////////////////// SECTION 7 - START //////////////////////////////////////////////////// -->
             <h2 class="govuk-heading-m">Material locations</h2>
             <dl class="govuk-summary-list no_list govuk-!-margin-bottom-9">
-
                 <!-- ITEM 1 - START -->
-                {% if data['newCase_ExistingEgress_YesNo'] == 'No' %}
+                {% if data['wantedEgressFolder'] == 'Egress folder' %}
                     <div class="govuk-summary-list__row no_border">
                         <dt class="govuk-summary-list__key">Egress location</dt>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07A-pre-existing-material">Change<span class="govuk-visually-hidden"> Egress location</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07-want-to-create-folders">Change<span class="govuk-visually-hidden"> Egress location</span></a></dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dd class="govuk-summary-list__full_width"><span class="url-text small_text">https://cps.egresscloud.com/w/edit/66fd8bd1158de0c2ca41b172/</span></dd>
@@ -1305,19 +1296,19 @@
                 {% else %}
                     <div class="govuk-summary-list__row no_border">
                         <dt class="govuk-summary-list__key">Egress location</dt>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07A-pre-existing-material">Change<span class="govuk-visually-hidden"> Egress location</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07-want-to-create-folders">Change<span class="govuk-visually-hidden"> Egress location</span></a></dd>
                     </div>
                     <div class="govuk-summary-list__row">
-                        <dd class="govuk-summary-list__full_width"><span class="url-text small_text">https://cps.egresscloud.com/w/edit/66fd8bd1158de0c2ca41b172/</span></dd>
+                        <dd class="govuk-summary-list__full_width"><span class="url-text small_text">Not created</span></dd>
                     </div>
                 {% endif %}        
                 <!-- ITEM 1 - END -->
 
                 <!-- ITEM 2 - START -->
-                {% if data['newCase_ExistingSharedDrive_YesNo'] == 'No' %}
+                {% if data['wantedDriveFolder'] == 'Shared drive folder' %}
                     <div class="govuk-summary-list__row no_border">
                         <dt class="govuk-summary-list__key">Shared drive location</dt>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07A-pre-existing-material">Change<span class="govuk-visually-hidden"> Shared drive location</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07-want-to-create-folders">Change<span class="govuk-visually-hidden"> Shared drive location</span></a></dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dd class="govuk-summary-list__full_width"><span class="url-text small_text">\\ Public (P:) > RCTCaseData > SCCTD > CTD > Live Op > {{ data['newCase_OperationName'] }}</span></dd>
@@ -1325,10 +1316,10 @@
                 {% else %}
                     <div class="govuk-summary-list__row no_border">
                         <dt class="govuk-summary-list__key">Shared drive location</dt>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07A-pre-existing-material">Change<span class="govuk-visually-hidden"> Shared drive location</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07-want-to-create-folders">Change<span class="govuk-visually-hidden"> Shared drive location</span></a></dd>
                     </div>
                     <div class="govuk-summary-list__row">
-                        <dd class="govuk-summary-list__full_width"><span class="url-text small_text">\\ Public (P:) > RCTCaseData > SCCTD > CTD > Live Op > {{ data['newCase_OperationName'] }}</span></dd>
+                        <dd class="govuk-summary-list__full_width"><span class="url-text small_text">Not created</span></dd>
                     </div>
                 {% endif %}        
                 <!-- ITEM 2 - END -->
