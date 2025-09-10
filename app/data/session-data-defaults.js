@@ -34,7 +34,7 @@ module.exports = {
   "operationNameYesNo": "",
   "operationName": "",
   "suspectDetailsYesNo": "",
-  "hearingDetailsYesNo": "",
+  "firstHearingDetailsYesNo": "",
   "courtLocation": "",
   "hearingDate": "",
   "area": "",
