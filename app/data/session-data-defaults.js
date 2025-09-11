@@ -70,7 +70,8 @@ module.exports = {
   // Wanted folders
   "wantedFolders": "",
   "wantedEgressFolder": "",
-  "wantedDriveFolder": ""
+  "wantedDriveFolder": "",
+  "egressTemplate": ""
   
 
   
