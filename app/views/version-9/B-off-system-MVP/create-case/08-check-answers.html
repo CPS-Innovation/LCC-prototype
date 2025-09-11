@@ -191,6 +191,7 @@
                     </dt>
                     <dd class="govuk-summary-list__actions hmrc-summary-list__actions"> -->
                     <!-- <ul class="govuk-summary-list__actions-list">
+
                         <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="03A-add-suspect.html?id={{data['suspectId'][id]}}"><span aria-hidden="true">Change</span><span class="govuk-visually-hidden">Change {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}'s details</span></a></li>
 
 
@@ -199,10 +200,12 @@
                 
                 {% else %}
                 <div class="govuk-summary-list__row">
+
                     <dt class="govuk-summary-list__key">Suspect {{ id +1 }}</dt>
                     <dd class="govuk-summary-list__value"><span class="icon-new company"></span> {{ data['suspectCompanyName'][id]}}</dd>
                     <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03A-add-suspect.html?id={{data['suspectId'][id]}}">Change<span class="govuk-visually-hidden"> {{ data['suspectCompanyName'][id]}}'s details</span></a></dd>
                 </div> 
+
 
                 {% endif %}
                 {% endfor %}
