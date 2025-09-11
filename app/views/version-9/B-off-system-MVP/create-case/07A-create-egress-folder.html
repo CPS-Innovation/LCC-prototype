@@ -22,12 +22,9 @@
             <fieldset class="govuk-fieldset" aria-describedby="signIn-hint">
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
                 <h1 class="govuk-fieldset__heading">
-                  What template do you want to use for the egress folder?
+                  Which Egress folder template do you want to use?
                 </h1>
               </legend>
-              <div id="signIn-hint" class="govuk-hint">
-                Phil, magic, etc., etc. [if needed, or I'll remove this]
-              </div>
               <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">
                   <input class="govuk-radios__input" id="egress-template-ccd" name="egress-template" type="radio" value="Central Casework Divisions" aria-describedby="egress template ccs" {% if data['egressTemplate'] == 'Central Casework Divisions' %} checked {% endif %}>

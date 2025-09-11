@@ -40,6 +40,18 @@
                         <p id="newCase_URN_Error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter a URN</p>
                         <p id="newCase_URN_Error_DUPLICATE" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> This URN already exists in CMS</p>
                         <div class="form-wrapper">
+                            <input class="govuk-input govuk-input--width-2" id="newCase_URN-A" name="newCase_URN-A" type="text" value="{{ data['newCase_URN-A'] }}">
+                            <input class="govuk-input govuk-input--width-2" id="newCase_URN-B" name="newCase_URN-B" type="text" value="{{ data['newCase_URN-B'] }}">
+                            <input class="govuk-input govuk-input--width-4" id="newCase_URN-C" name="newCase_URN-C" type="text" value="20982">
+                            <input class="govuk-input govuk-input--width-2" id="newCase_URN-D" name="newCase_URN-D" type="text" value="25">
+                        </div>
+
+                    </div>                                
+                    <!-- <div class="govuk-form-group" id="newCase_URN-Value">
+                        <label class="govuk-label" for="newCase_URN">What is the URN?</label>
+                        <p id="newCase_URN_Error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter a URN</p>
+                        <p id="newCase_URN_Error_DUPLICATE" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> This URN already exists in CMS</p>
+                        <div class="form-wrapper">
                             {% if data['newCase_URN-A'] %}
                                 <input class="govuk-input govuk-input--width-2" id="newCase_URN-A" name="newCase_URN-A" type="text" value="{{ data['newCase_URN-A'] }}">
                             {% else %}
@@ -63,7 +75,7 @@
                             {% endif %}        
                         </div>
 
-                    </div>                                
+                    </div>                                 -->
                     <!-- ITEM 1 - END -->
 
                     <!-- ITEM 2 - START -->

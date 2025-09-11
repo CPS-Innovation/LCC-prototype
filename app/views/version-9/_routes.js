@@ -123,6 +123,7 @@ router.post('/B-off-system-MVP/create-case/05A-monitoring-codes', function(req, 
     res.redirect('/version-9/B-off-system-MVP/create-case/06-cps-staff') 
 })
 
+// CPS and police staff
 router.post('/B-off-system-MVP/create-case/06-cps-staff', function(req, res) {
     console.log("User type:",req.session.data.userType)
     req.session.data.prosecutorCaseworkerYesNo = req.body['prosecutor-caseworker-yes-no']
@@ -145,7 +146,7 @@ router.post('/B-off-system-MVP/create-case/06-cps-staff', function(req, res) {
     }    
 })
 
-// Wanted folders
+// Materials
 router.post('/B-off-system-MVP/create-case/07-want-to-create-folders', function(req, res) {
     req.session.data.wantedFolders = req.body['want-folders']
     if (req.session.data.wantedFolders === 'Yes') {
@@ -171,21 +172,22 @@ router.post('/B-off-system-MVP/create-case/07A-create-egress-folder', function(r
     console.log("Egress folder created")
     res.redirect('/version-9/B-off-system-MVP/create-case/08-check-answers') 
 })
+// End of materials
 
 
-router.post('/B-off-system-MVP/create-case/07A-pre-existing-material', function(req, res) {
-    req.session.data.existingEgressFolder = req.body['existing-egress-folder']
-    req.session.data.existingDriveFolder = req.body['existing-drive-folder']
-    if (req.body['existing-egress-folder'] === 'Egress folder') {
-        res.redirect('/version-9/B-off-system-MVP/04A-egress-files')
-    }
-    else if (req.body['existing-drive-folder'] === 'Shared drive folder') {
-        res.redirect('/version-9/B-off-system-MVP/05A-p-drive-files') 
-    }
-    else {
-        res.redirect('/version-9/B-off-system-MVP/create-case/08-check-your-answers') 
-    }    
-})
+// router.post('/B-off-system-MVP/create-case/07A-pre-existing-material', function(req, res) {
+//     req.session.data.existingEgressFolder = req.body['existing-egress-folder']
+//     req.session.data.existingDriveFolder = req.body['existing-drive-folder']
+//     if (req.body['existing-egress-folder'] === 'Egress folder') {
+//         res.redirect('/version-9/B-off-system-MVP/04A-egress-files')
+//     }
+//     else if (req.body['existing-drive-folder'] === 'Shared drive folder') {
+//         res.redirect('/version-9/B-off-system-MVP/05A-p-drive-files') 
+//     }
+//     else {
+//         res.redirect('/version-9/B-off-system-MVP/create-case/08-check-your-answers') 
+//     }    
+// })
 
 
 module.exports = router
