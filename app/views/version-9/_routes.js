@@ -88,6 +88,12 @@ router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) 
 })
 
 
+router.post('/B-off-system-MVP/create-case/03-edit-suspect', function(req, res) {
+    req.session.data.editSuspect = req.body['idSuspect'] + 1
+    console.log("Edit suspect ID:",req.session.data.editSuspect)
+    res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect')
+})
+
 router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function(req, res) {
     if (req.body['add-another'] === 'Yes') {
         res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect')
