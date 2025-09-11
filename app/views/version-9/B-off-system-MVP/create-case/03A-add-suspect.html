@@ -21,7 +21,7 @@
           <div class="govuk-form-group">
             <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                <span class="govuk-caption-l">Suspect {{data['suspectCount'] + 1}}</span>
+                <!-- <span class="govuk-caption-l">Suspect {{data['suspectCount'] + 1}}</span> -->
                 <h1 class="govuk-fieldset__heading">
                   Add suspect {{data['suspectCount'] + 1}}
                 </h1>
@@ -31,7 +31,7 @@
               </div> -->
               <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="suspect-type-person" name="suspect-type" type="radio" value="Person" data-aria-controls="conditional-contact" {% if data['suspect-type'] == 'Person' %} checked {% endif %}>
+                  <input class="govuk-radios__input" id="suspect-type-person" name="suspect-type" type="radio" value="Person" data-aria-controls="conditional-contact">
                   <label class="govuk-label govuk-radios__label" for="suspect-type-person">
                     Person
                   </label>
@@ -108,7 +108,9 @@
 
 
                 <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="suspect-type-company" name="suspect-type" type="radio" value="Company" data-aria-controls="conditional-contact-2" {% if data['suspect-type'] == 'Person' %} checked {% endif %}>
+
+                  <input class="govuk-radios__input" id="suspect-type-company" name="suspect-type" type="radio" value="Company" data-aria-controls="conditional-contact-2">
+
 
                   <label class="govuk-label govuk-radios__label" for="suspect-type-company">
                     Company
