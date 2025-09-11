@@ -322,6 +322,7 @@
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Case weight</dt>
                     {% if data['caseWeight'] == 'Not applicable' %}
+
                         <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--grey">{{ data['caseWeight'] }}</strong></dd>
                     {% elseif data['caseWeight'] == 'Low' %}
                         <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--light-blue">{{ data['caseWeight'] }}</strong></dd>

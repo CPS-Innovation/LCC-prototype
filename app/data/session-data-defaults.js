@@ -48,6 +48,7 @@ module.exports = {
   "suspectDOB": [],
   "suspectCompanyName": [],
 
+
   // Edit suspect
   "editSuspect": 999,
 
