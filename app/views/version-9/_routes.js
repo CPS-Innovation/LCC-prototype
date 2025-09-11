@@ -65,15 +65,8 @@ router.post('/B-off-system-MVP/create-case/00-initial-checks', function(req, res
 })
 
 
-router.post('/B-off-system-MVP/create-case/03A-add-suspect-start', function(req, res) {
-    if (req.body['add-suspect'] === 'Yes') {
-        res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect')
-    }
-    else {
-        res.redirect('/version-9/B-off-system-MVP/create-case/03A-create-suspects') 
-    }    
-})
 
+// Suspects
 router.post('/B-off-system-MVP/create-case/03A-add-suspect', function(req, res) {
     count = req.session.data.suspectCount
     
@@ -109,6 +102,16 @@ router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function(req, r
         res.redirect('/version-9/B-off-system-MVP/create-case/05-complexity-weight') 
     }    
 })
+
+router.post('/B-off-system-MVP/create-case/03-edit-suspect', function(req, res) {
+    req.session.data.editSuspect = req.body['edit-suspect']
+    console.log("Edit suspect ID:",req.session.data.editSuspect)
+    res.redirect('/version-9/B-off-system-MVP/create-case/03A-add-suspect')
+})
+
+
+// End of suspects
+
 
 router.post('/B-off-system-MVP/create-case/05-complexity-weight', function(req, res) {
     req.session.data.caseComplexity = req.body['newCase_Complexity']
@@ -164,6 +167,7 @@ router.post('/B-off-system-MVP/create-case/07-want-to-create-folders', function(
 })
 
 router.post('/B-off-system-MVP/create-case/07A-create-egress-folder', function(req, res) {
+    req.session.data.egressTemplate = req.body['egress-template']
     console.log("Egress folder created")
     res.redirect('/version-9/B-off-system-MVP/create-case/08-check-answers') 
 })

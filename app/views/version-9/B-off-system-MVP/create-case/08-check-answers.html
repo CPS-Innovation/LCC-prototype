@@ -190,7 +190,8 @@
 
                     </dt>
                     <dd class="govuk-summary-list__actions hmrc-summary-list__actions"> -->
-                    <!-- <!-- <ul class="govuk-summary-list__actions-list">
+                    <!-- <ul class="govuk-summary-list__actions-list">
+
                         <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="03A-add-suspect.html?id={{data['suspectId'][id]}}"><span aria-hidden="true">Change</span><span class="govuk-visually-hidden">Change {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}'s details</span></a></li>
 
 
@@ -199,15 +200,12 @@
                 
                 {% else %}
                 <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
-                    <span class="icon-new company"></span> {{ data['suspectCompanyName'][id]}}
-                    </dt>
-                    <dd class="govuk-summary-list__actions hmrc-summary-list__actions">
-                    <ul class="govuk-summary-list__actions-list">
-                        <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="03A-add-suspect.html?id={{data['suspectId'][id]}}"><span aria-hidden="true">Change</span><span class="govuk-visually-hidden">Change {{ data['suspectCompanyName'][id]}}'s details</span></a></li>
-                    </ul>
-                    </dd>
-                </div> -->
+
+                    <dt class="govuk-summary-list__key">Suspect {{ id +1 }}</dt>
+                    <dd class="govuk-summary-list__value"><span class="icon-new company"></span> {{ data['suspectCompanyName'][id]}}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03A-add-suspect.html?id={{data['suspectId'][id]}}">Change<span class="govuk-visually-hidden"> {{ data['suspectCompanyName'][id]}}'s details</span></a></dd>
+                </div> 
+
 
                 {% endif %}
                 {% endfor %}
@@ -453,6 +451,15 @@
 
             <!-- //////////////////////////////////////////////////// SECTION 7 - START //////////////////////////////////////////////////// -->
             <h2 class="govuk-heading-m">Material locations</h2>
+            <dl class="govuk-summary-list">
+                <!-- ITEM 1 - START -->
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Egress template</dt>
+                    <dd class="govuk-summary-list__value">{{data['egressTemplate']}}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="07A-create-egress-folder">Change<span class="govuk-visually-hidden"> Egress template</span></a></dd>
+                </div>
+            </dl>
+
             <dl class="govuk-summary-list no_list govuk-!-margin-bottom-9">
                 <!-- ITEM 1 - START -->
                 {% if data['wantedEgressFolder'] == 'Egress folder' %}
