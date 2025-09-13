@@ -27,7 +27,7 @@
                 <!-- ITEM 1 - START -->
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Area</dt>
-                    <dd class="govuk-summary-list__value">{{ data['docType-Area'] }}</dd>
+                    <dd class="govuk-summary-list__value">{% if data['docType-Area'] %}{{ data['docType-Area'] }}{% else %} Not entered {% endif %}</dd>
                     <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-area">Change<span class="govuk-visually-hidden"> area</span></a></dd>
                 </div>
                 <!-- ITEM 1 - END -->
@@ -37,98 +37,63 @@
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">URN</dt>
                         <dd class="govuk-summary-list__value">842620982/25</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> URN</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> URN</span></a></dd>
                     </div>
                 {% else %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">URN</dt>
                         <dd class="govuk-summary-list__value">{{ data['newCase_URN-A'] }}{{ data['newCase_URN-B'] }}{{ data['newCase_URN-C'] }}/{{ data['newCase_URN-D'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> URN</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> URN</span></a></dd>
                     </div>
                 {% endif %}        
                 <!-- ITEM 2 - END -->
 
                 <!-- ITEM 3 - START -->
-                {% if data['local-reference-1'] %}
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Local Reference</dt>
-                        <dd class="govuk-summary-list__value">{{ data['local-reference-1'] }}-{{ data['local-reference-2'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02A-case-details">Change<span class="govuk-visually-hidden"> Local Ref</span></a></dd>
-                    </div>
-                {% else %}
-
-                {% endif %}        
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Local Reference</dt>
+                    <dd class="govuk-summary-list__value">{% if data['local-reference-1'] %}{{ data['local-reference-1'] }}-{{ data['local-reference-2'] }} {% else %} Not entered {% endif %}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02A-case-details">Change<span class="govuk-visually-hidden"> Local Ref</span></a></dd>
+                </div>
+     
                 <!-- ITEM 3 - END -->
 
-                <!-- ITEM 4 - START -->
-                <!-- {% if data['newCase_RegisteringArea'] %}
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Registering Area</dt>
-                        <dd class="govuk-summary-list__value">{{ data['newCase_RegisteringArea'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> Registering Area</span></a></dd>
-                    </div>
-                {% else %}
-
-                {% endif %}         -->
-                <!-- ITEM 4 - END -->
-
                 <!-- ITEM 5 - START -->
-                {% if data['newCase_RegisteringUnit'] %}
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Registering Unit</dt>
-                        <dd class="govuk-summary-list__value">{{ data['newCase_RegisteringUnit'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> Registering Unit</span></a></dd>
-                    </div>
-                {% else %}
-
-                {% endif %}        
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Registering Unit</dt>
+                    <dd class="govuk-summary-list__value">{% if data['newCase_RegisteringUnit'] %}{{ data['newCase_RegisteringUnit'] }}{% else %} Not entered {% endif %}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> Registering Unit</span></a></dd>
+                </div>
                 <!-- ITEM 5 - END -->
 
                 <!-- ITEM 6 - START -->
-                {% if data['newCase_WCU'] %}
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">WCU</dt>
-                        <dd class="govuk-summary-list__value">{{ data['newCase_WCU'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> WCU</span></a></dd>
-                    </div>
-                {% else %}
-
-                {% endif %}        
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">WCU</dt>
+                    <dd class="govuk-summary-list__value">{% if data['newCase_WCU'] %}{{ data['newCase_WCU'] }}{% else %} Not entered {% endif %}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> WCU</span></a></dd>
+                </div>
                 <!-- ITEM 6 - END -->
 
-                <!-- ITEM 7 - START -->
-                {% if data['newCase_Crest'] %}
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Crest</dt>
-                        <dd class="govuk-summary-list__value">{{ data['newCase_Crest'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-case-details">Change<span class="govuk-visually-hidden"> Crest</span></a></dd>
-                    </div>
-                {% else %}
-
-                {% endif %}        
+                <!-- ITEM 7 - START -->                
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Crest</dt>
+                    <dd class="govuk-summary-list__value">{% if data['newCase_Crest'] %}{{ data['newCase_Crest'] }}{% else %} Not entered {% endif %}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> Crest</span></a></dd>
+                </div>
                 <!-- ITEM 7 - END -->
 
-            </dl>
+            <!-- </dl> -->
             <!-- //////////////////////////////////////////////////// SECTION 1 - END //////////////////////////////////////////////////// -->
 
             <!-- //////////////////////////////////////////////////// SECTION 2 - START //////////////////////////////////////////////////// -->
-            <h2 class="govuk-heading-m">Case particulars</h2>
-            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+            <!-- <h2 class="govuk-heading-m">Case particulars</h2>
+            <dl class="govuk-summary-list govuk-!-margin-bottom-9"> -->
 
                 <!-- ITEM 1 - START -->
-                {% if data['operationNameYesNo'] == 'Yes' %}
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Operation name</dt>
-                        <dd class="govuk-summary-list__value">{{ data['operationName'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-register-case">Change<span class="govuk-visually-hidden"> Operation name</span></a></dd>
-                    </div>
-                {% else %}
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Operation name</dt>
-                        <dd class="govuk-summary-list__value">No</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-register-case">Change<span class="govuk-visually-hidden"> area</span></a></dd>
-                    </div>
-                {% endif %}        
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Operation name</dt>
+                <dd class="govuk-summary-list__value">{% if data['operationNameYesNo'] == 'Yes' %}{{ data['operationName'] }}{% else %} Not entered {% endif %}</dd>
+                <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-register-case">Change<span class="govuk-visually-hidden"> Operation name</span></a></dd>
+            </div>
                 <!-- ITEM 1 - END -->
 
                 <!-- ITEM 2 - START -->
@@ -154,7 +119,7 @@
                 {% else %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">First Hearing</dt>
-                        <dd class="govuk-summary-list__value">No</dd>
+                        <dd class="govuk-summary-list__value">Not entered</dd>
                         <dd class="govuk-summary-list__actions"><a class="govuk-link" href="01-register-case">Change<span class="govuk-visually-hidden"> First Hearing</span></a></dd>
                     </div>
                 {% endif %}        

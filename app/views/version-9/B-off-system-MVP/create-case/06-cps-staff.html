@@ -92,15 +92,16 @@
                                     <label class="govuk-label" for="newCase_Police_Rank">Rank (optional)</label>
                                     <select class="govuk-select" id="newCase_Police_Rank" name="newCase_Police_Rank">
                                         <option value="-- Select --" selected>-- Select --</option>
-                                        <option value="PC" {% if data['newCase_Police_Rank'] == 'PC' %} selected {% endif %}>PC</option>
-                                        <option value="DC" {% if data['newCase_Police_Rank'] == 'DC' %} selected {% endif %}>DC</option>
-                                        <option value="PS" {% if data['newCase_Police_Rank'] == 'PS' %} selected {% endif %}>PS</option>
-                                        <option value="DS" {% if data['newCase_Police_Rank'] == 'DS' %} selected {% endif %}>DS</option>
-                                        <option value="INS" {% if data['newCase_Police_Rank'] == 'INS' %} selected {% endif %}>INS</option>
-                                        <option value="DI" {% if data['newCase_Police_Rank'] == 'DI' %} selected {% endif %}>DI</option>
-                                        <option value="PCSO" {% if data['newCase_Police_Rank'] == 'PCSO' %} selected {% endif %}>PCSO</option>
-                                        <option value="CI" {% if data['newCase_Police_Rank'] == 'CI' %} selected {% endif %}>CI</option>
-                                        <option value="SC" {% if data['newCase_Police_Rank'] == 'SC' %} selected {% endif %}>SC</option>
+                                        <option value="Police Constable" {% if data['newCase_Police_Rank'] == 'Police Constable' %} selected {% endif %}>Police Constable</option>
+                                        <option value="Detective Constable" {% if data['newCase_Police_Rank'] == 'Detective Constable' %} selected {% endif %}>Detective Constable</option>
+                                        <option value="Police Sargeant" {% if data['newCase_Police_Rank'] == 'Police Sargeant' %} selected {% endif %}>Police Sargeant</option>
+                                        <option value="Detective Sargeant" {% if data['newCase_Police_Rank'] == 'Detective Sargeant' %} selected {% endif %}>Detective Sargeant</option>
+                                        <option value="Inspector" {% if data['newCase_Police_Rank'] == 'Inspector' %} selected {% endif %}>Inspector</option>
+                                        <option value="Detective Inspector" {% if data['newCase_Police_Rank'] == 'Detective Inspector' %} selected {% endif %}>Detective Inspector</option>
+                                        <option value="Police Community Support Officer" {% if data['newCase_Police_Rank'] == 'Police Community Support Officer' %} selected {% endif %}>Police Community Support Officer</option>
+                                        <option value="Chief Inspector" {% if data['newCase_Police_Rank'] == 'Chief Inspector' %} selected {% endif %}>Chief Inspector</option>
+                                        <option value="Special Constable" {% if data['newCase_Police_Rank'] == 'Special Constable' %} selected {% endif %}>Special Constable</option>
+
                                         <option value="None" {% if data['newCase_Police_Rank'] == 'None' %} selected {% endif %}>None</option>
                                     </select>
                                 </div>  
