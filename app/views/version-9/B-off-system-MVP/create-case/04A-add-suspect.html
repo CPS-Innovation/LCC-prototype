@@ -16,14 +16,18 @@
   <main class="govuk-main-wrapper " id="main-content" role="main">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-        <form action="/version-9/B-off-system-MVP/create-case/03A-add-suspect" method="post" novalidate>
+        {% if data['editSuspect'] == 999 %}
+          <form action="/version-9/B-off-system-MVP/create-case/04A-add-suspect" method="post" novalidate>
+        {% else %}
+          <form action="/version-9/B-off-system-MVP/create-case/04-edit-suspect" method="post" novalidate>
+        {% endif %}
 
           <div class="govuk-form-group">
             <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                <span class="govuk-caption-l">Suspect {% if data['editSuspect'] == 999 %} {{data['suspectCount'] + 1}} {% else %} {{data['editSuspect'] + 1}} {% endif %}</span>
+                <!-- <span class="govuk-caption-l">Suspect {% if data['editSuspect'] == 999 %} {{data['suspectCount'] + 1}} {% else %} {{data['editSuspect']}} {% endif %}</span> -->
                 <h1 class="govuk-fieldset__heading">
-                  Add suspect {% if data['editSuspect'] == 999 %} {{data['suspectCount'] + 1}} {% else %} {{data['editSuspect'] + 1}} {% endif %}
+                  Add suspect {% if data['editSuspect'] == 999 %} {{data['suspectCount'] + 1}} {% else %} {{data['displaySuspect']}} {% endif %}
                 </h1>
               </legend>
               <!-- <div id="contact-hint" class="govuk-hint">
@@ -31,7 +35,7 @@
               </div> -->
               <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="suspect-type-person" name="suspect-type" type="radio" value="Person" data-aria-controls="conditional-contact" {% if data['suspectType']['editSuspect'] == 'Person' %} checked {% endif %}>
+                  <input class="govuk-radios__input" id="suspect-type-person" name="suspect-type" type="radio" value="Person" data-aria-controls="conditional-contact" {% if data['suspectType'][data['editSuspect']] == 'Person' %} checked {% endif %}>
                   <label class="govuk-label govuk-radios__label" for="suspect-type-person">
                     Person
                   </label>
@@ -41,14 +45,14 @@
                     <label class="govuk-label" for="suspect-type-person-first-name">
                       First name
                     </label>
-                    <input class="govuk-input govuk-!-width-one-third" id="suspect-person-first-name" name="suspect-person-first-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['suspectFirstName'][data['id']]}}">
+                    <input class="govuk-input govuk-!-width-one-third" id="suspect-person-first-name" name="suspect-person-first-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['suspectFirstName'][data['editSuspect']]}}">
                   </div>
                   
                   <div class="govuk-form-group">
                     <label class="govuk-label" for="suspect-person-last-name">
                       Last name
                     </label>
-                    <input class="govuk-input govuk-!-width-one-third" id="suspect-person-last-name" name="suspect-person-last-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['suspectLastName'][data['id']]}}">
+                    <input class="govuk-input govuk-!-width-one-third" id="suspect-person-last-name" name="suspect-person-last-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['suspectLastName'][data['editSuspect']]}}">
                   </div>
 
                   <div class="moj-datepicker" data-module="moj-date-picker">
@@ -56,7 +60,7 @@
                           <label class="govuk-label" for="newCase_FirstHearing_Date">Date of birth</label>
                           <div id="newCase_FirstHearing_Date-hint" class="govuk-hint">For example, 17/5/2024.</div>
                           <div class="date_range_wrapper create_case">
-                              <input class="govuk-input moj-js-datepicker-input govuk-input--width-10" id="newCase_FirstHearing_Date" name="suspect-date-of-birth" type="text" aria-describedby="date-hint" autocomplete="off" value="{{ data['suspectDOB'][data['id']]}}">
+                              <input class="govuk-input moj-js-datepicker-input govuk-input--width-10" id="newCase_FirstHearing_Date" name="suspect-date-of-birth" type="text" aria-describedby="date-hint" autocomplete="off" value="{{ data['suspectDOB'][data['editSuspect']]}}">
                               <button class="moj-datepicker__toggle moj-js-datepicker-toggle" type="button" aria-haspopup="dialog" aria-controls="datepicker-date" aria-expanded="true">
                                   <span class="govuk-visually-hidden">Choose date</span>
                                   <svg width="32" height="24" focusable="false" class="moj-datepicker-icon" aria-hidden="true" role="img" viewBox="0 0 22 22">

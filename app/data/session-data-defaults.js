@@ -51,6 +51,7 @@ module.exports = {
 
   // Edit suspect
   "editSuspect": 999,
+  "displaySuspect": 999,
 
   // Case complexity and weight
   "caseComplexity": "",
