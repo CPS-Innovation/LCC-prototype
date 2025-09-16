@@ -57,7 +57,9 @@ router.post('/B-off-system-MVP/create-case/04A-add-suspect', function(req, res) 
     if (req.body['suspect-type'] == 'Person') {
         req.session.data.suspectFirstName[count] = req.body['suspect-person-first-name']
         req.session.data.suspectLastName[count] = req.body['suspect-person-last-name']
-        req.session.data.suspectDOB[count] = req.body['suspect-date-of-birth']
+        req.session.data.suspectDayBirth[count] = req.body['date-of-birth-day']
+        req.session.data.suspectMonthBirth[count] = req.body['date-of-birth-month']
+        req.session.data.suspectYearBirth[count] = req.body['date-of-birth-year'] 
     }
     else {
         req.session.data.suspectCompanyName[count] = req.body['suspect-company-name']
@@ -89,7 +91,10 @@ router.post('/B-off-system-MVP/create-case/04-edit-suspect', function(req, res) 
     if (req.body['suspect-type'] == 'Person') {
         req.session.data.suspectFirstName[editSuspect] = req.body['suspect-person-first-name']
         req.session.data.suspectLastName[editSuspect] = req.body['suspect-person-last-name']
-        req.session.data.suspectDOB[editSuspect] = req.body['suspect-date-of-birth']
+        // req.session.data.suspectDOB[editSuspect] = req.body['suspect-date-of-birth']
+        req.session.data.suspectDayBirth[editSuspect] = req.body['date-of-birth-day']
+        req.session.data.suspectMonthBirth[editSuspect] = req.body['date-of-birth-month']
+        req.session.data.suspectYearBirth[editSuspect] = req.body['date-of-birth-year'] 
     }
     else {
         req.session.data.suspectCompanyName[editSuspect] = req.body['suspect-company-name']

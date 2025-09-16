@@ -47,6 +47,9 @@ module.exports = {
   "suspectLastName": [],
   "suspectDOB": [],
   "suspectCompanyName": [],
+  "suspectDayBirth": [],
+  "suspectMonthBirth": [],
+  "suspectYearBirth": [], 
 
 
   // Edit suspect
