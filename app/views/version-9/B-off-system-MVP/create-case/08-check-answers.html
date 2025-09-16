@@ -37,13 +37,13 @@
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">URN</dt>
                         <dd class="govuk-summary-list__value">842620982/25</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> URN</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03-case-details">Change<span class="govuk-visually-hidden"> URN</span></a></dd>
                     </div>
                 {% else %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">URN</dt>
                         <dd class="govuk-summary-list__value">{{ data['newCase_URN-A'] }}{{ data['newCase_URN-B'] }}{{ data['newCase_URN-C'] }}/{{ data['newCase_URN-D'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> URN</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03-case-details">Change<span class="govuk-visually-hidden"> URN</span></a></dd>
                     </div>
                 {% endif %}        
                 <!-- ITEM 2 - END -->
@@ -61,7 +61,7 @@
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Registering Unit</dt>
                     <dd class="govuk-summary-list__value">{% if data['newCase_RegisteringUnit'] %}{{ data['newCase_RegisteringUnit'] }}{% else %} Not entered {% endif %}</dd>
-                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> Registering Unit</span></a></dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03-case-details">Change<span class="govuk-visually-hidden"> Registering Unit</span></a></dd>
                 </div>
                 <!-- ITEM 5 - END -->
 
@@ -69,7 +69,7 @@
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">WCU</dt>
                     <dd class="govuk-summary-list__value">{% if data['newCase_WCU'] %}{{ data['newCase_WCU'] }}{% else %} Not entered {% endif %}</dd>
-                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> WCU</span></a></dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03-case-details">Change<span class="govuk-visually-hidden"> WCU</span></a></dd>
                 </div>
                 <!-- ITEM 6 - END -->
 
@@ -77,7 +77,7 @@
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Crest</dt>
                     <dd class="govuk-summary-list__value">{% if data['newCase_Crest'] %}{{ data['newCase_Crest'] }}{% else %} Not entered {% endif %}</dd>
-                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02-case-details">Change<span class="govuk-visually-hidden"> Crest</span></a></dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03-case-details">Change<span class="govuk-visually-hidden"> Crest</span></a></dd>
                 </div>
                 <!-- ITEM 7 - END -->
 
@@ -145,7 +145,7 @@
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Suspect {{ id +1 }}</dt>
                         <dd class="govuk-summary-list__value"><span class="icon-new user"></span> <span class="uppercase">{{data['suspectLastName'][id]}}</span>, {{data['suspectFirstName'][id]}} <span class="govuk-body">| born {{data['suspectDOB'][id]}}</span></dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03A-add-suspect.html?id={{data['suspectId'][id]}}">Change<span class="govuk-visually-hidden"> {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}'s details</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="04A-add-suspect.html?id={{data['suspectId'][id]}}">Change<span class="govuk-visually-hidden"> {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}'s details</span></a></dd>
                     </div>
 
                 <!-- <div class="govuk-summary-list__row">
@@ -157,7 +157,7 @@
                     <dd class="govuk-summary-list__actions hmrc-summary-list__actions"> -->
                     <!-- <ul class="govuk-summary-list__actions-list">
 
-                        <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="03A-add-suspect.html?id={{data['suspectId'][id]}}"><span aria-hidden="true">Change</span><span class="govuk-visually-hidden">Change {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}'s details</span></a></li>
+                        <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="04A-add-suspect.html?id={{data['suspectId'][id]}}"><span aria-hidden="true">Change</span><span class="govuk-visually-hidden">Change {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}'s details</span></a></li>
 
 
                     </ul> -->
@@ -168,7 +168,7 @@
 
                     <dt class="govuk-summary-list__key">Suspect {{ id +1 }}</dt>
                     <dd class="govuk-summary-list__value"><span class="icon-new company"></span> {{ data['suspectCompanyName'][id]}}</dd>
-                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03A-add-suspect.html?id={{data['suspectId'][id]}}">Change<span class="govuk-visually-hidden"> {{ data['suspectCompanyName'][id]}}'s details</span></a></dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link" href="04A-add-suspect.html?id={{data['suspectId'][id]}}">Change<span class="govuk-visually-hidden"> {{ data['suspectCompanyName'][id]}}'s details</span></a></dd>
                 </div> 
 
 
@@ -470,7 +470,7 @@
             <!-- //////////////////////////////////////////////////// SECTION 7 - END //////////////////////////////////////////////////// -->
 
 
-            <form method="get" action="../03-case-overview.html" id="newCase_Form-H">  
+            <form method="get" action="09-confirmation.html" id="newCase_Form-H">  
 
             <!-- <form method="get" action="../03-case-overview" id="newCase_Form-H">   -->
                 <input id="createCase_H_Complete" name="createCase_H_Complete" type="text" value="true" style="display: none;">
