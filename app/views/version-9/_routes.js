@@ -123,15 +123,15 @@ router.post('/B-off-system-MVP/create-case/04-edit-suspect-router', function(req
 router.post('/B-off-system-MVP/create-case/05-complexity-weight', function(req, res) {
     req.session.data.caseComplexity = req.body['newCase_Complexity']
     req.session.data.caseWeight = req.body['newCase_CaseWeight']
-    res.redirect('/version-9/B-off-system-MVP/create-case/05A-monitoring-codes') 
+    res.redirect('/version-9/B-off-system-MVP/create-case/06-monitoring-codes') 
 })
 
-router.post('/B-off-system-MVP/create-case/05A-monitoring-codes', function(req, res) {
-    res.redirect('/version-9/B-off-system-MVP/create-case/06-cps-staff') 
+router.post('/B-off-system-MVP/create-case/06-monitoring-codes', function(req, res) {
+    res.redirect('/version-9/B-off-system-MVP/create-case/07-cps-staff') 
 })
 
 // CPS and police staff
-router.post('/B-off-system-MVP/create-case/06-cps-staff', function(req, res) {
+router.post('/B-off-system-MVP/create-case/07-cps-staff', function(req, res) {
     console.log("User type:",req.session.data.userType)
     req.session.data.prosecutorCaseworkerYesNo = req.body['prosecutor-caseworker-yes-no']
     req.session.data.prosecutor = req.body['newCase_Prosecutor']
@@ -157,13 +157,24 @@ router.post('/B-off-system-MVP/create-case/06-cps-staff', function(req, res) {
 })
 
 // Materials
-router.post('/B-off-system-MVP/create-case/07-want-to-create-folders', function(req, res) {
-    req.session.data.wantedFolders = req.body['want-folders']
-    if (req.session.data.wantedFolders === 'Yes') {
-        req.session.data.wantedEgressFolder = req.body['wanted-egress-folder']
-        req.session.data.wantedDriveFolder = req.body['wanted-drive-folder']
-        if (req.session.data.wantedEgressFolder === 'Egress folder') {
-            res.redirect('/version-9/B-off-system-MVP/create-case/07A-create-egress-folder')
+router.post('/B-off-system-MVP/create-case/09-confirmation', function(req, res) {
+    req.session.data.addMaterials = req.body['add-materials']
+    if (req.session.data.addMaterials === 'Yes') {
+        res.redirect('/version-9/B-off-system-MVP/04A-create-or-link-folders')
+    }
+    else {
+        res.redirect('/version-9/B-off-system-MVP/03-case-overview') 
+    }    
+})
+
+
+router.post('/B-off-system-MVP/04A-create-or-link-folders', function(req, res) {
+    req.session.data.foldersAction = req.body['folders']
+    if (req.session.data.foldersAction === 'Create folders') {
+        req.session.data.newEgressFolder = req.body['new-egress-folder']
+        req.session.data.newDriveFolder = req.body['new-drive-folder']
+        if (req.session.data.newEgressFolder === 'Egress folder') {
+            res.redirect('/version-9/B-off-system-MVP/04A-create-egress-folder')
         }
         else if (req.session.data.wantedDriveFolder === 'Shared drive folder') {
             res.redirect('/version-9/B-off-system-MVP/create-case/08-check-answers') 
@@ -173,14 +184,20 @@ router.post('/B-off-system-MVP/create-case/07-want-to-create-folders', function(
         }
     }
     else {
-        res.redirect('/version-9/B-off-system-MVP/create-case/08-check-answers') 
-    }    
+        req.session.data.existingEgressFolder = req.body['linked-egress-folder']
+        req.session.data.existingDriveFolder = req.body['linked-drive-folder']
+        if (req.body['linked-egress-folder'] === 'Egress folder') {
+            res.redirect('/version-9/B-off-system-MVP/04A-egress-files')
+        }
+        else if (req.body['linked-drive-folder'] === 'Shared drive folder') {
+            res.redirect('/version-9/B-off-system-MVP/05A-p-drive-files') 
+        }    
+    }
 })
 
-router.post('/B-off-system-MVP/create-case/07A-create-egress-folder', function(req, res) {
+router.post('/B-off-system-MVP/04A-create-egress-folder', function(req, res) {
     req.session.data.egressTemplate = req.body['egress-template']
-    console.log("Egress folder created")
-    res.redirect('/version-9/B-off-system-MVP/create-case/08-check-answers') 
+    res.redirect('/version-9/B-off-system-MVP/03-case-overview') 
 })
 // End of materials
 

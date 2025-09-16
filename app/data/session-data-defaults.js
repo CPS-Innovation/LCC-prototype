@@ -72,6 +72,7 @@ module.exports = {
   "wantedFolders": "",
   "wantedEgressFolder": "",
   "wantedDriveFolder": "",
-  "egressTemplate": ""
+  "egressTemplate": "",
+  "addMaterials": ""
   
 }
