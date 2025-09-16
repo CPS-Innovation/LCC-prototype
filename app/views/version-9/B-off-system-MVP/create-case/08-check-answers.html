@@ -144,7 +144,9 @@
                     {% if (data['suspectType'][id] == 'Person') %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Suspect {{ id +1 }}</dt>
+
                         <dd class="govuk-summary-list__value"><span class="icon-new user"></span> <span class="uppercase">{{data['suspectLastName'][id]}}</span>, {{data['suspectFirstName'][id]}} <span class="govuk-body">| born {{data['suspectDayBirth'][id]}} {{data['monthName'][data['suspectMonthBirth'][id]]}} {{data['suspectYearBirth'][id]}}</span></dd>
+
                         <dd class="govuk-summary-list__actions"><a class="govuk-link" href="04A-add-suspect.html?id={{data['suspectId'][id]}}">Change<span class="govuk-visually-hidden"> {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}'s details</span></a></dd>
                     </div>
 
