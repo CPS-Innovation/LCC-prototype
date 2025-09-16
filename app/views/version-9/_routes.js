@@ -143,7 +143,9 @@ router.post('/B-off-system-MVP/create-case/06-cps-staff', function(req, res) {
     req.session.data.policeShoulderNumber = req.body['newCase_Police_Number']
     req.session.data.policeUnit = req.body['newCase_Police_Unit']       
 
-    res.redirect('/version-9/B-off-system-MVP/create-case/08-check-your-answers')
+
+    res.redirect('/version-9/B-off-system-MVP/create-case/08-check-answers')
+
 
     // If user is LCC check if there are materials. If not, go to check your answers.
     // if (req.session.data.userType === 'LCC') {
