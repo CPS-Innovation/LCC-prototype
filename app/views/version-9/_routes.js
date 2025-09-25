@@ -58,7 +58,7 @@ router.post('/B-off-system-MVP/create-case/04A-add-suspect', function(req, res) 
         req.session.data.suspectFirstName[count] = req.body['suspect-person-first-name']
         req.session.data.suspectLastName[count] = req.body['suspect-person-last-name']
         req.session.data.suspectDayBirth[count] = req.body['date-of-birth-day']
-        req.session.data.suspectMonthBirth[count] = req.body['date-of-birth-month']
+        req.session.data.suspectMonthBirth[count] = Number(req.body['date-of-birth-month'])
         req.session.data.suspectYearBirth[count] = req.body['date-of-birth-year'] 
     }
     else {
@@ -88,16 +88,18 @@ router.post('/B-off-system-MVP/create-case/04-edit-suspect', function(req, res) 
     console.log("Edit suspect ID:",req.session.data.editSuspect)
     console.log("Display suspect ID:",req.session.data.displaySuspect)
 
+    var x = Number(req.session.data.editSuspect)
+
     if (req.body['suspect-type'] == 'Person') {
-        req.session.data.suspectFirstName[editSuspect] = req.body['suspect-person-first-name']
-        req.session.data.suspectLastName[editSuspect] = req.body['suspect-person-last-name']
-        // req.session.data.suspectDOB[editSuspect] = req.body['suspect-date-of-birth']
-        req.session.data.suspectDayBirth[editSuspect] = req.body['date-of-birth-day']
-        req.session.data.suspectMonthBirth[editSuspect] = req.body['date-of-birth-month']
-        req.session.data.suspectYearBirth[editSuspect] = req.body['date-of-birth-year'] 
+        req.session.data.suspectFirstName[x] = req.body['suspect-person-first-name']
+        req.session.data.suspectLastName[x] = req.body['suspect-person-last-name']
+        // req.session.data.suspectDOB[x] = req.body['suspect-date-of-birth']
+        req.session.data.suspectDayBirth[x] = req.body['date-of-birth-day']
+        req.session.data.suspectMonthBirth[x] = Number(req.body['date-of-birth-month'])
+        req.session.data.suspectYearBirth[x] = req.body['date-of-birth-year'] 
     }
     else {
-        req.session.data.suspectCompanyName[editSuspect] = req.body['suspect-company-name']
+        req.session.data.suspectCompanyName[x] = req.body['suspect-company-name']
     }
 
     req.session.data.displaySuspect = 999
