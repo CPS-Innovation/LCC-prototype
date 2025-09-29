@@ -88,6 +88,25 @@ module.exports = {
 
 
 
+  "monthName": [
+    "",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+],
+
+
+
+
   // Edit suspect
   "editSuspect": 999,
   "displaySuspect": 999,
