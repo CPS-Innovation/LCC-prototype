@@ -7,6 +7,20 @@
 {% endblock %}
 {% block content %}
 
+<style>
+/* Force this summary-list row's value cell to span both columns */
+.govuk-summary-list__row.hmrc-summary-list__row--full > .govuk-summary-list__value {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+/* Ensure the details inner element also uses full available width */
+.govuk-summary-list__row.hmrc-summary-list__row--full .govuk-details {
+  width: 100%;
+  box-sizing: border-box;
+}
+</style>
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
         <a href="javascript:history.back()" class="govuk-back-link">Back</a>
@@ -28,9 +42,10 @@
                 <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
 
 
-                  <span class="icon-new user"></span> <span class="uppercase">{{data['suspectLastName'][id]}}</span>, {{data['suspectFirstName'][id]}} <span class="govuk-body">{% if data['suspectDayBirth'][id] %}| born {{data['suspectDayBirth'][id]}} {{data['monthName'][data['suspectMonthBirth'][id]]}} {{data['suspectYearBirth'][id]}} {% endif %}</span>
+                  <span class="icon-new user"></span> <span class="uppercase">{{data['suspectLastName'][id]}}</span>, {{data['suspectFirstName'][id]}}</span>
 
-                  <details class="govuk-details suspect_details_panel govuk-!-margin-bottom-1">
+                  <!-- Suspect details -->
+                  <details class="govuk-details suspect_details_panel govuk-!-margin-bottom-1">  
                     <summary class="govuk-details__summary">
                       <span class="govuk-details__summary-text">
                         Details and charges
@@ -67,38 +82,72 @@
                           <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd>
                           </dd>
                       </div>
+                      <div class="govuk-summary-list__row">
+                          <dt class="govuk-summary-list__key">Serious Dangerous Offender (SDO)</dt>
+                          <dd class="govuk-summary-list__value">{% if data['suspectSDO'][id] %}{{ data['suspectSDO'][id] }}{% else %} Not entered {% endif %}</dd>
+                          <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> serious dangerous offender</span></a></dd>
+                          </dd>
+                      </div>
+                      <div class="govuk-summary-list__row">
+                          <dt class="govuk-summary-list__key">Arrest summons</dt>
+                          <dd class="govuk-summary-list__value">{% if data['suspectArrestSummons'][id] %}{{ data['suspectArrestSummons'][id] }}{% else %} Not entered {% endif %}</dd>
+                          <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd>
+                          </dd>
+                      </div>
+                      <div class="govuk-summary-list__row">
+                          <dt class="govuk-summary-list__key">Type of offender</dt>
+                          <dd class="govuk-summary-list__value">{% if data['suspectOffenderType'][id] %}{{ data['suspectOffenderType'][id] }}{% else %} Not entered {% endif %}</dd>
+                          <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd>
+                          </dd>
+                      </div>
+                      {% if data['suspectId'][id] != 0 %}
+                      <div class="govuk-summary-list__row">
+                          <dt class="govuk-summary-list__key">Alias details</dt>
+                          <dd class="govuk-summary-list__value">Not entered</dd>
+                          <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> alias details</span></a></dd>
+                          </dd>
+                      </div>
+                      {% else %}
+                        {% for id in data['aliasId'] %}            
+                          <div class="govuk-summary-list__row">
+                              <dt class="govuk-summary-list__key">Alias {{ id +1 }}</dt>
+
+                              <dd class="govuk-summary-list__value"><span class="icon-new user"></span> <span class="uppercase">{{data['aliasLastName'][id]}}</span>, {{data['aliasFirstName'][id]}}</dd>
+
+                              <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03-suspect-details-add-alias.html?id={{data['aliasId'][id]}}">Change<span class="govuk-visually-hidden"> alias details</span></a></dd>
+                          </div>
+                        {% endfor %}
+
+                      {% endif %}
+
+
+
                     </div>
-                  </details>
-            
-
-
+                  </details>         
+                  <!-- End suspect details -->
 
                 </dt>
                 <dd class="govuk-summary-list__actions hmrc-summary-list__actions">
                   <ul class="govuk-summary-list__actions-list">
                     <li class="govuk-summary-list__actions-list-item">
-                      <form action="/version-9/B-off-system-MVP/create-case/04-edit-suspect-router" method="post" novalidate>
+                      <form action="/version-9/B-off-system-MVP/create-case/03-edit-suspect-router" method="post" novalidate>
                         <input type="hidden" name="edit-suspect" value="{{ id }}">
                         <button class="govuk-link suspect" type="submit">Edit</button>
                       </form>
                     </li>
-                    <li class="govuk-summary-list__actions-list-item">
-                      <form action="/version-9/B-off-system-MVP/create-case/04-add-charges" method="post" novalidate>
+                    <!-- <li class="govuk-summary-list__actions-list-item">
+                      <form action="/version-9/B-off-system-MVP/create-case/03-add-charges" method="post" novalidate>
                         <input type="hidden" name="add-charges" value="{{ id }}">
                         <button class="govuk-link suspect" type="submit">Add charges</button>
                       </form>
-                    </li>
-                    <!-- <li class="govuk-summary-list__actions-list-item">
-                      <form action="/version-9/B-off-system-MVP/create-case/04-add-suspect-details" method="post" novalidate>
-                        <input type="hidden" name="add-suspect-details" value="{{ id }}">
-                        <button class="govuk-link suspect" type="submit">Add details</button>
-                      </form>
                     </li> -->
-                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Remove</span><span class="govuk-visually-hidden">Remove {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}</span></a></li>
-
+                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#">
+                      <span aria-hidden="true">Remove</span><span class="govuk-visually-hidden">Remove {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}</span></a>
+                    </li>
                   </ul>
                 </dd>
               </div>
+
               {% else %}
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">

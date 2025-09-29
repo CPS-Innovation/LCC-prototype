@@ -80,11 +80,12 @@ module.exports = {
   "suspectArrestSummons": [],
   "suspectOffenderType": [],
   "suspectAlias": [],
+  "aliasId": [],
+  "aliasFirstName": [],
+  "aliasLastName": [],
   "aliasCount": 0,
-
-
-
-
+  "aliasDetailsCount": 0,
+  "aliasSuspectID": [],
 
 
 
