@@ -28,7 +28,32 @@
                 <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
 
 
-                  <span class="icon-new user"></span> <span class="uppercase">{{data['suspectLastName'][id]}}</span>, {{data['suspectFirstName'][id]}} <span class="govuk-body">| born {{data['suspectDayBirth'][id]}} {{data['monthName'][data['suspectMonthBirth'][id]]}} {{data['suspectYearBirth'][id]}}</span>
+                  <span class="icon-new user"></span> <span class="uppercase">{{data['suspectLastName'][id]}}</span>, {{data['suspectFirstName'][id]}} <span class="govuk-body">{% if data['suspectDayBirth'][id] %}| born {{data['suspectDayBirth'][id]}} {{data['monthName'][data['suspectMonthBirth'][id]]}} {{data['suspectYearBirth'][id]}} {% endif %}</span>
+
+                  <details class="govuk-details suspect_details_panel govuk-!-margin-bottom-1">
+                    <summary class="govuk-details__summary">
+                      <span class="govuk-details__summary-text">
+                        Details and charges
+                      </span>
+                    </summary>
+                    <div class="govuk-details__text">
+
+                      <h2 class="govuk-heading-m">Suspect details</h2>
+                      <div class="govuk-summary-list__row">
+                          <dt class="govuk-summary-list__key">Date of birth</dt>
+                          <dd class="govuk-summary-list__value">{% if data['suspectDayBirth'][id] %} {{data['suspectDayBirth'][id]}} {{data['monthName'][data['suspectMonthBirth'][id]]}} {{data['suspectYearBirth'][id]}} {% else %} Not entered {% endif %}</dd>
+                          <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> date of birth</span></a></dd>
+                      </div>
+                      <div class="govuk-summary-list__row">
+                          <dt class="govuk-summary-list__key">Gender</dt>
+                          <dd class="govuk-summary-list__value">{% if data['suspectGender'][id] %}{{ data['suspectGender'][id] }}{% else %} Not entered {% endif %}</dd>
+                          <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> gender</span></a></dd>
+                          </dd>
+                      </div>
+                    </div>
+                  </details>
+            
+
 
 
                 </dt>
@@ -75,7 +100,7 @@
           </dl>
 
         </div>
-        <form action="/version-9/B-off-system-MVP/create-case/04B-suspect-summary" method="post" novalidate>
+        <form action="/version-9/B-off-system-MVP/create-case/03B-suspect-summary" method="post" novalidate>
           <div class="govuk-form-group">
             <fieldset class="govuk-fieldset" aria-describedby="add-another-hint">
               <legend class="govuk-fieldset__legend govuk-fieldset__legend govuk-fieldset__legend--m">

@@ -1,0 +1,58 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../../includes/banner-OFF-V7.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+  <main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+          <form action="/version-9/B-off-system-MVP/create-case/03-alias-details-add-alias" method="post" novalidate>
+
+          <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <!-- <span class="govuk-caption-l">alias {% if data['editalias'] == 999 %} {{data['aliasCount'] + 1}} {% else %} {{data['editalias']}} {% endif %}</span> -->
+                <h1 class="govuk-fieldset__heading">
+                  Add alias {{data['aliasCount'] + 1}}
+                </h1>
+              </legend>
+
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-!-font-weight-bold" for="alias-type-person-first-name">
+                  First name
+                </label>
+                <input class="govuk-input govuk-!-width-one-third" id="alias-first-name" name="alias-first-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['aliasFirstName'][data['editAlias']]}}">
+              </div>
+              
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-!-font-weight-bold" for="alias-last-name">
+                  Last name
+                </label>
+                <input class="govuk-input govuk-!-width-one-third" id="alias-last-name" name="alias-last-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['aliasLastName'][data['editAlias']]}}">
+              </div>
+            </fieldset>
+
+            <input type="hidden" name="id" value="{{ data['aliasId'][data['id']]}}">
+            <input type="hidden" name="update" value="{{data['id']}}">
+
+          </div>
+
+
+          <button type="submit" class="govuk-button">Continue</button>
+          <button type="button" onclick="location.href='03A-alias-summary';" class="non-button margin-left" id="">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+{% endblock %}
