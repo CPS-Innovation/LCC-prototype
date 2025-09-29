@@ -33,13 +33,35 @@ module.exports = {
   
 // Case details
   "area": "",
+  "URN1": "",
+  "URN2": "",
+  "URN3": "",
+  "URN4": "",
   "localReference1": "",
   "localReference2": "",
   "updateDefault": "No",
   "userType": "LCC",
+
+// Date helper arrays
+  "monthName": [
+  "",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+],
   
   // Suspects
   "suspectCount": 0,
+  "suspectDetailsCount": 0,
   "suspectDetailsYesNo": "",
   "suspectId": [],
   "suspectType": [],
@@ -50,6 +72,20 @@ module.exports = {
   "suspectDayBirth": [],
   "suspectMonthBirth": [],
   "suspectYearBirth": [], 
+  "suspectGender": [],
+  "suspectDisability": [],
+  "suspectReligion": [],
+  "suspectEthnicity": [],
+  "suspectSDO": [],
+  "suspectArrestSummons": [],
+  "suspectOffenderType": [],
+  "suspectAlias": [],
+  "aliasCount": 0,
+
+
+
+
+
 
 
   "monthName": [

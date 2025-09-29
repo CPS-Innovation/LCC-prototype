@@ -42,18 +42,18 @@
                 {% else %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">URN</dt>
-                        <dd class="govuk-summary-list__value">{{ data['newCase_URN-A'] }}{{ data['newCase_URN-B'] }}{{ data['newCase_URN-C'] }}/{{ data['newCase_URN-D'] }}</dd>
+                        <dd class="govuk-summary-list__value">{{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}/{{ data['URN4'] }}</dd>
                         <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03-case-details">Change<span class="govuk-visually-hidden"> URN</span></a></dd>
                     </div>
                 {% endif %}        
                 <!-- ITEM 2 - END -->
 
                 <!-- ITEM 3 - START -->
-                <div class="govuk-summary-list__row">
+                <!-- <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Local Reference</dt>
                     <dd class="govuk-summary-list__value">{% if data['local-reference-1'] %}{{ data['local-reference-1'] }}-{{ data['local-reference-2'] }} {% else %} Not entered {% endif %}</dd>
                     <dd class="govuk-summary-list__actions"><a class="govuk-link" href="02A-case-details">Change<span class="govuk-visually-hidden"> Local Ref</span></a></dd>
-                </div>
+                </div> -->
      
                 <!-- ITEM 3 - END -->
 
@@ -74,11 +74,11 @@
                 <!-- ITEM 6 - END -->
 
                 <!-- ITEM 7 - START -->                
-                <div class="govuk-summary-list__row">
+                <!-- <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Crest</dt>
                     <dd class="govuk-summary-list__value">{% if data['newCase_Crest'] %}{{ data['newCase_Crest'] }}{% else %} Not entered {% endif %}</dd>
                     <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03-case-details">Change<span class="govuk-visually-hidden"> Crest</span></a></dd>
-                </div>
+                </div> -->
                 <!-- ITEM 7 - END -->
 
             <!-- </dl> -->
