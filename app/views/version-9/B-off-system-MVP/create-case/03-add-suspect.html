@@ -19,7 +19,7 @@
         {% if data['editSuspect'] == 999 %}
           <form action="/version-9/B-off-system-MVP/create-case/03-add-suspect" method="post" novalidate>
         {% else %}
-          <form action="/version-9/B-off-system-MVP/create-case/03A-edit-suspect" method="post" novalidate>
+          <form action="/version-9/B-off-system-MVP/create-case/03-edit-suspect" method="post" novalidate>
         {% endif %}
 
           <div class="govuk-form-group">
@@ -149,8 +149,8 @@
           </div>
 
 
-          <button type="submit" class="govuk-button">Continue</button>
-          <button type="button" onclick="location.href='03A-suspect-summary';" class="non-button margin-left" id="">Cancel</button>
+          {% include "../../includes/buttons.html" %}
+          
         </form>
       </div>
     </div>
