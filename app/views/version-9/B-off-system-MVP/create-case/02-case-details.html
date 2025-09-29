@@ -90,7 +90,9 @@
 
                     <!-- ITEM 4 - START -->
                     <div class="govuk-form-group">
-                        <label class="govuk-label govuk-!-font-weight-bold" for="newCase_RegisteringUnit">What is the registering unit? (optional)</label>
+
+                        <label class="govuk-label govuk-!-font-weight-bold" for="newCase_RegisteringUnit">What is the registering unit?</label>
+
                         {% if data['newCase_RegisteringUnit'] %}
                             <input class="govuk-input govuk-input--width-20" id="docType-Unit" name="newCase_RegisteringUnit" type="text" value="{{ data['newCase_RegisteringUnit'] }}">
                         {% else %}
@@ -101,7 +103,9 @@
 
                     <!-- ITEM 5 - START -->
                     <div class="govuk-form-group">
-                        <label class="govuk-label govuk-!-font-weight-bold" for="newCase_WCU">What is the witness care unit (WCU)? (optional)</label>
+
+                        <label class="govuk-label govuk-!-font-weight-bold" for="newCase_WCU">What is the witness care unit (WCU)?</label>
+
                         {% if data['newCase_WCU'] %}
                             <input class="govuk-input govuk-input--width-20" id="docType-WCU" name="newCase_WCU" type="text" value="{{ data['newCase_WCU'] }}">
                         {% else %}
