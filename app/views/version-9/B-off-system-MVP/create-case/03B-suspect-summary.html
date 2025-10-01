@@ -48,12 +48,12 @@
                   <details class="govuk-details suspect_details_panel govuk-!-margin-bottom-1">  
                     <summary class="govuk-details__summary">
                       <span class="govuk-details__summary-text">
-                        Details and charges
+                        Suspect details
                       </span>
                     </summary>
                     <div class="govuk-details__text">
 
-                      <h2 class="govuk-heading-m">Suspect details</h2>
+                      <!-- <h2 class="govuk-heading-m">Suspect details</h2> -->
                       <div class="govuk-summary-list__row">
                           <dt class="govuk-summary-list__key">Date of birth</dt>
                           <dd class="govuk-summary-list__value">{% if data['suspectDayBirth'][id] %} {{data['suspectDayBirth'][id]}} {{data['monthName'][data['suspectMonthBirth'][id]]}} {{data['suspectYearBirth'][id]}} {% else %} Not entered {% endif %}</dd>
@@ -82,24 +82,7 @@
                           <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd>
                           </dd>
                       </div>
-                      <div class="govuk-summary-list__row">
-                          <dt class="govuk-summary-list__key">Serious Dangerous Offender (SDO)</dt>
-                          <dd class="govuk-summary-list__value">{% if data['suspectSDO'][id] %}{{ data['suspectSDO'][id] }}{% else %} Not entered {% endif %}</dd>
-                          <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> serious dangerous offender</span></a></dd>
-                          </dd>
-                      </div>
-                      <div class="govuk-summary-list__row">
-                          <dt class="govuk-summary-list__key">Arrest summons</dt>
-                          <dd class="govuk-summary-list__value">{% if data['suspectArrestSummons'][id] %}{{ data['suspectArrestSummons'][id] }}{% else %} Not entered {% endif %}</dd>
-                          <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd>
-                          </dd>
-                      </div>
-                      <div class="govuk-summary-list__row">
-                          <dt class="govuk-summary-list__key">Type of offender</dt>
-                          <dd class="govuk-summary-list__value">{% if data['suspectOffenderType'][id] %}{{ data['suspectOffenderType'][id] }}{% else %} Not entered {% endif %}</dd>
-                          <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd>
-                          </dd>
-                      </div>
+
                       {% if data['suspectId'][id] != 0 %}
                       <div class="govuk-summary-list__row">
                           <dt class="govuk-summary-list__key">Alias details</dt>
@@ -119,8 +102,26 @@
                               <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03-suspect-details-add-alias.html?id={{data['aliasId'][id]}}">Change<span class="govuk-visually-hidden"> alias details</span></a></dd>
                           </div>
                         {% endfor %}
-
                       {% endif %}
+
+                      <div class="govuk-summary-list__row">
+                          <dt class="govuk-summary-list__key">Serious dangerous offender (SDO)</dt>
+                          <dd class="govuk-summary-list__value">{% if data['suspectSDO'][id] %}{{ data['suspectSDO'][id] }}{% else %} Not entered {% endif %}</dd>
+                          <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> serious dangerous offender</span></a></dd>
+                          </dd>
+                      </div>
+                      <div class="govuk-summary-list__row">
+                          <dt class="govuk-summary-list__key">Arrest summons</dt>
+                          <dd class="govuk-summary-list__value">{% if data['suspectArrestSummons'][id] %}{{ data['suspectArrestSummons'][id] }}{% else %} Not entered {% endif %}</dd>
+                          <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd>
+                          </dd>
+                      </div>
+                      <div class="govuk-summary-list__row">
+                          <dt class="govuk-summary-list__key">Type of offender</dt>
+                          <dd class="govuk-summary-list__value">{% if data['suspectOffenderType'][id] %}{{ data['suspectOffenderType'][id] }}{% else %} Not entered {% endif %}</dd>
+                          <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd>
+                          </dd>
+                      </div>
 
 
 
