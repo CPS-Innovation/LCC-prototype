@@ -24,12 +24,11 @@
 
           <div class="govuk-form-group">
             <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
-              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                <!-- <span class="govuk-caption-l">Suspect {% if data['editSuspect'] == 999 %} {{data['suspectCount'] + 1}} {% else %} {{data['editSuspect']}} {% endif %}</span> -->
-                <h1 class="govuk-fieldset__heading">
-                  Add suspect {% if data['editSuspect'] == 999 %} {{data['suspectCount'] + 1}} {% else %} {{data['displaySuspect']}} {% endif %}
-                </h1>
-              </legend>
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 class="govuk-fieldset__heading">
+                      Add suspect {% if data['editSuspect'] == 999 %} {{data['suspectCount'] + 1}} {% else %} {{data['displaySuspect']}} {% endif %}
+                    </h1>
+                </legend>
               <!-- <div id="contact-hint" class="govuk-hint">
                 Suspect 1
               </div> -->
@@ -95,6 +94,12 @@
                           </label>
                         </div>
                         <div class="govuk-checkboxes__item">
+                          <input class="govuk-checkboxes__input" id="suspect-person-additional-details-8" name="suspect-person-alias" type="checkbox" value="Alias details">
+                          <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-8">
+                            Alias details
+                          </label>
+                        </div>
+                        <div class="govuk-checkboxes__item">
                           <input class="govuk-checkboxes__input" id="suspect-person-additional-details-5" name="suspect-person-sdo" type="checkbox" value="Serious Dangerous Offender (SDO)">
                           <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-5">
                             Serious Dangerous Offender (SDO)
@@ -110,12 +115,6 @@
                           <input class="govuk-checkboxes__input" id="suspect-person-additional-details-7" name="suspect-person-offender-type" type="checkbox" value="Type of offender">
                           <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-7">
                             Type of offender
-                          </label>
-                        </div>
-                        <div class="govuk-checkboxes__item">
-                          <input class="govuk-checkboxes__input" id="suspect-person-additional-details-8" name="suspect-person-alias" type="checkbox" value="Alias details">
-                          <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-8">
-                            Alias details
                           </label>
                         </div>
                       </div>

@@ -87,8 +87,37 @@ module.exports = {
   "aliasDetailsCount": 0,
   "aliasSuspectID": [],
 
+  // Edit suspect
+  "editSuspect": 999,
+  "displaySuspect": 999,
 
 
+  // Charges
+  "wantToAddCharges": "",
+  "chargeCount": 0,
+  "chargeCode": [],
+  "chargeId": [],
+  "chargeSuspectId": [],
+  "chargeDescription": [],
+  "chargeFromDay": [],
+  "chargeFromMonth": [],
+  "chargeFromYear": [],
+  "chargeToDateDay": [],
+  "chargeToDateMonth": [],
+  "chargeToDateYear": [],
+  "chargeComment": [],
+  "chargeVictimYesNo": [],
+  "chargeVictimFirstName": [],
+  "chargeVictimSurname": [],
+  "chargeVulnerable": [],
+  "chargeIntimidated": [],
+  "chargeWitness": [],
+
+
+  
+
+
+// Date helper arrays
   "monthName": [
     "",
     "January",
@@ -108,9 +137,6 @@ module.exports = {
 
 
 
-  // Edit suspect
-  "editSuspect": 999,
-  "displaySuspect": 999,
 
   // Case complexity and weight
   "caseComplexity": "",
