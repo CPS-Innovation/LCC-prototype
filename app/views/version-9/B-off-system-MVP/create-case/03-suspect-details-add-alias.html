@@ -21,16 +21,23 @@
           <div class="govuk-form-group">
             <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                <!-- <span class="govuk-caption-l">alias {% if data['editalias'] == 999 %} {{data['aliasCount'] + 1}} {% else %} {{data['editalias']}} {% endif %}</span> -->
+                <!-- <span class="govuk-caption-m">Alias {{data['aliasCount'] + 1}}</span> -->
                 <h1 class="govuk-fieldset__heading">
-                  Add alias {{data['aliasCount'] + 1}}
+                  What alias does {{data['suspect-person-first-name']}} {{data['suspect-person-last-name']}} use? 
                 </h1>
               </legend>
+              <div id="changedName-hint" class="govuk-hint">
+                  You can add more aliases on the next page if needed.
+              </div>
+
 
               <div class="govuk-form-group">
                 <label class="govuk-label govuk-!-font-weight-bold" for="alias-type-person-first-name">
-                  First name (optional)
+                  First name
                 </label>
+              <div id="changedName-hint" class="govuk-hint">
+                  Leave blank if you only have one name
+              </div>
                 <input class="govuk-input govuk-!-width-one-third" id="alias-first-name" name="alias-first-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['aliasFirstName'][data['editAlias']]}}">
               </div>
               
