@@ -13,70 +13,136 @@
     </div>
 </div>
 
-  <main class="govuk-main-wrapper " id="main-content" role="main">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+<main class="govuk-main-wrapper " id="main-content" role="main">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="govuk-heading-xl">You have added {{ data['chargeCount']}} {% if data['chargeCount'] == 1 %} charge {% else %} charges{% endif %}</h1>
-        <!-- <h1 class="govuk-heading-xl">You have added {{ data['chargeCount']}} {% if data['chargeCount'] == 1 %} charge {% else %} charges{% endif %} for {{data['suspect-person-first-name']}} {{data['suspect-person-last-name']}}</h1> -->
-        <div class="govuk-form-group">
+      <h1 class="govuk-heading-xl">You have added {{ data['chargeCount']}} {% if data['chargeCount'] == 1 %} charge {% else %} charges{% endif %}</h1>
+      <!-- <h1 class="govuk-heading-xl">You have added {{ data['chargeCount']}} {% if data['chargeCount'] == 1 %} charge {% else %} charges{% endif %} for {{data['suspect-person-first-name']}} {{data['suspect-person-last-name']}}</h1> -->
+      <div class="govuk-form-group">
 
-          <dl class="govuk-summary-list hmrc-list-with-actions hmrc-list-with-actions--short">
+        {% set seen = [] %}
+        {% for id in data['chargeId'] %}
+          {% set sid = data['chargeSuspectId'][id] %}
 
-            {% for id in data['chargeId'] %}            
-              <div class="govuk-summary-list__row">
-                
-                <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
-                  {{data['chargeCode'][id]}} – {{data['chargeDescription'][id]}} – {{data['suspect-person-first-name']}} {{data['suspect-person-last-name']}} 
-                </dt>
+          {% if not (sid in seen) %}
+            <h2 class="govuk-heading-m  govuk-!-margin-bottom-2 govuk-!-margin-top-8">
+              Charges for <span class="uppercase">{{data['suspectLastName'][sid]}}</span>, {{data['suspectFirstName'][sid]}} {% if data['suspectOffenderType'][sid] == 'Both PPO and PYO' or data['suspectOffenderType'][sid] == 'Prolific youth offender (PYO)' or data['suspectOffenderType'][sid] == 'Youth offender (YO)' %}&nbsp;&nbsp;<strong class="govuk-tag govuk-tag--light-blue">Youth</strong> {% endif %}
+            </h2>
 
-                <dd class="govuk-summary-list__actions hmrc-summary-list__actions">
-                  <ul class="govuk-summary-list__actions-list">
-                    <li class="govuk-summary-list__actions-list-item">
-                      <form action="/version-9/B-off-system-MVP/create-case/03-edit-alias-router" method="post" novalidate>
-                        <input type="hidden" name="edit-alias" value="{{ id }}">
-                        <button class="govuk-link suspect" type="submit">Edit</button>
-                      </form>
-                    </li>
-                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Remove</span><span class="govuk-visually-hidden">Remove {{ data['aliasFirstName'][id]}} {{data['aliasLastName'][id]}}</span></a></li>
-                  </ul>
-                </dd>
+            {% for i in data['chargeId'] %}
+              {% if data['chargeSuspectId'][i] == sid %}
+                <dl class="govuk-summary-list hmrc-list-with-actions hmrc-list-with-actions--short govuk-!-margin-bottom-0">
+                  <!-- First row -->
+                  <div class="govuk-summary-list__row">
+                    
+                    <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
+                      {{data['newChargeCode']}}
+                    </dt>
+                    
+                    <dd class="govuk-summary-list__value">
+                      {{data['newCharge_Description']}}
+                    </dd>
+                    
+                    <dd class="govuk-summary-list__actions hmrc-summary-list__actions">
+                      <ul class="govuk-summary-list__actions-list">
+                        <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Change</span><span class="govuk-visually-hidden">Change charge</span></a></li>
+                        <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Remove</span><span class="govuk-visually-hidden">Remove charge</span></a></li>
+                      </ul>
+                    </dd>
+                  </div>
+                </dl>
 
-              </div>
+                <!-- Second row -->
+                <details class="govuk-details suspect_details_panel govuk-!-margin-bottom-0 govuk-!-margin-top-1 govuk-!-margin-bottom-3">
+                    <summary class="govuk-details__summary">
+                        <span class="govuk-details__summary-text  govuk-!-margin-top-0">View charge details</span>
+                    </summary>
+                    <div class="govuk-details__text">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Date of offence</dt>
+                            <dd class="govuk-summary-list__value">
+                              11 July 2025 to 15 July 2025
+                            </dd>
+                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_B-suspect-charges">Change<span class="govuk-visually-hidden"> Date of offence</span></a></dd>
+                        </div>
+
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Comments</dt>
+                            <dd class="govuk-summary-list__value">
+                              {{ data['chargeComments'][i] }}
+                            </dd>
+                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_B-suspect-charges">Change<span class="govuk-visually-hidden"> comments</span></a></dd>
+                        </div>
+
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Victim</dt>
+                            <dd class="govuk-summary-list__value">
+                              {{data['chargeVictimFirstName'][i]}} {{data['chargeVictimLastName'][i]}}
+                              {% if data['chargeVictimVulnerable'][i] or data['chargeVictimIntimidated'][i] or data['chargeVictimWitness'][i] %}
+                              <ul class="govuk-list govuk-list--bullet">
+                                {% if data['chargeVictimVulnerable'][i] %}<li>Vulnerable</li>{% endif %}
+                                {% if data['chargeVictimIntimidated'][i] %}<li>Intimidated</li>{% endif %}
+                                {% if data['chargeVictimWitness'][i] %}<li>Witness</li>{% endif %}
+                              </ul>
+                              {% endif %}
+                            </dd>
+                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_B-suspect-charges">Change<span class="govuk-visually-hidden"> Victim</span></a></dd>
+
+                          {% if data['suspectOffenderType'][sid] == 'Both PPO and PYO' or data['suspectOffenderType'][sid] == 'Prolific youth offender (PYO)' or data['suspectOffenderType'][sid] == 'Youth offender (YO)' %}
+                          <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Charged with an adult</dt>
+                            <dd class="govuk-summary-list__value">
+                              {% if data['chargedWithAdult'][i] == 'Charged with an adult' %} Yes {% else %} No {% endif %}
+                            </dd>
+                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_B-suspect-charges">Change<span class="govuk-visually-hidden"> comments</span></a>
+                            </dd>
+                          </div>
+                          {% endif %}
+
+                        </div>
+                    </div>
+                </details>
+              {% endif %}
             {% endfor %}
-          </dl>
-
-        </div>
-        <form action="/version-9/B-off-system-MVP/create-case/04-charges-summary" method="post" novalidate>
-          <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset" aria-describedby="add-another-hint">
-              <legend class="govuk-fieldset__legend govuk-fieldset__legend govuk-fieldset__legend--m">
-                Do you need to add another charge?
-              </legend>
-              <!-- <div id="add-another-hint" class="govuk-hint">
-                You must tell us about all your directors.
-              </div> -->
-              <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="add-another" name="add-another" type="radio" value="Yes">
-                  <label class="govuk-label govuk-radios__label" for="add-another">
-                    Yes
-                  </label>
-                </div>
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="add-another-2" name="add-another" type="radio" value="No">
-                  <label class="govuk-label govuk-radios__label" for="add-another-2">
-                    No
-                  </label>
-                </div>
-              </div>
-            </fieldset>
-          </div>
-
-          {% include "../../includes/buttons.html" %}
-        </form>
+            {% set seen = (seen.push(sid), seen) %}
+          {% endif %}
+        {% endfor %}
+         
+        
       </div>
+      
+
+      <form action="/version-9/B-off-system-MVP/create-case/04-charges-summary" method="post" novalidate>
+        <div class="govuk-form-group govuk-!-margin-top-9">
+          <fieldset class="govuk-fieldset" aria-describedby="add-another-hint">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend govuk-fieldset__legend--m">
+              Do you need to add another charge?
+            </legend>
+            <!-- <div id="add-another-hint" class="govuk-hint">
+              You must tell us about all your directors.
+            </div> -->
+            <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="add-another" name="add-another" type="radio" value="Yes">
+                <label class="govuk-label govuk-radios__label" for="add-another">
+                  Yes
+                </label>
+              </div>
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="add-another-2" name="add-another" type="radio" value="No">
+                <label class="govuk-label govuk-radios__label" for="add-another-2">
+                  No
+                </label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        {% include "../../includes/buttons.html" %}
+      </form>
     </div>
-  </main>
+  </div>
+</main>
 
 {% endblock %}

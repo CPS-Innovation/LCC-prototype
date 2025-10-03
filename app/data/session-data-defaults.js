@@ -95,25 +95,26 @@ module.exports = {
   // Charges
   "wantToAddCharges": "",
   "chargeCount": 0,
-  "chargeCode": [],
   "chargeId": [],
   "chargeSuspectId": [],
+  "chargeCode": [],
   "chargeDescription": [],
   "chargeFromDay": [],
   "chargeFromMonth": [],
   "chargeFromYear": [],
-  "chargeToDateDay": [],
-  "chargeToDateMonth": [],
-  "chargeToDateYear": [],
-  "chargeComment": [],
-  "chargeVictimYesNo": [],
+  "chargeToDay": [],
+  "chargeToMonth": [],
+  "chargeToYear": [],
+  "chargeComments": [], 
+  "chargeVictimYesNo:": [],
   "chargeVictimFirstName": [],
-  "chargeVictimSurname": [],
-  "chargeVulnerable": [],
-  "chargeIntimidated": [],
-  "chargeWitness": [],
-
-
+  "chargeVictimLastName": [],
+  "chargeVictimVulnerable": [],
+  "chargeVictimIntimidated": [],
+  "chargeVictimWitness": [],
+  "currentSuspectId": 0,
+  "chargedWithAdult": [],
+  "grouped": [],
   
 
 

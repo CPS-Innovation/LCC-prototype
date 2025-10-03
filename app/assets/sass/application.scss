@@ -82,6 +82,14 @@ $govuk-assets-path: '/govuk/assets/';
 }
 }
 
+
+
+.govuk-summary-list__row--no-border {
+  border-bottom: none;
+}
+
+
+
 .accordion-expand-all {
   font-family: "GDS Transport", arial, sans-serif;
 }
