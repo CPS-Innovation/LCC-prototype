@@ -480,9 +480,13 @@ router.post('/B-off-system-MVP/create-case/04-add-charges-suspect', function(req
     req.session.data.chargeId[count] = count
     console.log("Charge id:",req.session.data.chargeId[count])
 
-    req.session.data.chargeSuspectId[count] = Number(req.body['suspect-charges']) 
-    req.session.data.currentSuspectId = req.session.data.chargeSuspectId[count]  
-
+    req.session.data.chargeSuspectId[count] = req.body['suspect-charges'] 
+    if (req.body['suspect-charges'] == 'Suspect not listed') {
+        req.session.data.chargeSuspectId[count] = 'Suspect not listed'
+    }
+    else {
+        req.session.data.currentSuspectId = Number(req.session.data.chargeSuspectId[count])
+    }
     console.log("Charge suspect id:",req.session.data.chargeSuspectId[count])
 
     if (req.session.data.chargeSuspectId[count] == 'Suspect not listed') {
@@ -538,24 +542,24 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
     console.log("Charged with adult:",req.session.data.chargedWithAdult[count])
 
 
-    const grouped = {};
-    req.session.data.chargeId.forEach((cid, i) => {
-        const sid = req.session.data.chargeSuspectId[i];
-        if (!grouped[sid]) grouped[sid] = [];
-        grouped[sid].push({ chargeId: cid, chargeSuspectId: sid, chargeCode: req.session.data.chargeCode[i], chargeDescription: req.session.data.chargeDescription[i], chargeFromDay: req.session.data.chargeFromDay[i], chargeFromMonth: req.session.data.chargeFromMonth[i], chargeFromYear: req.session.data.chargeFromYear[i], chargeToDay: req.session.data.chargeToDay[i], chargeToMonth: req.session.data.chargeToMonth[i], chargeToYear: req.session.data.chargeToYear[i], chargeComments: req.session.data.chargeComments[i], chargeVictimFirstName: req.session.data.chargeVictimFirstName[i], chargeVictimLastName: req.session.data.chargeVictimLastName[i], chargeVictimVulnerable: req.session.data.chargeVictimVulnerable[i], chargeVictimIntimidated: req.session.data.chargeVictimIntimidated[i], chargeVictimWitness: req.session.data.chargeVictimWitness[i], chargedWithAdult: req.session.data.chargedWithAdult[i] });
-    });
+    // const grouped = {};
+    // req.session.data.chargeId.forEach((cid, i) => {
+    //     const sid = req.session.data.chargeSuspectId[i];
+    //     if (!grouped[sid]) grouped[sid] = [];
+    //     grouped[sid].push({ chargeId: cid, chargeSuspectId: sid, chargeCode: req.session.data.chargeCode[i], chargeDescription: req.session.data.chargeDescription[i], chargeFromDay: req.session.data.chargeFromDay[i], chargeFromMonth: req.session.data.chargeFromMonth[i], chargeFromYear: req.session.data.chargeFromYear[i], chargeToDay: req.session.data.chargeToDay[i], chargeToMonth: req.session.data.chargeToMonth[i], chargeToYear: req.session.data.chargeToYear[i], chargeComments: req.session.data.chargeComments[i], chargeVictimFirstName: req.session.data.chargeVictimFirstName[i], chargeVictimLastName: req.session.data.chargeVictimLastName[i], chargeVictimVulnerable: req.session.data.chargeVictimVulnerable[i], chargeVictimIntimidated: req.session.data.chargeVictimIntimidated[i], chargeVictimWitness: req.session.data.chargeVictimWitness[i], chargedWithAdult: req.session.data.chargedWithAdult[i] });
+    // });
 
-    req.session.data.grouped = grouped;  // save for later
+    // req.session.data.grouped = grouped;  // save for later
 
     req.session.data.chargeCount = count + 1
     console.log("Charge count 2:",req.session.data.chargeCount)
-    console.log("Grouped:",req.session.data.grouped)
+    // console.log("Grouped:",req.session.data.grouped)
 
-    res.render('version-9/B-off-system-MVP/create-case/04-charges-summary', {
-        grouped: req.session.data.grouped
-    });
+    // res.render('version-9/B-off-system-MVP/create-case/04-charges-summary', {
+    //     grouped: req.session.data.grouped
+    // });
 
-//    res.redirect('/version-9/B-off-system-MVP/create-case/04-charges-summary')
+   res.redirect('/version-9/B-off-system-MVP/create-case/04-charges-summary')
 })
 
 

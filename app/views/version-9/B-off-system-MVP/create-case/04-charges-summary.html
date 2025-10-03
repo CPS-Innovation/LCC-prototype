@@ -27,7 +27,15 @@
 
           {% if not (sid in seen) %}
             <h2 class="govuk-heading-m  govuk-!-margin-bottom-2 govuk-!-margin-top-8">
-              Charges for <span class="uppercase">{{data['suspectLastName'][sid]}}</span>, {{data['suspectFirstName'][sid]}} {% if data['suspectOffenderType'][sid] == 'Both PPO and PYO' or data['suspectOffenderType'][sid] == 'Prolific youth offender (PYO)' or data['suspectOffenderType'][sid] == 'Youth offender (YO)' %}&nbsp;&nbsp;<strong class="govuk-tag govuk-tag--light-blue">Youth</strong> {% endif %}
+              {% if data['suspectLastName'][sid] %}
+                Charges for <span class="uppercase">{{data['suspectLastName'][sid]}}</span>, {{data['suspectFirstName'][sid]}} 
+                {% if data['suspectOffenderType'][sid] == 'Both PPO and PYO' or data['suspectOffenderType'][sid] == 'Prolific youth offender (PYO)' or data['suspectOffenderType'][sid] == 'Youth offender (YO)' %}
+                  &nbsp;&nbsp;<strong class="govuk-tag govuk-tag--light-blue">Youth</strong> 
+                {% endif %}
+              {% else %}
+                Charges for {{ data['suspectCompanyName'][sid] }}
+              {% endif %}
+              
             </h2>
 
             {% for i in data['chargeId'] %}
@@ -37,11 +45,11 @@
                   <div class="govuk-summary-list__row">
                     
                     <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
-                      {{data['newChargeCode']}}
+                      {{ data['chargeCode'][i] }}
                     </dt>
                     
                     <dd class="govuk-summary-list__value">
-                      {{data['newCharge_Description']}}
+                      {{ data['chargeDescription'][i] }}
                     </dd>
                     
                     <dd class="govuk-summary-list__actions hmrc-summary-list__actions">
@@ -62,7 +70,8 @@
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Date of offence</dt>
                             <dd class="govuk-summary-list__value">
-                              11 July 2025 to 15 July 2025
+                              {{data['chargeFromDay'][i]}} {{data['monthName'][data['chargeFromMonth'][i]]}} {{data['chargeFromYear'][i]}}
+                              {% if data['chargeToDay'][i] %} to {{data['chargeToDay'][i]}} {{data['monthName'][data['chargeToMonth'][i]]}} {{data['chargeToYear'][id]}} {% endif %}
                             </dd>
                             <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_B-suspect-charges">Change<span class="govuk-visually-hidden"> Date of offence</span></a></dd>
                         </div>
@@ -88,6 +97,7 @@
                               {% endif %}
                             </dd>
                             <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_B-suspect-charges">Change<span class="govuk-visually-hidden"> Victim</span></a></dd>
+                        </div>
 
                           {% if data['suspectOffenderType'][sid] == 'Both PPO and PYO' or data['suspectOffenderType'][sid] == 'Prolific youth offender (PYO)' or data['suspectOffenderType'][sid] == 'Youth offender (YO)' %}
                           <div class="govuk-summary-list__row">
