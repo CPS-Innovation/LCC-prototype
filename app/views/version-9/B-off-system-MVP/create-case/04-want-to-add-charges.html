@@ -29,14 +29,14 @@
                     </legend>
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="add-charges-yes" name="add-charges" type="radio" value="Yes" data-aria-controls="add-charges-controls" {% if data['add-charges'] === 'Yes' %}checked {% endif %}>
+                            <input class="govuk-radios__input" id="add-charges-yes" name="add-charges" type="radio" value="Yes" data-aria-controls="add-charges-controls">
                             <label class="govuk-label govuk-radios__label" for="add-charges-yes">
                                 Yes
                             </label>
                         </div>
                         
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="add-charges-no" name="add-charges" type="radio" value="No" data-aria-controls="conditional-contact-2" {% if not data['add-charges'] === 'No' %}checked{% endif %}>
+                            <input class="govuk-radios__input" id="add-charges-no" name="add-charges" type="radio" value="No" data-aria-controls="conditional-contact-2">
                             <label class="govuk-label govuk-radios__label" for="add-charges-no">
                                 No
                             </label>

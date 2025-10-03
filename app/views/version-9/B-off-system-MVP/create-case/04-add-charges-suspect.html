@@ -35,6 +35,10 @@
                             <input class="govuk-radios__input" id="suspect-charges-{{data['suspectId'][id]}}" name="suspect-charges" type="radio" value="{{data['suspectId'][id]}}" data-aria-controls="suspect-charges-controls">
                             <label class="govuk-label govuk-radios__label" for="suspect-charges-yes">
                                 <span class="uppercase">{{data['suspectLastName'][id]}}</span>, {{data['suspectFirstName'][id]}} <span class="govuk-body">{% if data['suspectDayBirth'][id] %}&ndash; born {{data['suspectDayBirth'][id]}} {{data['monthName'][data['suspectMonthBirth'][id]]}} {{data['suspectYearBirth'][id]}}{% endif %}</span>
+                                {% if data['suspectOffenderType'][id] == 'Both PPO and PYO' or data['suspectOffenderType'][id] == 'Prolific youth offender (PYO)' or data['suspectOffenderType'][id] == 'Youth offender (YO)' %}
+                                    &nbsp;&nbsp;<strong class="govuk-tag govuk-tag--light-blue">Youth</strong> 
+                                {% endif %}
+
                             </label>
                         </div>
                         {% else %}                        

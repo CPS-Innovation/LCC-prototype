@@ -370,8 +370,13 @@
 
                         <!-- GAP or NGAP -->
                         <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input" id="mc-GAP" name="newCase_MonitoringCodes" type="checkbox" value="GAP or NGAP" {% if data['newCase_MonitoringCodes'] == 'GAP or NGAP' %}checked{% endif %}>
-                            <label class="govuk-label govuk-checkboxes__label" for="mc-GAP">GAP or NGAP</label>
+                            <input class="govuk-checkboxes__input" id="mc-GAP" name="newCase_MonitoringCodes" type="checkbox" value="Guilty anticipated plea (GAP)" {% if data['newCase_MonitoringCodes'] == 'Guilty anticipated plea (GAP)' %}checked{% endif %}>
+                            <label class="govuk-label govuk-checkboxes__label" for="mc-GAP">Guilty anticipated plea (GAP)</label>
+                        </div>
+
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="mc-GAP" name="newCase_MonitoringCodes" type="checkbox" value="Not guilty anticipated plea (NGAP)" {% if data['newCase_MonitoringCodes'] == 'Not guilty anticipated plea (NGAP)' %}checked{% endif %}>
+                            <label class="govuk-label govuk-checkboxes__label" for="mc-NGAP">Not guilty anticipated plea (NGAP)</label>
                         </div>
 
                         <!-- Homophobic crime -->
@@ -386,18 +391,19 @@
                             <label class="govuk-label govuk-checkboxes__label" for="mc-Honour">‘Honour’ based abuse</label>
                         </div>
 
-                        <!-- Human trafficking -->
-                        <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input" id="mc-Human" name="newCase_MonitoringCodes" type="checkbox" value="Human trafficking" {% if data['newCase_MonitoringCodes'] == 'Human trafficking' %}checked{% endif %}>
-                            <label class="govuk-label govuk-checkboxes__label" for="mc-Human">Human trafficking</label>
-                        </div>
-
                         </div>
                     </div>
 
                     <!-- Column 2 -->
                     <div class="govuk-grid-column-one-half">
                         <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                        <!-- Human trafficking -->
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="mc-Human" name="newCase_MonitoringCodes" type="checkbox" value="Human trafficking" {% if data['newCase_MonitoringCodes'] == 'Human trafficking' %}checked{% endif %}>
+                            <label class="govuk-label govuk-checkboxes__label" for="mc-Human">Human trafficking</label>
+                        </div>
+
+
 
                         <!-- Identified victim -->
                         <div class="govuk-checkboxes__item">
@@ -444,7 +450,7 @@
                         <!-- Pre-Charge decision -->
                         <div class="govuk-checkboxes__item">
                             <input class="govuk-checkboxes__input" id="mc-PreCharge" name="newCase_MonitoringCodes" type="checkbox" value="Pre-Charge decision" {% if data['newCase_MonitoringCodes'] == 'Pre-Charge decision' %}checked{% endif %}>
-                            <label class="govuk-label govuk-checkboxes__label" for="mc-PreCharge">Pre-Charge decision</label>
+                            <label class="govuk-label govuk-checkboxes__label" for="mc-PreCharge">Pre-charge decision</label>
                         </div>
 
                         <!-- Prohibited weapons -->

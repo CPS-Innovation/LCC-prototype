@@ -16,17 +16,17 @@
             Case registered successfully
           </h1>
           <div class="govuk-panel__body">
-            URN<br><strong>842620982/25</strong>
+            URN<br><strong>{{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}/{{ data['URN4'] }}/25</strong>
           </div>
         </div>
         <!-- <p class="govuk-body">We have sent you a confirmation email.</p> -->
         <h2 class="govuk-heading-m">Next steps</h2>
         <p class="govuk-body">
 
-          You can view and edit the case details.
+          You can continue to view or edit the case details.
         </p>
         <p class="govuk-body">
-          For large and complex cases, you can also add or link folders for materials.
+          For large and complex cases, you can now set up folders for materials.
         </p>
 
         <form action="/version-9/B-off-system-MVP/create-case/09-confirmation" method="post" novalidate>
@@ -34,7 +34,7 @@
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset" aria-describedby="add-materials-hint">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend govuk-fieldset__legend--m">
-              Do you want to add materials?
+              Do you want to set up folders for materials?
             </legend>
             <!-- <div id="add-materials-hint" class="govuk-hint">
               You must tell us about all your directors.

@@ -23,7 +23,7 @@
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
 
                 <h1 class="govuk-fieldset__heading">
-                  What do you want to do?
+                  How do you want to set up the folders?
                 </h1>
               </legend>
 
@@ -31,7 +31,7 @@
                 <div class="govuk-radios__item">
                   <input class="govuk-radios__input" id="folders-create" name="folders" type="radio" value="Create folders" data-aria-controls="conditional-contact" {% if data['foldersAction'] == 'Create folders' %}checked{% endif %}>
                   <label class="govuk-label govuk-radios__label" for="folders-create">
-                    Create folders
+                    Create new folders
                   </label>
                 </div>
                 <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact">
@@ -66,7 +66,7 @@
                 <div class="govuk-radios__item">
                   <input class="govuk-radios__input" id="folders-link" name="folders" type="radio" value="Link to existing folders" data-aria-controls="conditional-contact-2" {% if data['foldersAction'] == 'Link to existing folders' %}checked{% endif %}>
                   <label class="govuk-label govuk-radios__label" for="folders-link">
-                    Link to existing folders
+                    Connect existing folders
                   </label>
                 </div>
                 <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-2">
@@ -74,7 +74,7 @@
                     <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
                       <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                         <label class="govuk-label" for="folders">
-                          What folders do you want to link to?
+                          Which folders do you want to connect to?
                         </label>
                       </legend>
                       <div class="govuk-hint">
