@@ -95,9 +95,11 @@ module.exports = {
   // Charges
   "wantToAddCharges": "",
   "chargeCount": 0,
+
   "chargeId": [],
   "chargeSuspectId": [],
   "chargeCode": [],
+
   "chargeDescription": [],
   "chargeFromDay": [],
   "chargeFromMonth": [],
