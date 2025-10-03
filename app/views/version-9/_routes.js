@@ -567,6 +567,7 @@ router.post('/B-off-system-MVP/create-case/04-charges-summary', function(req, re
     else {
         res.redirect('/version-9/B-off-system-MVP/create-case/05-complexity-weight') 
     }    
+
 })
 
 router.get('/B-off-system-MVP/create-case/04-charges-summary', function(req, res) {
