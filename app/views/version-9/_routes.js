@@ -475,10 +475,10 @@ router.post('/B-off-system-MVP/create-case/04-want-to-add-charges', function(req
 // Add charges - select suspect
 router.post('/B-off-system-MVP/create-case/04-add-charges-suspect', function(req, res) {
     count = req.session.data.chargeCount
-    console.log("Charge count:",count)
+    // console.log("Charge count:",count)
     
-    req.session.data.chargeId[count] = count
-    console.log("Charge id:",req.session.data.chargeId[count])
+    // req.session.data.chargeId[count] = count
+    // // console.log("Charge id:",req.session.data.chargeId[count])
 
     req.session.data.chargeSuspectId[count] = req.body['suspect-charges'] 
     if (req.body['suspect-charges'] == 'Suspect not listed') {
@@ -487,7 +487,7 @@ router.post('/B-off-system-MVP/create-case/04-add-charges-suspect', function(req
     else {
         req.session.data.currentSuspectId = Number(req.session.data.chargeSuspectId[count])
     }
-    console.log("Charge suspect id:",req.session.data.chargeSuspectId[count])
+    // console.log("Charge suspect id:",req.session.data.chargeSuspectId[count])
 
     if (req.session.data.chargeSuspectId[count] == 'Suspect not listed') {
         res.redirect('/version-9/B-off-system-MVP/create-case/03-add-suspect')
@@ -500,16 +500,23 @@ router.post('/B-off-system-MVP/create-case/04-add-charges-suspect', function(req
 
 // Add charges 
 router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
-    // If only 1 suspect
-    if (req.session.data.suspectCount == 1) {
-       req.session.data.currentSuspectId = 0 
-       req.session.data.chargeId[0] = 0
-    }
+    count = req.session.data.chargeCount
+    // console.log("Charge count:",count)
+    
+    req.session.data.chargeId[count] = count
+    // console.log("Charge id:",req.session.data.chargeId[count])
 
     count = Number(req.session.data.chargeCount)
 
     console.log("Charge count:", count)
     console.log("Current suspect id:",req.session.data.currentSuspectId)
+
+    // If only 1 suspect and first charge
+    if (req.session.data.suspectCount === 1) {
+        console.log("Only 1 suspect")
+        req.session.data.currentSuspectId = 0 
+        req.session.data.chargeSuspectId[count] = 0
+    }
 
     req.session.data.chargeCode[count] = req.body['newChargeCode']
     req.session.data.chargeDescription[count] = req.body['newCharge_Description']
