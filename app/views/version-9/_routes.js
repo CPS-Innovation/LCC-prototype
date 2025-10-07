@@ -500,8 +500,10 @@ router.post('/B-off-system-MVP/create-case/04-add-charges-suspect', function(req
 
 // Add charges 
 router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
+    // If only 1 suspect
     if (req.session.data.suspectCount == 1) {
        req.session.data.currentSuspectId = 0 
+       req.session.data.chargeId[0] = 0
     }
 
     count = Number(req.session.data.chargeCount)
