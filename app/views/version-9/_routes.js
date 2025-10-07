@@ -568,6 +568,17 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
     //     grouped: req.session.data.grouped
     // });
 
+    const arr = [5, 5, 5, 2, 2, 2, 2, 2, 9, 4];
+    const counts = {};
+
+    for (const num of req.session.data.chargeSuspectId) {
+        counts[num] = counts[num] ? counts[num] + 1 : 1;
+    }
+
+    req.session.data.counts = counts;  // save for later
+    console.log(counts);
+//    console.log(counts[5], counts[2], counts[9], counts[4]);
+
    res.redirect('/version-9/B-off-system-MVP/create-case/04-charges-summary')
 })
 

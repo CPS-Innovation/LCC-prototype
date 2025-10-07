@@ -99,7 +99,6 @@ module.exports = {
   "chargeId": [],
   "chargeSuspectId": [],
   "chargeCode": [],
-
   "chargeDescription": [],
   "chargeFromDay": [],
   "chargeFromMonth": [],
@@ -117,6 +116,7 @@ module.exports = {
   "currentSuspectId": 0,
   "chargedWithAdult": [],
   "grouped": [],
+  "counts": [],
   
 
 
