@@ -331,4 +331,27 @@ app.use(function (err, req, res, next) {
 console.log('\nGOV.UK Prototype Kit v' + releaseVersion)
 console.log('\nNOTICE: the kit is for building prototypes, do not use it for production services.')
 
+
+
+// Silence missing static/media asset requests (fonts, JS bundles, etc.)
+app.get('/static/media/*', function (req, res) {
+  res.status(204).end(); // no content, no log
+});
+
+app.get('*', function (req, res) {
+  res.render('prototype-kit/page-not-found');
+});
+
+app.get(['/static/media/*', '/assets/fonts/*', '/images/*'], function (req, res) {
+  res.status(204).end();
+});
+
+// Ignore missing static/media assets to silence warnings
+// app.use('/static/media', express.static('public/static/media', { fallthrough: false }));
+
+// Ignore all /static/media requests silently
+// app.use('/static/media', (req, res) => res.status(204).end());
+
+
+
 module.exports = app
