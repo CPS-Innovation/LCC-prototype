@@ -1,0 +1,350 @@
+{% extends "layoutCPS-OFF.html" %}
+{% block header %}
+    {% include "../../includes/banner-OFF-V7.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+<div class="govuk-grid-row" id="create-case-journey">
+
+    <div class="govuk-grid-column-two-thirds">
+        <div class="gov-pages">
+
+            <!-- <h1 class="govuk-heading-xl" style="">Add monitoring codes</h1> -->
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+            <h1 class="govuk-fieldset__heading">
+                Add monitoring codes
+            </h1>
+            </legend>
+            <div id="changedName-hint" class="govuk-hint">
+                These are optional. You can continue without adding monitoring codes.
+            </div>
+            Select all that apply
+            <!-- <p class="govuk-hint govuk-!-margin-bottom-6">Adding this information is optional. You can continue without adding any details.</p> -->
+
+            <form method="post" action="06-monitoring-codes">  
+
+                <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                    <h2 class="govuk-fieldset__heading">
+                        What is the case complexity?
+                    </h2>
+                    </legend>
+                    <div class="govuk-radios govuk-radios--small" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="newCase_Complexity" name="newCase_Complexity" type="radio" value="Basic" selected>
+                            <label class="govuk-label govuk-radios__label" for="newCase_Complexity">
+                            Basic
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="newCase_Complexity-5" name="newCase_Complexity" type="radio" value="Basic +" selected>
+                            <label class="govuk-label govuk-radios__label" for="newCase_Complexity-5">
+                            Basic +
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="newCase_Complexity-2" name="newCase_Complexity" type="radio" value="Standard">
+                            <label class="govuk-label govuk-radios__label" for="newCase_Complexity-2">
+                            Standard
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="newCase_Complexity-3" name="newCase_Complexity" type="radio" value="High">
+                            <label class="govuk-label govuk-radios__label" for="newCase_Complexity-3">
+                            High
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="newCase_Complexity-4" name="newCase_Complexity" type="radio" value="Complex">
+                            <label class="govuk-label govuk-radios__label" for="newCase_Complexity-4">
+                            Complex
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+                </div>
+
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                        <h2 class="govuk-fieldset__heading">
+                            What is the case weight?
+                        </h2>
+                        </legend>
+                        <div class="govuk-radios govuk-radios--small" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="newCase_CaseWeight-2" name="newCase_CaseWeight" type="radio" value="Low">
+                            <label class="govuk-label govuk-radios__label" for="newCase_CaseWeight-2">
+                            Low
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="newCase_CaseWeight-3" name="newCase_CaseWeight" type="radio" value="Medium">
+                            <label class="govuk-label govuk-radios__label" for="newCase_CaseWeight-3">
+                            Medium
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="newCase_CaseWeight-4" name="newCase_CaseWeight" type="radio" value="High">
+                            <label class="govuk-label govuk-radios__label" for="newCase_CaseWeight-4">
+                            High
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="newCase_CaseWeight-4" name="newCase_CaseWeight" type="radio" value="Exceptional">
+                            <label class="govuk-label govuk-radios__label" for="newCase_CaseWeight-4">
+                            Exceptional
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="newCase_CaseWeight" name="newCase_CaseWeight" type="radio" value="Not applicable">
+                            <label class="govuk-label govuk-radios__label" for="newCase_CaseWeight">
+                            Not applicable
+                            </label>
+                        </div>
+                        </div>
+                    </fieldset>
+                    </div>                    
+
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                        <h2 class="govuk-fieldset__heading">
+                            What are the monitoring codes?
+                        </h2>
+                        </legend>
+                        <div class="govuk-grid-column-one-half">
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+
+                            <!-- Asset recovery -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-AssetRecovery" name="newCase_MonitoringCodes" type="checkbox" value="Asset recovery" {% if data['newCase_MonitoringCodes'] == 'Asset recovery' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-AssetRecovery">Asset recovery</label>
+                            </div>
+
+                            <!-- Border security -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-BorderSecurity" name="newCase_MonitoringCodes" type="checkbox" value="Border security" {% if data['newCase_MonitoringCodes'] == 'Border security' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-BorderSecurity">Border security</label>
+                            </div>
+
+                            <!-- Child abuse -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-ChildAbuse" name="newCase_MonitoringCodes" type="checkbox" value="Child abuse" {% if data['newCase_MonitoringCodes'] == 'Child abuse' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-ChildAbuse">Child abuse</label>
+                            </div>
+
+                            <!-- Coronavirus offence -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Coronavirus" name="newCase_MonitoringCodes" type="checkbox" value="Coronavirus offence" {% if data['newCase_MonitoringCodes'] == 'Coronavirus offence' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Coronavirus">Coronavirus offence</label>
+                            </div>
+
+                            <!-- COVID bail -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-COVIDBail" name="newCase_MonitoringCodes" type="checkbox" value="COVID bail" {% if data['newCase_MonitoringCodes'] == 'COVID bail' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-COVIDBail">COVID bail</label>
+                            </div>
+
+                            <!-- COVID CTL -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-COVIDCTL" name="newCase_MonitoringCodes" type="checkbox" value="COVID CTL" {% if data['newCase_MonitoringCodes'] == 'COVID CTL' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-COVIDCTL">COVID CTL</label>
+                            </div>
+
+                            <!-- Crime against an older person -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-OlderPerson" name="newCase_MonitoringCodes" type="checkbox" value="Crime against an older person" {% if data['newCase_MonitoringCodes'] == 'Crime against an older person' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-OlderPerson">Crime against an older person</label>
+                            </div>
+
+                            <!-- Disability hate crime -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Disability" name="newCase_MonitoringCodes" type="checkbox" value="Disability hate crime" {% if data['newCase_MonitoringCodes'] == 'Disability hate crime' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Disability">Disability hate crime</label>
+                            </div>
+
+                            <!-- Domestic abuse -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-DomesticAbuse" name="newCase_MonitoringCodes" type="checkbox" value="Domestic abuse" {% if data['newCase_MonitoringCodes'] == 'Domestic abuse' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-DomesticAbuse">Domestic abuse</label>
+                            </div>
+
+                            <!-- Extraordinary event (post 2019) -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Extraordinary" name="newCase_MonitoringCodes" type="checkbox" value="Extraordinary event (post 2019)" {% if data['newCase_MonitoringCodes'] == 'Extraordinary event (post 2019)' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Extraordinary">Extraordinary event (post 2019)</label>
+                            </div>
+
+                            <!-- Fatality -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Fatality" name="newCase_MonitoringCodes" type="checkbox" value="Fatality" {% if data['newCase_MonitoringCodes'] == 'Fatality' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Fatality">Fatality</label>
+                            </div>
+
+                            <!-- Forced marriage -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-ForcedMarriage" name="newCase_MonitoringCodes" type="checkbox" value="Forced marriage" {% if data['newCase_MonitoringCodes'] == 'Forced marriage' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-ForcedMarriage">Forced marriage</label>
+                            </div>
+
+                            <!-- GAP or NGAP -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-GAP" name="newCase_MonitoringCodes" type="checkbox" value="Guilty anticipated plea (GAP)" {% if data['newCase_MonitoringCodes'] == 'Guilty anticipated plea (GAP)' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-GAP">Guilty anticipated plea (GAP)</label>
+                            </div>
+
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-GAP" name="newCase_MonitoringCodes" type="checkbox" value="Not guilty anticipated plea (NGAP)" {% if data['newCase_MonitoringCodes'] == 'Not guilty anticipated plea (NGAP)' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-NGAP">Not guilty anticipated plea (NGAP)</label>
+                            </div>
+
+                            <!-- Homophobic crime -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Homophobic" name="newCase_MonitoringCodes" type="checkbox" value="Homophobic crime" {% if data['newCase_MonitoringCodes'] == 'Homophobic crime' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Homophobic">Homophobic crime</label>
+                            </div>
+
+                            <!-- Honour based abuse -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Honour" name="newCase_MonitoringCodes" type="checkbox" value="‘Honour’ based abuse" {% if data['newCase_MonitoringCodes'] == '‘Honour’ based abuse' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Honour">‘Honour’ based abuse</label>
+                            </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Column 2 -->
+                        <div class="govuk-grid-column-one-half">
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                            <!-- Human trafficking -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Human" name="newCase_MonitoringCodes" type="checkbox" value="Human trafficking" {% if data['newCase_MonitoringCodes'] == 'Human trafficking' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Human">Human trafficking</label>
+                            </div>
+
+
+
+                            <!-- Identified victim -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Victim" name="newCase_MonitoringCodes" type="checkbox" value="Identified victim" {% if data['newCase_MonitoringCodes'] == 'Identified victim' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Victim">Identified victim</label>
+                            </div>
+
+                            <!-- Joint enterprise -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Joint" name="newCase_MonitoringCodes" type="checkbox" value="Joint enterprise" {% if data['newCase_MonitoringCodes'] == 'Joint enterprise' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Joint">Joint enterprise</label>
+                            </div>
+
+                            <!-- Major incident flag -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-MajorIncident" name="newCase_MonitoringCodes" type="checkbox" value="Major incident flag" {% if data['newCase_MonitoringCodes'] == 'Major incident flag' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-MajorIncident">Major incident flag</label>
+                            </div>
+
+                            <!-- Media interest -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Media" name="newCase_MonitoringCodes" type="checkbox" value="Media interest" {% if data['newCase_MonitoringCodes'] == 'Media interest' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Media">Media interest</label>
+                            </div>
+
+                            <!-- Mental health -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-MentalHealth" name="newCase_MonitoringCodes" type="checkbox" value="Mental health" {% if data['newCase_MonitoringCodes'] == 'Mental health' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-MentalHealth">Mental health</label>
+                            </div>
+
+                            <!-- Nationality bar -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Nationality" name="newCase_MonitoringCodes" type="checkbox" value="Nationality bar" {% if data['newCase_MonitoringCodes'] == 'Nationality bar' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Nationality">Nationality bar</label>
+                            </div>
+
+                            <!-- Police complaints -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-PoliceComplaints" name="newCase_MonitoringCodes" type="checkbox" value="Police complaints" {% if data['newCase_MonitoringCodes'] == 'Police complaints' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-PoliceComplaints">Police complaints</label>
+                            </div>
+
+                            <!-- Pre-Charge decision -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-PreCharge" name="newCase_MonitoringCodes" type="checkbox" value="Pre-Charge decision" {% if data['newCase_MonitoringCodes'] == 'Pre-Charge decision' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-PreCharge">Pre-charge decision</label>
+                            </div>
+
+                            <!-- Prohibited weapons -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-ProhibitedWeapons" name="newCase_MonitoringCodes" type="checkbox" value="Prohibited weapons" {% if data['newCase_MonitoringCodes'] == 'Prohibited weapons' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-ProhibitedWeapons">Prohibited weapons</label>
+                            </div>
+
+                            <!-- Racist crime -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Racist" name="newCase_MonitoringCodes" type="checkbox" value="Racist crime" {% if data['newCase_MonitoringCodes'] == 'Racist crime' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Racist">Racist crime</label>
+                            </div>
+
+                            <!-- Rape -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Rape" name="newCase_MonitoringCodes" type="checkbox" value="Rape" {% if data['newCase_MonitoringCodes'] == 'Rape' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Rape">Rape</label>
+                            </div>
+
+                            <!-- Real time case conversations -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-RealTime" name="newCase_MonitoringCodes" type="checkbox" value="Real time case conversations" {% if data['newCase_MonitoringCodes'] == 'Real time case conversations' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-RealTime">Real time case conversations</label>
+                            </div>
+
+                            <!-- Religious crime -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Religious" name="newCase_MonitoringCodes" type="checkbox" value="Religious crime" {% if data['newCase_MonitoringCodes'] == 'Religious crime' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Religious">Religious crime</label>
+                            </div>
+
+                            <!-- Transphobic crime -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Transphobic" name="newCase_MonitoringCodes" type="checkbox" value="Transphobic crime" {% if data['newCase_MonitoringCodes'] == 'Transphobic crime' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Transphobic">Transphobic crime</label>
+                            </div>
+
+                            <!-- Vulnerable or intimidated victim -->
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="mc-Vulnerable" name="newCase_MonitoringCodes" type="checkbox" value="Vulnerable or intimidated victim" {% if data['newCase_MonitoringCodes'] == 'Vulnerable or intimidated victim' %}checked{% endif %}>
+                                <label class="govuk-label govuk-checkboxes__label" for="mc-Vulnerable">Vulnerable or intimidated victim</label>
+                            </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </div>
+
+
+
+                <div class="govuk-!-margin-top-4">&nbsp;</div>
+
+                <input id="createCase_E_Complete" name="createCase_E_Complete" type="text" value="true" style="display: none;">
+                {% include "../../includes/buttons.html" %}
+
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}
