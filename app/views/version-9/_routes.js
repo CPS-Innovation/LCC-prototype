@@ -284,7 +284,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-religion', functio
 router.post('/B-off-system-MVP/create-case/03-suspect-details-ethnicity', function(req, res) {
     count = req.session.data.suspectDetailsCount
     
-    req.session.data.suspectGender[count] = req.body['ehtnicity']
+    req.session.data.suspectEthnicity[count] = req.body['ethnicity']
 
     if (req.session.data.suspectAlias[count] != undefined ) {
         res.redirect('/version-9/B-off-system-MVP/create-case/03-suspect-details-add-alias')
