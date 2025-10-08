@@ -245,6 +245,20 @@
                             
                             
                             <h2 class="govuk-heading-m govuk-!-margin-top-6">Charges</h2>
+                            {% if not hasCharge %}
+                                <dl class="govuk-summary-list hmrc-list-with-actions hmrc-list-with-actions--short">
+                                    <div class="govuk-summary-list__row">                                            
+                                        <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
+                                        Charges
+                                        </dt>                                            
+                                        <dd class="govuk-summary-list__value">
+                                            No charges added
+                                        </dd>
+                                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Add charges<span class="govuk-visually-hidden"> charge</span></a></dd>
+                                    </div>
+                                </dl>
+                            {% endif %}
+
                             {% for i in data['chargeId'] %}
                                 {% if data['chargeSuspectId'][i] == data['suspectId'][id] %}
                                     <dl class="govuk-summary-list hmrc-list-with-actions hmrc-list-with-actions--short">
@@ -349,6 +363,19 @@
                         </summary>
                         <div class="govuk-details__text">
                             <h2 class="govuk-heading-m govuk-!-margin-top-6">Charges</h2>
+                            {% if not hasCharge %}
+                                <dl class="govuk-summary-list hmrc-list-with-actions hmrc-list-with-actions--short">
+                                    <div class="govuk-summary-list__row">                                            
+                                        <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
+                                        Charges
+                                        </dt>                                            
+                                        <dd class="govuk-summary-list__value">
+                                            No charges added
+                                        </dd>
+                                        <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Add charges<span class="govuk-visually-hidden"> charge</span></a></dd>
+                                    </div>
+                                </dl>
+                            {% endif %}
                             {% for i in data['chargeId'] %}
                                 {% if data['chargeSuspectId'][i] == data['suspectId'][id] %}
                                     <dl class="govuk-summary-list hmrc-list-with-actions hmrc-list-with-actions--short">
