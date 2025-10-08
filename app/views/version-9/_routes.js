@@ -662,22 +662,25 @@ router.post('/B-off-system-MVP/04A-create-or-link-folders', function(req, res) {
         if (req.session.data.newEgressFolder === 'Egress folder') {
             res.redirect('/version-9/B-off-system-MVP/04A-create-egress-folder')
         }
-        else if (req.session.data.wantedDriveFolder === 'Shared drive folder') {
-            res.redirect('/version-9/B-off-system-MVP/create-case/08-check-answers') 
+        else if (req.session.data.newDriveFolder === 'Shared drive folder') {
+            res.redirect('/version-9/B-off-system-MVP/03-case-overview') 
         }
         else {
-            res.redirect('/version-9/B-off-system-MVP/create-case/08-check-answers') 
+            res.redirect('/version-9/B-off-system-MVP/04A-create-or-link-folders') 
         }
     }
     else {
         req.session.data.existingEgressFolder = req.body['linked-egress-folder']
         req.session.data.existingDriveFolder = req.body['linked-drive-folder']
-        if (req.body['linked-egress-folder'] === 'Egress folder') {
+        if (req.session.data.existingEgressFolder === 'Egress folder') {
             res.redirect('/version-9/B-off-system-MVP/04A-egress-files')
         }
-        else if (req.body['linked-drive-folder'] === 'Shared drive folder') {
+        else if (req.session.data.existingDriveFolder === 'Shared drive folder') {
             res.redirect('/version-9/B-off-system-MVP/05A-p-drive-files') 
         }    
+        else {
+            res.redirect('/version-9/B-off-system-MVP/04A-create-or-link-folders') 
+        }
     }
 })
 
