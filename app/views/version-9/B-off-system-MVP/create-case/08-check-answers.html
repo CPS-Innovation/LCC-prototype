@@ -441,6 +441,11 @@
                         </div>
                     </details>
 
+                            <dt class="govuk-summary-list__key">Suspect {{ id +1 }}</dt>
+                            <dd class="govuk-summary-list__value"><span class="icon-new company"></span> {{ data['suspectCompanyName'][id]}}</dd>
+                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="04A-add-suspect.html?id={{data['suspectId'][id]}}">Change<span class="govuk-visually-hidden"> {{ data['suspectCompanyName'][id]}}'s details</span></a></dd>
+                        </div> 
+                    </dl>
                 {% endif %}
             {% endfor %}
             </dl>
