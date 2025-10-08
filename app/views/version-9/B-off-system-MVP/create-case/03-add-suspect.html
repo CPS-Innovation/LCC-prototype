@@ -3,156 +3,148 @@
     {% include "../../includes/banner-OFF-V7.html" %}
 {% endblock %}
 {% block beforeContent %}
-
+<a class="govuk-back-link" href="javascript:history.back()">Back</a>
 {% endblock %}
 {% block content %}
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
-    </div>
-</div>
+  <div class="govuk-grid-column-two-thirds">
+    {% if data['editSuspect'] == 999 %}
+      <form action="/version-9/B-off-system-MVP/create-case/03-add-suspect" method="post" novalidate>
+    {% else %}
+      <form action="/version-9/B-off-system-MVP/create-case/03-edit-suspect" method="post" novalidate>
+    {% endif %}
 
-  <main class="govuk-main-wrapper " id="main-content" role="main">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-        {% if data['editSuspect'] == 999 %}
-          <form action="/version-9/B-off-system-MVP/create-case/03-add-suspect" method="post" novalidate>
-        {% else %}
-          <form action="/version-9/B-off-system-MVP/create-case/03-edit-suspect" method="post" novalidate>
-        {% endif %}
-
-          <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
-                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                    <h1 class="govuk-fieldset__heading">
-                      Add suspect {% if data['editSuspect'] == 999 %} {{data['suspectCount'] + 1}} {% else %} {{data['displaySuspect']}} {% endif %}
-                    </h1>
-                </legend>
-              <!-- <div id="contact-hint" class="govuk-hint">
-                Suspect 1
-              </div> -->
-              <div class="govuk-radios" data-module="govuk-radios">
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="suspect-type-person" name="suspect-type" type="radio" value="Person" data-aria-controls="conditional-contact" {% if data['suspectType'][data['editSuspect']] == 'Person' %} checked {% endif %}>
-                  <label class="govuk-label govuk-radios__label" for="suspect-type-person">
-                    Person
-                  </label>
-                </div>
-                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact">
-                  <div class="govuk-form-group">
-                    <label class="govuk-label govuk-!-font-weight-bold" for="suspect-type-person-first-name">
-                      First name
-                    </label>
-                    <input class="govuk-input govuk-!-width-one-third" id="suspect-person-first-name" name="suspect-person-first-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['suspectFirstName'][data['editSuspect']]}}">
-                  </div>
-                  
-                  <div class="govuk-form-group">
-                    <label class="govuk-label govuk-!-font-weight-bold" for="suspect-person-last-name">
-                      Last name
-                    </label>
-                    <input class="govuk-input govuk-!-width-one-third" id="suspect-person-last-name" name="suspect-person-last-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['suspectLastName'][data['editSuspect']]}}">
-                  </div>
-
-                  <div class="govuk-form-group">
-                    <fieldset class="govuk-fieldset" aria-describedby="suspect-person-additional-details-hint">
-                      <legend class="govuk-fieldset__legend govuk-!-font-weight-bold">
-                        Do you want to add any additional details about this suspect?
-                      </legend>
-                      <div id="suspect-person-additional-details-hint" class="govuk-hint">
-                        Select all that apply. 
-                      </div>
-                      <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                        <div class="govuk-checkboxes__item">
-                          <input class="govuk-checkboxes__input" id="suspect-person-additional-details-0" name="suspect-person-dob" type="checkbox" value="Date of birth">
-                          <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-0">
-                            Date of birth
-                          </label>
-                        </div>
-                        <div class="govuk-checkboxes__item">
-                          <input class="govuk-checkboxes__input" id="suspect-person-additional-details" name="suspect-person-gender" type="checkbox" value="Gender">
-                          <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details">
-                            Gender
-                          </label>
-                        </div>
-                        <div class="govuk-checkboxes__item">
-                          <input class="govuk-checkboxes__input" id="suspect-person-additional-details-2" name="suspect-person-disability" type="checkbox" value="Disability">
-                          <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-2">
-                            Disability
-                          </label>
-                        </div>
-                        <div class="govuk-checkboxes__item">
-                          <input class="govuk-checkboxes__input" id="suspect-person-additional-details-3" name="suspect-person-religion" type="checkbox" value="Religion">
-                          <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-3">
-                            Religion
-                          </label>
-                        </div>
-                        <div class="govuk-checkboxes__item">
-                          <input class="govuk-checkboxes__input" id="suspect-person-additional-details-4" name="suspect-person-ethnicity" type="checkbox" value="Ethnicity">
-                          <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-4">
-                            Ethnicity
-                          </label>
-                        </div>
-                        <div class="govuk-checkboxes__item">
-                          <input class="govuk-checkboxes__input" id="suspect-person-additional-details-8" name="suspect-person-alias" type="checkbox" value="Alias details">
-                          <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-8">
-                            Alias details
-                          </label>
-                        </div>
-                        <div class="govuk-checkboxes__item">
-                          <input class="govuk-checkboxes__input" id="suspect-person-additional-details-5" name="suspect-person-sdo" type="checkbox" value="Serious Dangerous Offender (SDO)">
-                          <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-5">
-                            Serious dangerous offender (SDO)
-                          </label>
-                        </div>
-                        <div class="govuk-checkboxes__item">
-                          <input class="govuk-checkboxes__input" id="suspect-person-additional-details-6" name="suspect-person-arrest-summons" type="checkbox" value="Arrest summons">
-                          <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-6">
-                            Arrest summons
-                          </label>
-                        </div>
-                        <div class="govuk-checkboxes__item">
-                          <input class="govuk-checkboxes__input" id="suspect-person-additional-details-7" name="suspect-person-offender-type" type="checkbox" value="Type of offender">
-                          <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-7">
-                            Type of offender
-                          </label>
-                        </div>
-                      </div>
-                    </fieldset>
-                  </div>                  
-
-
-                </div>
-
-
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="suspect-type-company" name="suspect-type" type="radio" value="Company" data-aria-controls="conditional-contact-2" {% if data['suspectType']['editSuspect'] == 'Company' %} checked {% endif %}>
-                  <label class="govuk-label govuk-radios__label" for="suspect-type-company">
-                    Company
-                  </label>
-                </div>
-                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-2">
-                  <div class="govuk-form-group">
-                    <label class="govuk-label govuk-!-font-weight-bold" for="suspect-company-name">
-                      Company name
-                    </label>
-                    <input class="govuk-input govuk-!-width-one-third" id="suspect-company-name" name="suspect-company-name" type="text" autocomplete="text" value="{{ data['suspectCompanyName'][data['id']]}}">
-                  </div>
-                </div>
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h1 class="govuk-fieldset__heading">
+                  Add suspect {% if data['editSuspect'] == 999 %} {{data['suspectCount'] + 1}} {% else %} {{data['displaySuspect']}} {% endif %}
+                </h1>
+            </legend>
+          <!-- <div id="contact-hint" class="govuk-hint">
+            Suspect 1
+          </div> -->
+          <div class="govuk-radios" data-module="govuk-radios">
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="suspect-type-person" name="suspect-type" type="radio" value="Person" data-aria-controls="conditional-contact" {% if data['suspectType'][data['editSuspect']] == 'Person' %} checked {% endif %}>
+              <label class="govuk-label govuk-radios__label" for="suspect-type-person">
+                Person
+              </label>
+            </div>
+            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-!-font-weight-bold" for="suspect-type-person-first-name">
+                  First name
+                </label>
+                <input class="govuk-input govuk-!-width-one-third" id="suspect-person-first-name" name="suspect-person-first-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['suspectFirstName'][data['editSuspect']]}}">
               </div>
-            </fieldset>
+              
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-!-font-weight-bold" for="suspect-person-last-name">
+                  Last name
+                </label>
+                <input class="govuk-input govuk-!-width-one-third" id="suspect-person-last-name" name="suspect-person-last-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['suspectLastName'][data['editSuspect']]}}">
+              </div>
 
-            <input type="hidden" name="id" value="{{ data['suspectId'][data['id']]}}">
-            <input type="hidden" name="update" value="{{data['id']}}">
+              <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset" aria-describedby="suspect-person-additional-details-hint">
+                  <legend class="govuk-fieldset__legend govuk-!-font-weight-bold">
+                    Do you want to add any additional details about this suspect?
+                  </legend>
+                  <div id="suspect-person-additional-details-hint" class="govuk-hint">
+                    Select all that apply. 
+                  </div>
+                  <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                    <div class="govuk-checkboxes__item">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-0" name="suspect-person-dob" type="checkbox" value="Date of birth">
+                      <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-0">
+                        Date of birth
+                      </label>
+                    </div>
+                    <div class="govuk-checkboxes__item">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details" name="suspect-person-gender" type="checkbox" value="Gender">
+                      <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details">
+                        Gender
+                      </label>
+                    </div>
+                    <div class="govuk-checkboxes__item">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-2" name="suspect-person-disability" type="checkbox" value="Disability">
+                      <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-2">
+                        Disability
+                      </label>
+                    </div>
+                    <div class="govuk-checkboxes__item">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-3" name="suspect-person-religion" type="checkbox" value="Religion">
+                      <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-3">
+                        Religion
+                      </label>
+                    </div>
+                    <div class="govuk-checkboxes__item">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-4" name="suspect-person-ethnicity" type="checkbox" value="Ethnicity">
+                      <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-4">
+                        Ethnicity
+                      </label>
+                    </div>
+                    <div class="govuk-checkboxes__item">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-8" name="suspect-person-alias" type="checkbox" value="Alias details">
+                      <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-8">
+                        Alias details
+                      </label>
+                    </div>
+                    <div class="govuk-checkboxes__item">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-5" name="suspect-person-sdo" type="checkbox" value="Serious Dangerous Offender (SDO)">
+                      <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-5">
+                        Serious dangerous offender (SDO)
+                      </label>
+                    </div>
+                    <div class="govuk-checkboxes__item">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-6" name="suspect-person-arrest-summons" type="checkbox" value="Arrest summons">
+                      <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-6">
+                        Arrest summons
+                      </label>
+                    </div>
+                    <div class="govuk-checkboxes__item">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-7" name="suspect-person-offender-type" type="checkbox" value="Type of offender">
+                      <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-7">
+                        Type of offender
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>                  
 
+
+            </div>
+
+
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="suspect-type-company" name="suspect-type" type="radio" value="Company" data-aria-controls="conditional-contact-2" {% if data['suspectType']['editSuspect'] == 'Company' %} checked {% endif %}>
+              <label class="govuk-label govuk-radios__label" for="suspect-type-company">
+                Company
+              </label>
+            </div>
+            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-2">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-!-font-weight-bold" for="suspect-company-name">
+                  Company name
+                </label>
+                <input class="govuk-input govuk-!-width-one-third" id="suspect-company-name" name="suspect-company-name" type="text" autocomplete="text" value="{{ data['suspectCompanyName'][data['id']]}}">
+              </div>
+            </div>
           </div>
+        </fieldset>
 
+        <input type="hidden" name="id" value="{{ data['suspectId'][data['id']]}}">
+        <input type="hidden" name="update" value="{{data['id']}}">
 
-          {% include "../../includes/buttons.html" %}
-          
-        </form>
       </div>
-    </div>
-  </main>
+
+
+      {% include "../../includes/buttons.html" %}
+      
+    </form>
+  </div>
+</div>
 
 {% endblock %}

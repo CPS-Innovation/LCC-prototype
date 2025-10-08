@@ -3,32 +3,21 @@
     {% include "../../includes/banner-OFF-V7.html" %}
 {% endblock %}
 {% block beforeContent %}
-
+<a class="govuk-back-link" href="javascript:history.back()">Back</a>
 {% endblock %}
 {% block content %}
 
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
-    </div>
-</div>
 
 <div class="govuk-grid-row" id="create-case-journey">
-
     <div class="govuk-grid-column-two-thirds">
         <div class="gov-pages">
-
-
-            <!-- <h1 class="govuk-heading-l govuk-!-margin-bottom-6">What is the division or area?</h1> -->
-
-
             <form method="post" action="/version-9/B-off-system-MVP/create-case/02-area" id="newCase_Form-A">  
 
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                    <h1 class="govuk-fieldset__heading">
-                        What is the division or area?
-                    </h1>
+                        <h1 class="govuk-fieldset__heading">
+                            What is the division or area?
+                        </h1>
                     </legend>
 
                     <div class="govuk-form-group" id="newCase_Operation_AREA-Value">
