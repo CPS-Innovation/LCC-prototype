@@ -3,17 +3,13 @@
     {% include "../includes/banner-OFF-V6.html" %}
 {% endblock %}
 {% block beforeContent %}
+    <a class="govuk-back-link" href="javascript:history.back()">Back</a>
     {% include "../includes/off-system-MVP/modalConfirmation-Egress.html" %}
 {% endblock %}
 {% block content %}
 
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
-    </div>
-</div>
 
-<div class="govuk-grid-row govuk-!-margin-top-2" id="homepage-journey">
+<div class="govuk-grid-row" id="homepage-journey">
     <div class="govuk-grid-column-two-thirds">
         <div class="wrapper main-cotent">
 
@@ -26,7 +22,7 @@
             <form method="post" action="03-case-overview" id="">
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset" aria-describedby="offCMS_Egress_files-hint">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl"><h1 class="govuk-fieldset__heading">Confirm folder link</h1></legend>
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l"><h1 class="govuk-fieldset__heading">Confirm folder link</h1></legend>
                         <legend class="govuk-fieldset__legend">Are you sure you want to link "{{ data['pdrive_file_link'] }}" network shared drive folder to the case?</legend>
                         <div id="offCMS_Egress_files-hint" class="govuk-hint">Once linked, this folder can be used to transfer files. You can update the linked folder later if needed.</div>
                         {% if data['mvp_Case_1'] == 'true' %}

@@ -334,17 +334,17 @@ console.log('\nNOTICE: the kit is for building prototypes, do not use it for pro
 
 
 // Silence missing static/media asset requests (fonts, JS bundles, etc.)
-app.get('/static/media/*', function (req, res) {
-  res.status(204).end(); // no content, no log
-});
+// app.get('/static/media/*', function (req, res) {
+//   res.status(204).end(); 
+// });
 
-app.get('*', function (req, res) {
-  res.render('prototype-kit/page-not-found');
-});
+// app.get('*', function (req, res) {
+//   res.render('prototype-kit/page-not-found');
+// });
 
-app.get(['/static/media/*', '/assets/fonts/*', '/images/*'], function (req, res) {
-  res.status(204).end();
-});
+// app.get(['/static/media/*', '/assets/fonts/*', '/images/*'], function (req, res) {
+//   res.status(204).end();
+// });
 
 // Ignore missing static/media assets to silence warnings
 // app.use('/static/media', express.static('public/static/media', { fallthrough: false }));

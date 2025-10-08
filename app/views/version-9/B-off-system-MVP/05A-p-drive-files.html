@@ -3,20 +3,16 @@
     {% include "../includes/banner-OFF-V6.html" %}
 {% endblock %}
 {% block beforeContent %}
+    <a class="govuk-back-link" href="javascript:history.back()">Back</a>
     {% include "../includes/off-system-MVP/modalConfirmation-PDrive.html" %} 
 {% endblock %}
 {% block content %}
 
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
-    </div>
-</div>
 
-<div class="govuk-grid-row govuk-!-margin-top-2" id="homepage-journey">
+<div class="govuk-grid-row" id="homepage-journey">
     <div class="govuk-grid-column-two-thirds">
         <div class="wrapper main-cotent">
-            <h2 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Link a network shared drive folder to the case</h2>
+            <h2 class="govuk-heading-l govuk-!-margin-bottom-0" style="">Link a network shared drive folder to the case</h2>
 <!--             {% if data['mvp_Case_3'] == 'true' %}
                 {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
                     <h2 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Link <span class="operation_name">{{ data['searchOFF_Operation_VALUE'] }}struck Office</span> case to the Shared Drive</h2>

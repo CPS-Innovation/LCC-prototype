@@ -3,23 +3,20 @@
     {% include "../includes/banner-OFF-V6.html" %}
 {% endblock %}
 {% block beforeContent %}
-    {% include "../includes/off-system-MVP/modalConfirmation-Egress.html" %}
+    <a class="govuk-back-link" href="javascript:history.back()">Back</a>
+    {% include "../includes/off-system-MVP/modalConfirmation-Egress.html" %}    
 {% endblock %}
 {% block content %}
 
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
-    </div>
-</div>
 
-<div class="govuk-grid-row govuk-!-margin-top-2" id="homepage-journey">
+
+<div class="govuk-grid-row" id="homepage-journey">
     <div class="govuk-grid-column-two-thirds">
         <div class="wrapper main-cotent">
             {% if data['createCaseStarted'] == 'true' %}
-                <h1 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Link an Egress folder to the case</h1>
+                <h1 class="govuk-heading-l">Link an Egress folder to the case</h1>
             {% else %}
-                <h1 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Select an Egress folder to link to the case</h1>
+                <h1 class="govuk-heading-l">Select an Egress folder to link to the case</h1>
             {% endif %}
 
             <div class="govuk-inset-text">
