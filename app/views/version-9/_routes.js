@@ -79,7 +79,7 @@ router.post('/B-off-system-MVP/create-case/02-first-hearing-details', function(r
         res.redirect('/version-9/B-off-system-MVP/create-case/03-add-suspect')
     }
     else {
-        res.redirect('/version-9/B-off-system-MVP/create-case/05-complexity-weight') 
+        res.redirect('/version-9/B-off-system-MVP/create-case/05-complexity') 
     }    
 })
 
@@ -407,7 +407,7 @@ router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function(req, r
     }
     else {
         res.redirect('/version-9/B-off-system-MVP/create-case/04-want-to-add-charges') 
-        // res.redirect('/version-9/B-off-system-MVP/create-case/05-complexity-weight') 
+        // res.redirect('/version-9/B-off-system-MVP/create-case/05-complexity') 
     }    
 })
 
@@ -467,7 +467,7 @@ router.post('/B-off-system-MVP/create-case/04-want-to-add-charges', function(req
         }
     }
     else {
-        res.redirect('/version-9/B-off-system-MVP/create-case/05-complexity-weight') 
+        res.redirect('/version-9/B-off-system-MVP/create-case/05-complexity') 
     }    
 })
 
@@ -589,7 +589,7 @@ router.post('/B-off-system-MVP/create-case/04-charges-summary', function(req, re
         res.redirect('/version-9/B-off-system-MVP/create-case/04-add-charges-suspect')
     }
     else {
-        res.redirect('/version-9/B-off-system-MVP/create-case/05-complexity-weight') 
+        res.redirect('/version-9/B-off-system-MVP/create-case/05-complexity') 
     }    
 
 })
@@ -601,10 +601,10 @@ router.get('/B-off-system-MVP/create-case/04-charges-summary', function(req, res
 })
 
 
-// Complexity and weight
-router.post('/B-off-system-MVP/create-case/05-complexity-weight', function(req, res) {
+// Complexity 
+router.post('/B-off-system-MVP/create-case/05-complexity', function(req, res) {
     req.session.data.caseComplexity = req.body['newCase_Complexity']
-    req.session.data.caseWeight = req.body['newCase_CaseWeight']
+    // req.session.data.caseWeight = req.body['newCase_CaseWeight']
     res.redirect('/version-9/B-off-system-MVP/create-case/06-monitoring-codes') 
 })
 
