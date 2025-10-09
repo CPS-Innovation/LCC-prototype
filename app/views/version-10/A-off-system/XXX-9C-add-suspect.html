@@ -1,0 +1,161 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="wrapper gov-pages">
+
+            <h1 class="govuk-heading-xl" style="">Suspect aliases</h1>
+
+            <form method="get" action="5-case-overview#suspectsTab" id="addSuspect_Form-C">  
+
+                <p> </p>
+
+                <div class="aliasesDetails" id="aliasesDetails-1">
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect-Alias-Surname">Surname</label>
+                        <input class="govuk-input govuk-input--width-20" id="addSuspect-Alias-Surname" name="addSuspect-Alias-Surname" type="text">
+                    </div>
+                    <!-- OPTION 1 - END --> 
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect-Alias-Forename">Forename</label>
+                        <input class="govuk-input govuk-input--width-20" id="addSuspect-Alias-Forename" name="addSuspect-Alias-Forename" type="text">
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <a class="govuk-button add-alias-button" id="addAlias1" onclick="addAlias1()"><span class="icon-new"></span>Add alias</a>
+                </div>
+
+                <div class="aliasesDetails" id="aliasesDetails-2">
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect-Alias-Surname2">Surname</label>
+                        <input class="govuk-input govuk-input--width-20" id="addSuspect-Alias-Surname2" name="addSuspect-Alias-Surname2" type="text">
+                    </div>
+                    <!-- OPTION 1 - END --> 
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect-Alias-Forename2">Forename</label>
+                        <input class="govuk-input govuk-input--width-20" id="addSuspect-Alias-Forename2" name="addSuspect-Alias-Forename2" type="text">
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <a class="govuk-button add-alias-button" id="addAlias2" onclick="addAlias2()"><span class="icon-new"></span>Add alias</a>
+                </div>
+
+                <div class="aliasesDetails" id="aliasesDetails-3">
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect-Alias-Surname3">Surname</label>
+                        <input class="govuk-input govuk-input--width-20" id="addSuspect-Alias-Surname3" name="addSuspect-Alias-Surname3" type="text">
+                    </div>
+                    <!-- OPTION 1 - END --> 
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect-Alias-Forename3">Forename</label>
+                        <input class="govuk-input govuk-input--width-20" id="addSuspect-Alias-Forename3" name="addSuspect-Alias-Forename3" type="text">
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <a class="govuk-button add-alias-button" id="addAlias3" onclick="addAlias3()"><span class="icon-new"></span>Add alias</a>
+                </div>
+
+                <div class="aliasesDetails" id="aliasesDetails-4">
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect-Alias-Surname4">Surname</label>
+                        <input class="govuk-input govuk-input--width-20" id="addSuspect-Alias-Surname4" name="addSuspect-Alias-Surname4" type="text">
+                    </div>
+                    <!-- OPTION 1 - END --> 
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect-Alias-Forename4">Forename</label>
+                        <input class="govuk-input govuk-input--width-20" id="addSuspect-Alias-Forename4" name="addSuspect-Alias-Forename4" type="text">
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <a class="govuk-button add-alias-button" id="addAlias4" onclick="addAlias4()"><span class="icon-new"></span>Add alias</a>
+                </div>
+
+                <div class="aliasesDetails" id="aliasesDetails-5">
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect-Alias-Surname5">Surname</label>
+                        <input class="govuk-input govuk-input--width-20" id="addSuspect-Alias-Surname5" name="addSuspect-Alias-Surname5" type="text">
+                    </div>
+                    <!-- OPTION 1 - END --> 
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addSuspect-Alias-Forename5">Forename</label>
+                        <input class="govuk-input govuk-input--width-20" id="addSuspect-Alias-Forename5" name="addSuspect-Alias-Forename5" type="text">
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <a class="govuk-button add-alias-button" id="addAlias5" onclick="addAlias5()"><span class="icon-new"></span>Add alias</a>
+                </div>
+
+                <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+                <button type="submit" class="govuk-button" style="">Save and exit</button>
+                <button type="button" onclick="location.href='5-case-overview';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+        <div class="existing-aliases">
+            <h2 class="govuk-heading-s" style="">Existing aliases</h2>
+            <div class="contacts">
+                <div id="new-aliases">
+                    {% if data['addSuspect-Alias-Surname'] or data['addSuspect-Alias-Forename'] %}
+                        <p><strong class="surname">{{ data['addSuspect-Alias-Surname'] }}</strong>, {{ data['addSuspect-Alias-Forename'] }}</p>
+                    {% else %}
+                        <p class="no-aliases">No aliases have been added yet</p>
+                    {% endif %}
+                    {% if data['addSuspect-Alias-Surname2'] or data['addSuspect-Alias-Forename2'] %}
+                        <p><strong class="surname">{{ data['addSuspect-Alias-Surname2'] }}</strong>, {{ data['addSuspect-Alias-Forename2'] }}</p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['addSuspect-Alias-Surname3'] or data['addSuspect-Alias-Forename3'] %}
+                        <p><strong class="surname">{{ data['addSuspect-Alias-Surname3'] }}</strong>, {{ data['addSuspect-Alias-Forename3'] }}</p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['addSuspect-Alias-Surname4'] or data['addSuspect-Alias-Forename4'] %}
+                        <p><strong class="surname">{{ data['addSuspect-Alias-Surname4'] }}</strong>, {{ data['addSuspect-Alias-Forename4'] }}</p>
+                    {% else %}
+
+                    {% endif %}
+                    {% if data['addSuspect-Alias-Surname5'] or data['addSuspect-Alias-Forename5'] %}
+                        <p><strong class="surname">{{ data['addSuspect-Alias-Surname5'] }}</strong>, {{ data['addSuspect-Alias-Forename5'] }}</p>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

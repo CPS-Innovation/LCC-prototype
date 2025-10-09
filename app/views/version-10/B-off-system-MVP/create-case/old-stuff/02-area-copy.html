@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Autocomplete with valid value expansion</title>
+  <style>
+    .extra-items {
+      display: none; /* hidden by default */
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background: #f8f8f8;
+    }
+    .extra-items.visible {
+      display: block; /* show when input is valid */
+    }
+  </style>
+</head>
+<body>
+  <label for="fruit">Choose a fruit:</label>
+
+  <input class="govuk-input govuk-input--width-20" id="fruit" list="fruits" placeholder="Type to search…">
+
+  
+  <!-- Autocomplete options -->
+  <datalist id="fruits">
+    <option value="Apple">
+    <option value="Banana">
+    <option value="Cherry">
+    <option value="Mango">
+    <option value="Orange">
+  </datalist>
+
+  <div id="extra" class="extra-items">
+
+    <p>Extra details about your choice will appear here 🎉 </p>
+
+  </div>
+
+  <script>
+    const input = document.getElementById('fruit');
+    const extra = document.getElementById('extra');
+
+    // Allowed values (must match the datalist options)
+    const validValues = ["Apple", "Banana", "Cherry", "Mango", "Orange"];
+
+    input.addEventListener('change', () => {
+      if (validValues.includes(input.value)) {
+        extra.classList.add('visible'); // show if valid
+      } else {
+        extra.classList.remove('visible'); // hide if not valid
+      }
+    });
+  </script>
+</body>
+</html>
