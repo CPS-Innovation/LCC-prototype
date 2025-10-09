@@ -133,6 +133,14 @@
                   <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd>
                   </dd>
               </div>
+              {% if data['suspectOffenderType'][id] == 'Youth offender (YO)' or data['suspectOffenderType'][id] == 'Prolific youth offender (PYO)' or data['suspectOffenderType'][id] == 'Both prolific priority offender (PPO) and prolific youth offender (PYO)' %}
+              <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Arrest date</dt>
+                  <dd class="govuk-summary-list__value">{% if data['arrestDate'][id] %}{{ data['arrestDate'][id] }}{% else %} Not entered {% endif %}</dd>
+                  <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> arrest date</span></a></dd>
+                  </dd>
+              </div>
+              {% endif %}
 
 
 
