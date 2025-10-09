@@ -1,0 +1,60 @@
+{% extends "layoutCPS-OFF.html" %}
+{% block header %}
+    {% include "../../includes/banner-OFF-V7.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div>
+
+<div class="govuk-grid-row" id="create-case-journey">
+
+    <div class="govuk-grid-column-two-thirds">
+        <div class="gov-pages">
+
+
+            <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-4" style="">Area details2</h1>
+
+
+
+
+
+            <form method="post" action="/version-9/B-off-system-MVP/create-case/02-area" id="newCase_Form-A">  
+
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                    <h2 class="govuk-fieldset__heading">
+                        What is the division or area?
+                    </h2>
+                    </legend>
+
+
+                    <div class="govuk-form-group" id="newCase_Operation_AREA-Value">
+                        <!-- <label class="govuk-label" for="newCase_Operation_AREA">Select an area</label> -->
+                        <p id="newCase_Area-error" class="govuk-error-message govuk-!-margin-bottom-2"><span class="govuk-visually-hidden">Error:</span> Select an area</p>
+                        <input class="govuk-input govuk-input--width-20" id="docType-Area" name="docType-Area" type="text" value="{{ data['docType-Area'] }}">
+                    </div>
+                </fieldset>
+
+                <div class="moj-datepicker" data-module="moj-date-picker">
+
+                <button type="submit" class="govuk-button">Continue</button>
+                <button type="button" onclick="location.href='../../../';" class="non-button margin-left" id="">Cancel</button>
+
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row" id="create-case-journey">
+    <div class="govuk-grid-column-two-thirds">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+        <div class="wrapper gov-pages">
+
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <!-- ///////// ERROR SUMMARY - START ///////// -->
+                    <div class="govuk-error-summary govuk-!-margin-bottom-6" data-module="govuk-error-summary" id="create_case_errors_summary_B">
+                        <div role="alert">
+                            <h2 class="govuk-error-summary__title">There is a problem</h2>
+                            <div class="govuk-error-summary__body">
+                                <ul class="govuk-list govuk-error-summary__list">
+                                    <li class="newCase_Egress"><a href="#newCase_Egress">Has there been an egress folder already set up for this case?</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ///////// ERROR SUMMARY - END ///////// -->
+                </div>
+            </div>
+
+            <form method="get" action="" id="newCase_Form-B">  
+
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                        <h1 class="govuk-fieldset__heading">Case details</h1>
+                    </legend>
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group" id="newCase_Egress">
+                        <legend class="govuk-fieldset__legend">Is there already an existing egress folder for this case?</legend>
+                        <p id="newCase_Egress_Error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> Select below if there been an egress folder set up for this case
+                        </p>
+                        <div class="govuk-radios" data-module="govuk-radios">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="newCase_Egress-Yes" name="newCase_Egress" type="radio" value="Yes">
+                                <label class="govuk-label govuk-radios__label" for="newCase_Egress-Yes">Yes</label>
+                            </div>                            
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="newCase_Egress-No" name="newCase_Egress" type="radio" value="No">
+                                <label class="govuk-label govuk-radios__label" for="newCase_Egress-No">No</label>
+                            </div>
+                       </div>
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <div class="govuk-warning-text govuk-!-margin-bottom-6 govuk-!-margin-top-0 govuk-!-margin-left-0" id="newCase_No_Egress_Content">
+                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <strong class="govuk-warning-text__text">
+                            <span class="govuk-visually-hidden">Warning</span>
+                            The shared drive and egress folders will be set up automatically for you
+                        </strong>
+                    </div>
+
+                    <div class="govuk-warning-text govuk-!-margin-bottom-6 govuk-!-margin-top-0 govuk-!-margin-left-0" id="newCase_Egress_Content">
+                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <strong class="govuk-warning-text__text">
+                            <span class="govuk-visually-hidden">Warning</span>
+                            The shared drive folder will be set up automatically for you
+                        </strong>
+                    </div>
+
+                </fieldset>
+
+                <div class="create_case_Errors_B">
+                    <button type="button" class="govuk-button" id="create_case_Errors_B">Continue</button>
+                    <button type="button" onclick="location.href='01-search';" class="non-button margin-left" id="">Cancel</button>
+                </div>
+
+                <div class="create_case_Continue_B">
+                    <button type="submit" class="govuk-button" style="" id="newCase_Egress_Button">Continue</button>
+                    <button type="button" onclick="location.href='2-homepage';" class="non-button margin-left" id="">Cancel</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}
