@@ -390,9 +390,23 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-arrest-summons', f
 
 // Suspect details – type of offender
 router.post('/B-off-system-MVP/create-case/03-suspect-details-offender-type', function(req, res) {
-    count = req.session.data.suspectDetailsCount
+    count = (req.session.data.suspectDetailsCount)
     
     req.session.data.suspectOffenderType[count] = req.body['offender-type']
+    console.log("Offender type:", req.session.data.suspectOffenderType[count])
+
+    if (req.session.data.suspectOffenderType[count] == 'Youth offender (YO)') {
+        req.session.data.arrestDate[count] = req.body['arrest-date-yo']
+    }
+    else if (req.session.data.suspectOffenderType[count] == 'Both prolific priority offender (PPO) and prolific youth offender (PYO)') {
+        req.session.data.arrestDate[count] = req.body['arrest-date-ppo-pyo']
+    }
+    else if (req.session.data.suspectOffenderType[count] == 'Prolific youth offender (PYO)') {
+        req.session.data.arrestDate[count] = req.body['arrest-date-pyo']
+    }
+
+
+    
     res.redirect('/version-9/B-off-system-MVP/create-case/03B-suspect-summary')
 })
 
