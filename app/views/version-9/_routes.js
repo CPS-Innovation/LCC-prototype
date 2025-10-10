@@ -321,6 +321,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-add-alias', functi
     console.log("Alias count:",req.session.data.aliasCount)
     console.log("Alias suspect:",req.session.data.aliasSuspectID[aliasCount])
     console.log("Details count:",req.session.data.suspectDetailsCount)
+    console.log("Test:",req.session.data.suspectDetailsCount)
 
     req.session.data.aliasCount = aliasCount + 1
 //    req.session.data.suspectDetailsCount = aliasCount
