@@ -92,6 +92,7 @@ router.post('/B-off-system-MVP/create-case/03-add-suspect', function(req, res) {
     
     req.session.data.suspectType[count] = req.body['suspect-type']
     req.session.data.suspectId[count] = count
+    req.session.data.aliasTempSuspectId = count
 
     if (req.body['suspect-type'] == 'Person') {
         req.session.data.suspectFirstName[count] = req.body['suspect-person-first-name']

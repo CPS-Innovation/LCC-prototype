@@ -10,31 +10,33 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
-    <h1 class="govuk-heading-l">You have added {{ data['aliasCount']}} {% if data['aliasCount'] == 1 %} alias {% else %} aliases{% endif %} for {{data['suspect-person-first-name']}} {{data['suspect-person-last-name']}}</h1>
+    <!-- <h1 class="govuk-heading-l">You have added {{ data['aliasCount']}} {% if data['aliasCount'] == 1 %} alias {% else %} aliases{% endif %} for {{data['suspect-person-first-name']}} {{data['suspect-person-last-name']}}</h1> -->
+    <h1 class="govuk-heading-l">Aliases for {{data['suspect-person-first-name']}} {{data['suspect-person-last-name']}}</h1>
     <div class="govuk-form-group">
 
       <dl class="govuk-summary-list hmrc-list-with-actions hmrc-list-with-actions--short">
 
-        {% for id in data['aliasId'] %}            
-          <div class="govuk-summary-list__row">
-            
-            <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
-              <span class="uppercase">{{data['aliasLastName'][id]}}</span>{% if data['aliasFirstName'][id] %}, {{data['aliasFirstName'][id]}} {% endif %}
-            </dt>
+        {% for id in data['aliasId'] %}        
+          {% if data['aliasSuspectID'][id] == data['aliasTempSuspectId'] %}
 
-            <dd class="govuk-summary-list__actions hmrc-summary-list__actions">
-              <ul class="govuk-summary-list__actions-list">
-                <li class="govuk-summary-list__actions-list-item">
-                  <form action="/version-9/B-off-system-MVP/create-case/03-edit-alias-router" method="post" novalidate>
-                    <input type="hidden" name="edit-alias" value="{{ id }}">
-                    <button class="govuk-link suspect" type="submit">Edit</button>
-                  </form>
-                </li>
-                <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Remove</span><span class="govuk-visually-hidden">Remove {{ data['aliasFirstName'][id]}} {{data['aliasLastName'][id]}}</span></a></li>
-              </ul>
-            </dd>
+            <div class="govuk-summary-list__row">            
+                <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
+                  <span class="uppercase">{{data['aliasLastName'][id]}}</span>{% if data['aliasFirstName'][id] %}, {{data['aliasFirstName'][id]}} {% endif %}
+                </dt>
 
-          </div>
+                <dd class="govuk-summary-list__actions hmrc-summary-list__actions">
+                  <ul class="govuk-summary-list__actions-list">
+                    <li class="govuk-summary-list__actions-list-item">
+                      <form action="/version-9/B-off-system-MVP/create-case/03-edit-alias-router" method="post" novalidate>
+                        <input type="hidden" name="edit-alias" value="{{ id }}">
+                        <button class="govuk-link suspect" type="submit">Edit</button>
+                      </form>
+                    </li>
+                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Remove</span><span class="govuk-visually-hidden">Remove {{ data['aliasFirstName'][id]}} {{data['aliasLastName'][id]}}</span></a></li>
+                  </ul>
+                </dd>
+            </div>
+          {% endif %}
         {% endfor %}
       </dl>
 
