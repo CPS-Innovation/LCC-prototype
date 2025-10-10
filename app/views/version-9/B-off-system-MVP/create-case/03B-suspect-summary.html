@@ -102,16 +102,19 @@
                   </dd>
               </div>
               {% else %}
-                {% for id in data['aliasId'] %}            
+                {% for i in data['aliasId'] %}     
+                  {% if data['aliasSuspectID'][i] == data['suspectId'][id] %}
+       
                   <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key">Alias {{ id +1 }}</dt>
+                      <dt class="govuk-summary-list__key">Alias {{ i +1 }}</dt>
 
 
-                      <dd class="govuk-summary-list__value"><span class="icon-new user"></span> <span class="uppercase">{{data['aliasLastName'][id]}}</span>{% if data['aliasFirstName'][id] %}, {{data['aliasFirstName'][id]}}{% endif %}</dd>
+                      <dd class="govuk-summary-list__value"><span class="icon-new user"></span> <span class="uppercase">{{data['aliasLastName'][i]}}</span>{% if data['aliasFirstName'][i] %}, {{data['aliasFirstName'][i]}}{% endif %}</dd>
 
 
                       <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03-suspect-details-add-alias.html?id={{data['aliasId'][id]}}">Change<span class="govuk-visually-hidden"> alias details</span></a></dd>
                   </div>
+                  {% endif %}
                 {% endfor %}
               {% endif %}
 

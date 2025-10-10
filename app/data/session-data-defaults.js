@@ -87,6 +87,7 @@ module.exports = {
   "aliasDetailsCount": 0,
   "aliasSuspectID": [],
   "arrestDate": [],
+  "aliasTempSuspectId": 0,
 
   // Edit suspect
   "editSuspect": 999,
