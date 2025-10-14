@@ -1,0 +1,68 @@
+{% extends "layoutCPS-OFF.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V1.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+        <div class="wrapper">
+            <span class="CPS-logo"></span>
+        </div>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+        <div class="wrapper main-cotent">
+            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Complex case management</h1>
+            <p><strong>Sign in to your account</strong></p>
+            {% if data['verion_MVP'] == 'true' %}
+                <form method="get" action="13A-search">
+            {% else %}
+                <form method="get" action="2-homepage">
+            {% endif %}
+                <fieldset>
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="offCMS_Username">Username</label>
+                        <input class="govuk-input govuk-input--width-20" id="offCMS_Username" name="offCMS_Username" type="text" aria-describedby="" value="" />
+                    </div>
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="offCMS_Password">Password</label>
+                        <input class="govuk-input govuk-input--width-20" id="offCMS_Password" name="offCMS_Password" type="password" aria-describedby="" value="" />
+                    </div>
+                    <p class="govuk-!-margin-bottom-10"><a href="">I have forgotton my password</a></p>
+                </fieldset>
+                <div class="govuk-form-group govuk-!-margin-top-10">
+                    <fieldset class="govuk-fieldset">
+                        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="offCMS_Remember" name="offCMS_Remember" type="checkbox" value="carcasses">
+                                <label class="govuk-label govuk-checkboxes__label" for="offCMS_Remember">Remember me</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>                
+                <button type="submit" class="govuk-button" style="">Sign in</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="govuk-grid-column-one-half">
+        <div class="login-text">
+            <p class="govuk-body govuk-body-s">
+                Information contained within CMS is processed in accordance with data protection legislation. CMS is classified to hold data up to and including OFFICIAL (SENSITIVE). You must have a legitimate business reason for accessing both the system and any specific case held on the system. All activity is monitored, and misuse or unauthorised use of the system or data therein may result in disciplinary action and/or prosecution.
+            </p>
+            </p>
+            <p class="govuk-body govuk-body-s  govuk-!-margin-bottom-0">
+                As a CMS user you have a responsibility to keep the vital data of victims, defendants and witnesses safe and confidential. If you are made aware of a data breach, you must report it immediately. For information on reporting a breach, go to the Incident Management & Reporting Policy on the Security & Information Assurance intranet hub. By signing into the system, you are agreeing to the Terms and Conditions of use as set out in the CMS, Crown Court Digital Case System (DCS) and Common Platform Security Policy. You can find the policy on the Security & Information Assurance intranet hub.
+            </p>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

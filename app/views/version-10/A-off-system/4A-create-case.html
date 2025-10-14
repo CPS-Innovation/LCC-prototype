@@ -1,0 +1,237 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row" id="create-case-journey">
+    <div class="govuk-grid-column-two-thirds">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+        <div class="wrapper gov-pages">
+
+            <h1 class="govuk-heading-xl" style="">Create a case</h1>
+
+            {% if data['verion_MVP'] == 'true' %}
+                <form method="get" action="5-case-overview" id="newCase_Form-A">  
+            {% else %}
+                <form method="get" action="14-lock-down" id="newCase_Form-A">  
+            {% endif %}
+
+                <fieldset class="govuk-fieldset">
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group" id="">
+                        <label class="govuk-label" for="newCase_OperationName">Operation name</label>
+                        <p id="newCase_OperationName-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter an Operation name</p>
+                        <input class="govuk-input govuk-input--width-20" id="newCase_OperationName" name="newCase_OperationName" type="text">
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    {% if 'seocid' in data['offCMS_Username'] or 'SEOCID' in data['offCMS_Username'] %}
+                        <div class="govuk-form-group" id="">
+                            <label class="govuk-label" for="newCase_DefendantName-Surname">Surname</label>
+                            <input class="govuk-input govuk-input--width-20" id="newCase_DefendantName-Surname" name="newCase_DefendantName-Surname" type="text">
+                        </div>   
+                        <div class="govuk-form-group govuk-!-margin-bottom-6" id="">
+                            <label class="govuk-label" for="newCase_DefendantName-Forename">Forename</label>
+                            <input class="govuk-input govuk-input--width-20" id="newCase_DefendantName-Forename" name="newCase_DefendantName-Forename" type="text">
+                        </div>  
+                    {% else %}
+                        {% if data['verion_MVP'] == 'true' %}
+                            <div class="govuk-form-group govuk-!-margin-bottom-6">
+                        {% else %}
+                            <div class="govuk-form-group govuk-!-margin-bottom-2">
+                        {% endif %}
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend"><h1 class="govuk-fieldset__heading">Add a suspect/defendant</h1></legend>
+                                <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" id="newCase_Defendant_Individual" name="newCase_Defendant" type="checkbox" value="Individual" data-aria-controls="conditional-newCase_Defendant_Individual">
+                                        <label class="govuk-label govuk-checkboxes__label" for="newCase_Defendant_Individual">Individual</label>
+                                    </div>
+                                    <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-newCase_Defendant_Individual">
+                                        <div class="govuk-form-group" id="">
+                                            <label class="govuk-label" for="newCase_DefendantName-Surname">Surname</label>
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_DefendantName-Surname" name="newCase_DefendantName-Surname" type="text">
+                                        </div>   
+                                        <div class="govuk-form-group" id="">
+                                            <label class="govuk-label" for="newCase_DefendantName-Forename">Forename</label>
+                                            <input class="govuk-input govuk-input--width-20" id="newCase_DefendantName-Forename" name="newCase_DefendantName-Forename" type="text">
+                                        </div>  
+                                    </div>
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" id="newCase_Defendant_Company" name="newCase_Defendant" type="checkbox" value="Company" data-aria-controls="conditional-newCase_Defendant_Company">
+                                        <label class="govuk-label govuk-checkboxes__label" for="newCase_Defendant_Company">Company</label>
+                                    </div>
+                                    <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-newCase_Defendant_Company">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label" for="newCase_DefendantName-CompanyName">Company name</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="newCase_DefendantName-CompanyName" name="newCase_DefendantName-CompanyName" type="text" spellcheck="false">
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    {% endif %}
+                    <!-- OPTION 2 - END -->
+
+                    {% if data['verion_MVP'] == 'true' %}
+
+                    {% else %}
+                        <div class="govuk-inset-text govuk-!-margin-top-4"> More suspects/defendants can be added after case creation.</div>
+                    {% endif %}
+
+                    <!-- OPTION 3 - START -->
+                    <div class="govuk-form-group" id="newCase_URN-Value">
+                        <label class="govuk-label" for="newCase_URN">Case URN</label>
+                        <div id="newCase_URN-hint" class="govuk-hint">
+                            This is a generated URN, if you would like to edit this please use the case creation guidance.
+                        </div>
+                        <details class="govuk-details govuk-!-margin-bottom-2">
+                            <summary class="govuk-details__summary">
+                                <span class="govuk-details__summary-text">Case creation guidance</span>
+                            </summary>
+                            <div class="govuk-details__text">
+                                <p class="govuk-body">See below for the details of the URN:</p>
+                                <ul class="govuk-list govuk-list--bullet">
+                                    <li>
+                                        The first two digits represent the location of the case<br>
+                                        <img src="../../../public/images/hint-1.png" alt="URN data 1" class="govuk-!-margin-top-1">
+                                    </li>
+                                    <li>
+                                        The second set of digits represent the type of case
+                                        {% if 'scd' in data['offCMS_Username'] or 'SCD' in data['offCMS_Username'] %}
+                                            for SCD:
+                                            <ul class="govuk-list">
+                                                <li>01 - IPCC ind assault</li>
+                                                <li>02 - IPCC sum assault</li>
+                                                <li>03 - IPCC RASSO</li>
+                                                <li>04 - IPCC MIPO/PCJ</li>
+                                                <li>05 - IPCC DIC</li>
+                                                <li>06 - IPCC other</li>
+                                                <li>07 - Corp man</li>
+                                                <li>08 - Med man</li>
+                                                <li>09 - Other GNM</li>
+                                                <li>10 - Corruption</li>
+                                                <li>11 - DIC</li>
+                                                <li>12 - Election offences</li>
+                                                <li>13 - Assisted suicide</li>
+                                                <li>14 - MPs</li>
+                                                <li>15 - High profile other</li>
+                                                <li>16 - CPS/NCA staff</li>
+                                                <li>17 - Private prosecution</li>
+                                                <li>18 - Disaster</li>
+                                                <li>19 - Other</li>
+                                                <li>20 - Grossly offense communication</li>
+                                            </ul>
+                                        {% elseif 'ctd' in data['offCMS_Username'] or 'CTD' in data['offCMS_Username'] %}
+                                            for CTD:
+                                            <ul class="govuk-list">
+                                                <li>01 - Terrorism</li>
+                                                <li>02 - Inciting Hatred</li>
+                                                <li>03 - Official Secrets Act</li>
+                                                <li>04 - Extraditions</li>
+                                                <li>05 - War Crimes</li>
+                                                <li>06 - Hijacking/Abduction</li>
+                                                <li>07 - Appeals</li>
+                                                <li>08 - Other Types of Cases</li>
+                                                <li>09 - TPIM Monitoring</li>
+                                                <li>10 - Domestic Extremisim</li>
+                                                <li>11 - Supreme Court</li>
+                                                <li>12 - CTIRU</li>
+                                                <li>13 - TPIM Breaches</li>
+                                                <li>14 - TRO</li>
+                                                <li>15 - SOCPA</li>
+                                            </ul>
+                                        {% elseif 'seocid' in data['offCMS_Username'] or 'SEOCID' in data['offCMS_Username'] %}
+                                            for SEOCID :
+                                            <ul class="govuk-list">
+                                                <li>01 - Terrorism</li>
+                                                <li>02 - Inciting Hatred</li>
+                                                <li>03 - Official Secrets Act</li>
+                                                <li>04 - Extraditions</li>
+                                                <li>05 - War Crimes</li>
+                                                <li>06 - Hijacking/Abduction</li>
+                                                <li>07 - Appeals</li>
+                                                <li>08 - Other Types of Cases</li>
+                                                <li>09 - TPIM Monitoring</li>
+                                                <li>10 - Domestic Extremisim</li>
+                                                <li>11 - Supreme Court</li>
+                                                <li>12 - CTIRU</li>
+                                                <li>13 - TPIM Breaches</li>
+                                                <li>14 - TRO</li>
+                                                <li>15 - SOCPA</li>
+                                            </ul>
+                                        {% elseif 'poc' in data['offCMS_Username'] or 'POC' in data['offCMS_Username'] %}
+
+                                        {% else %}
+
+                                        {% endif %}
+                                        <img src="../../../public/images/hint-2.png" alt="URN data 2" class="govuk-!-margin-top-1">
+                                    </li>
+                                    <li>
+                                        The third set of digits are next in sequential order to all other cases created within the Complex Case Divisions<br>
+                                        <img src="../../../public/images/hint-3.png" alt="URN data 3" class="govuk-!-margin-top-1">
+                                    </li>
+                                    <li>
+                                        The last two digits represent the year the case was created<br>
+                                        <img src="../../../public/images/hint-4.png" alt="URN data 4" class="govuk-!-margin-top-1">
+                                    </li>
+                                </ul>
+                            </div>
+                        </details>                        
+                        <div class="form-wrapper">
+                            <input class="govuk-input govuk-input--width-2" id="newCase_URN-A" name="newCase_URN-A" type="text" value="84">
+                            <input class="govuk-input govuk-input--width-2" id="newCase_URN-B" name="newCase_URN-B" type="text" value="">
+                            <input class="govuk-input govuk-input--width-4" id="newCase_URN-C" name="newCase_URN-C" type="text" value="20982">
+                            <p>/</p>
+                            <input class="govuk-input govuk-input--width-2" id="newCase_URN-D" name="newCase_URN-D" type="text" value="24">
+                        </div>
+                    </div>                                
+                    <!-- OPTION 3 - END -->
+
+                    {% if data['verion_MVP'] == 'true' %}
+
+                    {% else %}
+                        <!-- OPTION 4 - START -->
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" id="newCase_URN-Lockdown" name="newCase_URN-Lockdown" type="checkbox" value="Yes">
+                                        <label class="govuk-label govuk-checkboxes__label" for="newCase_URN-Lockdown">Restrict access to this case</label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <!-- OPTION 4 - END -->
+                    {% endif %}
+
+                    <div class="govuk-warning-text govuk-!-margin-bottom-6 govuk-!-margin-top-0" style="margin-left: 0;">
+                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <strong class="govuk-warning-text__text">
+                            <span class="govuk-visually-hidden">Warning</span>
+                            <strong>Shared drive</strong>, <strong>Egress</strong>, <strong>Outlook</strong> and <strong>REMs</strong> folders will be set up automatically for you
+                        </strong>
+                    </div>
+
+                </fieldset>
+
+                <input id="createCaseStarted" name="createCaseStarted" type="text" value="true" style="display: none;">
+                <button type="submit" class="govuk-button" style="">Continue</button>
+                <button type="button" onclick="location.href='2-homepage';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}

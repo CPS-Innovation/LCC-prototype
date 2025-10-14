@@ -1,0 +1,497 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<script>
+// sets the time in the last saved bit
+ $(document).ready(function() {
+    function updateTime() {
+        const now = new Date();
+        now.setSeconds(now.getSeconds() - 10); // Subtract 10 seconds
+        const timeString = now.toLocaleTimeString();
+        document.getElementById('auto-save').textContent = timeString;
+    }
+
+    updateTime(); // Initial call to display time immediately
+    setInterval(updateTime, 11000); // Update every 11 seconds
+});
+
+// this is for the editor buttons - no idea how it works
+document.querySelectorAll('.toolbar button').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        execCmd(this.dataset.command, this.dataset.value || null);
+    });
+});
+
+function execCmd(command, value = null) {
+    document.execCommand(command, false, value);
+}
+
+// document.getElementById('editor').addEventListener('input', function() {
+//     console.log(this.innerHTML); 
+// });
+
+$(document).ready(function() {
+// Function to add days to the current date
+     // Function to add days to the current date
+    function addDays(date, days) {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    }
+
+    // Get today's date
+    const today = new Date();
+
+    // Add 2 days to today's date
+    const newDate = addDays(today, -6);
+
+    // Format the new date as a string
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const newDateString = newDate.toLocaleDateString(undefined, options);
+
+    // Insert the new date into the HTML
+    document.getElementById('date').textContent = newDateString;
+});
+</script>
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+
+        <div class="ea-title-wrapper">
+            {% if data['newCase_OperationName'] or data['newCase_DefendantName-Surname'] or data['newCase_DefendantName-Forename'] %}
+                {% if data['newCase_OperationName'] %}
+                    <h1 class="govuk-heading-l govuk-!-margin-bottom-0" style="">{{ data['newCase_OperationName'] }}</h1>
+                {% else %}
+                    <h1 class="govuk-heading-l govuk-!-margin-bottom-0" style=""><span class="uppercase">{{ data['newCase_DefendantName-Surname'] }}, </span>{{ data['newCase_DefendantName-Forename'] }}</h1>
+                {% endif %}
+                <span class="govuk-caption-m">
+                    {{ data['newCase_URN-A'] }}
+                    {{ data['newCase_URN-B'] }}
+                    {{ data['newCase_URN-C'] }}
+                    /
+                    {{ data['newCase_URN-D'] }}
+                </span>
+            {% elseif data['existing_Case'] == 'true' %}
+                <h1 class="govuk-heading-l govuk-!-margin-bottom-0" style="">Groundhog day</h1>
+                <span class="govuk-caption-m">920620952/24</span>
+            {% endif %}
+            <p>Autosave is on. Last saved <span id="auto-save"></span></p>
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible govuk-!-margin-top-0 govuk-!-margin-bottom-10">
+        </div>
+        
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-4" style="">Early Advice</h2>
+        <nav class="tube-map-ea">
+            <ul>
+                <li class="ea2Part1 selected">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return ea2Part1();">Background</a>
+                </li>
+                <li class="ea2Part2">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return ea2Part2();">Offences considered</a>
+                </li>
+                <li class="ea2Part3">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return ea2Part3();">Relevant law/legal considerations</a>
+                </li>
+                <li class="ea2Part4">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return ea2Part4();">Summary of evidence considered</a>
+                </li>
+                <li class="ea2Part5">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return ea2Part5();">Disclosure considerations</a>
+                </li>
+                <li class="ea2Part6">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return ea2Part6();">Advice and assessment of evidence</a>
+                </li>
+                <li class="ea2Part7">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return ea2Part7();">Action plan/line of enquiry</a>
+                </li>
+                <li class="ea2Part8">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="black" stroke-width="5" d="M2 12l5 5L20 4"></path></svg>
+                    <a onclick="return ea2Part8();">Preview</a>
+                </li>
+           </ul>
+        </nav>
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+
+        <!-- //////////////////////////////// 1 - Background - START //////////////////////////////// -->
+        <div class="ea-content-panel show-panel" id="ea2Part1">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Background</h2>
+            <p>Provide a brief background of the case and any facts known to you.</p>
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Help with background notes</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod malesuada felis nec fermentum. Donec non neque tempor, pharetra neque vitae, euismod neque.</p>
+                    <ol class="govuk-list govuk-list--number">
+                        <li>donec a odio tristique, feugiat velit et, semper leo. Donec mauris felis, porta et nunc a, lobortis commodo magna. Cras vel ornare lectus, vel scelerisque augue</li>
+                        <li>suspendisse tempus ligula sem, ac auctor erat egestas quis. Morbi ut aliquet nisl</li>
+                        <li>praesent quis purus sit amet felis mollis ultricies ut at tellus</li>
+                        <li>suspendisse leo lacus, mollis sed facilisis nec, lobortis ut lacus</li>
+                        <li>sed in neque eget dui luctus tincidunt eu eu ligula. Quisque et ex ac risus pretium sagittis. Mauris ornare arcu quis massa varius tempus</li>
+                    </ol>
+                    <p>Fusce quis sollicitudin velit. Phasellus faucibus dui nec dictum dapibus. Morbi sapien augue, elementum eget hendrerit sit amet, viverra id lacus.</p>
+                </div>
+            </details>
+            <div class="govuk-form-group">
+                
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="ea2Part1-Editor" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return ea2Part2();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="caseSettings" name="caseSettings" type="text" value="false" style="display: none;">
+                    <input id="caseAccess" name="caseAccess" type="text" value="false" style="display: none;">
+                    <input id="completeAndExit-1" name="completeAndExitEA" type="text" value="true" style="display: none;">
+                    <button type="submit" data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCA();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 1 - Background - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 2 - Offences considered - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="ea2Part2">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Offences considered</h2>
+            <p>Add offences considered by you for the investigating agency.</p>
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Help with offences considered notes</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod malesuada felis nec fermentum. Donec non neque tempor, pharetra neque vitae, euismod neque.</p>
+                    <ol class="govuk-list govuk-list--number">
+                        <li>donec a odio tristique, feugiat velit et, semper leo. Donec mauris felis, porta et nunc a, lobortis commodo magna. Cras vel ornare lectus, vel scelerisque augue</li>
+                        <li>suspendisse tempus ligula sem, ac auctor erat egestas quis. Morbi ut aliquet nisl</li>
+                        <li>praesent quis purus sit amet felis mollis ultricies ut at tellus</li>
+                        <li>suspendisse leo lacus, mollis sed facilisis nec, lobortis ut lacus</li>
+                        <li>sed in neque eget dui luctus tincidunt eu eu ligula. Quisque et ex ac risus pretium sagittis. Mauris ornare arcu quis massa varius tempus</li>
+                    </ol>
+                    <p>Fusce quis sollicitudin velit. Phasellus faucibus dui nec dictum dapibus. Morbi sapien augue, elementum eget hendrerit sit amet, viverra id lacus.</p>
+                </div>
+            </details>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="ea2Part2-Editor" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return ea2Part3();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="caseSettings" name="caseSettings" type="text" value="false" style="display: none;">
+                    <input id="caseAccess" name="caseAccess" type="text" value="false" style="display: none;">
+                    <input id="completeAndExit-2" name="completeAndExitEA" type="text" value="true" style="display: none;">
+                    <button type="submit" data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCA();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 2 - Offences considered - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 3 - Relevant Law/Legal Considerations - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="ea2Part3">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Relevant law/legal considerations</h2>
+            <p>Relevant law/legal considerations you can give to the investigating agency.</p>
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Help with relevant law/legal considerations</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod malesuada felis nec fermentum. Donec non neque tempor, pharetra neque vitae, euismod neque.</p>
+                    <ol class="govuk-list govuk-list--number">
+                        <li>donec a odio tristique, feugiat velit et, semper leo. Donec mauris felis, porta et nunc a, lobortis commodo magna. Cras vel ornare lectus, vel scelerisque augue</li>
+                        <li>suspendisse tempus ligula sem, ac auctor erat egestas quis. Morbi ut aliquet nisl</li>
+                        <li>praesent quis purus sit amet felis mollis ultricies ut at tellus</li>
+                        <li>suspendisse leo lacus, mollis sed facilisis nec, lobortis ut lacus</li>
+                        <li>sed in neque eget dui luctus tincidunt eu eu ligula. Quisque et ex ac risus pretium sagittis. Mauris ornare arcu quis massa varius tempus</li>
+                    </ol>
+                    <p>Fusce quis sollicitudin velit. Phasellus faucibus dui nec dictum dapibus. Morbi sapien augue, elementum eget hendrerit sit amet, viverra id lacus.</p>
+                </div>
+            </details>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="ea2Part3-Editor" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return ea2Part4();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="caseSettings" name="caseSettings" type="text" value="false" style="display: none;">
+                    <input id="caseAccess" name="caseAccess" type="text" value="false" style="display: none;">
+                    <input id="completeAndExit-3" name="completeAndExitEA" type="text" value="true" style="display: none;">
+                    <button type="submit" data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCA();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 3 - Relevant Law/Legal Considerations - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 4 - Summary of Evidence Considered - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="ea2Part4">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Summary of evidence considered</h2>
+            <p>Provide a summary of evidence considered to reference throughout the case.</p>
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Help with summary of evidence considered notes</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod malesuada felis nec fermentum. Donec non neque tempor, pharetra neque vitae, euismod neque.</p>
+                    <ol class="govuk-list govuk-list--number">
+                        <li>donec a odio tristique, feugiat velit et, semper leo. Donec mauris felis, porta et nunc a, lobortis commodo magna. Cras vel ornare lectus, vel scelerisque augue</li>
+                        <li>suspendisse tempus ligula sem, ac auctor erat egestas quis. Morbi ut aliquet nisl</li>
+                        <li>praesent quis purus sit amet felis mollis ultricies ut at tellus</li>
+                        <li>suspendisse leo lacus, mollis sed facilisis nec, lobortis ut lacus</li>
+                        <li>sed in neque eget dui luctus tincidunt eu eu ligula. Quisque et ex ac risus pretium sagittis. Mauris ornare arcu quis massa varius tempus</li>
+                    </ol>
+                    <p>Fusce quis sollicitudin velit. Phasellus faucibus dui nec dictum dapibus. Morbi sapien augue, elementum eget hendrerit sit amet, viverra id lacus.</p>
+                </div>
+            </details>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="ea2Part4-Editor" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return ea2Part5();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="caseSettings" name="caseSettings" type="text" value="false" style="display: none;">
+                    <input id="caseAccess" name="caseAccess" type="text" value="false" style="display: none;">
+                    <input id="completeAndExit-4" name="completeAndExitEA" type="text" value="true" style="display: none;">
+                    <button type="submit" data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCA();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 4 - Summary of Evidence Considered - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 5 - Disclosure considerations - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="ea2Part5">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Disclosure considerations</h2>
+            <p>Provide a description of the disclosure considerations.</p>
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Help with disclosure considerations notes</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod malesuada felis nec fermentum. Donec non neque tempor, pharetra neque vitae, euismod neque.</p>
+                    <ol class="govuk-list govuk-list--number">
+                        <li>donec a odio tristique, feugiat velit et, semper leo. Donec mauris felis, porta et nunc a, lobortis commodo magna. Cras vel ornare lectus, vel scelerisque augue</li>
+                        <li>suspendisse tempus ligula sem, ac auctor erat egestas quis. Morbi ut aliquet nisl</li>
+                        <li>praesent quis purus sit amet felis mollis ultricies ut at tellus</li>
+                        <li>suspendisse leo lacus, mollis sed facilisis nec, lobortis ut lacus</li>
+                        <li>sed in neque eget dui luctus tincidunt eu eu ligula. Quisque et ex ac risus pretium sagittis. Mauris ornare arcu quis massa varius tempus</li>
+                    </ol>
+                    <p>Fusce quis sollicitudin velit. Phasellus faucibus dui nec dictum dapibus. Morbi sapien augue, elementum eget hendrerit sit amet, viverra id lacus.</p>
+                </div>
+            </details>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="ea2Part5-Editor" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return ea2Part6();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="caseSettings" name="caseSettings" type="text" value="false" style="display: none;">
+                    <input id="caseAccess" name="caseAccess" type="text" value="false" style="display: none;">
+                    <input id="completeAndExit-5" name="completeAndExitEA" type="text" value="true" style="display: none;">
+                    <button type="submit" data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCA();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 5 - Disclosure considerations - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 6 - Advice and assessemt of evidence - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="ea2Part6">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Advice and assessment of evidence</h2>
+            <p>Provide advice and assessment of evidence.</p>
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Help with advice and assessment of evidence notes</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod malesuada felis nec fermentum. Donec non neque tempor, pharetra neque vitae, euismod neque.</p>
+                    <ol class="govuk-list govuk-list--number">
+                        <li>donec a odio tristique, feugiat velit et, semper leo. Donec mauris felis, porta et nunc a, lobortis commodo magna. Cras vel ornare lectus, vel scelerisque augue</li>
+                        <li>suspendisse tempus ligula sem, ac auctor erat egestas quis. Morbi ut aliquet nisl</li>
+                        <li>praesent quis purus sit amet felis mollis ultricies ut at tellus</li>
+                        <li>suspendisse leo lacus, mollis sed facilisis nec, lobortis ut lacus</li>
+                        <li>sed in neque eget dui luctus tincidunt eu eu ligula. Quisque et ex ac risus pretium sagittis. Mauris ornare arcu quis massa varius tempus</li>
+                    </ol>
+                    <p>Fusce quis sollicitudin velit. Phasellus faucibus dui nec dictum dapibus. Morbi sapien augue, elementum eget hendrerit sit amet, viverra id lacus.</p>
+                </div>
+            </details>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="ea2Part6-Editor" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return ea2Part7();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="caseSettings" name="caseSettings" type="text" value="false" style="display: none;">
+                    <input id="caseAccess" name="caseAccess" type="text" value="false" style="display: none;">
+                    <input id="completeAndExit-6" name="completeAndExitEA" type="text" value="true" style="display: none;">
+                    <button type="submit" data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCA();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 6 - Advice and assessemt of evidence - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 7 - Action plan/line of enquiry - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="ea2Part7">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Action plan/line of enquiry</h2>
+            <p>Provide an action plan/line of enquiry.</p>
+            <details class="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">Help with action plan/line of enquiry notes</span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod malesuada felis nec fermentum. Donec non neque tempor, pharetra neque vitae, euismod neque.</p>
+                    <ol class="govuk-list govuk-list--number">
+                        <li>donec a odio tristique, feugiat velit et, semper leo. Donec mauris felis, porta et nunc a, lobortis commodo magna. Cras vel ornare lectus, vel scelerisque augue</li>
+                        <li>suspendisse tempus ligula sem, ac auctor erat egestas quis. Morbi ut aliquet nisl</li>
+                        <li>praesent quis purus sit amet felis mollis ultricies ut at tellus</li>
+                        <li>suspendisse leo lacus, mollis sed facilisis nec, lobortis ut lacus</li>
+                        <li>sed in neque eget dui luctus tincidunt eu eu ligula. Quisque et ex ac risus pretium sagittis. Mauris ornare arcu quis massa varius tempus</li>
+                    </ol>
+                    <p>Fusce quis sollicitudin velit. Phasellus faucibus dui nec dictum dapibus. Morbi sapien augue, elementum eget hendrerit sit amet, viverra id lacus.</p>
+                </div>
+            </details>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="ea2Part7-Editor" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ea-panel-cta">
+                <button type="submit" class="govuk-button" data-module="govuk-button" onclick="return ea2Part8();">Continue</button>
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="caseSettings" name="caseSettings" type="text" value="false" style="display: none;">
+                    <input id="caseAccess" name="caseAccess" type="text" value="false" style="display: none;">
+                    <input id="completeAndExit-7" name="completeAndExitEA" type="text" value="true" style="display: none;">
+                    <button type="submit" data-module="govuk-button" class="govuk-button govuk-button--secondary" onclick="return saveCA();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 7 - Action plan/line of enquiry - END //////////////////////////////// -->
+
+        <!-- //////////////////////////////// 8 - PREVIEW - START //////////////////////////////// -->
+        <div class="ea-content-panel" id="ea2Part8">
+            <h2 class="govuk-heading-l govuk-!-margin-top-2">Preview</h2>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div class="editor-container">
+                        <div class="toolbar">
+                            <button onclick="execCmd('bold')"><b>B</b></button>
+                            <button onclick="execCmd('italic')"><i>I</i></button>
+                            <button onclick="execCmd('underline')"><u>U</u></button>
+                            <button onclick="execCmd('fontSize', '5')">A<small>A</small></button>
+                            <button onclick="execCmd('insertOrderedList')">1.</button>
+                            <button onclick="execCmd('insertUnorderedList')">•</button>
+                        </div>
+                        <div id="ea2Part8-Preview" contenteditable="true" class="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="ea-panel-cta">
+                <form action="5-case-overview#eaTab" method="get" class="form" style="">
+                    <input id="completeAndExit-8#eaTab" name="completeAndExitEA" type="text" value="true" style="display: none;">
+                    <button type="submit" data-module="govuk-button" class="govuk-button" onclick="return saveCA();">Complete and exit</button>
+                </form>
+            </div>
+        </div>
+        <!-- //////////////////////////////// 8 - PREVIEW - END //////////////////////////////// -->
+
+    </div>
+</div>
+
+{% endblock %}

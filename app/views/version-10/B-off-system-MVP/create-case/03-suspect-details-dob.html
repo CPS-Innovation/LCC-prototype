@@ -1,0 +1,67 @@
+{% extends "layoutCPS-OFF.html" %}
+{% block header %}
+    {% include "../../includes/banner-OFF-V7.html" %}
+{% endblock %}
+{% block beforeContent %}
+<a class="govuk-back-link" href="javascript:history.back()">Back</a>
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row" id="create-case-journey">
+
+    <div class="govuk-grid-column-two-thirds">
+        <div class="gov-pages">
+            <form method="post" action="/version-10/B-off-system-MVP/create-case/03-suspect-details-dob">  
+
+                <!-- ***** Date of birth ***** -->
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset" role="group" aria-describedby="date-of-birth-hint">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            What is {{data['suspect-person-first-name']}} {{data['suspect-person-last-name']}}'s date of birth?
+                        </h1>
+                        </legend>
+                        <div id="date-of-birth-hint" class="govuk-hint">
+                        For example, 27 3 2007
+                        </div>
+                        <div class="govuk-date-input" id="date-of-birth">
+                            <div class="govuk-date-input__item">
+                                <div class="govuk-form-group">
+                                <label class="govuk-label govuk-date-input__label" for="date-of-birth-day">
+                                    Day
+                                </label>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="date-of-birth-day" name="date-of-birth-day" type="text" inputmode="numeric" value="{{ data['suspectDayBirth'][data['editSuspect']]}}">
+                                </div>
+                            </div>
+                            <div class="govuk-date-input__item">
+                                <div class="govuk-form-group">
+                                <label class="govuk-label govuk-date-input__label" for="date-of-birth-month">
+                                    Month
+                                </label>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="date-of-birth-month" name="date-of-birth-month" type="number" inputmode="numeric" value="{{ data['suspectMonthBirth'][data['editSuspect']]}}">
+                                </div>
+                            </div>
+                            <div class="govuk-date-input__item">
+                                <div class="govuk-form-group">
+                                <label class="govuk-label govuk-date-input__label" for="date-of-birth-year">
+                                    Year
+                                </label>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="date-of-birth-year" name="date-of-birth-year" type="number" inputmode="numeric" value="{{ data['suspectYearBirth'][data['editSuspect']]}}">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                {% include "../../includes/buttons.html" %}
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}
