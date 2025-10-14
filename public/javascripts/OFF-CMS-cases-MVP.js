@@ -3466,7 +3466,7 @@ $(document).ready(function () {
     
     $('.create_case_date_picker').on("click", function (e) {
         $(this).show();
-        $('#arrest-date-yo').val('11/10/2025');
+        $('#arrest-date-yo').val('13/10/2025');
     }); 
 
     $('input[name=newCase_Suspect_YesNo], input[name=newCase_Witness_YesNo]').on("click", function (e) {
