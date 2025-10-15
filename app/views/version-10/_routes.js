@@ -467,6 +467,9 @@ router.post('/B-off-system-MVP/create-case/03-edit-suspect-router', function(req
 // ************************************************** End of suspects **************************************************
 
 
+
+// ************************************************** Start of charges **************************************************
+
 // Want to add charges
 router.post('/B-off-system-MVP/create-case/04-want-to-add-charges', function(req, res) {
     req.session.data.wantToAddCharges = req.body['add-charges']
@@ -491,10 +494,6 @@ router.post('/B-off-system-MVP/create-case/04-want-to-add-charges', function(req
 // Add charges - select suspect
 router.post('/B-off-system-MVP/create-case/04-add-charges-suspect', function(req, res) {
     count = req.session.data.chargeCount
-    // console.log("Charge count:",count)
-    
-    // req.session.data.chargeId[count] = count
-    // // console.log("Charge id:",req.session.data.chargeId[count])
 
     req.session.data.chargeSuspectId[count] = req.body['suspect-charges'] 
     if (req.body['suspect-charges'] == 'Suspect not listed') {
@@ -509,8 +508,28 @@ router.post('/B-off-system-MVP/create-case/04-add-charges-suspect', function(req
         res.redirect('/version-10/B-off-system-MVP/create-case/03-add-suspect')
     }
     else {
-        res.redirect('/version-10/B-off-system-MVP/create-case/04-add-charges')
+        res.redirect('/version-10/B-off-system-MVP/create-case/04-charges-offence-search')
     }
+})
+
+
+// Add charges - offence search
+router.post('/B-off-system-MVP/create-case/04-charges-offence-search', function(req, res) {
+    count = req.session.data.chargeCount
+    req.session.data.chargeSearch = req.body['charge-search']
+
+    res.redirect('/version-10/B-off-system-MVP/create-case/04-charges-offence-search-results')
+})
+
+// Add charges - offence search results
+router.post('/B-off-system-MVP/create-case/04-charges-offence-search-results', function(req, res) {
+    count = req.session.data.chargeCount
+    req.session.data.chargeCode[count] = req.session.data.resultsChargeCode[req.body['add-charge']]
+    req.session.data.currentChargeId = req.body['add-charge']
+
+    req.session.data.chargeDescription[count] = req.session.data.resultsChargeDescription[req.session.data.currentChargeId]
+
+    res.redirect('/version-10/B-off-system-MVP/create-case/04-add-charges')
 })
 
 
@@ -534,8 +553,8 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
         req.session.data.chargeSuspectId[count] = 0
     }
 
-    req.session.data.chargeCode[count] = req.body['newChargeCode']
-    req.session.data.chargeDescription[count] = req.body['newCharge_Description']
+    // req.session.data.chargeCode[count] = req.body['newChargeCode']
+    // req.session.data.chargeDescription[count] = req.body['newCharge_Description']
     req.session.data.chargeFromDay[count] = req.body['addCharge_Form_Date-Day']
     req.session.data.chargeFromMonth[count] = req.body['addCharge_Form_Date-Month']
     req.session.data.chargeFromYear[count] = req.body['addCharge_Form_Date-Year']
@@ -567,15 +586,6 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
     console.log("Charged with adult:",req.session.data.chargedWithAdult[count])
 
 
-    // const grouped = {};
-    // req.session.data.chargeId.forEach((cid, i) => {
-    //     const sid = req.session.data.chargeSuspectId[i];
-    //     if (!grouped[sid]) grouped[sid] = [];
-    //     grouped[sid].push({ chargeId: cid, chargeSuspectId: sid, chargeCode: req.session.data.chargeCode[i], chargeDescription: req.session.data.chargeDescription[i], chargeFromDay: req.session.data.chargeFromDay[i], chargeFromMonth: req.session.data.chargeFromMonth[i], chargeFromYear: req.session.data.chargeFromYear[i], chargeToDay: req.session.data.chargeToDay[i], chargeToMonth: req.session.data.chargeToMonth[i], chargeToYear: req.session.data.chargeToYear[i], chargeComments: req.session.data.chargeComments[i], chargeVictimFirstName: req.session.data.chargeVictimFirstName[i], chargeVictimLastName: req.session.data.chargeVictimLastName[i], chargeVictimVulnerable: req.session.data.chargeVictimVulnerable[i], chargeVictimIntimidated: req.session.data.chargeVictimIntimidated[i], chargeVictimWitness: req.session.data.chargeVictimWitness[i], chargedWithAdult: req.session.data.chargedWithAdult[i] });
-    // });
-
-    // req.session.data.grouped = grouped;  // save for later
-
     req.session.data.chargeCount = count + 1
     console.log("Charge count 2:",req.session.data.chargeCount)
     // console.log("Grouped:",req.session.data.grouped)
@@ -593,7 +603,6 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
 
     req.session.data.counts = counts;  // save for later
     console.log(counts);
-//    console.log(counts[5], counts[2], counts[9], counts[4]);
 
    res.redirect('/version-10/B-off-system-MVP/create-case/04-charges-summary')
 })
@@ -615,6 +624,9 @@ router.get('/B-off-system-MVP/create-case/04-charges-summary', function(req, res
         grouped: req.session.data.grouped
     });
 })
+
+// ************************************************** End of charges **************************************************
+
 
 
 // Complexity 

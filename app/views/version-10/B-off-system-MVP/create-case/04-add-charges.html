@@ -11,37 +11,18 @@
     <div class="govuk-grid-column-two-thirds">
         <div class="wrapper gov-pages">
 
-            <h1 class="govuk-heading-l">Suspect charges for {% if data['suspectCompanyName'][data['currentSuspectId']] %} {{ data['suspectCompanyName'][data['currentSuspectId']] }} {% else %} <span class="uppercase">{{data['suspectLastName'][data['currentSuspectId']]}}</span>, {{data['suspectFirstName'][data['currentSuspectId']]}} {% endif %}</h1>
+            <h1 class="govuk-heading-l">Charges for {% if data['suspectCompanyName'][data['currentSuspectId']] %} {{ data['suspectCompanyName'][data['currentSuspectId']] }} {% else %} <span class="uppercase">{{data['suspectLastName'][data['currentSuspectId']]}}</span>, {{data['suspectFirstName'][data['currentSuspectId']]}} {% endif %}{% if data['suspectOffenderType'][data['currentSuspectId']] == 'Both prolific priority offender (PPO) and prolific youth offender (PYO)' or data['suspectOffenderType'][data['currentSuspectId']] == 'Youth offender (YO)' or data['suspectOffenderType'][data['currentSuspectId']] == 'Youth offender (YO)' %}&nbsp;&nbsp;<strong class="govuk-tag govuk-tag--light-blue">Youth</strong> {% endif %}</span></h1>
+
+            <h2 class="govuk-heading-m">{{ data['resultsChargeCode'][data['currentChargeId']] }} &ndash; {{ data['resultsChargeDescription'][data['currentChargeId']] }}</h2>
 
             <!-- <form method="get" action="04-charges-summary" id="newCase_Form-C4">   -->
             <form method="post" action="/version-10/B-off-system-MVP/create-case/04-add-charges">  
-
-                <p> </p>
-
-                <!-- OPTION 1 - START -->
-                <div class="govuk-form-group" id="">
-                    <label class="govuk-label govuk-!-font-weight-bold">
-                        What was the offence code?
-                    </label>
-                    <input class="govuk-input govuk-input--width-10" id="newChargeCode" name="newChargeCode" type="text">
-                    <p class="floating-link"><a href="#" id="charge_code_V1">Look up code</a></p>
-                </div>
-                <!-- OPTION 1 - END -->
-
-                <!-- OPTION 2 - START -->
-                <div class="govuk-form-group" id="">
-                    <label class="govuk-label govuk-!-font-weight-bold">
-                        Description
-                    </label>
-                    <textarea class="govuk-textarea" id="newCharge_Description" name="newCharge_Description" rows="5" aria-describedby="newCharge_Description-hint"></textarea>
-                </div>
-                <!-- OPTION 2 - END -->
 
                 <!-- OPTION 3 - START -->
                 <div class="date_range_wrapper">
                     <div class="govuk-form-group" id="dateRange-Container">
                         <fieldset class="govuk-fieldset" role="group" aria-describedby="addCharge_Form-hint">
-                            <legend class="govuk-fieldset__legend">When was the offence?</legend>
+                            <legend class="govuk-fieldset__legend govuk-!-font-weight-bold">When was the offence?</legend>
                             <p id="addCharge_Form_Date-Day-Error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter the date of offence</p>
                             <div class="govuk-date-input" id="addCharge_Form_Date">
                                 <div class="govuk-date-input__item">
@@ -107,14 +88,6 @@
                 </div>
                 <!-- OPTION 3 - END -->
 
-                <!-- OPTION 4 - START -->
-                <div class="govuk-form-group" id="">
-                    <label class="govuk-label govuk-!-font-weight-bold">
-                        Are there any comments?
-                    </label>
-                    <textarea class="govuk-textarea" id="newCharge_Comment" name="newCharge_Comment" rows="5" aria-describedby="newCharge_Comment-hint"></textarea>
-                </div>
-                <!-- OPTION 4 - END -->
 
                 <!-- OPTION 5 - START -->
                 <div class="govuk-form-group">
@@ -122,7 +95,7 @@
                     <label class="govuk-label govuk-!-font-weight-bold">
                         Was there a victim?
                     </label>
-                        <div class="govuk-radios  govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios govuk-radios" data-module="govuk-radios">
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" id="newCharge_Victim_Name_Yes" name="newCharge_Victim_YesNo" type="radio" value="Yes" data-aria-controls="conditional-newCharge_Victim_Name">
                                 <label class="govuk-label govuk-radios__label" for="newCharge_Victim_Name_Yes">Yes</label>
@@ -137,7 +110,7 @@
                                         <input class="govuk-input govuk-input--width-20" id="newCharge_Victim_SurnameName" name="newCharge_Victim_SurnameName" type="text">
                                 </div>
                                 <div class="govuk-form-group" id="">
-                                    <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                                         <div class="govuk-checkboxes__item">
                                                 <input class="govuk-checkboxes__input" id="newCharge_Vulnerable" name="newCharge_Vulnerable" type="checkbox" value="Vulnerable">
                                             <label class="govuk-label govuk-checkboxes__label" for="newCharge_Vulnerable">Vulnerable</label>
@@ -162,11 +135,19 @@
                     </fieldset>
                 </div>                    
                 <!-- OPTION 5 - END -->
+                <!-- OPTION 4 - START -->
+                <div class="govuk-form-group" id="">
+                    <label class="govuk-label govuk-!-font-weight-bold">
+                        Are there any comments?
+                    </label>
+                    <textarea class="govuk-textarea" id="newCharge_Comment" name="newCharge_Comment" rows="2" aria-describedby="newCharge_Comment-hint"></textarea>
+                </div>
+                <!-- OPTION 4 - END -->
 
                 <!-- OPTION 7 - START -->
-                {% if data['suspectOffenderType'][data['currentSuspectId']] == 'Both PPO and PYO' or data['suspectOffenderType'][data['currentSuspectId']] == 'Prolific youth offender (PYO)' or data['suspectOffenderType'][data['currentSuspectId']] == 'Youth offender (YO)' %}
+                {% if data['suspectOffenderType'][data['currentSuspectId']] == 'Both prolific priority offender (PPO) and prolific youth offender (PYO)' or data['suspectOffenderType'][data['currentSuspectId']] == 'Prolific youth offender (PYO)' or data['suspectOffenderType'][data['currentSuspectId']] == 'Youth offender (YO)' %}
                     <div class="govuk-form-group" id="">
-                        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                             <div class="govuk-checkboxes__item">
                                 <input class="govuk-checkboxes__input" id="newCharge_WithAdult" name="newCharge_WithAdult" type="checkbox" value="Charged with an adult">
                                 <label class="govuk-label govuk-checkboxes__label" for="newCharge_WithAdult">Charged with an adult</label>

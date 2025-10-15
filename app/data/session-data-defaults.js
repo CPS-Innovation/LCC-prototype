@@ -100,6 +100,11 @@ module.exports = {
 
   "chargeId": [],
   "chargeSuspectId": [],
+
+  "chargeSearch": "",
+  "searchResultsStatus": "hidden",
+
+
   "chargeCode": [],
   "chargeDescription": [],
   "chargeFromDay": [],
@@ -119,6 +124,24 @@ module.exports = {
   "chargedWithAdult": [],
   "grouped": [],
   "counts": [],
+  "currentChargeId": 0,
+
+
+
+// Charge codes and descriptions on results
+  "resultsId": ['0', '1', '2', '3', '4', '5', '6', '7', '8'],
+
+  "resultsChargeCode": ['CD71003', 'CD71015', 'CD71016', 'CD71017', 'CD71038', 'CD71039', 'CD71040', 'CD71041', 'CD71042'],
+  
+  "resultsChargeDescription": ['Arson with intent / reckless as to whether life was endangered', 'Arson', 'Arson with intent to endanger life', 'Arson - recklessly endangering life', 'Criminal damage to property - value over £5000', 	'Criminal damage to property valued under £5000', 'Destroy / damage to property of a value unknown', '	Damage / destroy property with intent to endager life', '	Criminal damage - recklessly endagering life'	],
+  
+  "resultsStatute": ['Criminal Damage Act 1971 Sections 1(2), 1(3) and 4', 'Criminal Damage Act 1971 Sections 1(1), 1(3) and 4', 'Criminal Damage Act 1971 Sections 1(2), 1(3) and 4', 'Criminal Damage Act 1971 Sections 1(2), 1(3) and 4', 'Criminal Damage Act 1971 Sections 1(1) and 4', 'Criminal Damage Act 1971 Sections 1(1) and 4', 'Criminal Damage Act 1971 Sections 1(1) and 4', 'Criminal Damage Act 1971 Sections 1(2) and 4', 'Criminal Damage Act 1971 Sections 1(2) and 4'],
+
+  "resultsFromDate": ['01/01/2012', '14/10/1971', '05/01/1971', '17/11/2005', '02/01/1971', '02/01/1971', '02/01/1971', '02/01/1971', '02/01/1971'],
+
+  "resultsToDate": ['16/06/2019', '', '31/12/2011', '31/12/2011', '', '', '', '', ''],
+
+
   
 
 
