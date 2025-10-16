@@ -255,18 +255,17 @@
                                             <dd class="govuk-summary-list__value">
                                                 {% if data['chargeVictimLastName'][i] %} {{data['chargeVictimFirstName'][i]}} {{data['chargeVictimLastName'][i]}} {% else %} Not entered {% endif %}
                                                 {% if data['chargeVictimVulnerable'][i] or data['chargeVictimIntimidated'][i] or data['chargeVictimWitness'][i] %}
-                                                <ul class="govuk-list govuk-list--bullet">
-                                                    {% if data['chargeVictimVulnerable'][i] %}<li>Vulnerable</li>{% endif %}
-                                                    {% if data['chargeVictimIntimidated'][i] %}<li>Intimidated</li>{% endif %}
-                                                    {% if data['chargeVictimWitness'][i] %}<li>Witness</li>{% endif %}
-                                                </ul>
+                                                    <br>                              
+                                                    {% if data['chargeVictimVulnerable'][i] %}<strong class="govuk-tag govuk-tag--blue govuk-!-margin-top-1">Vulnerable</strong>{% endif %}
+                                                    {% if data['chargeVictimIntimidated'][i] %}<strong class="govuk-tag govuk-tag--blue govuk-!-margin-top-1">Intimidated</strong>{% endif %}
+                                                    {% if data['chargeVictimWitness'][i] %}<strong class="govuk-tag govuk-tag--blue govuk-!-margin-top-1">Witness</strong>{% endif %}
                                                 {% endif %}
                                             </dd>
                                             <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> victim details</span></a></dd>
                                         </div>
 
                                         <div class="govuk-summary-list__row">
-                                            <dt class="govuk-summary-list__key">Offence address</dt>
+                                            <dt class="govuk-summary-list__key">Offence location</dt>
                                             <dd class="govuk-summary-list__value">
                                                 {% if data['offenceAddress1'][i] %} 
                                                 {{data['offenceAddress1'][i]}} 
@@ -390,18 +389,17 @@
                                             <dd class="govuk-summary-list__value">
                                                 {% if data['chargeVictimLastName'][i] %} {{data['chargeVictimFirstName'][i]}} {{data['chargeVictimLastName'][i]}} {% else %} Not entered {% endif %}
                                                 {% if data['chargeVictimVulnerable'][i] or data['chargeVictimIntimidated'][i] or data['chargeVictimWitness'][i] %}
-                                                <ul class="govuk-list govuk-list--bullet">
-                                                    {% if data['chargeVictimVulnerable'][i] %}<li>Vulnerable</li>{% endif %}
-                                                    {% if data['chargeVictimIntimidated'][i] %}<li>Intimidated</li>{% endif %}
-                                                    {% if data['chargeVictimWitness'][i] %}<li>Witness</li>{% endif %}
-                                                </ul>
+                                                    <br>                              
+                                                    {% if data['chargeVictimVulnerable'][i] %}<strong class="govuk-tag govuk-tag--blue govuk-!-margin-top-1">Vulnerable</strong>{% endif %}
+                                                    {% if data['chargeVictimIntimidated'][i] %}<strong class="govuk-tag govuk-tag--blue govuk-!-margin-top-1">Intimidated</strong>{% endif %}
+                                                    {% if data['chargeVictimWitness'][i] %}<strong class="govuk-tag govuk-tag--blue govuk-!-margin-top-1">Witness</strong>{% endif %}
                                                 {% endif %}
                                             </dd>
                                             <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> victim details</span></a></dd>
                                         </div>
 
                                         <div class="govuk-summary-list__row">
-                                            <dt class="govuk-summary-list__key">Offence address</dt>
+                                            <dt class="govuk-summary-list__key">Offence location</dt>
                                             <dd class="govuk-summary-list__value">
                                                 {% if data['offenceAddress1'][i] %} 
                                                 {{data['offenceAddress1'][i]}} 

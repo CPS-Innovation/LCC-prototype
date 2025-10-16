@@ -63,11 +63,11 @@
                 <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
                     <th scope="col" class="govuk-table__header govuk-!-font-weight-bold sortable" data-sort="string">CJS Code</th>
-                    <th scope="col" class="govuk-table__header govuk-!-font-weight-bold sortable govuk-!-width-one-third" data-sort="string">Description</th>
-                    <th scope="col" class="govuk-table__header govuk-!-font-weight-bold govuk-!-width-one-quarter" data-sort="string">Statute name and section</th>
-                    <th scope="col" class="govuk-table__header govuk-!-font-weight-bold" style="width:20%" data-sort="date">Effective dates</th>
-                    <!-- <th scope="col" class="govuk-table__header govuk-!-font-weight-bold govuk-!-width-one-eight" data-sort="date">Effective to date</th> -->
-                    <th scope="col" class="govuk-table__header govuk-!-font-weight-bold govuk-table__header--numeric" style="width:10%">Actions</th>
+                    <th scope="col" class="govuk-table__header govuk-!-font-weight-bold sortable" data-sort="string">Description</th>
+                    <th scope="col" class="govuk-table__header govuk-!-font-weight-bold " data-sort="string">Statute name and section</th>
+                    <th scope="col" class="govuk-table__header govuk-!-font-weight-bold govuk-!-width-one-eight" data-sort="date">Effective from date</th>
+                    <th scope="col" class="govuk-table__header govuk-!-font-weight-bold govuk-!-width-one-eight" data-sort="date">Effective to date</th>
+                    <th scope="col" class="govuk-table__header govuk-!-font-weight-bold govuk-table__header--numeric">Actions</th>
                     </tr>
                 </thead>
 
@@ -98,11 +98,8 @@
                             {{ data['resultsStatute'][id]}}
                             <br>{{ data['resultsSection'][id]}}
                         </td>
-                        <td class="govuk-table__cell">
-                            From {{ data['resultsFromDate'][id]}}
-                            {% if data['resultsToDate'][id] %}<br> to {{data['resultsToDate'][id]}} {% endif %}
-                        </td>
-                        <!-- <td class="govuk-table__cell">{{ data['resultsToDate'][id]}}</td> -->
+                        <td class="govuk-table__cell">{{ data['resultsFromDate'][id]}}</td>
+                        <td class="govuk-table__cell">{{ data['resultsToDate'][id]}}</td>
                         <td class="govuk-table__cell  govuk-table__header--numeric">
                             <form action="/version-10/B-off-system-MVP/create-case/04-charges-offence-search-results" method="post" novalidate>
                                 <input type="hidden" name="add-charge" value="{{ id }}">

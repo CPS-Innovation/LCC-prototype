@@ -144,33 +144,12 @@ module.exports = {
 
   "resultsSection": ['Sections 1(2), 1(3) and 4', 'Sections 1(1), 1(3) and 4', 'Sections 1(2), 1(3) and 4', 'Sections 1(2), 1(3) and 4', 'Sections 1(1) and 4', 'Sections 1(1) and 4', 'Sections 1(1) and 4', 'Sections 1(2) and 4', 'Sections 1(2) and 4'],
 
-  "resultsFromDate": ['01/01/2012', '14/10/1971', '05/01/1971', '17/11/2005', '02/01/1971', '02/01/1971', '02/01/1971', '02/01/1971', '02/01/1971'],
+  "resultsFromDate": ['01 Jan 2012', '14 Oct 1971', '05 Jan 1971', '17 Nov 2005', '02 Jan 1971', '02 Jan 1971', '02 Jan 1971', '02 Jan 1971', '02 Jan 1971'],
 
-  "resultsToDate": ['16/06/2019', '', '31/12/2011', '31/12/2011', '', '', '', '', ''],
+  "resultsToDate": ['16 Jun 2019', '', '31 Dec 2011', '31 Dec 2011', '', '', '', '', ''],
 
 
   
-
-
-// Date helper arrays
-  "monthName": [
-    "",
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-],
-
-
-
 
 
   // Case complexity and weight
