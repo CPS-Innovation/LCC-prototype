@@ -555,20 +555,31 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
 
     // req.session.data.chargeCode[count] = req.body['newChargeCode']
     // req.session.data.chargeDescription[count] = req.body['newCharge_Description']
+    // Dates
     req.session.data.chargeFromDay[count] = req.body['addCharge_Form_Date-Day']
     req.session.data.chargeFromMonth[count] = req.body['addCharge_Form_Date-Month']
     req.session.data.chargeFromYear[count] = req.body['addCharge_Form_Date-Year']
     req.session.data.chargeToDay[count] = req.body['addCharge_Form_Date-Day_2']
     req.session.data.chargeToMonth[count] = req.body['addCharge_Form_Date-Month_2']
     req.session.data.chargeToYear[count] = req.body['addCharge_Form_Date-Year_2']
-    req.session.data.chargeComments[count] = req.body['newCharge_Comment']
+//    req.session.data.chargeComments[count] = req.body['newCharge_Comment']
     // req.session.data.chargeVictimYesNo[count] = req.body['newCharge_Victim_YesNo']
+
+    // Victim
     req.session.data.chargeVictimFirstName[count] = req.body['newCharge_Victim_FirstName']
     req.session.data.chargeVictimLastName[count] = req.body['newCharge_Victim_SurnameName']
     req.session.data.chargeVictimVulnerable[count] = req.body['newCharge_Vulnerable']
     req.session.data.chargeVictimIntimidated[count] = req.body['newCharge_Intimidated']
     req.session.data.chargeVictimWitness[count] = req.body['charge-victim-witness']
-    req.session.data.chargedWithAdult[count] = req.body['newCharge_WithAdult']
+
+    // Offence address
+    req.session.data.offenceAddress1[count] = req.body['addressLine1']
+    req.session.data.offenceAddress2[count] = req.body['addressLine2']
+    req.session.data.offenceTown[count] = req.body['addressTown']
+    req.session.data.offencePostcode[count] = req.body['addressPostcode']
+    req.session.data.offenceCountry[count] = req.body['docType-Country']
+
+    req.session.data.chargedWithAdult[count] = req.body['charged-with-adult']
 
     console.log("Charge suspect id:",req.session.data.chargeSuspectId[count])
     console.log("Charge id:",req.session.data.chargeId[count])
