@@ -93,7 +93,7 @@
                       </div>
 
                       <div class="govuk-summary-list__row">
-                          <dt class="govuk-summary-list__key">Offence address</dt>
+                          <dt class="govuk-summary-list__key">Offence location</dt>
                           <dd class="govuk-summary-list__value">
                             {% if data['offenceAddress1'][i] %} 
                               {{data['offenceAddress1'][i]}} 
@@ -108,7 +108,7 @@
                           <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_B-suspect-charges">Change<span class="govuk-visually-hidden"> Victim</span></a></dd>
                       </div>
 
-                        {% if data['suspectOffenderType'][sid] == 'Both PPO and PYO' or data['suspectOffenderType'][sid] == 'Prolific youth offender (PYO)' or data['suspectOffenderType'][sid] == 'Youth offender (YO)' %}
+                        {% if data['suspectOffenderType'][sid] == 'Both prolific priority offender (PPO) and prolific youth offender (PYO)' or data['suspectOffenderType'][sid] == 'Prolific youth offender (PYO)' or data['suspectOffenderType'][sid] == 'Youth offender (YO)' %}
                         <div class="govuk-summary-list__row">
                           <dt class="govuk-summary-list__key">Charged with an adult</dt>
                           <dd class="govuk-summary-list__value">

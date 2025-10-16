@@ -5166,3 +5166,70 @@ strong, span {
         background-color: #fcd6c3 !important;
     }
 }
+
+
+
+// Monica - sorting tables
+/* Blue sortable headers */
+/* ===== GOV.UK-style table with stacked ▲▼ arrows ===== */
+
+/* Make headers clickable and GOV.UK aligned */
+th.sortable {
+  color: #1d70b8;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  padding-right: 1.5rem;
+  vertical-align: middle;
+}
+
+/* Default: both arrows stacked (▲ above ▼) */
+th.sortable::after {
+  content: "▲\A▼"; /* line break between arrows */
+  white-space: pre; /* keeps line break */
+  position: absolute;
+  right: 0.3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.65rem;
+  line-height: 0.8rem;
+  opacity: 0.3;
+  color: #1d70b8;
+  text-align: center;
+}
+
+/* Ascending sort: show only ▲ */
+th.sortable.sorted-asc::after {
+  content: "▲";
+  opacity: 1;
+  color: #1d70b8;
+}
+
+/* Descending sort: show only ▼ */
+th.sortable.sorted-desc::after {
+  content: "▼";
+  opacity: 1;
+  color: #1d70b8;
+}
+
+/* Table appearance */
+.govuk-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 19px;
+}
+
+.govuk-table__head th {
+  border-bottom: 2px solid #b1b4b6;
+  padding: 0.75rem 1rem;
+}
+
+.govuk-table__body td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #b1b4b6;
+}
+
+.govuk-table__body tr:hover {
+  background-color: #f3f2f1;
+}
