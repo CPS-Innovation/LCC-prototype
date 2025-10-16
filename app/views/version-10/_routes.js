@@ -479,7 +479,7 @@ router.post('/B-off-system-MVP/create-case/04-want-to-add-charges', function(req
         if (req.session.data.suspectCount === 1) {
             req.session.data.chargeSuspectId[0] = 0
             console.log("Charge suspect id:",req.session.data.chargeSuspectId[0])
-            res.redirect('/version-10/B-off-system-MVP/create-case/04-add-charges') 
+            res.redirect('/version-10/B-off-system-MVP/create-case/04-charges-offence-search') 
         }
         else {
             res.redirect('/version-10/B-off-system-MVP/create-case/04-add-charges-suspect')
