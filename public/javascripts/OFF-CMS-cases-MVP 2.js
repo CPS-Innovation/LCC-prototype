@@ -3454,6 +3454,21 @@ $(document).ready(function () {
         $('#newCase_FirstHearing_Date').val('18/7/2025');
     }); 
 
+    $('.create_case_date_picker').on("click", function (e) {
+        $(this).show();
+        $('#arrest-date-pyo').val('18/8/2025');
+    }); 
+
+    $('.create_case_date_picker').on("click", function (e) {
+        $(this).show();
+        $('#arrest-date-ppo-pyo').val('18/9/2025');
+    }); 
+    
+    $('.create_case_date_picker').on("click", function (e) {
+        $(this).show();
+        $('#arrest-date-yo').val('13/10/2025');
+    }); 
+
     $('input[name=newCase_Suspect_YesNo], input[name=newCase_Witness_YesNo]').on("click", function (e) {
         if ($('#newCase_Suspect_Yes').is(':checked') && $('#newCase_Witness_Yes').is(':checked') || $('#newCase_Suspect_Yes').is(':checked') && $('#newCase_Witness_No').is(':checked')) {
             $('#newCase_Form-B').attr('action','03A-create-suspects');

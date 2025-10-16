@@ -3466,17 +3466,6 @@ $(document).ready(function () {
 
 
 
-    // Add suspects (Monica)
-    $('input[name=addSuspect]').on("click", function (e) {
-        if ($('#addSuspectYes').is(':checked')) {
-            $('#add-supects-choice-form').attr('action','03A-add-suspect-name');
-        } else {
-            $('#add-supects-choice-form').attr('action','03A-create-suspects-monica');
-        } 
-    }); 
-
-
-
 
 
 
@@ -3660,13 +3649,13 @@ $(document).ready(function () {
         }
     }); 
 
-    $('input[name=addSuspect_Form-Charges]').on("click", function (e) {
-        if ($("#addSuspect_Form-Charges_Yes").is(':checked')) {
-            $('#newCase_Form-C3_1').attr('action','03E-suspect-charges');
-        } else if (("#addSuspect_Form-Charges_No").is(':checked')) {
-            $('#newCase_Form-C3_1').attr('action','03B-suspects');
-        }
-    }); 
+    // $('input[name=addSuspect_Form-Charges]').on("click", function (e) {
+    //     if ($("#addSuspect_Form-Charges_Yes").is(':checked')) {
+    //         $('#newCase_Form-C3_1').attr('action','03E-suspect-charges');
+    //     } else if (("#addSuspect_Form-Charges_No").is(':checked')) {
+    //         $('#newCase_Form-C3_1').attr('action','03B-suspects');
+    //     }
+    // }); 
 
     $('input[name=addSuspect_Form-Alias]').on("click", function (e) {
         if ($("#addSuspect_Form-Alias_Yes").is(':checked')) {
