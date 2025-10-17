@@ -561,10 +561,15 @@ router.post('/B-off-system-MVP/create-case/04-charges-offence-search', function(
 // Add charges - offence search results
 router.post('/B-off-system-MVP/create-case/04-charges-offence-search-results', function(req, res) {
     count = req.session.data.chargeCount
-    req.session.data.chargeCode[count] = req.session.data.resultsChargeCode[req.body['add-charge']]
+    req.session.data.chargeCode[count] = req.session.data.currentResultsChargeCode[req.body['add-charge']]
+    console.log("req.session.data.chargeCode[count]:", req.session.data.chargeCode[count])
+    console.log("Count:", count)
+    console.log("req.body['add-charge']:", req.body['add-charge'])
+    
     req.session.data.currentChargeId = req.body['add-charge']
 
-    req.session.data.chargeDescription[count] = req.session.data.resultsChargeDescription[req.session.data.currentChargeId]
+    req.session.data.chargeDescription[count] = req.session.data.currentResultsChargeDescription[req.session.data.currentChargeId]
+    console.log("req.session.data.chargeDescription[count]:", req.session.data.chargeDescription[count])
 
     res.redirect('/version-10/B-off-system-MVP/create-case/04-add-charges')
 })
@@ -573,7 +578,7 @@ router.post('/B-off-system-MVP/create-case/04-charges-offence-search-results', f
 // Add charges 
 router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
     count = req.session.data.chargeCount
-    // console.log("Charge count:",count)
+    console.log("Charge count:",count)
     
     req.session.data.chargeId[count] = count
     // console.log("Charge id:",req.session.data.chargeId[count])
