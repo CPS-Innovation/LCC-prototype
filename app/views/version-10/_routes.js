@@ -518,6 +518,43 @@ router.post('/B-off-system-MVP/create-case/04-charges-offence-search', function(
     count = req.session.data.chargeCount
     req.session.data.chargeSearch = req.body['charge-search']
 
+    req.session.data.currentResultsId = req.session.data.resultsId
+    req.session.data.currentResultsChargeCode = req.session.data.resultsChargeCode
+    req.session.data.currentResultsChargeDescription = req.session.data.resultsChargeDescription
+    req.session.data.currentResultsStatute = req.session.data.resultsStatute
+    req.session.data.currentResultsSection = req.session.data.resultsSection
+    req.session.data.currentResultsFromDate = req.session.data.resultsFromDate
+    req.session.data.currentResultsToDate = req.session.data.resultsToDate
+
+
+    if (req.body['charge-search'].includes("Terror") || req.body['charge-search'].includes("terror")) {
+        req.session.data.currentResultsId = req.session.data.resultsIdTerrorism
+        req.session.data.currentResultsChargeCode = req.session.data.resultsChargeCodeTerrorism
+        req.session.data.currentResultsChargeDescription = req.session.data.resultsChargeDescriptionTerrorism
+        req.session.data.currentResultsStatute = req.session.data.resultsStatuteTerrorism
+        req.session.data.currentResultsSection = req.session.data.resultsSectionTerrorism
+        req.session.data.currentResultsFromDate = req.session.data.resultsFromDateTerrorism
+        req.session.data.currentResultsToDate = req.session.data.resultsToDateTerrorism
+    }
+    else if (req.body['charge-search'].includes("CD") || req.body['charge-search'].includes("cd") || 'charge-search'.includes("Criminal") || req.body['charge-search'].includes("criminal") || req.body['charge-search'].includes("arson") || req.body['charge-search'].includes("Arson")) {
+        req.session.data.currentResultsId = req.session.data.resultsId
+        req.session.data.currentResultsChargeCode = req.session.data.resultsChargeCode
+        req.session.data.currentResultsChargeDescription = req.session.data.resultsChargeDescription
+        req.session.data.currentResultsStatute = req.session.data.resultsStatute
+        req.session.data.currentResultsSection = req.session.data.resultsSection
+        req.session.data.currentResultsFromDate = req.session.data.resultsFromDate
+        req.session.data.currentResultsToDate = req.session.data.resultsToDate
+    }
+    else if (req.body['charge-search'].includes("fraud") || req.body['charge-search'].includes("aud")) {
+        req.session.data.currentResultsId = req.session.data.resultsIdFraud
+        req.session.data.currentResultsChargeCode = req.session.data.resultsChargeCodeFraud
+        req.session.data.currentResultsChargeDescription = req.session.data.resultsChargeDescriptionFraud
+        req.session.data.currentResultsStatute = req.session.data.resultsStatuteFraud
+        req.session.data.currentResultsSection = req.session.data.resultsSectionFraud
+        req.session.data.currentResultsFromDate = req.session.data.resultsFromDateFraud
+        req.session.data.currentResultsToDate = req.session.data.resultsToDateFraud
+    }
+  
     res.redirect('/version-10/B-off-system-MVP/create-case/04-charges-offence-search-results')
 })
 
