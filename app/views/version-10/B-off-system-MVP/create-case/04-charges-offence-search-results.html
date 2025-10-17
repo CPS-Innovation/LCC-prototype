@@ -48,7 +48,7 @@
                     }
                 </style>
 
-                <div class="govuk-form-group govuk-!-margin-bottom-8">
+                <div class="govuk-form-group govuk-!-margin-bottom-6">
                     <div class="inline-row">
                         <label class="govuk-label" for="results-per-page">Display</label>
                         <select class="govuk-select" id="results-per-page" name="results-per-page">
@@ -59,35 +59,35 @@
                     </div>
                 </div>        
                 
-                <table class="govuk-table govuk-!-margin-bottom-9" id="sortable-table">
+                <!-- <table class="govuk-table govuk-!-margin-bottom-9" id="sortable-table">
                 <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
                     <th scope="col" class="govuk-table__header govuk-!-font-weight-bold sortable" data-sort="string">CJS Code</th>
                     <th scope="col" class="govuk-table__header govuk-!-font-weight-bold sortable govuk-!-width-one-third" data-sort="string">Description</th>
                     <th scope="col" class="govuk-table__header govuk-!-font-weight-bold govuk-!-width-one-quarter" data-sort="string">Statute name and section</th>
                     <th scope="col" class="govuk-table__header govuk-!-font-weight-bold" style="width:20%" data-sort="date">Effective dates</th>
-                    <!-- <th scope="col" class="govuk-table__header govuk-!-font-weight-bold govuk-!-width-one-eight" data-sort="date">Effective to date</th> -->
+                    <th scope="col" class="govuk-table__header govuk-!-font-weight-bold govuk-!-width-one-eight" data-sort="date">Effective to date</th>
                     <th scope="col" class="govuk-table__header govuk-!-font-weight-bold govuk-table__header--numeric" style="width:10%">Actions</th>
                     </tr>
-                </thead>
+                </thead> -->
 
-                <!-- <table class="govuk-table">
+                <table class="govuk-table">
                 <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
                     <th scope="col" class="govuk-table__header">CJS code</th>
                     <th scope="col" class="govuk-table__header">Description</th>
                     <th scope="col" class="govuk-table__header">Statute name and section</th>
-                    <th scope="col" class="govuk-table__header">Effective from date</th>
-                    <th scope="col" class="govuk-table__header">Effective to date</th>
-                    <th scope="col" class="govuk-table__header govuk-table__header--numeric">Actions</th> -->
+                    <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Effective dates</th>
+                    <!-- <th scope="col" class="govuk-table__header">Effective to date</th> -->
+                    <th scope="col" class="govuk-table__header govuk-table__header--numeric">Actions</th>
                     <!-- <th scope="col" class="govuk-table__header govuk-!-width-one-eight">CJS code</th>
                     <th scope="col" class="govuk-table__header govuk-!-width-one-third">Description</th>
                     <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Statute name and section</th>
                     <th scope="col" class="govuk-table__header govuk-!-width-one-eight">Effective from date</th>
                     <th scope="col" class="govuk-table__header govuk-!-width-one-eight">Effective to date</th>
-                    <th scope="col" class="govuk-table__header govuk-!-width-one-eight govuk-table__header--numeric">Actions</th> 
+                    <th scope="col" class="govuk-table__header govuk-!-width-one-eight govuk-table__header--numeric">Actions</th> -->
                     </tr> 
-                </thead> -->
+                </thead>
                 <tbody class="govuk-table__body">
 
                     {% for id in data['resultsId'] %}            
