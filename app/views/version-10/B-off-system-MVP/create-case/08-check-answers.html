@@ -121,6 +121,8 @@
                             <dd class="govuk-summary-list__value">
                                 {% if hasCharge %}
                                     &nbsp;&nbsp;<strong class="govuk-tag govuk-tag--orange">Charges added</strong>
+                                {% else %}
+                                    &nbsp;&nbsp;<strong class="govuk-tag govuk-tag--grey">Pre-charge</strong>
                                 {% endif %}
                             </dd>
                             <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="03-add-suspect.html?id={{data['suspectId'][id]}}">Change<span class="govuk-visually-hidden"> {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}'s details</span></a></dd>
@@ -212,7 +214,7 @@
                                         <dd class="govuk-summary-list__value">
                                             No charges added
                                         </dd>
-                                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Add charges<span class="govuk-visually-hidden"> charge</span></a></dd>
+                                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Add charge<span class="govuk-visually-hidden"> charge</span></a></dd>
                                     </div>
                                 </dl>
                             {% endif %}
@@ -239,15 +241,6 @@
                                             </dd>
                                             <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> date of offence</span></a></dd>
                                         </div>
-                                        <!-- <div class="govuk-summary-list__row">                                            
-                                            <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
-                                            Comments
-                                            </dt>                                            
-                                            <dd class="govuk-summary-list__value">
-                                                {{data['chargeComments'][i]}}
-                                            </dd>
-                                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> date of offence</span></a></dd>
-                                        </div> -->
                                         <div class="govuk-summary-list__row">                                            
                                             <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
                                             Victim
@@ -296,10 +289,18 @@
 
                                 {% endif %}
                             {% endfor %}
-
-                        </div>
-
-                        
+                            <dl class="govuk-summary-list hmrc-list-with-actions hmrc-list-with-actions--short">
+                                <div class="govuk-summary-list__row">                                            
+                                    <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key govuk-!-margin-top-3">
+                                    Add another charge
+                                    </dt>                                            
+                                    <dd class="govuk-summary-list__value">
+                                        
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions govuk-!-margin-top-3"><a class="govuk-link govuk-link--no-visited-state" href="#">Add charge<span class="govuk-visually-hidden"> charge</span></a></dd>
+                                </div>
+                            </dl>
+                        </div>                        
                     </details>   
                     
                     
@@ -324,6 +325,8 @@
                             <dd class="govuk-summary-list__value">
                                 {% if hasCharge %}
                                     &nbsp;&nbsp;<strong class="govuk-tag govuk-tag--orange">Charges added</strong>
+                                {% else %}
+                                    &nbsp;&nbsp;<strong class="govuk-tag govuk-tag--grey">Pre-charge</strong>
                                 {% endif %}
                             </dd>
                             <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="04A-add-suspect.html?id={{data['suspectId'][id]}}">Change<span class="govuk-visually-hidden"> {{ data['suspectCompanyName'][id]}}'s details</span></a></dd>
@@ -347,7 +350,7 @@
                                         <dd class="govuk-summary-list__value">
                                             No charges added
                                         </dd>
-                                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Add charges<span class="govuk-visually-hidden"> charge</span></a></dd>
+                                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Add charge<span class="govuk-visually-hidden"> charge</span></a></dd>
                                     </div>
                                 </dl>
                             {% endif %}
@@ -430,6 +433,18 @@
 
                                 {% endif %}
                             {% endfor %}
+                            <dl class="govuk-summary-list hmrc-list-with-actions hmrc-list-with-actions--short">
+                                <div class="govuk-summary-list__row">                                            
+                                    <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key govuk-!-margin-top-3">
+                                    Add another charge
+                                    </dt>                                            
+                                    <dd class="govuk-summary-list__value">
+                                        
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions govuk-!-margin-top-3"><a class="govuk-link govuk-link--no-visited-state" href="#">Add charge<span class="govuk-visually-hidden"> charge</span></a></dd>
+                                </div>
+                            </dl>
+
                         </div>
                     </details>
                 {% endif %}

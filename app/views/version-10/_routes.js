@@ -686,6 +686,14 @@ router.get('/B-off-system-MVP/create-case/04-charges-summary', function(req, res
 router.post('/B-off-system-MVP/create-case/05-complexity', function(req, res) {
     req.session.data.caseComplexity = req.body['newCase_Complexity']
     // req.session.data.caseWeight = req.body['newCase_CaseWeight']
+
+    if (req.session.data.chargeSuspectId.length > 0) {
+        for (let i = 0; i < req.session.data.suspectId.length; i++) {
+            if (!req.session.data.chargeSuspectId.includes(req.session.data.suspectId[i])) {
+                req.session.data.preCharge = 'Yes'
+            }
+        }
+    }
     res.redirect('/version-10/B-off-system-MVP/create-case/06-monitoring-codes') 
 })
 

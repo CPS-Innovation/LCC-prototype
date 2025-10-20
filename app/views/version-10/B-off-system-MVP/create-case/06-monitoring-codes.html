@@ -141,7 +141,7 @@
                                     name="newCase_MonitoringCodes"
                                     type="checkbox"
                                     value="{{ code }}"
-                                    {% if data['newCase_MonitoringCodes'] and code in data['newCase_MonitoringCodes'] %}checked{% endif %}>
+                                    {% if data['newCase_MonitoringCodes'] and code in data['newCase_MonitoringCodes'] %}checked{% endif %} {% if code == "Pre-Charge Decision" and data['preCharge'] == "Yes" %}checked{% endif %}>
                                 <label class="govuk-label govuk-checkboxes__label" for="{{ id }}">{{ code }}</label>
                             </div>
                             {% endfor %}
