@@ -364,6 +364,9 @@ module.exports = {
   
 
 
+  // Pre-charge flag
+  "preCharge": "No",
+
   // Case complexity and weight
   "caseComplexity": "",
   "caseWeight": "",
