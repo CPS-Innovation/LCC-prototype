@@ -512,6 +512,20 @@ router.post('/B-off-system-MVP/create-case/04-add-charges-suspect', function(req
     }
 })
 
+router.post('/B-off-system-MVP/create-case/add-another-charge', function(req, res) {
+    // Preset or reset pre-charge info
+    req.session.data.preCharge = 'No'
+    console.log("Pre-charge set to:",req.session.data.preCharge)
+
+    count = req.session.data.chargeCount
+    req.session.data.chargeSuspectId[count] = req.body['add-charge-suspect-id']
+    req.session.data.currentSuspectId = req.body['add-charge-suspect-id']
+    console.log("Charge suspect id:",req.session.data.chargeSuspectId[count])
+    res.redirect('/version-10/B-off-system-MVP/create-case/04-charges-offence-search') 
+})
+
+
+
 
 // Add charges - offence search
 router.post('/B-off-system-MVP/create-case/04-charges-offence-search', function(req, res) {
@@ -555,6 +569,7 @@ router.post('/B-off-system-MVP/create-case/04-charges-offence-search', function(
         req.session.data.currentResultsToDate = req.session.data.resultsToDateFraud
     }
   
+
     res.redirect('/version-10/B-off-system-MVP/create-case/04-charges-offence-search-results')
 })
 
@@ -687,13 +702,37 @@ router.post('/B-off-system-MVP/create-case/05-complexity', function(req, res) {
     req.session.data.caseComplexity = req.body['newCase_Complexity']
     // req.session.data.caseWeight = req.body['newCase_CaseWeight']
 
+    console.log("Charge suspect IDs:",req.session.data.chargeSuspectId)
+
+    req.session.data.preCharge = 'No'
+
+    const valueToRemove = 'Pre-Charge Decision'
+
+    req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
+
+    // if (req.session.data.chargeSuspectId.length > 0) {
+    //     const hasUncharged = req.session.data.suspectId.some(
+    //         id => !req.session.data.chargeSuspectId.includes(id)
+    //     )
+    //     req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
+    // }
+    
     if (req.session.data.chargeSuspectId.length > 0) {
-        for (let i = 0; i < req.session.data.suspectId.length; i++) {
-            if (!req.session.data.chargeSuspectId.includes(req.session.data.suspectId[i])) {
-                req.session.data.preCharge = 'Yes'
-            }
-        }
+        const suspects = req.session.data.suspectId.map(Number)
+        const charged = req.session.data.chargeSuspectId.map(Number)
+
+        const hasUncharged = suspects.some(id => !charged.includes(id))
+        req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
     }
+
+    // if (req.session.data.chargeSuspectId.length > 0) {
+    //     for (let i = 0; i < req.session.data.suspectId.length; i++) {
+    //         if (req.session.data.chargeSuspectId.includes(req.session.data.suspectId[i]) == false) {
+    //             req.session.data.preCharge = 'Yes'
+    //         }
+    //     }
+    // }
+    console.log("Pre-charge set to:",req.session.data.preCharge)
     res.redirect('/version-10/B-off-system-MVP/create-case/06-monitoring-codes') 
 })
 
