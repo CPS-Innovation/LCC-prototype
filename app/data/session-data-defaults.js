@@ -368,6 +368,7 @@ module.exports = {
   "preCharge": "No",
 
   // Case complexity and weight
+  "newCase_MonitoringCodes": [],
   "caseComplexity": "",
   "caseWeight": "",
 

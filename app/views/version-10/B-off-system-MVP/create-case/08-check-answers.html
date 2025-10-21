@@ -214,7 +214,12 @@
                                         <dd class="govuk-summary-list__value">
                                             No charges added
                                         </dd>
-                                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Add charge<span class="govuk-visually-hidden"> charge</span></a></dd>
+                                        <dd class="govuk-summary-list__actions">
+                                            <form action="/version-10/B-off-system-MVP/create-case/add-another-charge" method="post" novalidate>
+                                                <input type="hidden" name="add-charge-suspect-id" value="{{ data['suspectId'][id] }}">
+                                                <button class="govuk-link govuk-link--no-visited-state suspect" type="submit">Add charge</button>
+                                            </form>
+                                        </dd>
                                     </div>
                                 </dl>
                             {% endif %}
@@ -297,7 +302,12 @@
                                     <dd class="govuk-summary-list__value">
                                         
                                     </dd>
-                                    <dd class="govuk-summary-list__actions govuk-!-margin-top-3"><a class="govuk-link govuk-link--no-visited-state" href="#">Add charge<span class="govuk-visually-hidden"> charge</span></a></dd>
+                                        <dd class="govuk-summary-list__actions govuk-!-margin-top-3">
+                                            <form action="/version-10/B-off-system-MVP/create-case/add-another-charge" method="post" novalidate>
+                                                <input type="hidden" name="add-charge-suspect-id" value="{{ data['suspectId'][id] }}">
+                                                <button class="govuk-link govuk-link--no-visited-state suspect" type="submit">Add charge</button>
+                                            </form>
+                                        </dd>
                                 </div>
                             </dl>
                         </div>                        
@@ -350,7 +360,12 @@
                                         <dd class="govuk-summary-list__value">
                                             No charges added
                                         </dd>
-                                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Add charge<span class="govuk-visually-hidden"> charge</span></a></dd>
+                                        <dd class="govuk-summary-list__actions govuk-!-margin-top-3">
+                                            <form action="/version-10/B-off-system-MVP/create-case/add-another-charge" method="post" novalidate>
+                                                <input type="hidden" name="add-charge-suspect-id" value="{{ data['suspectId'][id] }}">
+                                                <button class="govuk-link govuk-link--no-visited-state suspect" type="submit">Add charge</button>
+                                            </form>
+                                        </dd>
                                     </div>
                                 </dl>
                             {% endif %}
@@ -433,6 +448,7 @@
 
                                 {% endif %}
                             {% endfor %}
+                            {% if hasCharge %}
                             <dl class="govuk-summary-list hmrc-list-with-actions hmrc-list-with-actions--short">
                                 <div class="govuk-summary-list__row">                                            
                                     <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key govuk-!-margin-top-3">
@@ -441,9 +457,16 @@
                                     <dd class="govuk-summary-list__value">
                                         
                                     </dd>
-                                    <dd class="govuk-summary-list__actions govuk-!-margin-top-3"><a class="govuk-link govuk-link--no-visited-state" href="#">Add charge<span class="govuk-visually-hidden"> charge</span></a></dd>
+                                    <dd class="govuk-summary-list__actions govuk-!-margin-top-3">
+                                        <form action="/version-10/B-off-system-MVP/create-case/add-another-charge" method="post" novalidate>
+                                            <input type="hidden" name="add-charge-suspect-id" value="{{ data['suspectId'][id] }}">
+                                            <button class="govuk-link govuk-link--no-visited-state suspect" type="submit">Add charge</button>
+                                        </form>
+                                    </dd>
+                                    <!-- <dd class="govuk-summary-list__actions govuk-!-margin-top-3"><a class="govuk-link govuk-link--no-visited-state" href="#">Add charge<span class="govuk-visually-hidden"> charge</span></a></dd> -->
                                 </div>
                             </dl>
+                            {% endif %}
 
                         </div>
                     </details>

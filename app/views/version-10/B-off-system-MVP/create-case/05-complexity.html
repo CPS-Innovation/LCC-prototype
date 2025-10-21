@@ -29,31 +29,31 @@
                     </legend>
                     <div class="govuk-radios" data-module="govuk-radios">
                     <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="newCase_Complexity" name="newCase_Complexity" type="radio" value="Basic" selected>
+                        <input class="govuk-radios__input" id="newCase_Complexity" name="newCase_Complexity" type="radio" value="Basic" {% if data['caseComplexity'] == 'Basic' %} checked {% endif %}>
                         <label class="govuk-label govuk-radios__label" for="newCase_Complexity">
                         Basic
                         </label>
                     </div>
                     <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="newCase_Complexity-5" name="newCase_Complexity" type="radio" value="Basic +" selected>
+                        <input class="govuk-radios__input" id="newCase_Complexity-5" name="newCase_Complexity" type="radio" value="Basic +" {% if data['caseComplexity'] == 'Basic +' %} checked {% endif %}>
                         <label class="govuk-label govuk-radios__label" for="newCase_Complexity-5">
                         Basic +
                         </label>
                     </div>
                     <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="newCase_Complexity-2" name="newCase_Complexity" type="radio" value="Standard">
+                        <input class="govuk-radios__input" id="newCase_Complexity-2" name="newCase_Complexity" type="radio" value="Standard" {% if data['caseComplexity'] == 'Standard' %} checked {% endif %}>
                         <label class="govuk-label govuk-radios__label" for="newCase_Complexity-2">
                         Standard
                         </label>
                     </div>
                     <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="newCase_Complexity-3" name="newCase_Complexity" type="radio" value="High">
+                        <input class="govuk-radios__input" id="newCase_Complexity-3" name="newCase_Complexity" type="radio" value="High" {% if data['caseComplexity'] == 'High' %} checked {% endif %}>
                         <label class="govuk-label govuk-radios__label" for="newCase_Complexity-3">
                         High
                         </label>
                     </div>
                     <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="newCase_Complexity-4" name="newCase_Complexity" type="radio" value="Complex">
+                        <input class="govuk-radios__input" id="newCase_Complexity-4" name="newCase_Complexity" type="radio" value="Complex " {% if data['caseComplexity'] == 'Complex' %} checked {% endif %}>
                         <label class="govuk-label govuk-radios__label" for="newCase_Complexity-4">
                         Complex
                         </label>
