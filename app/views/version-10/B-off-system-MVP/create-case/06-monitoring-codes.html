@@ -25,12 +25,14 @@
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h1 class="govuk-fieldset__heading">
-                            Add monitoring codes {{ data['preCharge'] | lower}}
+                            Add monitoring codes
                         </h1>
                     </legend>
+                    {% if (data['preCharge'] | lower) == "no"  %}
                     <div id="changedName-hint" class="govuk-hint">
                         These are optional. You can continue without adding monitoring codes.
                     </div>
+                    {% endif %}
 
                     <div class="govuk-grid-row">
 

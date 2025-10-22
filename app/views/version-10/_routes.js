@@ -116,6 +116,11 @@ router.post('/B-off-system-MVP/create-case/03-add-suspect', function(req, res) {
     
     req.session.data.suspectDetailsCount = count
     req.session.data.suspectCount = count + 1
+
+    if (req.session.data.suspectCount > 0) {
+        req.session.data.suspectDetailsYesNo = 'Yes'
+    }
+
     id = req.session.data.suspectDetailsCount
 
     if (req.session.data.suspectDOB[id] != undefined) {
@@ -721,8 +726,8 @@ let codes = req.session.data.newCase_MonitoringCodes || []
     // }
     
     if (req.session.data.chargeSuspectId.length > 0) {
-        const suspects = req.session.data.suspectId.map(Number)
-        const charged = req.session.data.chargeSuspectId.map(Number)
+        const suspects = req.session.data.suspectId.map(String)
+        const charged = req.session.data.chargeSuspectId.map(String)
 
         const hasUncharged = suspects.some(id => !charged.includes(id))
         req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
