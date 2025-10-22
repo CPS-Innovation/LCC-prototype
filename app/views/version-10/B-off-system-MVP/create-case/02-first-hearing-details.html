@@ -21,7 +21,7 @@
                     </legend>
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="first-hearing-yes" name="first-hearing-details" type="radio" value="Yes" data-aria-controls="first-hearing-controls" {% if data['first-hearing-details'] === 'Yes' %}checked {% endif %}>
+                            <input class="govuk-radios__input" id="first-hearing-yes" name="first-hearing-details" type="radio" value="Yes" data-aria-controls="first-hearing-controls" {% if data['firstHearingYesNo'] === 'Yes' %}checked {% endif %}>
                             <label class="govuk-label govuk-radios__label" for="first-hearing-yes">
                             Yes
                             </label>
@@ -32,7 +32,7 @@
                             <label class="govuk-label govuk-!-font-weight-bold" for="court-location">
                                 Court location
                             </label>
-                            <input class="govuk-input govuk-!-width-one-third" id="docType-LCCCourt" name="court-location" type="text" spellcheck="false" autocomplete="text" >
+                            <input class="govuk-input govuk-!-width-one-third" id="docType-LCCCourt" name="court-location" type="text" spellcheck="false" autocomplete="text"value="{{ data['courtLocation'] }}">
                             </div>
 
                             <div class="moj-datepicker" data-module="moj-date-picker">
@@ -40,11 +40,9 @@
                                     <label class="govuk-label govuk-!-font-weight-bold" for="newCase_FirstHearing_Date">Date</label>
                                     <div id="newCase_FirstHearing_Date-hint" class="govuk-hint">For example, 17/5/2024.</div>
                                     <div class="date_range_wrapper create_case">
-                                        {% if data['newCase_FirstHearing_Date'] %}
-                                            <input class="govuk-input moj-js-datepicker-input govuk-input--width-10" id="newCase_FirstHearing_Date" name="newCase_FirstHearing_Date" type="text" aria-describedby="date-hint" autocomplete="off" value="{{ data['newCase_FirstHearing_Date'] }}">
-                                        {% else %}
-                                            <input class="govuk-input moj-js-datepicker-input govuk-input--width-10" id="newCase_FirstHearing_Date" name="newCase_FirstHearing_Date" type="text" aria-describedby="date-hint" autocomplete="off">
-                                        {% endif %}  
+
+                                        <input class="govuk-input moj-js-datepicker-input govuk-input--width-10" id="newCase_FirstHearing_Date" name="newCase_FirstHearing_Date" type="text" aria-describedby="date-hint" autocomplete="off" value="{{ data['firstHearingDate'] }}">
+
                                         <button class="moj-datepicker__toggle moj-js-datepicker-toggle" type="button" aria-haspopup="dialog" aria-controls="datepicker-date" aria-expanded="true">
                                             <span class="govuk-visually-hidden">Choose date</span>
                                             <svg width="32" height="24" focusable="false" class="moj-datepicker-icon" aria-hidden="true" role="img" viewBox="0 0 22 22">
@@ -60,7 +58,7 @@
                         </div>
 
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="first-hearing-no" name="first-hearing-details" type="radio" value="No" data-aria-controls="conditional-contact-2" {% if not data['first-hearing-details'] === 'No' %}checked{% endif %}>
+                            <input class="govuk-radios__input" id="first-hearing-no" name="first-hearing-details" type="radio" value="No" data-aria-controls="conditional-contact-2" {% if not data['firstHearingYesNo'] === 'No' %}checked{% endif %}>
                             <label class="govuk-label govuk-radios__label" for="first-hearing-no">
                                 No
                             </label>

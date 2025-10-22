@@ -34,90 +34,28 @@
                         <p id="newCase_URN_Error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter a URN</p>
                         <p id="newCase_URN_Error_DUPLICATE" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> This URN already exists in CMS</p>
                         <div class="form-wrapper">
-                            <input class="govuk-input govuk-input--width-2" id="newCase_URN-A" name="newCase_URN-A" type="text" value="{{ data['newCase_URN-A'] }}">
-                            <input class="govuk-input govuk-input--width-2" id="newCase_URN-B" name="newCase_URN-B" type="text" value="{{ data['newCase_URN-B'] }}">
-                            <input class="govuk-input govuk-input--width-4" id="newCase_URN-C" name="newCase_URN-C" type="text" value="{{data['newCase_URN-C']}}">
-                            <input class="govuk-input govuk-input--width-2" id="newCase_URN-D" name="newCase_URN-D" type="text" value="25">
+                            <input class="govuk-input govuk-input--width-2" id="newCase_URN-A" name="newCase_URN-A" type="text" value="{{ data['URN1'] }}">
+                            <input class="govuk-input govuk-input--width-2" id="newCase_URN-B" name="newCase_URN-B" type="text" value="{{ data['URN2'] }}">
+                            <input class="govuk-input govuk-input--width-4" id="newCase_URN-C" name="newCase_URN-C" type="text" value="{{ data['URN3'] }}">
+                            <input class="govuk-input govuk-input--width-2" id="newCase_URN-D" name="newCase_URN-D" type="text" value="{{ data['URN4'] }}">
                         </div>
 
                     </div>                                
-                    <!-- <div class="govuk-form-group" id="newCase_URN-Value">
-                        <label class="govuk-label" for="newCase_URN">What is the URN?</label>
-                        <p id="newCase_URN_Error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter a URN</p>
-                        <p id="newCase_URN_Error_DUPLICATE" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> This URN already exists in CMS</p>
-                        <div class="form-wrapper">
-                            {% if data['newCase_URN-A'] %}
-                                <input class="govuk-input govuk-input--width-2" id="newCase_URN-A" name="newCase_URN-A" type="text" value="{{ data['newCase_URN-A'] }}">
-                            {% else %}
-                                <input class="govuk-input govuk-input--width-2" id="newCase_URN-A" name="newCase_URN-A" type="text" value="84">
-                            {% endif %}  
-                            {% if data['newCase_URN-B'] %}
-                                <input class="govuk-input govuk-input--width-2" id="newCase_URN-B" name="newCase_URN-B" type="text" value="{{ data['newCase_URN-B'] }}">
-                            {% else %}
-                                <input class="govuk-input govuk-input--width-2" id="newCase_URN-B" name="newCase_URN-B" type="text" value="">
-                            {% endif %} 
-                            {% if data['newCase_URN-C'] %}
-                                <input class="govuk-input govuk-input--width-4" id="newCase_URN-C" name="newCase_URN-C" type="text" value="{{ data['newCase_URN-C'] }}">
-                            {% else %}
-                                <input class="govuk-input govuk-input--width-4" id="newCase_URN-C" name="newCase_URN-C" type="text" value="20982">
-                            {% endif %}        
-                            <p>/</p>
-                            {% if data['newCase_URN-D'] %}
-                                <input class="govuk-input govuk-input--width-2" id="newCase_URN-D" name="newCase_URN-D" type="text" value="{{ data['newCase_URN-D'] }}">
-                            {% else %}
-                                <input class="govuk-input govuk-input--width-2" id="newCase_URN-D" name="newCase_URN-D" type="text" value="25">
-                            {% endif %}        
-                        </div>
-
-                    </div>                                 -->
                     <!-- ITEM 1 - END -->
 
                     <!-- ITEM 2 - START -->
-                    <!-- <div class="govuk-form-group">
-                        <label class="govuk-label" for="newCase_LocalRef">What is the local reference? (optional)</label>
-                        <div class="form-wrapper">
-                            <input class="govuk-input govuk-input--width-5" id="local-reference-1" name="local-reference-1" type="text" value="{{ data['local-reference-1'] }}">
-                            <input class="govuk-input govuk-input--width-5" id="local-reference-2" name="local-reference-2" type="text" value="{{ data['local-reference-2'] }}">
-                        </div>
-                    </div> -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label govuk-!-font-weight-bold" for="newCase_RegisteringUnit">What is the registering unit?</label>
+                        <input class="govuk-input govuk-input--width-20" id="docType-Unit" name="newCase_RegisteringUnit" type="text" value="{{ data['registeringUnit'] }}">
+                    </div>
                     <!-- ITEM 2 - END -->
 
-                    <!-- ITEM 4 - START -->
+                    <!-- ITEM 3 - START -->
                     <div class="govuk-form-group">
-
-                        <label class="govuk-label govuk-!-font-weight-bold" for="newCase_RegisteringUnit">What is the registering unit?</label>
-
-                        {% if data['newCase_RegisteringUnit'] %}
-                            <input class="govuk-input govuk-input--width-20" id="docType-Unit" name="newCase_RegisteringUnit" type="text" value="{{ data['newCase_RegisteringUnit'] }}">
-                        {% else %}
-                            <input class="govuk-input govuk-input--width-20" id="docType-Unit" name="newCase_RegisteringUnit" type="text">
-                        {% endif %}        
-                    </div>
-                    <!-- ITEM 4 - END -->
-
-                    <!-- ITEM 5 - START -->
-                    <div class="govuk-form-group">
-
                         <label class="govuk-label govuk-!-font-weight-bold" for="newCase_WCU">What is the witness care unit (WCU)?</label>
-
-                        {% if data['newCase_WCU'] %}
-                            <input class="govuk-input govuk-input--width-20" id="docType-WCU" name="newCase_WCU" type="text" value="{{ data['newCase_WCU'] }}">
-                        {% else %}
-                            <input class="govuk-input govuk-input--width-20" id="docType-WCU" name="newCase_WCU" type="text">
-                        {% endif %}        
+                        <input class="govuk-input govuk-input--width-20" id="docType-WCU" name="newCase_WCU" type="text" value="{{ data['WCU'] }}">
                     </div>
-                    <!-- ITEM 5 - END -->
-
-                    <!-- ITEM 6 - START -->
-                    <!-- <div class="govuk-form-group">
-                        <label class="govuk-label" for="newCase_Crest">What is the Crest? (optional)</label>
-                        {% if data['newCase_Crest'] %}
-                            <input class="govuk-input govuk-input--width-20" id="newCase_Crest" name="newCase_Crest" type="text" value="{{ data['newCase_Crest'] }}">
-                        {% else %}
-                            <input class="govuk-input govuk-input--width-20" id="newCase_Crest" name="newCase_Crest" type="text">
-                        {% endif %}        
-                    </div> -->
-                    <!-- ITEM 6 - END -->
+                    <!-- ITEM 3 - END -->
 
                 </fieldset>
 

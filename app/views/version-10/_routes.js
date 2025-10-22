@@ -61,6 +61,8 @@ router.post('/B-off-system-MVP/create-case/02-case-details', function(req, res) 
     req.session.data.URN2 = req.body['newCase_URN-B']
     req.session.data.URN3 = req.body['newCase_URN-C']
     req.session.data.URN4 = req.body['newCase_URN-D']
+    req.session.data.registeringUnit = req.body['newCase_RegisteringUnit']
+    req.session.data.WCU =  req.body['newCase_WCU']
 
     res.redirect('/version-10/B-off-system-MVP/create-case/02-first-hearing-details') 
 })
