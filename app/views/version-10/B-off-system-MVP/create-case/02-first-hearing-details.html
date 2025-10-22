@@ -21,7 +21,7 @@
                     </legend>
                     <div class="govuk-radios" data-module="govuk-radios">
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="first-hearing-yes" name="first-hearing-details" type="radio" value="Yes" data-aria-controls="first-hearing-controls" {% if data['firstHearingYesNo'] === 'Yes' %}checked {% endif %}>
+                            <input class="govuk-radios__input" id="first-hearing-yes" name="first-hearing-details" type="radio" value="Yes" data-aria-controls="first-hearing-controls" {% if data['firstHearingDetailsYesNo'] === 'Yes' %}checked {% endif %}>
                             <label class="govuk-label govuk-radios__label" for="first-hearing-yes">
                             Yes
                             </label>
@@ -58,7 +58,7 @@
                         </div>
 
                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input" id="first-hearing-no" name="first-hearing-details" type="radio" value="No" data-aria-controls="conditional-contact-2" {% if not data['firstHearingYesNo'] === 'No' %}checked{% endif %}>
+                            <input class="govuk-radios__input" id="first-hearing-no" name="first-hearing-details" type="radio" value="No" data-aria-controls="conditional-contact-2" {% if not data['firstHearingDetailsYesNo'] === 'No' %}checked{% endif %}>
                             <label class="govuk-label govuk-radios__label" for="first-hearing-no">
                                 No
                             </label>
