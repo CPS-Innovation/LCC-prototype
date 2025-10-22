@@ -703,10 +703,13 @@ router.post('/B-off-system-MVP/create-case/05-complexity', function(req, res) {
     // req.session.data.caseWeight = req.body['newCase_CaseWeight']
 
     console.log("Charge suspect IDs:",req.session.data.chargeSuspectId)
+let codes = req.session.data.newCase_MonitoringCodes || []
+
 
     req.session.data.preCharge = 'No'
 
     const valueToRemove = 'Pre-Charge Decision'
+    req.session.data.newCase_MonitoringCodes[0] = "999"
 
     req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
 

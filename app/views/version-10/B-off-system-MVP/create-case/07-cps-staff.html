@@ -30,7 +30,7 @@
                         </legend>
                         <div class="govuk-radios" data-module="govuk-radios">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="cps-staff-yes" name="cps-staff-yes-no" type="radio" value="Yes" data-aria-controls="conditional-contact" {% if data['cps-staff-yes-no'] == 'Yes' %} checked {% endif %}>
+                                <input class="govuk-radios__input" id="cps-staff-yes" name="cps-staff-yes-no" type="radio" value="Yes" data-aria-controls="conditional-contact" {% if data['prosecutorCaseworkerYesNo'] == 'Yes' %} checked {% endif %}>
                                 <label class="govuk-label govuk-radios__label" for="cps-staff-yes">
                                 Yes
                                 </label>
@@ -58,7 +58,7 @@
                             </div>
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" id="cps-staff-no" name="cps-staff-yes-no" type="radio" value="No" data-aria-controls="conditional-contact-2">
-                                <label class="govuk-label govuk-radios__label" for="cps-staff-no" {% if data['cps-staff-yes-no'] == 'No' %} checked {% endif %}>
+                                <label class="govuk-label govuk-radios__label" for="cps-staff-no" {% if data['prosecutorCaseworkerYesNo'] == 'No' %} checked {% endif %}>
                                 No
                                 </label>
                             </div>
@@ -75,7 +75,7 @@
                         </legend>
                         <div class="govuk-radios" data-module="govuk-radios">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="police-yes" name="police-yes-no" type="radio" value="Yes" data-aria-controls="conditional-police" {% if data['police-yes-no'] == 'Yes' %} checked {% endif %}>
+                                <input class="govuk-radios__input" id="police-yes" name="police-yes-no" type="radio" value="Yes" data-aria-controls="conditional-police" {% if data['policeYesNo'] == 'Yes' %} checked {% endif %}>
                                 <label class="govuk-label govuk-radios__label" for="police-yes">
                                 Yes
                                 </label>
@@ -294,7 +294,7 @@
 
                             <div class="govuk-radios__item">
                                 <input class="govuk-radios__input" id="police-no" name="police-yes-no" type="radio" value="No" data-aria-controls="conditional-police-2">
-                                <label class="govuk-label govuk-radios__label" for="police-no" {% if data['police-yes-no'] == 'No' %} checked {% endif %}>
+                                <label class="govuk-label govuk-radios__label" for="police-no" {% if data['policeYesNo'] == 'No' %} checked {% endif %}>
                                 No
                                 </label>
                             </div>
