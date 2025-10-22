@@ -52,7 +52,7 @@
                             <label class="govuk-label" for="operation-name">
                                 Operation name
                             </label>
-                            <input class="govuk-input govuk-input--width-20" id="operation-name" name="operation-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['operation-name'] }}">
+                            <input class="govuk-input govuk-input--width-20" id="operation-name" name="operation-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['operationName'] }}">
                             </div>
                         </div>
                         <div class="govuk-radios__item">
@@ -74,13 +74,13 @@
                     </legend>
                     <div class="govuk-radios" data-module="govuk-radios">
                     <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="suspect-details-yes" name="suspect-details-yes-no" type="radio" value="Yes" {% if data['suspect-details-yes-no'] === 'Yes' %}checked{% endif %}>
+                        <input class="govuk-radios__input" id="suspect-details-yes" name="suspect-details-yes-no" type="radio" value="Yes" {% if data['suspectDetailsYesNo'] === 'Yes' %}checked{% endif %}>
                         <label class="govuk-label govuk-radios__label" for="suspect-details-yes">
                         Yes
                         </label>
                     </div>
                     <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="suspect-details-no" name="suspect-details-yes-no" type="radio" value="No" {% if not data['suspect-details-yes-no'] === 'No' %}checked{% endif %}>
+                        <input class="govuk-radios__input" id="suspect-details-no" name="suspect-details-yes-no" type="radio" value="No" {% if not data['suspectDetailsYesNo'] === 'No' %}checked{% endif %}>
                         <label class="govuk-label govuk-radios__label" for="suspect-details-no">
                         No
                         </label>

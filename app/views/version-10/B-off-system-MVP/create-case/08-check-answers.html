@@ -125,7 +125,7 @@
                                     &nbsp;&nbsp;<strong class="govuk-tag govuk-tag--grey">Pre-charge</strong>
                                 {% endif %}
                             </dd>
-                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="03-add-suspect.html?id={{data['suspectId'][id]}}">Change<span class="govuk-visually-hidden"> {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}'s details</span></a></dd>
+                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}'s details</span></a></dd>
                         </div>
                     </dl>
                     <!-- Suspect details -->
@@ -275,7 +275,7 @@
                                                 Not entered 
                                                 {% endif %}
                                             </dd>
-                                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_B-suspect-charges">Change<span class="govuk-visually-hidden"> Victim</span></a></dd>
+                                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> offence location</span></a></dd>
                                         </div>
 
                                         
@@ -285,7 +285,7 @@
                                             <dd class="govuk-summary-list__value">
                                             {% if data['chargedWithAdult'][i] == 'Charged with an adult' %} Yes {% else %} No {% endif %}
                                             </dd>
-                                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="03E_V2_B-suspect-charges">Change<span class="govuk-visually-hidden"> comments</span></a>
+                                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> charged with an adult</span></a>
                                             </dd>
                                         </div>
                                         {% endif %}
@@ -341,7 +341,7 @@
                                     &nbsp;&nbsp;<strong class="govuk-tag govuk-tag--grey">Pre-charge</strong>
                                 {% endif %}
                             </dd>
-                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="04A-add-suspect.html?id={{data['suspectId'][id]}}">Change<span class="govuk-visually-hidden"> {{ data['suspectCompanyName'][id]}}'s details</span></a></dd>
+                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> {{ data['suspectCompanyName'][id]}}'s details</span></a></dd>
                         </div> 
                     </dl>
                     <details class="govuk-details suspect_details_panel govuk-!-margin-top-1 govuk-!-margin-bottom-2">
@@ -431,7 +431,7 @@
                                                 Not entered 
                                                 {% endif %}
                                             </dd>
-                                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_B-suspect-charges">Change<span class="govuk-visually-hidden"> Victim</span></a></dd>
+                                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Victim</span></a></dd>
                                         </div>
 
 
@@ -441,7 +441,7 @@
                                             <dd class="govuk-summary-list__value">
                                             {% if data['chargedWithAdult'][i] == 'Charged with an adult' %} Yes {% else %} No {% endif %}
                                             </dd>
-                                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="03E_V2_B-suspect-charges">Change<span class="govuk-visually-hidden"> comments</span></a>
+                                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> comments</span></a>
                                             </dd>
                                         </div>
                                         {% endif %}
@@ -581,7 +581,7 @@
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Prosecutor</dt>
                     <dd class="govuk-summary-list__value">{% if data['prosecutor'] %} {{data['prosecutor']}} {% else %} Not entered {% endif %}</dd>
-                    <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Prosecutor</span></a></dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="07-cps-staff">Change<span class="govuk-visually-hidden"> Prosecutor</span></a></dd>
                 </div>
                 <!-- ITEM 1 - END -->
 
@@ -589,7 +589,7 @@
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Caseworker</dt>
                     <dd class="govuk-summary-list__value">{% if data['caseworker'] %} {{ data['caseworker'] }} {% else %} Not entered {% endif %}</dd>
-                    <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Caseworker</span></a></dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="07-cps-staff">Change<span class="govuk-visually-hidden"> Caseworker</span></a></dd>
                 </div>
                 <!-- ITEM 2 - END -->
 
@@ -598,29 +598,29 @@
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Police officer or investigator</dt>
                         <dd class="govuk-summary-list__value"><strong class="govuk-tag govuk-tag--blue">{{ data['policeRank'] }}</strong> - <span class="uppercase">{{ data['policeLastName'] }}</span>, {{ data['policeFirstName'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Police officer or investigator</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="07-cps-staff">Change<span class="govuk-visually-hidden"> Police officer or investigator</span></a></dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Shoulder number</dt>
                         <dd class="govuk-summary-list__value">{{ data['policeShoulderNumber'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Shoulder no.</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="07-cps-staff">Change<span class="govuk-visually-hidden"> Shoulder no.</span></a></dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Police unit</dt>
                         <dd class="govuk-summary-list__value">{{ data['policeUnit'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Police unit</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="07-cps-staff">Change<span class="govuk-visually-hidden"> Police unit</span></a></dd>
                     </div>
                 {% elseif data['policeYesNo'] == 'No' %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Police officer or investigator</dt>
                         <dd class="govuk-summary-list__value">Not entered</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Police officer or investigator</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="07-cps-staff">Change<span class="govuk-visually-hidden"> Police officer or investigator</span></a></dd>
                     </div>
                 {% else %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Police officer or investigator</dt>
                         <dd class="govuk-summary-list__value">Not entered</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="06-cps-staff">Change<span class="govuk-visually-hidden"> Police officer or investigator</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="07-cps-staff">Change<span class="govuk-visually-hidden"> Police officer or investigator</span></a></dd>
                     </div>
                 {% endif %}        
                 <!-- ITEM 3 - END -->
