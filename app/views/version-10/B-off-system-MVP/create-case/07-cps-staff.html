@@ -41,7 +41,7 @@
                                         <div class="govuk-form-group">
                                             <label class="govuk-label" for="newCase_Prosecutor">Prosecutor name</label>
 
-                                            <input class="govuk-input govuk-input--width-20" id="docType-Prosecutor" name="newCase_Prosecutor" type="text" value="{{ data['newCase_Prosecutor'] }}">
+                                            <input class="govuk-input govuk-input--width-20" id="docType-Prosecutor" name="newCase_Prosecutor" type="text" value="{{ data['prosecutor'] }}">
                                         </div>
                                     </fieldset>
                                 </div>
@@ -50,15 +50,15 @@
                                         <div class="govuk-form-group">
                                             <label class="govuk-label" for="newCase_Caseworker">Caseworker name</label>
 
-                                            <input class="govuk-input govuk-input--width-20" id="docType-Caseworker" name="newCase_Caseworker" type="text" value="{{ data['newCase_Caseworker'] }}">
+                                            <input class="govuk-input govuk-input--width-20" id="docType-Caseworker" name="newCase_Caseworker" type="text" value="{{ data['caseworker'] }}">
                                         </div>
                                     </fieldset>
                                 </div>
 
                             </div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="cps-staff-no" name="prosecutor-caseworker-yes-no" type="radio" value="No" data-aria-controls="conditional-contact-2">
-                                <label class="govuk-label govuk-radios__label" for="cps-staff-no" {% if data['prosecutorCaseworkerYesNo'] == 'No' %} checked {% endif %}>
+                                <input class="govuk-radios__input" id="cps-staff-no" name="prosecutor-caseworker-yes-no" type="radio" value="No" data-aria-controls="conditional-contact-2" {% if data['prosecutorCaseworkerYesNo'] == 'No' %} checked {% endif %}>
+                                <label class="govuk-label govuk-radios__label" for="cps-staff-no">
                                 No
                                 </label>
                             </div>
@@ -293,8 +293,8 @@
                             </div> -->
 
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="police-no" name="police-yes-no" type="radio" value="No" data-aria-controls="conditional-police-2">
-                                <label class="govuk-label govuk-radios__label" for="police-no" {% if data['policeYesNo'] == 'No' %} checked {% endif %}>
+                                <input class="govuk-radios__input" id="police-no" name="police-yes-no" type="radio" value="No" data-aria-controls="conditional-police-2" {% if data['policeYesNo'] == 'No' %} checked {% endif %}>
+                                <label class="govuk-label govuk-radios__label" for="police-no">
                                 No
                                 </label>
                             </div>
