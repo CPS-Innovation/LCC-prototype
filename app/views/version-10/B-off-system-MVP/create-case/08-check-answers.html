@@ -37,7 +37,7 @@
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">URN</dt>
                         <dd class="govuk-summary-list__value">{{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}/{{ data['URN4'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="03-case-details">Change<span class="govuk-visually-hidden"> URN</span></a></dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="02-case-details">Change<span class="govuk-visually-hidden"> URN</span></a></dd>
                     </div>
                 {% endif %}        
                 <!-- ITEM 2 - END -->
@@ -45,16 +45,16 @@
                 <!-- ITEM 3 - START -->
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Registering Unit</dt>
-                    <dd class="govuk-summary-list__value">{% if data['newCase_RegisteringUnit'] %}{{ data['newCase_RegisteringUnit'] }}{% else %} Not entered {% endif %}</dd>
-                    <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="03-case-details">Change<span class="govuk-visually-hidden"> Registering Unit</span></a></dd>
+                    <dd class="govuk-summary-list__value">{% if data['registeringUnit'] %}{{ data['registeringUnit'] }}{% else %} Not entered {% endif %}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="02-case-details">Change<span class="govuk-visually-hidden"> Registering Unit</span></a></dd>
                 </div>
                 <!-- ITEM 3 - END -->
 
                 <!-- ITEM 4 - START -->
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">WCU</dt>
-                    <dd class="govuk-summary-list__value">{% if data['newCase_WCU'] %}{{ data['newCase_WCU'] }}{% else %} Not entered {% endif %}</dd>
-                    <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="03-case-details">Change<span class="govuk-visually-hidden"> WCU</span></a></dd>
+                    <dd class="govuk-summary-list__value">{% if data['WCU'] %}{{ data['WCU'] }}{% else %} Not entered {% endif %}</dd>
+                    <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="02-case-details">Change<span class="govuk-visually-hidden"> WCU</span></a></dd>
                 </div>
                 <!-- ITEM 4 - END -->
 
@@ -563,6 +563,7 @@
                             {% if 'Weight - Medium' in data['newCase_MonitoringCodes'] %}<li>Weight - Medium</li>{% else %}{% endif %}
                             {% if 'Weight - N/A' in data['newCase_MonitoringCodes'] %}<li>Weight - N/A</li>{% else %}{% endif %}
                             {% if 'Young Witness Initiative' in data['newCase_MonitoringCodes'] %}<li>Young Witness Initiative</li>{% else %}{% endif %}
+                            {% if data.newCase_MonitoringCodes.length == 0 %} Not entered {% endif %}
                         </ul>                        
 
                     </dd>

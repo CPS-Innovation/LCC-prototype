@@ -27,18 +27,22 @@ module.exports = {
   // Register a case
   "operationNameYesNo": "",
   "operationName": "",
-  "firstHearingDetailsYesNo": "",
-  "courtLocation": "",
-  "firstHearingDate": "",
   
 // Case details
   "area": "",
   "URN1": "",
   "URN2": "",
   "URN3": "",
-  "URN4": "",
-  "localReference1": "",
-  "localReference2": "",
+  "URN4": 25,
+  "registeringUnit": "",
+  "WCU": "",
+
+  // First hearing details
+  "firstHearingDetailsYesNo": "",
+  "courtLocation": "",
+  "firstHearingDate": "",
+
+  // User info
   "updateDefault": "No",
   "userType": "LCC",
 
