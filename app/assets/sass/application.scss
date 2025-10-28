@@ -26,7 +26,7 @@ $govuk-assets-path: '/govuk/assets/';
 @import "patterns/related-items";
 
 // Add extra styles here, or re-organise the Sass files in whichever way makes most sense to you
-@import "node_modules/@ministryofjustice/frontend/moj/all";
+// @import "node_modules/@ministryofjustice/frontend/moj/all";
 @import "patterns/new-design";
 @import "patterns/new-modals";
 @import "patterns/document-viewer";
@@ -39,6 +39,7 @@ $govuk-assets-path: '/govuk/assets/';
 @import "components/autocomplete";
 @import "components/cps-journey";
 @import "components/off-cms-journey";
+@import "components/materials";
 
 
 @mixin das-clearfix {

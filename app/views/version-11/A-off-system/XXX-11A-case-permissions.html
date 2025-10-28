@@ -1,0 +1,112 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row" id="create-case-journey">
+    <div class="govuk-grid-column-two-thirds">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+        <div class="wrapper gov-pages">
+
+            <h1 class="govuk-heading-xl" style="">Case materials</h1>
+
+            <form method="get" action="4D-create-case" id="newCase_Form-C"> 
+             
+                {% if 'Egress' in data['newCase_SharedAccess'] %}
+                    <div class="govuk-form-group">
+                        <img src="../../../public/images/egress-logo.png" alt="Egress" class="egress-logo govuk-!-margin-bottom-2">
+                        <!-- <h3 class="govuk-heading-s">Egress</h3> -->
+                        <p>Below is where the case materials will be place and shared within Egress, you can copy and paste the link and share with the approriate users.</p>
+                        <input type="text" value="https://cps.egresscloud.com/w/edit/66fd8bd1158de0c2ca41b172/" id="filePath-Egress" class="url-text" disabled>
+                        <a class="govuk-button copy-button" id="copyEgressLink" onclick="copyEgressLink()">Copy path</a>
+                    </div>
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Would you like to configure access rights for egress now?</legend>
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="newCase_Access--Now" name="newCase_Access" type="radio" value="Now" checked>
+                                    <label class="govuk-label govuk-radios__label" for="newCase_Access--Now">Now</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="newCase_Access--Later" name="newCase_Access" type="radio" value="Later">
+                                    <label class="govuk-label govuk-radios__label" for="newCase_Access--Later">Later</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                {% else %}
+
+                {% endif %}
+
+                {% if 'Holmes' in data['newCase_SharedAccess'] %}
+                    <div class="govuk-form-group">
+                        <h3 class="govuk-heading-m">Holmes</h3>
+                        <p>Below is where the case materials will be place and shared within the Holmes application, you can copy and paste the link and share with the approriate users.</p>
+                        <input type="text" value="https://cps.egresscloud.com/w/edit/66fd8bd1158de0c2ca41b172/" id="filePath-Holmes" class="url-text" disabled>
+                        <a class="govuk-button copy-button" id="copyHolmesLink" onclick="copyHolmesLink()">Copy path</a>
+                    </div>
+
+                    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+                {% else %}
+
+                {% endif %}
+
+                {% if 'Relativity App' in data['newCase_SharedAccess'] %}
+                    <div class="govuk-form-group">
+                        <h3 class="govuk-heading-m">Relativity app</h3>
+                        <p>Below is where the case materials will be place and shared within the Relativity application, you can copy and paste the link and share with the approriate users.</p>
+                        <input type="text" value="https://cps.egresscloud.com/w/edit/66fd8bd1158de0c2ca41b172/" id="filePath-Relativity" class="url-text" disabled>
+                        <a class="govuk-button copy-button" id="copyRelativityLink" onclick="copyRelativityLink()">Copy path</a>
+                    </div>
+
+                    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+                {% else %}
+
+                {% endif %}
+
+                {% if 'Shared drive' in data['newCase_SharedAccess'] %}
+                    <div class="govuk-form-group">
+                        <h3 class="govuk-heading-m">Shared drive</h3>
+                        <p>Below is where the case materials will be place and shared within the Shared Drive, you can copy and paste the link and share with the approriate users.</p>
+                        <input type="text" value="\\ Public (P:) > RCTCaseData > SCCTD > CTD > Live Op > {{ data['newCase_OperationName'] }}" id="filePath-Drive" class="url-text" disabled>
+                        <a class="govuk-button copy-button" id="copyDriveLink" onclick="copyDriveLink()">Copy path</a>
+                    </div>
+
+                    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+                {% else %}
+
+                {% endif %}
+
+                {% if 'Outlook' in data['newCase_SharedAccess'] %}
+                    <div class="govuk-form-group">
+                        <h3 class="govuk-heading-m"><img src="../../../public/images/outlook-logo.jpg" alt="Outlook" class="outlook-logo">Outlook emails</h3>
+                        <p>Below is where the case materials will be place and shared within Outlook, you can copy and paste the link and share with the approriate users.</p>
+                        <input type="text" value="Public (P:) > RCTCaseData > SCCTD > CTD > Live Op > {{ data['newCase_OperationName'] }}" id="filePath-Outlook" class="url-text" disabled>
+                        <a class="govuk-button copy-button" id="copyOutlookLink" onclick="copyOutlookLink()">Copy path</a>
+                    </div>
+                {% else %}
+
+                {% endif %}
+
+                <p><br></p>
+
+                <button type="submit" class="govuk-button" style="">Continue</button>
+                <button type="button" onclick="location.href='2-homepage';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}
