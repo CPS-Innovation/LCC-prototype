@@ -241,42 +241,42 @@ $(document).ready(function() {
     });
 
      $version11.find('.tab-1-content').on("click", function (e) {
-          $version11.find('.panel').hide();
-          $version11.find('#tab_content_1').show();
+         $version11.find('.panel').hide();
+         $version11.find('#tab-1-content').show();
      });
 
      $version11.find('.tab-2-content').on("click", function (e) {
-          $version11.find('.panel').hide();
-          $version11.find('#tab_content_2').show();
+         $version11.find('.panel').hide();
+         $version11.find('#tab-2-content').show();
      });
 
      $version11.find('.tab-3-content').on("click", function (e) {
-          $version11.find('.panel').hide();
-          $version11.find('#tab_content_3').show();
-          $version11.find('#tab-list').show();
-          $version11.find('#docCopy').hide();
+         $version11.find('.panel').hide();
+         $version11.find('#tab-3-content').show();
+         $version11.find('#tab-list').show();
+         $version11.find('#docCopy').hide();
      });
 
      $version11.find('.tab-3-content_link').on("click", function (e) {
-          $version11.find('.panel').hide();
-          $version11.find('#tab_content_3').show();
-          $version11.find('#tab-list').show();
-          $version11.find('#docCopy').hide();
+         $version11.find('.panel').hide();
+         $version11.find('#tab-3-content').show();
+         $version11.find('#tab-list').show();
+         $version11.find('#docCopy').hide();
      });
 
      $version11.find('.tab-4-content').on("click", function (e) {
-          $version11.find('.panel').hide();
-          $version11.find('#tab_content_4').show();
+         $version11.find('.panel').hide();
+         $version11.find('#tab-4-content').show();
      });
      
      $version11.find('.tab-5-content').on("click", function (e) {
-          $version11.find('.panel').hide();
-          $version11.find('#tab_content_5').show();
+         $version11.find('.panel').hide();
+         $version11.find('#tab-5-content').show();
      });
 
      $version11.find('.tab-5-content_link').on("click", function (e) {
-          $version11.find('.panel').hide();
-          $version11.find('#tab_content_5').show();
+         $version11.find('.panel').hide();
+         $version11.find('#tab-5-content').show();
      });
 
 });
