@@ -315,11 +315,23 @@ app.post(/^\/([^.]+)$/, function (req, res) {
 })
 
 // Catch 404 and forward to error handler
+// app.use(function (req, res, next) {
+//   var err = new Error(`Page not found: ${req.path}`)
+//   err.status = 404
+//   next(err)
+// })
+
+// Catch 404 and forward to error handler (ignore static asset requests)
 app.use(function (req, res, next) {
-  var err = new Error(`Page not found: ${req.path}`)
-  err.status = 404
-  next(err)
-})
+  // Don’t log missing assets such as fonts, images, or JS bundles
+  if (req.path.match(/\.(woff2?|ttf|eot|png|jpg|jpeg|svg|ico|css|js|map)$/)) {
+    return res.status(204).end(); // No content, no log
+  }
+
+  var err = new Error(`Page not found: ${req.path}`);
+  err.status = 404;
+  next(err);
+});
 
 // Display error
 app.use(function (err, req, res, next) {
@@ -351,6 +363,7 @@ console.log('\nNOTICE: the kit is for building prototypes, do not use it for pro
 
 // Ignore all /static/media requests silently
 // app.use('/static/media', (req, res) => res.status(204).end());
+
 
 
 
