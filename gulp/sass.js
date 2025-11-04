@@ -23,7 +23,6 @@ gulp.task('sass-extensions', function (done) {
 
 gulp.task('sass', function () {
   return gulp.src(config.paths.assets + '/sass/*.scss', { sourcemaps: true })
-  // return gulp.src('app/assets/sass/application.scss', { sourcemaps: true })
     .pipe(sass.sync({ outputStyle: 'expanded', logger: sass.compiler.Logger.silent }).on('error', function (error) {
       // write a blank application.css to force browser refresh on error
       if (!fs.existsSync(stylesheetDirectory)) {
