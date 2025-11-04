@@ -684,7 +684,7 @@ $(document).ready(function() {
 
      $('input[name=materials_document]').click(function(){
           if ($("input[name=materials_document]:checked").length >= 1) {
-               $('.reclassify_Document_Multiple_Docs, .redact_Document_Multiple_Docs').removeAttr('disabled').removeClass('govuk-button--disabled') .attr('onClick', 'return pageActions();');
+               $('.reclassify_Document_Multiple_Docs, .redact_Document_Multiple_Docs').removeAttr('disabled').removeClass('govuk-button--disabled');
           } else if ($("input[name=materials_document]:checked").length == 0) {
                $('.reclassify_Document_Multiple_Docs, .redact_Document_Multiple_Docs').attr('disabled','disabled').addClass('govuk-button--disabled').removeAttr('onClick');
           }
@@ -1140,3 +1140,124 @@ function openNotesModal() {
 function closeNotesModal() {
    $("#openNotesModal").addClass("rj-dont-display");
 }
+
+
+// ChatGPT fixes [Monica]
+// ====== ACTIONS DROPDOWN: MODAL HELPERS (add at the end of materials.js) ======
+(function () {
+  // Utility: find any of a list of selectors, return the first jQuery element that exists
+  function $firstExisting(selectors) {
+    for (const sel of selectors) {
+      const $el = $(sel);
+      if ($el.length) return $el;
+    }
+    return $(); // empty
+  }
+
+  // Utility: show/hide modal containers that are initially hidden with CSS classes
+  function showModal($container) {
+    if (!$container.length) return false;
+    // Remove any "display: none" / hiding classes you use
+    $container.removeClass('rj-dont-display').show();
+    // Optional a11y attributes
+    $container.attr('aria-hidden', 'false');
+    return false;
+  }
+
+  function hideModal($container) {
+    if (!$container.length) return false;
+    $container.addClass('rj-dont-display').hide();
+    $container.attr('aria-hidden', 'true');
+    return false;
+  }
+
+  // Count selected materials (checkboxes in the table)
+  function selectedMaterials() {
+    return $('input[name="materials_document"]:checked');
+  }
+
+  // ===== Rename modal =====
+  window.openRenameModal = function () {
+    const $sel = selectedMaterials();
+    if ($sel.length !== 1) {
+      // Guard: rename is single-selection only
+      // (You can swap this for a GDS error summary if you prefer)
+      alert('Please select exactly one document to rename.');
+      return false;
+    }
+
+    // Optionally put the current title into the modal
+    const docTitle = $sel.first().val() || 'Document title';
+    $('.document-title-10').text(docTitle);
+    $('#rename-Document').val(docTitle);
+
+    // Reset state banners
+    $('.saving-panel-rename, .success-banner-rename, .secondary-action').hide();
+    $('.initial-action').show();
+
+    // Show the modal container from includes/modals/rename.html
+    const $modal = $('#openRenameModal');
+    return showModal($modal);
+  };
+
+  window.closeRenameModal = function () {
+    const $modal = $('#openRenameModal');
+    return hideModal($modal);
+  };
+
+  window.renameDocument = function () {
+    // Fake a quick save UX: hide initial buttons, show "saving", then "success"
+    $('.initial-action').hide();
+    $('.saving-panel-rename').show();
+
+    setTimeout(function () {
+      $('.saving-panel-rename').hide();
+      $('.success-banner-rename, .secondary-action').show();
+
+      // Reflect new name back into the table UI (optional)
+      const newName = ($('#rename-Document').val() || '').trim();
+      if (newName) {
+        const $sel = selectedMaterials();
+        if ($sel.length === 1) {
+          // Update the visible button text in the Title column that matches this checkbox row
+          const idAttr = $sel.attr('id'); // e.g. materials_document_6
+          if (idAttr) {
+            const $row = $('#' + idAttr).closest('tr');
+            $row.find('.title_column .openMe .govuk-button.show_material').text(newName);
+          }
+        }
+      }
+    }, 400); // tweak the delay if you want
+    return false;
+  };
+
+  // ===== Update Statement / Exhibit modals =====
+  // Your HTML uses onclick="return openUpdateStatement()" and "...Exhibit()"
+  // We’ll look for a few likely IDs and open whichever exists.
+  function openGenericModal(possibleSelectors) {
+    const $modal = $firstExisting(possibleSelectors);
+    if (!$modal.length) {
+      console.warn('Update modal not found. Tried:', possibleSelectors.join(', '));
+      // Fall back to a gentle alert so users aren’t stuck
+      alert('This modal is not wired yet in this prototype.');
+      return false;
+    }
+    return showModal($modal);
+  }
+
+  window.openUpdateStatement = function () {
+    return openGenericModal([
+      '#updateStatementModal',
+      '#openUpdateStatementModal',
+      '#update-statement-modal'
+    ]);
+  };
+
+  window.openUpdateExhibit = function () {
+    return openGenericModal([
+      '#updateExhibitModal',
+      '#openUpdateExhibitModal',
+      '#update-exhibit-modal'
+    ]);
+  };
+})();

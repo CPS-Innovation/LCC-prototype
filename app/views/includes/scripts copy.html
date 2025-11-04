@@ -1,0 +1,328 @@
+<script src="/public/javascripts/jquery.cookie.js"></script>
+<script src="/public/javascripts/accordion.js"></script>
+<script src="/public/javascripts/cookie.js"></script>
+<script src="/public/javascripts/draggable-tabs.js"></script>
+<script src="/public/javascripts/jquery.autocomplete.min.js"></script>
+<link href="/public/css/pdf.css" rel="stylesheet" />
+
+<!-- Auto complete - START -->
+<script src="/public/javascripts/autocomplete/docType-Reviews.js"></script>
+<script src="/public/javascripts/autocomplete/docType-CaseOverview.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Statements.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Exhibits.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Forensics.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Unused.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Defendant.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Court.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Communications.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Uncategorised.js"></script>
+<script src="/public/javascripts/autocomplete/offCMS-users.js"></script>
+
+<!-- Legacy autocomplete preserved -->
+<script src="/public/javascripts/autocomplete/docType-Area.js"></script>
+<script src="/public/javascripts/autocomplete/docType-LCC-Court.js"></script>
+<script src="/public/javascripts/autocomplete/docType-WCU.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Unit.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Prosecutor.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Caseworker.js"></script>
+<script src="/public/javascripts/autocomplete/docType-Country.js"></script>
+<!-- Auto complete - END -->
+
+<script src="/public/javascripts/notifications.js"></script>
+<script src="/public/javascripts/tasks-and-email.js"></script>
+<script src="/public/javascripts/unused-evidential.js"></script>
+<script src="/public/javascripts/notes.js"></script>
+<script src="/public/javascripts/sorttable-V2.js"></script>
+<script src="/public/javascripts/remove-rotate.js"></script>
+<script src="/public/javascripts/OFF-CMS-cases.js"></script>
+<script src="/public/javascripts/OFF-CMS-cases_COOKIES.js"></script>
+<script src="/public/javascripts/OFF-CMS-cases-MVP.js"></script>
+<script src="/public/javascripts/materials.js"></script>
+<script src="/public/javascripts/housekeeping.js"></script>
+
+<script src="https://unpkg.com/drag-on-drop@3.6.1/dist/dragon-drop.js"></script>
+<script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
+
+<script type="text/javascript">
+
+// Scroll effect
+var yourNavigation = $(".navbar");
+stickyDiv = "sticky";
+yourHeader = $('.header-wrapper-height').height();
+sideBar = $('#left-column');
+
+$(window).scroll(function() {
+    if ($(this).scrollTop() > yourHeader) {
+        yourNavigation.addClass(stickyDiv);
+        sideBar.addClass(stickyDiv);
+        $('.searchForm-inner.left-column-top').addClass(stickyDiv);
+    } else {
+        yourNavigation.removeClass(stickyDiv);
+        sideBar.removeClass(stickyDiv);
+        $('.searchForm-inner.left-column-top').removeClass(stickyDiv);
+    }
+});
+
+$(document).ready(function () {
+    let tabCount = 0;
+    const SPECIAL_CASE_SEARCH_TAB_HEADING = "Search results";
+
+    const $menuLinks = $(".openMe a"),
+          $tabList = $(".govuk-tabs .govuk-tabs__list"),
+          $modalLinks = $("#searchModal .mb5 a"),
+          $inpSearchUrn = $("#inpSearchURN"),
+          $btnSearchUrn = $("#btnSearchURN");
+
+    // ============================ OPEN ALL DOCUMENTS (and variations) ============================ //
+    const openHandlers = [
+        {selector: ".open-all", find: ".accordion-section-body .openMe a", delay: 750},
+        {selector: ".redact_Document_Multiple_Docs", find: "#materials_column_2 table#materials_table tr.selected_for_readcation .openMe a", delay: 1000},
+        {selector: ".activate_All_Documents", find: "#tab_content_2 table#materials_table tr.material_All .openMe a", delay: 1000},
+        {selector: ".activate_Statements", find: "#tab_content_2 table#materials_table tr.material_Statement .openMe a", delay: 1000},
+        {selector: ".activate_MG_Forms", find: "#tab_content_2 table#materials_table tr.material_MG_Form .openMe a", delay: 1000},
+        {selector: ".activate_Other", find: "#tab_content_2 table#materials_table tr.material_Other .openMe a", delay: 1000}
+    ];
+    openHandlers.forEach(cfg => {
+        $(cfg.selector).each(function (_, link) {
+            $(link).click(function (event) {
+                event.preventDefault();
+                const $anchors = $(link).closest(".govuk-tabs, .accordion-section-body, #materials_column_2")
+                    .find(cfg.find);
+                $anchors.parent().parent().removeClass('unreadDocument');
+                $anchors.each(function (index) {
+                    setTimeout(()=>{ handleMenuLinkClick($(this).text()); }, cfg.delay * index);
+                });
+            });
+        });
+    });
+
+    // ============================ Link handling ============================ //
+    $menuLinks.each(function (_, link) {
+        $(link).click(function (event) {
+            event.preventDefault();
+            handleMenuLinkClick($(this).text());
+        });
+    });
+    $modalLinks.each(function (_, link) {
+        $(link).click(function (event) {
+            event.preventDefault();
+            handleMenuLinkClick($(this).text(), true);
+        });
+    });
+    $inpSearchUrn.keyup(function (e) {
+        if (e.key === "Enter") handleMenuLinkClick(SPECIAL_CASE_SEARCH_TAB_HEADING);
+    });
+    $btnSearchUrn.click(() => handleMenuLinkClick(SPECIAL_CASE_SEARCH_TAB_HEADING));
+
+    // ============================ Core tab logic ============================ //
+    function handleMenuLinkClick(label, showSearchSummary) {
+        const tabId = encodeURI(label);
+        ensureTabExists(tabId, label, showSearchSummary);
+        highlightMenuLink(label, true);
+        showTab(tabId, showSearchSummary);
+        $("#searchModal").addClass("rj-dont-display");
+    }
+
+    function highlightMenuLink(label, isHighlighted) {
+        const $link = $(`.openMe a:contains('${label}')`);
+        $link.parent("td").toggleClass("documentSelected", isHighlighted);
+    }
+
+    function getTabHtml(src) {
+        return `<div id="pdf-root" data-pdf-url="${src}" style="height: calc(100vh)"></div>`;
+    }
+
+    function ensureTabExists(tabId, label, isSearched) {
+        if ($(`li[data-tab-id='${tabId}']`).length) return;
+
+        const newTab = $(`
+            <li class="govuk-tabs__list-item tooltip" data-tab-id="${tabId}" onclick="return documentTitle()" draggable="true">
+                <svg class="closeButtonOnCPS" onclick="return closeTab();">
+                    <circle cx="12" cy="12" r="13" stroke="white" stroke-width="1" fill="white" />
+                    <path stroke="white" stroke-width="3" fill="none" d="M6.25,6.25,17.75,17.75" />
+                    <path stroke="white" stroke-width="3" fill="none" d="M6.25,17.75,17.75,6.25" />
+                </svg>
+                <a class="govuk-tabs__tab" id="tabHeadingss" href="" onclick="documentTarget()">${label}</a>
+                <span class="tooltiptext">${label}</span>
+            </li>`).appendTo($tabList);
+
+        if (label === SPECIAL_CASE_SEARCH_TAB_HEADING) {
+            const text = $("script[data-template='searchTab']").text();
+            const $searchTabContent = $(text);
+            $searchTabContent.attr("data-tab-id", `${tabId}-content`);
+            $searchTabContent.find(".openMe a").each(function (_, link) {
+                $(link).click(function (event) {
+                    event.preventDefault();
+                    handleMenuLinkClick($(this).text(), true);
+                });
+            });
+            $searchTabContent.insertAfter($tabList);
+        } else {
+            const document = $(`.openMe a:contains("${label}")`).attr("data-doc");
+            const count = $(`.openMe a:contains("${label}")`).attr("data-count") || 3;
+
+            const content = `
+            <div class="govuk-tabs__panel govuk-tabs__panel--hidden document-panel" data-tab-id="${tabId}-content" data-is-searched="${isSearched}">
+                <button onclick="windowSizeChange(), windowSizeChangeText()" class="window-size" id="window-size"><span>View full screen</span></button>
+
+                <!-- SEARCH HEADER -->
+                <div class="searchedDocumentSummary rj-dont-display" id="searchHeaderDisplay">
+                    <div class="title">
+                        <a id="btnSearchURNTwo" class="govuk-body-s inPageSearchMargins">Back to search results</a>
+                        <p class="govuk-body-s inPageSearchMargins">${count} matchs for "assault" in ${label}</p>
+                    </div>
+                    <div class="dropdown">
+                        <button onclick="myFunction(), toggleClass()" class="dropbtn">Document actions</button>
+                        <div id="myDropdown1" class="dropdown-content">
+                            <button onclick="openModalOver(), documentTitle()">Log an Under/Over redaction</button>
+                            <button onclick="openRotatePagesModal(), documentTitle()">Rotate document pages</button>
+                            <button onclick="location.href='B-discard_material';">Discard</button>
+                            <button onclick="#">Reclassify</button>
+                            <button class="govuk-button mark_as_Read" data-module="govuk-button" type="button">Mark as read</button>
+                            <button onclick="return openRenameModal(), documentRename();" class="rename-Document">Rename</button>
+                            <button onclick="window.open('https://as-web-redaction-log-dev.azurewebsites.net','_blank')">View redaction log history</button>
+                            <button onclick="suggestedRedactions()" id="suggestedRedactions">Toggle potential redactions</button>
+                            <button onclick="openEmailModal(), documentTitle()">Email document</button>
+                            <button onclick="printDocument('pdf-root')">Print document</button>
+                        </div>
+                    </div>
+
+                    <!-- Zoom + Tools -->
+                    <div class="govuk-form-group" id="zoom-wrapper">
+                        <select class="govuk-select" id="zoomPercentage-V2" onchange="zoom1(event)">
+                            <option value="100" selected>100%</option>
+                            <option value="150">150%</option>
+                            <option value="200">200%</option>
+                        </select>
+                    </div>
+                    <button onclick="zoomOut()" class="zoom zoomOut"><span>Zoom out</span></button>
+                    <button onclick="zoomIn()" class="zoom zoomIn"><span>Zoom in</span></button>
+                    <button onclick="marqueeOn()" class="marquee" id="marquee"><span>Redact area tool</span></button>
+
+                    <div class="buttons">
+                        <p class="govuk-body-s inPageSearchMargins deactivatedPrevious">Previous</p>
+                        <p class="govuk-body-s inPageSearchMargins">1/${count}</p>
+                        <p class="govuk-body-s inPageSearchMargins looks-like-a-link-underline">Next</p>
+                    </div>
+                </div>
+
+                <!-- NON-SEARCH HEADER -->
+                <div class="docSummaryTopPage rj-dont-display" id="documentNameHeader">
+                    <p class="govuk-body-s inPageSearchMargins2">${label}</p>
+                    <p class="govuk-body-s date_time_notes">
+                        <span class="icon-new date-added"></span><div class="date_details"></div>
+                        <span class="icon-new time-added"></span><div class="time_details"></div>
+                        <button class="notes-link govuk-button" type="button"></button>
+                    </p>
+                    <div class="dropdown">
+                        <button onclick="myFunction(), toggleClass()" class="dropbtn">Document actions</button>
+                        <div class="dropdown-content myDropdown2">
+                            <button onclick="openModalOver(), documentTitle()">Log an Under/Over redaction</button>
+                            <button onclick="openRotatePagesModal(), documentTitle()">Rotate document pages</button>
+                            <button onclick="#">Hide delete page options</button>
+                            <button onclick="location.href='B-discard_material';">Discard</button>
+                            <button onclick="#">Reclassify</button>
+                            <button onclick="return mark_as_Read();">Mark as read</button>
+                            <button onclick="return openRenameModal(), documentRename();" class="rename-Document">Rename</button>
+                            <button onclick="window.open('https://as-web-redaction-log-dev.azurewebsites.net','_blank')">View redaction log history</button>
+                            <button onclick="suggestedRedactions()" id="suggestedRedactions">Toggle potential redactions</button>
+                            <button onclick="openEmailModal(), documentTitle()">Email document</button>
+                            <button onclick="printDocument('pdf-root')">Print document</button>
+                        </div>
+                    </div>
+
+                    <div class="govuk-form-group" id="zoom-wrapper">
+                        <select class="govuk-select" id="zoomPercentage-V1" onchange="zoom1(event)">
+                            <option value="100" selected>100%</option>
+                            <option value="150">150%</option>
+                            <option value="200">200%</option>
+                        </select>
+                    </div>
+                    <button onclick="zoomOut()" class="zoom zoomOut"><span>Zoom out</span></button>
+                    <button onclick="zoomIn()" class="zoom zoomIn"><span>Zoom in</span></button>
+                    <button onclick="marqueeOn()" class="marquee" id="marquee"><span>Redact area tool</span></button>
+                </div>
+
+                <div class="error-message">
+                    <div class="govuk-warning-text"><span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <strong class="govuk-warning-text__text">Technical problem reported</strong>
+                    </div>
+                </div>
+
+                <div class="updated-message"><h3>Success</h3><p>This document has been updated.</p></div>
+                <div class="discarded-message"><div class="govuk-warning-text"><strong>This document has been discarded</strong></div></div>
+
+                <div class="suggested-redactions-panel">
+                    <h3 class="govuk-heading-s">Potential redactions</h3>
+                    <p><span id="SRNumber">(25)</span> Named individuals, <span>(2)</span> Emails, <span>(1)</span> DOB</p>
+                </div>
+
+                <div class="email-message">
+                    <h3>Document emailed</h3>
+                    <p>To: <a href="" id="emailRecipients-Content">Recipient</a></p>
+                </div>
+
+                ${getTabHtml(`/public/files/${document}`)}
+            </div>`;
+
+            const $content = $(content);
+            $content.find("#btnSearchURNTwo").click(function (event) {
+                event.preventDefault();
+                $("#searchModal").removeClass("rj-dont-display");
+            });
+            $content.insertAfter($tabList);
+        }
+
+        newTab.find("a.govuk-tabs__tab").click(function (event) {
+            event.preventDefault();
+            showTab(tabId);
+        });
+        newTab.find(".closeButtonOnCPS").click(function () {
+            destroyTab(tabId);
+            highlightMenuLink(tabId, false);
+        });
+
+        $.getScript(window.location.origin + "/public/javascripts/pdf.js");
+        tabCount++;
+        showHideStaticText();
+    }
+
+    function destroyTab(tabId) {
+        const $tabs = $(`li[data-tab-id`);
+        const $thisTab = $(`li[data-tab-id='${tabId}']`);
+        const thisTabIndex = $tabs.index($thisTab);
+        const tabIndexToLeaveOpen = thisTabIndex ? thisTabIndex - 1 : 0;
+        $thisTab.remove();
+        $(`div[data-tab-id='${tabId}-content']`).remove();
+
+        const idOfTabToOpen = $($(`li[data-tab-id`)[tabIndexToLeaveOpen]).attr("data-tab-id");
+        showTab(idOfTabToOpen);
+        tabCount--;
+        showHideStaticText();
+    }
+
+    function showTab(tabId, showSummary) {
+        $tabList.find("li").removeClass("govuk-tabs__list-item--selected").removeAttr("id");
+        $(`li[data-tab-id='${tabId}']`).addClass("govuk-tabs__list-item--selected").attr("id", "selectedTab");
+        $(".govuk-tabs__panel").addClass("govuk-tabs__panel--hidden");
+
+        const $tabContent = $(`div[data-tab-id='${tabId}-content']`).removeClass("govuk-tabs__panel--hidden");
+        const $selectedTab = $("#selectedTab");
+        if ($selectedTab.length) $selectedTab[0].scrollIntoView();
+
+        const wasSearched = $tabContent.attr("data-is-searched") === "true";
+        if (showSummary || wasSearched) {
+            $tabContent.attr("data-is-searched", "true");
+            $tabContent.find("#documentNameHeader").hide();
+            $tabContent.find("#searchHeaderDisplay").show();
+        } else {
+            $tabContent.find("#documentNameHeader").show();
+            $tabContent.find("#searchHeaderDisplay").hide();
+        }
+    }
+
+    function showHideStaticText() {
+        $("#docCopy").toggle(tabCount === 0);
+    }
+});
+</script>

@@ -392,6 +392,464 @@ module.exports = {
   "wantedEgressFolder": "",
   "wantedDriveFolder": "",
   "egressTemplate": "",
-  "addMaterials": ""
-  
+  "addMaterials": "",
+
+
+
+  // AI //
+  // Sample materials data
+  "materialsData": [
+  {
+    id: 1,
+    name: 'MCLOVE MG3',
+    type: 'MG3',
+    category: 'Review',
+    date: '02/06/2020',
+    status: 'None',
+    new: true
+  },
+  {
+    id: 2,
+    name: 'Case overview and officer comments',
+    type: 'PDF',
+    category: 'Case overview',
+    date: '02/06/2020',
+    status: 'None',
+    new: true
+  },
+  {
+    id: 3,
+    name: 'MG05 MCLOVE',
+    type: 'MG05',
+    category: 'Case overview',
+    date: '02/06/2020',
+    status: 'Used',
+    new: true
+  },
+  {
+    id: 4,
+    name: 'MG06 3 June',
+    type: 'MG05',
+    category: 'Unused material',
+    date: '03/06/2020',
+    status: 'Used',
+    new: true
+  },
+  {
+    id: 5,
+    name: 'MG06 10 June',
+    type: 'MG05',
+    category: 'Unused material',
+    date: '10/06/2020',
+    status: 'Used',
+    new: true
+  },
+  {
+    id: 6,
+    name: 'stmt BLAYNEE 2034 (JUNE mgt)',
+    type: 'MG11',
+    category: 'Statements',
+    date: '01/06/2020',
+    status: 'Used',
+    new: true
+  },
+  {
+    id: 7,
+    name: 'stmt Lucy Doyle MG11',
+    type: 'MG11',
+    category: 'Statements',
+    date: '01/06/2020',
+    status: 'Used',
+    new: true
+  },
+  {
+    id: 8,
+    name: 'stmt Shelagh McLove MG11',
+    type: 'MG11',
+    category: 'Statements',
+    date: '01/06/2020',
+    status: 'Used',
+    new: true
+  },
+  {
+    id: 9,
+    name: 'Shelagh McLove VPS mgt1',
+    type: 'MG11',
+    category: 'Statements',
+    date: '06/06/2020',
+    status: 'Used',
+    new: true
+  },
+  {
+    id: 10,
+    name: 'MG11 Shelagh MCLOVE retraction',
+    type: 'MG11',
+    category: 'Statements',
+    date: '06/06/2020',
+    status: 'Used',
+    new: true
+  },
+  {
+    id: 11,
+    name: 'MCLOVE MG12',
+    type: 'MG12',
+    category: 'Exhibits',
+    date: '12/06/2020',
+    status: 'Used',
+    new: true
+  },
+  {
+    id: 12,
+    name: 'MCLOVE MG00',
+    type: 'MG00',
+    category: 'Exhibits',
+    date: '12/06/2020',
+    status: 'Used',
+    new: true
+  },
+  {
+    id: 13,
+    name: 'UNUSED 1_STORM LOG IBB1 01 6 20 - EDITED 2020 10 23 MCLOVE',
+    type: 'MG11',
+    category: 'Unused material',
+    date: '01/06/2020',
+    status: 'Unused',
+    new: true
+  },
+  {
+    id: 14,
+    name: 'SDC_items to_be Disclosed MCLOVE',
+    type: 'MG11',
+    category: 'Unused material',
+    date: '05/06/2020',
+    status: 'Unused',
+    new: true
+  },
+  {
+    id: 15,
+    name: 'MG20_5_JUNE',
+    type: 'MG20',
+    category: 'Exhibits',
+    date: '06/06/2020',
+    status: 'Unused',
+    new: true
+  },
+  {
+    id: 16,
+    name: 'MG20_10_JUNE',
+    type: 'MG20',
+    category: 'Exhibits',
+    date: '11/06/2020',
+    status: 'Unused',
+    new: true
+  },
+  {
+    id: 17,
+    name: 'PRE CONS D',
+    type: 'MG20',
+    category: 'Defendant',
+    date: '02/06/2020',
+    status: 'Used',
+    new: true
+  },
+  {
+    id: 18,
+    name: 'Asset Rec 1',
+    type: 'MG20',
+    category: 'Exhibits',
+    date: '03/06/2020',
+    status: 'None',
+    new: true
+  },
+  {
+    id: 19,
+    name: 'MG11_1',
+    type: 'MG11',
+    category: 'Statements',
+    date: '03/06/2020',
+    status: 'None',
+    new: true
+  },
+  {
+    id: 20,
+    name: 'Exhibit_1',
+    type: 'MG11',
+    category: 'Exhibits',
+    date: '03/06/2020',
+    status: 'None',
+    new: true
+  }
+],
+
+
+"newFilter": "",
+"filterStatusUsed": "",
+"filterStatusUnused": "",
+"filterStatusNone": "",
+"filterCategoryReview": "",
+"filterCategoryCaseOverview": "",
+"filterCategoryStatements": "",
+"filterCategoryExhibits": "",
+"filterCategoryForensics": "",
+"filterCategoryUnusedMaterial": "", 
+"filterCategoryDefendant": "",
+"filterCategoryCourtPreparation": "",
+
+
+
+"materials": [
+  // {
+  //   id: 0,
+  //   name: 'Monica crime rate',
+  //   type: 'Video file',
+  //   category: 'Evidence',
+  //   date: '02/06/2025',
+  //   status: 'Used',
+  //   new: true,
+  //   docLink: 'MCLOVEMG3.pdf',
+  //   previewLink: '/public/files/MCLOVEMG3.pdf',
+  //   parentId: null
+  // },
+  {
+    id: 1,
+    name: 'MCLOVE MG3',
+    type: 'MG3',
+    category: 'Review',
+    date: '02/06/2020',
+    status: 'None',
+    new: false,
+    docLink: 'MCLOVEMG3.pdf',
+    previewLink: '/public/files/MCLOVEMG3.pdf',
+    parentId: null
+  },
+  {
+    id: 2,
+    name: 'Case overview and officer comments',
+    type: 'PDF',
+    category: 'Case overview',
+    date: '02/06/2020',
+    status: 'None',
+    new: true,
+    docLink: 'CM01.pdf',
+    previewLink: '/public/files/CM01.pdf',
+    parentId: null
+  },
+  {
+    id: 3,
+    name: 'MG05 MCLOVE',
+    type: 'MG05',
+    category: 'Case overview',
+    date: '02/06/2020',
+    status: 'Used',
+    new: true,
+    docLink: 'MG05MCLOVE.pdf',
+    previewLink: '/public/files/MG05MCLOVE.pdf',
+    parentId: null
+  },
+  {
+    id: 4,
+    name: 'MG06 3 June',
+    type: 'MG05',
+    category: 'Unused material',
+    date: '03/06/2020',
+    status: 'Used',
+    new: true,
+    docLink: 'MG06_3June.pdf',
+    previewLink: '/public/files/MG06_3June.pdf',
+    parentId: null
+  },
+  {
+    id: 5,
+    name: 'MG06 10 June',
+    type: 'MG05',
+    category: 'Unused material',
+    date: '10/06/2020',
+    status: 'Used',
+    new: true,
+    docLink: 'MG06_10june.pdf',
+    previewLink: '/public/files/MG06_10june.pdf',
+    parentId: null
+  },
+  {
+    id: 6,
+    name: 'stmt BLAYNEE 2034 1 JUNE mg11',
+    type: 'MG11',
+    category: 'Statements',
+    date: '01/06/2020',
+    status: 'Used',
+    new: true,
+    docLink: 'stmt_BLAYNEE_2034_1_JUNE_mg11.pdf',
+    previewLink: '/public/files/stmt_BLAYNEE_2034_1_JUNE_mg11.pdf',
+    parentId: null
+  },
+  {
+    id: 7,
+    name: 'stmt Lucy Doyle MG11',
+    type: 'MG11',
+    category: 'Statements',
+    date: '01/06/2020',
+    status: 'Used',
+    new: true,
+    docLink: 'stmt_Lucy_Doyle_MG11.pdf',
+    previewLink: '/public/files/stmt_Lucy_Doyle_MG11.pdf',
+    parentId: null
+  },
+  {
+    id: 8,
+    name: 'stmt Shelagh McLove MG11',
+    type: 'MG11',
+    category: 'Statements',
+    date: '01/06/2020',
+    status: 'Used',
+    new: true,
+    docLink: 'stmt_Shelagh_McLove_MG11.pdf',
+    previewLink: '/public/files/stmt_Shelagh_McLove_MG11.pdf',
+    parentId: null
+  },
+  {
+    id: 9,
+    name: 'Shelagh McLove VPS mg11',
+    type: 'MG11',
+    category: 'Statements',
+    date: '06/06/2020',
+    status: 'Used',
+    new: true,
+    docLink: 'Shelagh_McLove_VPS_mg11.pdf',
+    previewLink: '/public/files/Shelagh_McLove_VPS_mg11.pdf',
+    parentId: null
+  },
+  {
+    id: 10,
+    name: 'MG11 Shelagh MCLOVE retraction',
+    type: 'MG11',
+    category: 'Statements',
+    date: '06/06/2020',
+    status: 'Used',
+    new: false,
+    docLink: 'MG11_Shelagh_MCLOVE_retraction.pdf',
+    previewLink: '/public/files/MG11_Shelagh_MCLOVE_retraction.pdf',
+    parentId: null
+  },
+  {
+    id: 11,
+    name: 'MCLOVE MG12',
+    type: 'MG12',
+    category: 'Exhibits',
+    date: '12/06/2020',
+    status: 'Used',
+    new: false,
+    docLink: 'MG12.pdf',
+    previewLink: '/public/files/MG12.pdf',
+    parentId: null
+  },
+  {
+    id: 12,
+    name: 'MCLOVE MG00',
+    type: 'MG00',
+    category: 'Exhibits',
+    date: '12/06/2020',
+    status: 'Used',
+    new: true,
+    docLink: 'MG00.pdf',
+    previewLink: '/public/files/MG00.pdf',
+    parentId: null
+  },
+  {
+    id: 13,
+    name: 'UNUSED 1 - STORM LOG 1881 01.6.20 - EDITED 2020-11-23 MCLOVE',
+    type: 'MG11',
+    category: 'Unused material',
+    date: '01/06/2020',
+    status: 'Unused',
+    new: false,
+    docLink: 'UNUSED_1_STORM_LOG_1881_01.6.20_EDITED_2020-11-23_MCLOVE.pdf',
+    previewLink: '/public/files/UNUSED_1_STORM_LOG_1881_01.6.20_EDITED_2020-11-23_MCLOVE.pdf',
+    parentId: null
+  },
+  {
+    id: 14,
+    name: 'SDC_items to_be Disclosed MCLOVE',
+    type: 'MG11',
+    category: 'Unused material',
+    date: '05/06/2020',
+    status: 'Unused',
+    new: true,
+    docLink: 'SDC_items_to_be_Disclosed_MCLOVE.pdf',
+    previewLink: '/public/files/SDC_items_to_be_Disclosed_MCLOVE.pdf',
+    parentId: null
+  },
+  {
+    id: 15,
+    name: 'MG20_5_JUNE',
+    type: 'MG20',
+    category: 'Exhibits',
+    date: '06/06/2020',
+    status: 'Unused',
+    new: true,
+    docLink: 'MG20_5_JUNE.pdf',
+    previewLink: '/public/files/MG20_5_JUNE.pdf',
+    parentId: null
+  },
+  {
+    id: 16,
+    name: 'MG20_10_JUNE',
+    type: 'MG20',
+    category: 'Exhibits',
+    date: '11/06/2020',
+    status: 'Unused',
+    new: true,
+    docLink: 'MG20_10_JUNE.pdf',
+    previewLink: '/public/files/MG20_10_JUNE.pdf',
+    parentId: null
+  },
+  {
+    id: 17,
+    name: 'PRE CONS D',
+    type: 'MG20',
+    category: 'Defendant',
+    date: '02/06/2020',
+    status: 'Used',
+    new: true,
+    docLink: 'PRE_CONS_D.pdf',
+    previewLink: '/public/files/PRE_CONS_D.pdf',
+    parentId: null
+  },
+  {
+    id: 18,
+    name: 'Asset Rec 1',
+    type: 'MG20',
+    category: 'Exhibits',
+    date: '03/06/2020',
+    status: 'None',
+    new: true,
+    docLink: 'defendants.pdf',
+    previewLink: '/public/files/Asset-Rec-1.png',
+    parentId: null
+  },
+  {
+    id: 19,
+    name: 'MG11 - 1',
+    type: 'MG11',
+    category: 'Statements',
+    date: '03/06/2020',
+    status: 'None',
+    new: true,
+    docLink: 'MG11_1.pdf',
+    previewLink: '/public/files/MG11_1.pdf',
+    parentId: null
+  },
+  {
+    id: 20,
+    name: 'Exhibit - 1',
+    type: 'MG11',
+    category: 'Exhibits',
+    date: '03/06/2020',
+    status: 'None',
+    new: true,
+    docLink: 'MG12.pdf',
+    previewLink: '/public/files/MG11_2.pdf',
+    parentId: null
+  }
+]
+
 }
