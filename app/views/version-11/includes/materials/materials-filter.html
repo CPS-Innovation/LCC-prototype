@@ -7,93 +7,93 @@
   </div>
 
   <form action="/version-11/includes/materials/materials-filter" method="post" novalidate>
-{% if (data['filterNew'] | default(false)) 
-  or (data['filterStatusUsed'] | default(false))
-  or (data['filterStatusUnused'] | default(false))
-  or (data['filterStatusNone'] | default(false))
-  or (data['filterCategoryReview'] | default(false))
-  or (data['filterCategoryCaseOverview'] | default(false))
-  or (data['filterCategoryStatements'] | default(false))
-  or (data['filterCategoryExhibits'] | default(false))
-  or (data['filterCategoryForensics'] | default(false))
-  or (data['filterCategoryUnusedMaterial'] | default(false))
-  or (data['filterCategoryDefendant'] | default(false))
-  or (data['filterCategoryCourtPreparation'] | default(false)) %}
+    {% if (data['filterNew'] | default(false)) 
+    or (data['filterStatusUsed'] | default(false))
+    or (data['filterStatusUnused'] | default(false))
+    or (data['filterStatusNone'] | default(false))
+    or (data['filterCategoryReview'] | default(false))
+    or (data['filterCategoryCaseOverview'] | default(false))
+    or (data['filterCategoryStatements'] | default(false))
+    or (data['filterCategoryExhibits'] | default(false))
+    or (data['filterCategoryForensics'] | default(false))
+    or (data['filterCategoryUnusedMaterial'] | default(false))
+    or (data['filterCategoryDefendant'] | default(false))
+    or (data['filterCategoryCourtPreparation'] | default(false)) %}
 
-  <div class="moj-filter__selected">
-    <div class="moj-filter__header govuk-clearfix">
-      <h2 class="govuk-heading-m govuk-!-margin-bottom-0" style="display:inline-block;">Selected filters</h2>
-      <a href="/version-11/includes/materials/clear-filters"
-         class="govuk-link govuk-link--no-visited-state govuk-!-float-right">Clear</a>
+    <div class="moj-filter__selected">
+        <div class="moj-filter__header govuk-clearfix">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-0" style="display:inline-block;">Selected filters</h2>
+        <a href="/version-11/includes/materials/clear-filters"
+            class="govuk-link govuk-link--no-visited-state govuk-!-float-right">Clear</a>
+        </div>
+
+        {% if data['filterNew'] %}
+        <div class="moj-filter-tags__group">
+            <h3 class="govuk-heading-s">New materials</h3>
+            <ul class="moj-filter-tags">
+            <li>
+                <a class="moj-filter__tag"
+                href="/version-11/includes/materials/clear-filter?type=filterNew">
+                {{ data['filterNew'] }}
+                <span class="govuk-visually-hidden"> Remove this filter</span>
+                </a>
+            </li>
+            </ul>
+        </div>
+        {% endif %}
+
+        {% if data['filterStatusUsed'] or data['filterStatusUnused'] or data['filterStatusNone'] %}
+        <div class="moj-filter-tags__group">
+            <h3 class="govuk-heading-s">Status</h3>
+            <ul class="moj-filter-tags">
+            {% if data['filterStatusUsed'] %}
+                <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterStatusUsed">{{ data['filterStatusUsed'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
+            {% endif %}
+            {% if data['filterStatusUnused'] %}
+                <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterStatusUnused">{{ data['filterStatusUnused'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
+            {% endif %}
+            {% if data['filterStatusNone'] %}
+                <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterStatusNone">{{ data['filterStatusNone'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
+            {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {% if data['filterCategoryReview'] or data['filterCategoryCaseOverview'] or data['filterCategoryStatements']
+        or data['filterCategoryExhibits'] or data['filterCategoryForensics'] or data['filterCategoryUnusedMaterial']
+        or data['filterCategoryDefendant'] or data['filterCategoryCourtPreparation'] %}
+        <div class="moj-filter-tags__group">
+            <h3 class="govuk-heading-s">Category</h3>
+            <ul class="moj-filter-tags">
+            {% if data['filterCategoryReview'] %}
+                <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryReview">{{ data['filterCategoryReview'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
+            {% endif %}
+            {% if data['filterCategoryCaseOverview'] %}
+                <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryCaseOverview">{{ data['filterCategoryCaseOverview'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
+            {% endif %}
+            {% if data['filterCategoryStatements'] %}
+                <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryStatements">{{ data['filterCategoryStatements'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
+            {% endif %}
+            {% if data['filterCategoryExhibits'] %}
+                <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryExhibits">{{ data['filterCategoryExhibits'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
+            {% endif %}
+            {% if data['filterCategoryForensics'] %}
+                <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryForensics">{{ data['filterCategoryForensics'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
+            {% endif %}
+            {% if data['filterCategoryUnusedMaterial'] %}
+                <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryUnusedMaterial">{{ data['filterCategoryUnusedMaterial'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
+            {% endif %}
+            {% if data['filterCategoryDefendant'] %}
+                <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryDefendant">{{ data['filterCategoryDefendant'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
+            {% endif %}
+            {% if data['filterCategoryCourtPreparation'] %}
+                <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryCourtPreparation">{{ data['filterCategoryCourtPreparation'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
+            {% endif %}
+            </ul>
+        </div>
+        {% endif %}
     </div>
-
-    {% if data['filterNew'] %}
-      <div class="moj-filter-tags__group">
-        <h3 class="govuk-heading-s">New materials</h3>
-        <ul class="moj-filter-tags">
-          <li>
-            <a class="moj-filter__tag"
-               href="/version-11/includes/materials/clear-filter?type=filterNew">
-              {{ data['filterNew'] }}
-              <span class="govuk-visually-hidden"> Remove this filter</span>
-            </a>
-          </li>
-        </ul>
-      </div>
     {% endif %}
-
-    {% if data['filterStatusUsed'] or data['filterStatusUnused'] or data['filterStatusNone'] %}
-      <div class="moj-filter-tags__group">
-        <h3 class="govuk-heading-s">Status</h3>
-        <ul class="moj-filter-tags">
-          {% if data['filterStatusUsed'] %}
-            <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterStatusUsed">{{ data['filterStatusUsed'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
-          {% endif %}
-          {% if data['filterStatusUnused'] %}
-            <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterStatusUnused">{{ data['filterStatusUnused'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
-          {% endif %}
-          {% if data['filterStatusNone'] %}
-            <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterStatusNone">{{ data['filterStatusNone'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
-          {% endif %}
-        </ul>
-      </div>
-    {% endif %}
-
-    {% if data['filterCategoryReview'] or data['filterCategoryCaseOverview'] or data['filterCategoryStatements']
-       or data['filterCategoryExhibits'] or data['filterCategoryForensics'] or data['filterCategoryUnusedMaterial']
-       or data['filterCategoryDefendant'] or data['filterCategoryCourtPreparation'] %}
-      <div class="moj-filter-tags__group">
-        <h3 class="govuk-heading-s">Category</h3>
-        <ul class="moj-filter-tags">
-          {% if data['filterCategoryReview'] %}
-            <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryReview">{{ data['filterCategoryReview'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
-          {% endif %}
-          {% if data['filterCategoryCaseOverview'] %}
-            <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryCaseOverview">{{ data['filterCategoryCaseOverview'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
-          {% endif %}
-          {% if data['filterCategoryStatements'] %}
-            <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryStatements">{{ data['filterCategoryStatements'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
-          {% endif %}
-          {% if data['filterCategoryExhibits'] %}
-            <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryExhibits">{{ data['filterCategoryExhibits'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
-          {% endif %}
-          {% if data['filterCategoryForensics'] %}
-            <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryForensics">{{ data['filterCategoryForensics'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
-          {% endif %}
-          {% if data['filterCategoryUnusedMaterial'] %}
-            <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryUnusedMaterial">{{ data['filterCategoryUnusedMaterial'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
-          {% endif %}
-          {% if data['filterCategoryDefendant'] %}
-            <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryDefendant">{{ data['filterCategoryDefendant'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
-          {% endif %}
-          {% if data['filterCategoryCourtPreparation'] %}
-            <li><a class="moj-filter__tag" href="/version-11/includes/materials/clear-filter?type=filterCategoryCourtPreparation">{{ data['filterCategoryCourtPreparation'] }}<span class="govuk-visually-hidden"> Remove this filter</span></a></li>
-          {% endif %}
-        </ul>
-      </div>
-    {% endif %}
-  </div>
-{% endif %}
     <!-- {% if data['filterNew'] or data['filterStatusUsed'] or data['filterStatusUnused'] or data['filterStatusNone']
     or data['filterCategoryReview'] or data['filterCategoryCaseOverview'] or data['filterCategoryStatements']
     or data['filterCategoryExhibits'] or data['filterCategoryForensics'] or data['filterCategoryUnusedMaterial']
