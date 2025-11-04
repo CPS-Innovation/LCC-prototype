@@ -15,8 +15,20 @@ $govuk-new-link-styles: true;
 // We can't mount GOV.UK Frontend's assets at root as it's done automatically by the extensions framework.
 $govuk-assets-path: '/govuk/assets/';
 
+// Load GOV.UK Frontend
+@import "node_modules/govuk-frontend/govuk/all";
+
+// Load MOJ Frontend
+@import "node_modules/@ministryofjustice/frontend/moj/all";
+
+// Then your custom styles
+@import "components/materials";
+
 // Import GOV.UK Frontend and any extension styles if extensions have been configured
 @import "lib/extensions/extensions";
+
+// @import "node_modules/@ministryofjustice/frontend/moj/all";
+
 
 // Patterns that aren't in Frontend
 @import "patterns/step-by-step-header";
@@ -39,7 +51,7 @@ $govuk-assets-path: '/govuk/assets/';
 @import "components/autocomplete";
 @import "components/cps-journey";
 @import "components/off-cms-journey";
-@import "components/materials";
+@import "components/cps-materials";
 
 
 @mixin das-clearfix {
@@ -5168,6 +5180,7 @@ strong, span {
     }
 }
 
+@import "components/materials";
 
 
 // Monica - sorting tables

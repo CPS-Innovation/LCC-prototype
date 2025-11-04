@@ -1,6 +1,6 @@
 {% extends "layoutCPS-OFF-V11.html" %}
 {% block header %}
-    {% include "../includes/banner-OFF-V4.html" %}
+    {% include "../includes/banner-OFF-V6.html" %}
 {% endblock %}
 {% block beforeContent %}
     {% include "../includes/off-system-MVP/modalConfirmation-Transfer_Complete.html" %}
@@ -8,6 +8,15 @@
     {% include "../includes/off-system-MVP/modalConfirmation-Delete.html" %}
     {% include "../includes/off-system-MVP/modalConfirmation-NewFolder.html" %}
     {% include "../includes/off-system-MVP/modalConfirmation-Move.html" %}
+    {% include "../includes/modals/rename.html" %}
+    {% include "../includes/modals/feedback.html" %}
+    {% include "../includes/modals/report-a-problem.html" %}
+    {% include "../includes/modals/search.html" %}
+    {% include "../includes/modals/notes-new.html" %}
+    {% include "../includes/modals/notes.html" %}
+    {% include "../includes/modals/update-statement.html" %}
+    {% include "../includes/modals/update-exhibit.html" %}
+
 
     {% if data['searchOFF_URN_VALUE'] %}
         <div class="hods-status-message case-file-page large_and_complex">

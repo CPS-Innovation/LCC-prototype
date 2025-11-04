@@ -12,6 +12,7 @@ const nunjucks = require('nunjucks')
 const sessionInCookie = require('client-sessions')
 const sessionInMemory = require('express-session')
 
+
 // Run before other code to make sure variables from .env are available
 dotenv.config()
 
@@ -113,6 +114,13 @@ if (useCookieSessionStore === 'true') {
     saveUninitialized: false
   })))
 }
+
+// Make session data available to Nunjucks templates as "data"
+app.use(function (req, res, next) {
+  res.locals.data = req.session.data || {};
+  next();
+});
+
 
 // Authentication middleware must be loaded before other middleware such as
 // static assets to prevent unauthorised access

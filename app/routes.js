@@ -2,6 +2,11 @@ const express = require('express')
 const router = new express.Router()
 
 // Add your routes here - above the module.exports line
+// ✅ Make session data available to all Nunjucks templates
+router.use((req, res, next) => {
+  res.locals.data = req.session.data || {};
+  next();
+});
 
 // GET SPRINT NAME - useful for relative templates
 
