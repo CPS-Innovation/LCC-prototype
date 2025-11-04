@@ -1,7 +1,16 @@
 const express = require('express');
-const { editSuspect, chargeDescription } = require('../../data/session-data-defaults');
+const { editSuspect, chargeDescription, materials } = require('../../data/session-data-defaults');
 const router = express.Router();
 const version = 'version-11'
+
+
+// Make session data available in all Nunjucks templates as "data"
+router.use((req, res, next) => {
+  res.locals.data = req.session.data || {};
+  next();
+});
+
+
 
 // Add your routes here - above the module.exports line
 
@@ -828,8 +837,37 @@ router.post('/B-off-system-MVP/04A-create-egress-folder', function(req, res) {
 
 
 
+// Handle materials filter POST
+router.post('/includes/materials/materials-filter', function(req, res) {
+  req.session.data.filterNew = req.body['filterNew']
+  req.session.data.filterStatusUsed = req.body['filterStatusUsed']
+  req.session.data.filterStatusUnused = req.body['filterStatusUnused']
+  req.session.data.filterStatusNone = req.body['filterStatusNone']
+
+  // ✅ singular 'Review' not 'Reviews'
+  req.session.data.filterCategoryReview = req.body['filterCategoryReview']
+  req.session.data.filterCategoryCaseOverview = req.body['filterCategoryCaseOverview']
+  req.session.data.filterCategoryStatements = req.body['filterCategoryStatements']
+  req.session.data.filterCategoryExhibits = req.body['filterCategoryExhibits']
+  req.session.data.filterCategoryForensics = req.body['filterCategoryForensics']
+  req.session.data.filterCategoryUnusedMaterial = req.body['filterCategoryUnusedMaterial']
+  req.session.data.filterCategoryDefendant = req.body['filterCategoryDefendant']
+  req.session.data.filterCategoryCourtPreparation = req.body['filterCategoryCourtPreparation']
+
+  console.log("Filter data:", req.session.data)
+  res.redirect('/version-11/B-off-system-MVP/03-case-overview')
+})
 
 
+
+// AI //
+// Route for the materials page
+router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
+  res.render('version-11/B-off-system-MVP/03-case-overview', {
+    // materialsData: req.session.data.materialsData,
+    materials: req.session.data.materials
+  })
+})
 
 
 
@@ -837,73 +875,73 @@ router.post('/B-off-system-MVP/04A-create-egress-folder', function(req, res) {
 // ************************************************** Old code **************************************************
 
 // Add suspects
-router.post('/B-off-system-MVP/create-case/04A-add-suspect', function(req, res) {
-    count = req.session.data.suspectCount
+// router.post('/B-off-system-MVP/create-case/04A-add-suspect', function(req, res) {
+//     count = req.session.data.suspectCount
     
-    req.session.data.suspectType[count] = req.body['suspect-type']
-    req.session.data.suspectId[count] = count
+//     req.session.data.suspectType[count] = req.body['suspect-type']
+//     req.session.data.suspectId[count] = count
 
-    if (req.body['suspect-type'] == 'Person') {
-        req.session.data.suspectFirstName[count] = req.body['suspect-person-first-name']
-        req.session.data.suspectLastName[count] = req.body['suspect-person-last-name']
-        req.session.data.suspectDayBirth[count] = req.body['date-of-birth-day']
-        req.session.data.suspectMonthBirth[count] = Number(req.body['date-of-birth-month'])
-        req.session.data.suspectYearBirth[count] = req.body['date-of-birth-year'] 
-    }
-    else {
-        req.session.data.suspectCompanyName[count] = req.body['suspect-company-name']
-    }
+//     if (req.body['suspect-type'] == 'Person') {
+//         req.session.data.suspectFirstName[count] = req.body['suspect-person-first-name']
+//         req.session.data.suspectLastName[count] = req.body['suspect-person-last-name']
+//         req.session.data.suspectDayBirth[count] = req.body['date-of-birth-day']
+//         req.session.data.suspectMonthBirth[count] = Number(req.body['date-of-birth-month'])
+//         req.session.data.suspectYearBirth[count] = req.body['date-of-birth-year'] 
+//     }
+//     else {
+//         req.session.data.suspectCompanyName[count] = req.body['suspect-company-name']
+//     }
     
-    req.session.data.suspectCount = count + 1
+//     req.session.data.suspectCount = count + 1
     
-    res.redirect('/version-11/B-off-system-MVP/create-case/04B-suspect-summary')
-})
-// End of add suspects
+//     res.redirect('/version-11/B-off-system-MVP/create-case/04B-suspect-summary')
+// })
+// // End of add suspects
 
-// Suspect summary
-router.post('/B-off-system-MVP/create-case/04B-suspect-summary', function(req, res) {
-    if (req.body['add-another'] === 'Yes') {
-        res.redirect('/version-11/B-off-system-MVP/create-case/04A-add-suspect')
-    }
-    else {
-        res.redirect('/version-11/B-off-system-MVP/create-case/04-want-to-add-charges') 
-    }    
-})
-// End of suspect summary
+// // Suspect summary
+// router.post('/B-off-system-MVP/create-case/04B-suspect-summary', function(req, res) {
+//     if (req.body['add-another'] === 'Yes') {
+//         res.redirect('/version-11/B-off-system-MVP/create-case/04A-add-suspect')
+//     }
+//     else {
+//         res.redirect('/version-11/B-off-system-MVP/create-case/04-want-to-add-charges') 
+//     }    
+// })
+// // End of suspect summary
 
 
-// Edit suspect
-router.post('/B-off-system-MVP/create-case/04-edit-suspect', function(req, res) {
-    console.log("Edit suspect ID:",req.session.data.editSuspect)
-    console.log("Display suspect ID:",req.session.data.displaySuspect)
+// // Edit suspect
+// router.post('/B-off-system-MVP/create-case/04-edit-suspect', function(req, res) {
+//     console.log("Edit suspect ID:",req.session.data.editSuspect)
+//     console.log("Display suspect ID:",req.session.data.displaySuspect)
 
-    var x = Number(req.session.data.editSuspect)
+//     var x = Number(req.session.data.editSuspect)
 
-    if (req.body['suspect-type'] == 'Person') {
-        req.session.data.suspectFirstName[x] = req.body['suspect-person-first-name']
-        req.session.data.suspectLastName[x] = req.body['suspect-person-last-name']
-        // req.session.data.suspectDOB[x] = req.body['suspect-date-of-birth']
-        req.session.data.suspectDayBirth[x] = req.body['date-of-birth-day']
-        req.session.data.suspectMonthBirth[x] = Number(req.body['date-of-birth-month'])
-        req.session.data.suspectYearBirth[x] = req.body['date-of-birth-year'] 
-    }
-    else {
-        req.session.data.suspectCompanyName[x] = req.body['suspect-company-name']
-    }
+//     if (req.body['suspect-type'] == 'Person') {
+//         req.session.data.suspectFirstName[x] = req.body['suspect-person-first-name']
+//         req.session.data.suspectLastName[x] = req.body['suspect-person-last-name']
+//         // req.session.data.suspectDOB[x] = req.body['suspect-date-of-birth']
+//         req.session.data.suspectDayBirth[x] = req.body['date-of-birth-day']
+//         req.session.data.suspectMonthBirth[x] = Number(req.body['date-of-birth-month'])
+//         req.session.data.suspectYearBirth[x] = req.body['date-of-birth-year'] 
+//     }
+//     else {
+//         req.session.data.suspectCompanyName[x] = req.body['suspect-company-name']
+//     }
 
-    req.session.data.displaySuspect = 999
-    req.session.data.editSuspect = 999
+//     req.session.data.displaySuspect = 999
+//     req.session.data.editSuspect = 999
 
-    res.redirect('/version-11/B-off-system-MVP/create-case/04B-suspect-summary')
-})
+//     res.redirect('/version-11/B-off-system-MVP/create-case/04B-suspect-summary')
+// })
 
-router.post('/B-off-system-MVP/create-case/04-edit-suspect-router', function(req, res) {
-    req.session.data.editSuspect = Number(req.body['edit-suspect'])
-    req.session.data.displaySuspect = Number(req.body['edit-suspect']) + 1
-    console.log("Edit suspect ID:",req.session.data.editSuspect)
-    console.log("Display suspect ID:",req.session.data.displaySuspect)
-    res.redirect('/version-11/B-off-system-MVP/create-case/04A-add-suspect')
-})
+// router.post('/B-off-system-MVP/create-case/04-edit-suspect-router', function(req, res) {
+//     req.session.data.editSuspect = Number(req.body['edit-suspect'])
+//     req.session.data.displaySuspect = Number(req.body['edit-suspect']) + 1
+//     console.log("Edit suspect ID:",req.session.data.editSuspect)
+//     console.log("Display suspect ID:",req.session.data.displaySuspect)
+//     res.redirect('/version-11/B-off-system-MVP/create-case/04A-add-suspect')
+// })
 // End of edit suspect
 
 // router.post('/B-off-system-MVP/create-case/03-edit-suspect', function(req, res) {

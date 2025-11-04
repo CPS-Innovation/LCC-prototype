@@ -125,7 +125,13 @@
                                     &nbsp;&nbsp;<strong class="govuk-tag govuk-tag--grey">Pre-charge</strong>
                                 {% endif %}
                             </dd>
-                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}'s details</span></a></dd>
+
+                            <dd class="govuk-summary-list__actions">
+                                <ul class="govuk-summary-list__actions-list">
+                                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link govuk-link--no-visited-state" href="#"><span aria-hidden="true">Remove</span><span class="govuk-visually-hidden">Remove</span></a></li>
+                                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> {{ data['suspectFirstName'][id]}} {{data['suspectLastName'][id]}}'s details</span></a></li>
+                                </ul>
+                            </dd>
                         </div>
                     </dl>
                     <!-- Suspect details -->
@@ -142,45 +148,41 @@
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Date of birth</dt>
                                 <dd class="govuk-summary-list__value">{% if data['suspectDayBirth'][id] %} {{data['suspectDayBirth'][id]}} {{data['monthName'][data['suspectMonthBirth'][id]]}} {{data['suspectYearBirth'][id]}} {% else %} Not entered {% endif %}</dd>
-                                <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> date of birth</span></a></dd>
+                                <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> date of birth</span></a></dd> -->
                             </div>
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Gender</dt>
                                 <dd class="govuk-summary-list__value">{% if data['suspectGender'][id] %}{{ data['suspectGender'][id] }}{% else %} Unknown {% endif %}</dd>
-                                <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> gender</span></a></dd>
-                                </dd>
+                                <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> gender</span></a></dd> -->
                             </div>
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Disability</dt>
                                 <dd class="govuk-summary-list__value">{% if data['suspectDisability'][id] %}{{ data['suspectDisability'][id] }}{% else %} Unknown {% endif %}</dd>
-                                <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> disability</span></a></dd>
+                                <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> disability</span></a></dd> -->
                             </div>
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Religion</dt>
                                 <dd class="govuk-summary-list__value">{% if data['suspectReligion'][id] %}{{ data['suspectReligion'][id] }}{% else %} Not provided {% endif %}</dd>
-                                <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> religion</span></a></dd>
-                                </dd>
+                                <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> religion</span></a></dd> -->
                             </div>
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Ethnicity</dt>
                                 <dd class="govuk-summary-list__value">{% if data['suspectEthnicity'][id] %}{{ data['suspectEthnicity'][id] }}{% else %} Not provided, NP {% endif %}</dd>
-                                <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd>
-                                </dd>
+                                <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd> -->
                             </div>
 
                             {% if data['suspectId'][id] != 0 %}
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Alias details</dt>
                                 <dd class="govuk-summary-list__value">Not entered</dd>
-                                <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> alias details</span></a></dd>
-                                </dd>
+                                <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> alias details</span></a></dd> -->
                             </div>
                             {% else %}
                                 {% for id in data['aliasId'] %}            
                                 <div class="govuk-summary-list__row">
                                     <dt class="govuk-summary-list__key">Alias {{ id +1 }}</dt>
                                     <dd class="govuk-summary-list__value"><span class="uppercase">{{data['aliasLastName'][id]}}</span>{% if data['aliasFirstName'][id] %}, {{data['aliasFirstName'][id]}}{% endif %}</dd>
-                                    <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="03-suspect-details-add-alias.html?id={{data['aliasId'][id]}}">Change<span class="govuk-visually-hidden"> alias details</span></a></dd>
+                                    <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="03-suspect-details-add-alias.html?id={{data['aliasId'][id]}}">Change<span class="govuk-visually-hidden"> alias details</span></a></dd> -->
                                 </div>
                                 {% endfor %}
                             {% endif %}
@@ -188,20 +190,17 @@
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Serious dangerous offender (SDO)</dt>
                                 <dd class="govuk-summary-list__value">{% if data['suspectSDO'][id] %}{{ data['suspectSDO'][id] }}{% else %} Not entered {% endif %}</dd>
-                                <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> serious dangerous offender</span></a></dd>
-                                </dd>
+                                <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> serious dangerous offender</span></a></dd> -->
                             </div>
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Arrest summons</dt>
                                 <dd class="govuk-summary-list__value">{% if data['suspectArrestSummons'][id] %}{{ data['suspectArrestSummons'][id] }}{% else %} Not entered {% endif %}</dd>
-                                <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd>
-                                </dd>
+                                <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd> -->
                             </div>
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Type of offender</dt>
                                 <dd class="govuk-summary-list__value">{% if data['suspectOffenderType'][id] %}{{ data['suspectOffenderType'][id] }}{% else %} Unspecified {% endif %}</dd>
-                                <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd>
-                                </dd>
+                                <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd> -->
                             </div>
                                                        
                             <h2 class="govuk-heading-m govuk-!-margin-top-6">Charges</h2>
@@ -234,7 +233,12 @@
                                             <dd class="govuk-summary-list__value">
                                             {{ data['chargeDescription'][i] }}
                                             </dd>
-                                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> charge</span></a></dd>
+                                            <dd class="govuk-summary-list__actions">
+                                                <ul class="govuk-summary-list__actions-list">
+                                                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link govuk-link--no-visited-state" href="#"><span aria-hidden="true">Remove</span><span class="govuk-visually-hidden">Remove</span></a></li>
+                                                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> charges</span></a></li>
+                                                </ul>
+                                            </dd>
                                         </div>
                                         <div class="govuk-summary-list__row">                                            
                                             <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
@@ -244,7 +248,7 @@
                                             {{data['chargeFromDay'][i]}} {{data['monthName'][data['chargeFromMonth'][i]]}} {{data['chargeFromYear'][i]}}
                                             {% if data['chargeToDay'][i] %} to {{data['chargeToDay'][i]}} {{data['monthName'][data['chargeToMonth'][i]]}} {{data['chargeToYear'][i]}} {% endif %}
                                             </dd>
-                                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> date of offence</span></a></dd>
+                                            <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> date of offence</span></a></dd> -->
                                         </div>
                                         <div class="govuk-summary-list__row">                                            
                                             <dt class="govuk-summary-list__key govuk-!-font-weight-bold hmrc-summary-list__key">
@@ -259,7 +263,7 @@
                                                     {% if data['chargeVictimWitness'][i] %}<strong class="govuk-tag govuk-tag--blue govuk-!-margin-top-1">Witness</strong>{% endif %}
                                                 {% endif %}
                                             </dd>
-                                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> victim details</span></a></dd>
+                                            <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> victim details</span></a></dd> -->
                                         </div>
 
                                         <!-- <div class="govuk-summary-list__row">
@@ -285,7 +289,7 @@
                                             <dd class="govuk-summary-list__value">
                                             {% if data['chargedWithAdult'][i] == 'Charged with an adult' %} Yes {% else %} No {% endif %}
                                             </dd>
-                                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> charged with an adult</span></a>
+                                            <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> charged with an adult</span></a> -->
                                             </dd>
                                         </div>
                                         {% endif %}
@@ -341,7 +345,12 @@
                                     &nbsp;&nbsp;<strong class="govuk-tag govuk-tag--grey">Pre-charge</strong>
                                 {% endif %}
                             </dd>
-                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> {{ data['suspectCompanyName'][id]}}'s details</span></a></dd>
+                            <dd class="govuk-summary-list__actions">
+                                <ul class="govuk-summary-list__actions-list">
+                                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link govuk-link--no-visited-state" href="#"><span aria-hidden="true">Remove</span><span class="govuk-visually-hidden">Remove</span></a></li>
+                                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> {{ data['suspectCompanyName'][id]}}'s details</span></a></li>
+                                </ul>
+                            </dd>
                         </div> 
                     </dl>
                     <details class="govuk-details suspect_details_panel govuk-!-margin-top-1 govuk-!-margin-bottom-2">

@@ -295,6 +295,39 @@ ul#tab-list {
                          background-size: 0.65em;
                          float: left;
                     }
+                    // AI //
+                    // a.selected_filter {
+                    //      display: inline-block;
+                    //      margin: 0 0.5em 0.5em 0;
+                    //      color: $govuk-text-colour;
+                    //      border: 2px solid #0b0c0c; // GOV.UK black
+                    //      padding: 4px 1.75em 4px 8px;
+                    //      font-family: 'GDS Transport', Arial, sans-serif;
+                    //      font-size: 16px;
+                    //      line-height: 1.25;
+                    //      text-decoration: none;
+                    //      background-color: govuk-colour("white");
+                    //      background-image: url("../images/close_black.svg");
+                    //      background-repeat: no-repeat;
+                    //      background-position: right 6px center;
+                    //      background-size: 10px;
+                    //      border-radius: 0;
+                    //      cursor: pointer;
+                    //      box-sizing: border-box;
+                    //      vertical-align: middle;
+
+                    //      &:hover,
+                    //      &:focus {
+                    //           background-color: darken(govuk-colour("light-grey"), 5%);
+                    //           border-color: #000;
+                    //           outline: none;
+                    //      }
+
+                    //      &:active {
+                    //           background-color: darken(govuk-colour("light-grey"), 10%);
+                    //      }
+                    // }    
+                    // End of AI //           
                }
                .moj-filter {
                     box-shadow: none;
@@ -453,6 +486,128 @@ ul#tab-list {
           }
      }
 }
+
+// AI //
+
+// -------------------------------------------------------------------
+// Ensure MOJ filter tags and selected panel use standard MOJ Frontend styling
+// -------------------------------------------------------------------
+
+.moj-filter__selected {
+  background-color: #f3f2f1; // light grey background
+  border-top: 1px solid #b1b4b6;
+  border-bottom: 1px solid #b1b4b6;
+  padding: 1.5em 1em;
+  margin-bottom: 1.5em;
+}
+
+.moj-filter-tags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.moj-filter__tag {
+  display: inline-block;
+  background-color: #fff;
+  border: 2px solid #0b0c0c;
+  color: #0b0c0c;
+  text-decoration: none;
+  font-family: "GDS Transport", Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.25;
+  padding: 0.25em 1.75em 0.25em 0.5em;
+  background-image: url("/plugin-assets/moj-frontend/images/icon-tag-remove-black.svg");
+  background-repeat: no-repeat;
+  background-position: right 0.5em center;
+  background-size: 0.65em;
+  border-radius: 0;
+}
+
+.moj-filter__tag:hover,
+.moj-filter__tag:focus {
+  background-color: #1d70b8;
+  color: #fff;
+  background-image: url("/plugin-assets/moj-frontend/images/icon-tag-remove-white.svg");
+  text-decoration: none;
+  outline: none;
+}
+
+/* -------------------------------------------- */
+/* Final styling for Selected Filters (exact match) */
+/* -------------------------------------------- */
+
+// .moj-filter__selected {
+//   background: #f3f2f1; // slightly darker than govuk light grey
+//   border-top: 1px solid #b1b4b6;
+//   border-bottom: 1px solid #b1b4b6;
+//   padding: 20px;
+//   margin: 0.5em 0 1.5em 0;
+// }
+
+// .moj-filter__selected h2 {
+//   margin-bottom: 0;
+// }
+
+// .moj-filter-tags__group {
+//   margin-top: 1.25rem;
+// }
+
+// .moj-filter-tags {
+//   list-style: none;
+//   margin: 0;
+//   padding: 0;
+//   display: flex;
+//   flex-wrap: wrap;
+//   gap: 8px 10px;
+// }
+
+// /* Tag appearance */
+// .moj-filter__tag {
+//   display: inline-block;
+//   background: #fff;
+//   border: 2px solid #0b0c0c;
+//   color: #0b0c0c;
+//   font-family: "GDS Transport", Arial, sans-serif;
+//   font-size: 16px;
+//   line-height: 1.2;
+//   text-decoration: none;
+//   padding: 2px 1.25em 2px 8px;
+//   box-sizing: border-box;
+//   cursor: pointer;
+//   position: relative;
+//   border-radius: 0; // remove rounding
+// }
+
+// /* Add × icon */
+// .moj-filter__tag::after {
+//   content: "×";
+//   font-weight: 700;
+//   font-size: 18px;
+//   line-height: 1;
+//   margin-left: 0.5rem;
+//   position: relative;
+//   top: -1px;
+// }
+
+// /* Hover/focus */
+// .moj-filter__tag:hover,
+// .moj-filter__tag:focus {
+//   background: #f3f2f1;
+//   border-color: #0b0c0c;
+//   color: #0b0c0c;
+//   outline: none;
+//   text-decoration: none;
+// }
+
+// /* Prevent purple visited state */
+// .moj-filter__tag:visited {
+//   color: #0b0c0c;
+// }
+// End of AI //
 
 #searchResultsPanel {
      padding-top: 1.25em !important;
