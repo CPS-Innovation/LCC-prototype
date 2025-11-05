@@ -869,6 +869,12 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
   })
 })
 
+router.post('/B-off-system-MVP/case-overview', function(req, res) {
+    req.session.data.folderName = req.body['folderName']
+    req.session.data.level = req.body['level']
+    console.log("Selected folder ID:", req.session.data.folderId)
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
+})
 
 
 
