@@ -13,7 +13,7 @@
     "test": "npm run lint && gulp generate-assets && jest"
   },
   "dependencies": {
-    "@ministryofjustice/frontend": "^2.2.1",
+    "@ministryofjustice/frontend": "^1.8.1",
     "@x-govuk/govuk-prototype-filters": "^2.0.0",
     "acorn": "^8.5.0",
     "ansi-colors": "^4.1.1",
@@ -55,7 +55,6 @@
     "standard": "^17.0.0",
     "supertest": "^6.3.3"
   },
-
   "jest": {
     "testRunner": "jest-jasmine2"
   }
