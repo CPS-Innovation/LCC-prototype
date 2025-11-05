@@ -396,190 +396,6 @@ module.exports = {
 
 
 
-  // AI //
-  // Sample materials data
-  "materialsData": [
-  {
-    id: 1,
-    name: 'MCLOVE MG3',
-    type: 'MG3',
-    category: 'Review',
-    date: '02/06/2020',
-    status: 'None',
-    new: true
-  },
-  {
-    id: 2,
-    name: 'Case overview and officer comments',
-    type: 'PDF',
-    category: 'Case overview',
-    date: '02/06/2020',
-    status: 'None',
-    new: true
-  },
-  {
-    id: 3,
-    name: 'MG05 MCLOVE',
-    type: 'MG05',
-    category: 'Case overview',
-    date: '02/06/2020',
-    status: 'Used',
-    new: true
-  },
-  {
-    id: 4,
-    name: 'MG06 3 June',
-    type: 'MG05',
-    category: 'Unused material',
-    date: '03/06/2020',
-    status: 'Used',
-    new: true
-  },
-  {
-    id: 5,
-    name: 'MG06 10 June',
-    type: 'MG05',
-    category: 'Unused material',
-    date: '10/06/2020',
-    status: 'Used',
-    new: true
-  },
-  {
-    id: 6,
-    name: 'stmt BLAYNEE 2034 (JUNE mgt)',
-    type: 'MG11',
-    category: 'Statements',
-    date: '01/06/2020',
-    status: 'Used',
-    new: true
-  },
-  {
-    id: 7,
-    name: 'stmt Lucy Doyle MG11',
-    type: 'MG11',
-    category: 'Statements',
-    date: '01/06/2020',
-    status: 'Used',
-    new: true
-  },
-  {
-    id: 8,
-    name: 'stmt Shelagh McLove MG11',
-    type: 'MG11',
-    category: 'Statements',
-    date: '01/06/2020',
-    status: 'Used',
-    new: true
-  },
-  {
-    id: 9,
-    name: 'Shelagh McLove VPS mgt1',
-    type: 'MG11',
-    category: 'Statements',
-    date: '06/06/2020',
-    status: 'Used',
-    new: true
-  },
-  {
-    id: 10,
-    name: 'MG11 Shelagh MCLOVE retraction',
-    type: 'MG11',
-    category: 'Statements',
-    date: '06/06/2020',
-    status: 'Used',
-    new: true
-  },
-  {
-    id: 11,
-    name: 'MCLOVE MG12',
-    type: 'MG12',
-    category: 'Exhibits',
-    date: '12/06/2020',
-    status: 'Used',
-    new: true
-  },
-  {
-    id: 12,
-    name: 'MCLOVE MG00',
-    type: 'MG00',
-    category: 'Exhibits',
-    date: '12/06/2020',
-    status: 'Used',
-    new: true
-  },
-  {
-    id: 13,
-    name: 'UNUSED 1_STORM LOG IBB1 01 6 20 - EDITED 2020 10 23 MCLOVE',
-    type: 'MG11',
-    category: 'Unused material',
-    date: '01/06/2020',
-    status: 'Unused',
-    new: true
-  },
-  {
-    id: 14,
-    name: 'SDC_items to_be Disclosed MCLOVE',
-    type: 'MG11',
-    category: 'Unused material',
-    date: '05/06/2020',
-    status: 'Unused',
-    new: true
-  },
-  {
-    id: 15,
-    name: 'MG20_5_JUNE',
-    type: 'MG20',
-    category: 'Exhibits',
-    date: '06/06/2020',
-    status: 'Unused',
-    new: true
-  },
-  {
-    id: 16,
-    name: 'MG20_10_JUNE',
-    type: 'MG20',
-    category: 'Exhibits',
-    date: '11/06/2020',
-    status: 'Unused',
-    new: true
-  },
-  {
-    id: 17,
-    name: 'PRE CONS D',
-    type: 'MG20',
-    category: 'Defendant',
-    date: '02/06/2020',
-    status: 'Used',
-    new: true
-  },
-  {
-    id: 18,
-    name: 'Asset Rec 1',
-    type: 'MG20',
-    category: 'Exhibits',
-    date: '03/06/2020',
-    status: 'None',
-    new: true
-  },
-  {
-    id: 19,
-    name: 'MG11_1',
-    type: 'MG11',
-    category: 'Statements',
-    date: '03/06/2020',
-    status: 'None',
-    new: true
-  },
-  {
-    id: 20,
-    name: 'Exhibit_1',
-    type: 'MG11',
-    category: 'Exhibits',
-    date: '03/06/2020',
-    status: 'None',
-    new: true
-  }
-],
 
 
 "newFilter": "",
@@ -595,21 +411,10 @@ module.exports = {
 "filterCategoryDefendant": "",
 "filterCategoryCourtPreparation": "",
 
-
+"folderName": null,
+"level": 1,
 
 "materials": [
-  // {
-  //   id: 0,
-  //   name: 'Monica crime rate',
-  //   type: 'Video file',
-  //   category: 'Evidence',
-  //   date: '02/06/2025',
-  //   status: 'Used',
-  //   new: true,
-  //   docLink: 'MCLOVEMG3.pdf',
-  //   previewLink: '/public/files/MCLOVEMG3.pdf',
-  //   parentId: null
-  // },
   {
     id: 1,
     name: 'MCLOVE MG3',
@@ -620,7 +425,9 @@ module.exports = {
     new: false,
     docLink: 'MCLOVEMG3.pdf',
     previewLink: '/public/files/MCLOVEMG3.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 2,
@@ -632,7 +439,9 @@ module.exports = {
     new: true,
     docLink: 'CM01.pdf',
     previewLink: '/public/files/CM01.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 3,
@@ -644,7 +453,9 @@ module.exports = {
     new: true,
     docLink: 'MG05MCLOVE.pdf',
     previewLink: '/public/files/MG05MCLOVE.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 4,
@@ -656,7 +467,9 @@ module.exports = {
     new: true,
     docLink: 'MG06_3June.pdf',
     previewLink: '/public/files/MG06_3June.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 5,
@@ -668,7 +481,9 @@ module.exports = {
     new: true,
     docLink: 'MG06_10june.pdf',
     previewLink: '/public/files/MG06_10june.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 6,
@@ -680,7 +495,9 @@ module.exports = {
     new: true,
     docLink: 'stmt_BLAYNEE_2034_1_JUNE_mg11.pdf',
     previewLink: '/public/files/stmt_BLAYNEE_2034_1_JUNE_mg11.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 7,
@@ -692,7 +509,9 @@ module.exports = {
     new: true,
     docLink: 'stmt_Lucy_Doyle_MG11.pdf',
     previewLink: '/public/files/stmt_Lucy_Doyle_MG11.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 8,
@@ -704,7 +523,9 @@ module.exports = {
     new: true,
     docLink: 'stmt_Shelagh_McLove_MG11.pdf',
     previewLink: '/public/files/stmt_Shelagh_McLove_MG11.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 9,
@@ -716,7 +537,9 @@ module.exports = {
     new: true,
     docLink: 'Shelagh_McLove_VPS_mg11.pdf',
     previewLink: '/public/files/Shelagh_McLove_VPS_mg11.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 10,
@@ -728,7 +551,9 @@ module.exports = {
     new: false,
     docLink: 'MG11_Shelagh_MCLOVE_retraction.pdf',
     previewLink: '/public/files/MG11_Shelagh_MCLOVE_retraction.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 11,
@@ -740,7 +565,9 @@ module.exports = {
     new: false,
     docLink: 'MG12.pdf',
     previewLink: '/public/files/MG12.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 12,
@@ -752,7 +579,9 @@ module.exports = {
     new: true,
     docLink: 'MG00.pdf',
     previewLink: '/public/files/MG00.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 13,
@@ -764,7 +593,9 @@ module.exports = {
     new: false,
     docLink: 'UNUSED_1_STORM_LOG_1881_01.6.20_EDITED_2020-11-23_MCLOVE.pdf',
     previewLink: '/public/files/UNUSED_1_STORM_LOG_1881_01.6.20_EDITED_2020-11-23_MCLOVE.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 14,
@@ -776,7 +607,9 @@ module.exports = {
     new: true,
     docLink: 'SDC_items_to_be_Disclosed_MCLOVE.pdf',
     previewLink: '/public/files/SDC_items_to_be_Disclosed_MCLOVE.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 15,
@@ -788,7 +621,9 @@ module.exports = {
     new: true,
     docLink: 'MG20_5_JUNE.pdf',
     previewLink: '/public/files/MG20_5_JUNE.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 16,
@@ -800,7 +635,9 @@ module.exports = {
     new: true,
     docLink: 'MG20_10_JUNE.pdf',
     previewLink: '/public/files/MG20_10_JUNE.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 17,
@@ -812,7 +649,9 @@ module.exports = {
     new: true,
     docLink: 'PRE_CONS_D.pdf',
     previewLink: '/public/files/PRE_CONS_D.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 18,
@@ -824,7 +663,9 @@ module.exports = {
     new: true,
     docLink: 'defendants.pdf',
     previewLink: '/public/files/Asset-Rec-1.png',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 19,
@@ -836,7 +677,9 @@ module.exports = {
     new: true,
     docLink: 'MG11_1.pdf',
     previewLink: '/public/files/MG11_1.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
   },
   {
     id: 20,
@@ -848,7 +691,219 @@ module.exports = {
     new: true,
     docLink: 'MG12.pdf',
     previewLink: '/public/files/MG11_2.pdf',
-    parentId: null
+    parentId: null,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 1000,
+    name: '1. Case management',
+    type: null,
+    category: null,
+    date: '03/06/2020',
+    status: 'None',
+    new: true,
+    docLink: 'caseManagement',
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1001,
+    name: '2. Conference hearing notes',
+    type: null,
+    category: null,
+    date: '03/06/2020',
+    status: 'Used',
+    new: true,
+    docLink: 'conferenceHearingNotes',
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1002,
+    name: '3. Experts',
+    type: null,
+    category: null,
+    date: '03/06/2020',
+    status: 'None',
+    new: true,
+    docLink: 'experts',
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1003,
+    name: '4. Counsel',
+    type: null,
+    category: null,
+    date: '03/06/2020',
+    status: 'None',
+    new: false,
+    docLink: 'counsel',
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1004,
+    name: '5. Correspondence',
+    type: null,
+    category: null,
+    date: '03/06/2020',
+    status: 'None',
+    new: true,
+    docLink: 'correspondence',
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1005,
+    name: '6. Disclosure',
+    type: null,
+    category: null,
+    date: '03/06/2020',
+    status: 'Used',
+    new: false,
+    docLink: 'disclosure',
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1006,
+    name: '7. Finance',
+    type: null,
+    category: null,
+    date: '03/06/2020',
+    status: 'None',
+    new: true,
+    docLink: 'finance',
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1007,
+    name: '8. Lawyer working copies',
+    type: null,
+    category: null,
+    date: '03/06/2020',
+    status: 'Used',
+    new: true,
+    docLink: 'lawyerWorkingCopies',
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1008,
+    name: '9. PO working copies',
+    type: null,
+    category: null,
+    date: '03/06/2020',
+    status: 'Unused',
+    new: false,
+    docLink: 'poWorkingCopies',
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1009,
+    name: '10. Police',
+    type: null,
+    category: null,
+    date: '03/06/2020',
+    status: 'Used',
+    new: false,
+    docLink: 'police',
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1010,
+    name: '11. Media',
+    type: null,
+    category: null,
+    date: '03/06/2020',
+    status: 'None',
+    new: true,
+    docLink: 'media',
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1011,
+    name: '12. Victims and Witnesses',
+    type: null,
+    category: null,
+    date: '03/06/2020',
+    status: 'Unused',
+    new: false,
+    docLink: 'victimsAndWitnesses',
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1012,
+    name: '13. DCS',
+    type: null,
+    category: null,
+    date: '03/06/2020',
+    status: 'Used',
+    new: true,
+    docLink: 'dcs',
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1013,
+    name: '14. Magistrates Court',
+    type: null,
+    category: null,
+    date: '03/06/2020',
+    status: 'Unused',
+    new: true,
+    docLink: 'magistratesCourt',
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1014,
+    name: '15. IDPC',
+    type: null,
+    category: null,
+    date: '03/06/2020',
+    status: 'None',
+    new: false,
+    docLink: 'idpc',
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
   }
 ]
 

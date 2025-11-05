@@ -1,3 +1,41 @@
+///////////////////////////////////////////////////// Monica CODE - START /////////////////////////////////////////////////////
+
+// Make it global so inline onclick can see it
+window.openMaterial = function (event) {
+  const btn = event?.target?.closest('button') || this;
+  if (!btn) return false;
+
+  const isOpen = btn.classList.toggle('is-previewing');
+  btn.innerHTML = isOpen
+    ? 'Hide <i class="fa-solid fa-chevron-up"></i>'
+    : 'Preview <i class="fa-solid fa-chevron-down"></i>';
+
+  // Optional: toggle a preview panel for this row
+  const id = btn.getAttribute('data-id');
+  const panel = document.querySelector(`#preview-${id}`);
+  if (panel) panel.classList.toggle('hidden', !isOpen);
+
+  return false;
+};
+
+// Defensive: run after other inits and put our label back
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('button.show_material_actions').forEach(btn => {
+    // If some script replaced the text with "Actions", restore ours:
+    if (/^\s*Actions\s*$/i.test(btn.textContent.trim())) {
+      btn.innerHTML = 'Preview <i class="fa-solid fa-chevron-down"></i>';
+    }
+  });
+});
+
+///////////////////////////////////////////////////// Monica CODE - END /////////////////////////////////////////////////////
+
+
+
+
+
+
+
 // =================================== HOUSEKEEPING =================================== //
 
 // $(document).ready(function() {
@@ -222,6 +260,9 @@
 
 //      clearFilters();
 // });
+
+
+
 
 ///////////////////////////////////////////////////// CHRIS CODE - START /////////////////////////////////////////////////////
 
@@ -1261,3 +1302,5 @@ function closeNotesModal() {
     ]);
   };
 })();
+
+
