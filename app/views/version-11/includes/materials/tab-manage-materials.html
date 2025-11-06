@@ -119,20 +119,39 @@
                 
                 {% for material in materials %}
                     {% if
-                        (not data['filterNew'] or material.new == true or material.new == 'true' or material.status == 'New')
-                        and (not data['filterStatusUsed'] or material.status == data['filterStatusUsed'])
-                        and (not data['filterStatusUnused'] or material.status == data['filterStatusUnused'])
-                        and (not data['filterStatusNone'] or material.status == data['filterStatusNone'])
-                        and (not data['filterCategoryReviews'] or material.category == data['filterCategoryReviews'])
-                        and (not data['filterCategoryCaseOverview'] or material.category == data['filterCategoryCaseOverview'])
-                        and (not data['filterCategoryStatements'] or material.category == data['filterCategoryStatements'])
-                        and (not data['filterCategoryExhibits'] or material.category == data['filterCategoryExhibits'])
-                        and (not data['filterCategoryForensics'] or material.category == data['filterCategoryForensics'])
-                        and (not data['filterCategoryUnusedMaterial'] or material.category == data['filterCategoryUnusedMaterial'])
-                        and (not data['filterCategoryDefendant'] or material.category == data['filterCategoryDefendant'])
-                        and (not data['filterCategoryCourtPreparation'] or material.category == data['filterCategoryCourtPreparation'])
-                    %}
-                    <!-- ||||||||||||||| Materials ||||||||||||||| -->
+                    (not data['filterNew'] or material.new == true or material.new == 'true')
+                    and (
+                        not (data['filterStatusUsed'] or data['filterStatusUnused'] or data['filterStatusNone'])
+                        or material.status in [
+                        data['filterStatusUsed'],
+                        data['filterStatusUnused'],
+                        data['filterStatusNone']
+                        ]
+                    )
+                    and (
+                        not (
+                        data['filterCategoryReview'] or
+                        data['filterCategoryCaseOverview'] or
+                        data['filterCategoryStatements'] or
+                        data['filterCategoryExhibits'] or
+                        data['filterCategoryForensics'] or
+                        data['filterCategoryUnusedMaterial'] or
+                        data['filterCategoryDefendant'] or
+                        data['filterCategoryCourtPreparation']
+                        )
+                        or material.category in [
+                        data['filterCategoryReview'],
+                        data['filterCategoryCaseOverview'],
+                        data['filterCategoryStatements'],
+                        data['filterCategoryExhibits'],
+                        data['filterCategoryForensics'],
+                        data['filterCategoryUnusedMaterial'],
+                        data['filterCategoryDefendant'],
+                        data['filterCategoryCourtPreparation']
+                        ]
+                    )
+                    %}                    
+                        <!-- ||||||||||||||| Materials ||||||||||||||| -->
                         {% if data['discarding_material_COMPLETED'] == 'true' and data['material_selected'] == '{{material.name}}' %}
 
                         {% else %}
