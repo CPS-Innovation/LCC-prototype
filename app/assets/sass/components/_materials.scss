@@ -756,8 +756,8 @@ table.sortable {
 
 .info_wrapper {
      display: flex;
-     align-items: center;
-     margin-bottom: 2em;
+     align-items: baseline;
+     margin-bottom: 0.5em;
      #show_filter_Comms, #close_filter_Comms, #show_filter_Materials, #close_filter_Materials, #show_filter_Redactions, #close_filter_Redactions {
           margin: 0 1em 0 0;
           font-size: 1rem;
@@ -790,7 +790,7 @@ table.sortable {
           }
      }
      .moj-button-menu {
-          float: right;
+          float: left;
           position: relative;
           button {
                margin: -0.5em 0 0 0;
@@ -1789,3 +1789,5 @@ main.case-files {
   outline: 3px solid #ffbf47; /* GOV.UK yellow focus ring */
   outline-offset: 1px;
 }
+
+

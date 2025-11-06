@@ -1,5 +1,5 @@
 const express = require('express');
-const { editSuspect, chargeDescription, materials } = require('../../data/session-data-defaults');
+const { editSuspect, chargeDescription, materials, victims } = require('../../data/session-data-defaults');
 const router = express.Router();
 const version = 'version-11'
 
@@ -73,7 +73,12 @@ router.post('/B-off-system-MVP/create-case/02-case-details', function(req, res) 
     req.session.data.registeringUnit = req.body['newCase_RegisteringUnit']
     req.session.data.WCU =  req.body['newCase_WCU']
 
-    res.redirect('/version-11/B-off-system-MVP/create-case/02-first-hearing-details') 
+    if (req.session.data.suspectDetailsYesNo === 'Yes') {
+        res.redirect('/version-11/B-off-system-MVP/create-case/03-add-suspect')
+    }
+    else {
+        res.redirect('/version-11/B-off-system-MVP/create-case/05-complexity') 
+    }    
 })
 
 
@@ -86,12 +91,8 @@ router.post('/B-off-system-MVP/create-case/02-first-hearing-details', function(r
         req.session.data.firstHearingDate = req.body['newCase_FirstHearing_Date']
     }
 
-    if (req.session.data.suspectDetailsYesNo === 'Yes') {
-        res.redirect('/version-11/B-off-system-MVP/create-case/03-add-suspect')
-    }
-    else {
-        res.redirect('/version-11/B-off-system-MVP/create-case/05-complexity') 
-    }    
+    res.redirect('/version-11/B-off-system-MVP/create-case/05-complexity') 
+
 })
 
 
@@ -645,51 +646,64 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
     req.session.data.chargeVictimIntimidated[count] = req.body['newCharge_Intimidated']
     req.session.data.chargeVictimWitness[count] = req.body['charge-victim-witness']
 
+    // req.session.data.chargeVictimId[req.session.data.chargeCount] = req.session.data.victims.length
+
+    // req.session.data.victims.push({
+    //     id: req.session.data.victims.length,
+    //     firstName: req.body['newCharge_Victim_FirstName'],
+    //     lastName: req.body['newCharge_Victim_SurnameName'],
+    //     vulnerable: req.body['newCharge_Vulnerable'],
+    //     intimidated: req.body['newCharge_Intimidated'],
+    //     witness: req.body['charge-victim-witness']
+    // });
+
+
     // Offence address
-    req.session.data.offenceAddress1[count] = req.body['addressLine1']
-    req.session.data.offenceAddress2[count] = req.body['addressLine2']
-    req.session.data.offenceTown[count] = req.body['addressTown']
-    req.session.data.offencePostcode[count] = req.body['addressPostcode']
-    req.session.data.offenceCountry[count] = req.body['docType-Country']
+    // req.session.data.offenceAddress1[count] = req.body['addressLine1']
+    // req.session.data.offenceAddress2[count] = req.body['addressLine2']
+    // req.session.data.offenceTown[count] = req.body['addressTown']
+    // req.session.data.offencePostcode[count] = req.body['addressPostcode']
+    // req.session.data.offenceCountry[count] = req.body['docType-Country']
 
     req.session.data.chargedWithAdult[count] = req.body['charged-with-adult']
 
-    console.log("Charge suspect id:",req.session.data.chargeSuspectId[count])
     console.log("Charge id:",req.session.data.chargeId[count])
-    console.log("Charge code:",req.session.data.chargeCode[count])
-    console.log("Charge description:",req.session.data.chargeDescription[count])
-    console.log("Charge from date:",req.session.data.chargeFromDay[count],req.session.data.chargeFromMonth[count],req.session.data.chargeFromYear[count])
-    console.log("Charge to date:",req.session.data.chargeToDay[count],req.session.data.chargeToMonth[count],req.session.data.chargeToYear[count])
-    console.log("Charge comment:",req.session.data.chargeComments[count])
-    // console.log("Charge victim yes/no:",req.session.data.chargeVictimYesNo[count])
-    console.log("Charge victim first name:",req.session.data.chargeVictimFirstName[count])
-    console.log("Charge victim surname:",req.session.data.chargeVictimLastName[count])
-    console.log("Charge vulnerable:",req.session.data.chargeVictimVulnerable[count])
-    console.log("Charge intimidated:",req.session.data.chargeVictimIntimidated[count])
-    console.log("Charge witness:",req.session.data.chargeVictimWitness[count])
-    console.log("Charged with adult:",req.session.data.chargedWithAdult[count])
 
 
     req.session.data.chargeCount = count + 1
     console.log("Charge count 2:",req.session.data.chargeCount)
     // console.log("Grouped:",req.session.data.grouped)
 
-    // res.render('version-11/B-off-system-MVP/create-case/04-charges-summary', {
-    //     grouped: req.session.data.grouped
-    // });
-
-    // const arr = [5, 5, 5, 2, 2, 2, 2, 2, 9, 4];
-    // const counts = {};
-
-    // for (const num of req.session.data.chargeSuspectId) {
-    //     counts[num] = counts[num] ? counts[num] + 1 : 1;
-    // }
-
-    // req.session.data.counts = counts;  // save for later
-    // console.log(counts);
-
-   res.redirect('/version-11/B-off-system-MVP/create-case/04-charges-summary')
+   res.redirect('/version-11/B-off-system-MVP/create-case/04-add-charges-victim')
 })
+
+// Charges victim
+router.post('/B-off-system-MVP/create-case/04-add-charges-victim', function(req, res) {
+    var count = req.session.data.chargeCount - 1
+
+    if (req.session.data.victims.length == 1 || req.body['existing-victim'] == 'new-victim') {
+        req.session.data.chargeVictimId[count] = req.session.data.victims.length
+        req.session.data.countVictims = req.session.data.victims.length
+        req.session.data.victims.push({
+            id: req.session.data.victims.length,
+            firstName: req.body['newCharge_Victim_FirstName'],
+            lastName: req.body['newCharge_Victim_SurnameName'],
+            vulnerable: req.body['newCharge_Vulnerable'],
+            intimidated: req.body['newCharge_Intimidated'],
+            witness: req.body['charge-victim-witness']
+        });
+    }
+    else {
+        req.session.data.chargeVictimId[count] = req.body['existing-victim']
+    }
+
+    console.log("Victims:", req.session.data.victims)
+    console.log("Charge victim id:",req.session.data.chargeVictimId[count])
+
+    res.redirect('/version-11/B-off-system-MVP/create-case/04-charges-summary')
+})
+
+
 
 
 // Charges summary
@@ -698,7 +712,7 @@ router.post('/B-off-system-MVP/create-case/04-charges-summary', function(req, re
         res.redirect('/version-11/B-off-system-MVP/create-case/04-add-charges-suspect')
     }
     else {
-        res.redirect('/version-11/B-off-system-MVP/create-case/05-complexity') 
+        res.redirect('/version-11/B-off-system-MVP/create-case/02-first-hearing-details') 
     }    
 
 })

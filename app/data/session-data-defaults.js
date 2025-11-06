@@ -104,6 +104,7 @@ module.exports = {
 
   "chargeId": [],
   "chargeSuspectId": [],
+  "chargeVictimId": [],
 
   "chargeSearch": "",
   "searchResultsStatus": "hidden",
@@ -367,32 +368,46 @@ module.exports = {
 ],
   
 
+"victims": [ 
+  {
+    id: 0, 
+    firstName: null, 
+    lastName: null, 
+    vulnerable: null,
+    intimidated: null, 
+    witness: null 
+  }
+],
+// "victims": [],
+"countVictims": 0,
 
-  // Pre-charge flag
-  "preCharge": "No",
 
-  // Case complexity and weight
-  "newCase_MonitoringCodes": [],
-  "caseComplexity": "",
-  "caseWeight": "",
 
-  // CPS and police staff
-  "prosecutorCaseworkerYesNo": "",
-  "prosecutor": "",
-  "caseworker": "",
-  "policeYesNo": "",
-  "policeRank": "",
-  "policeFirstName": "",
-  "policeLastName": "",
-  "policeShoulderNumber": "",
-  "policeUnit": "",
+// Pre-charge flag
+"preCharge": "No",
 
-  // Wanted folders
-  "wantedFolders": "",
-  "wantedEgressFolder": "",
-  "wantedDriveFolder": "",
-  "egressTemplate": "",
-  "addMaterials": "",
+// Case complexity and weight
+"newCase_MonitoringCodes": [],
+"caseComplexity": "",
+"caseWeight": "",
+
+// CPS and police staff
+"prosecutorCaseworkerYesNo": "",
+"prosecutor": "",
+"caseworker": "",
+"policeYesNo": "",
+"policeRank": "",
+"policeFirstName": "",
+"policeLastName": "",
+"policeShoulderNumber": "",
+"policeUnit": "",
+
+// Wanted folders
+"wantedFolders": "",
+"wantedEgressFolder": "",
+"wantedDriveFolder": "",
+"egressTemplate": "",
+"addMaterials": "",
 
 
 

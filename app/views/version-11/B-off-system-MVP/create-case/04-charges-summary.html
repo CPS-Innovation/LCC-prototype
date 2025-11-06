@@ -80,13 +80,33 @@
                       <div class="govuk-summary-list__row">
                           <dt class="govuk-summary-list__key">Victim</dt>
                           <dd class="govuk-summary-list__value">
-                            {% if data['chargeVictimLastName'][i] %} {{data['chargeVictimFirstName'][i]}} {{data['chargeVictimLastName'][i]}} {% else %} Not entered {% endif %}
-                            {% if data['chargeVictimVulnerable'][i] or data['chargeVictimIntimidated'][i] or data['chargeVictimWitness'][i] %}
-                              <br>                              
-                              {% if data['chargeVictimVulnerable'][i] %}<strong class="govuk-tag govuk-tag--blue govuk-!-margin-top-1">Vulnerable</strong>{% endif %}
-                              {% if data['chargeVictimIntimidated'][i] %}<strong class="govuk-tag govuk-tag--blue govuk-!-margin-top-1">Intimidated</strong>{% endif %}
-                              {% if data['chargeVictimWitness'][i] %}<strong class="govuk-tag govuk-tag--blue govuk-!-margin-top-1">Witness</strong>{% endif %}
+                            
+                          {% set victimId = data['chargeVictimId'][i] | int %}
+                          {% set matchedVictim = null %}
+
+                          {% for v in data['victims'] %}
+                            {% if (v.id | int) == victimId %}
+                              {% set matchedVictim = v %}
                             {% endif %}
+                          {% endfor %}
+
+                          {% if matchedVictim %}
+                            {{ matchedVictim.firstName }} {{ matchedVictim.lastName }}
+                            {% if matchedVictim.vulnerable or matchedVictim.intimidated or matchedVictim.witness %}
+                              <br>
+                              {% if matchedVictim.vulnerable %}
+                                <strong class="govuk-tag govuk-tag--blue">Vulnerable</strong>
+                              {% endif %}
+                              {% if matchedVictim.intimidated %}
+                                <strong class="govuk-tag govuk-tag--blue">Intimidated</strong>
+                              {% endif %}
+                              {% if matchedVictim.witness %}
+                                <strong class="govuk-tag govuk-tag--blue">Witness</strong>
+                              {% endif %}
+                            {% endif %}
+                          {% else %}
+                            Not entered
+                          {% endif %}
                           </dd>
                           <dd class="govuk-summary-list__actions"><a class="govuk-link" href="03E_V2_B-suspect-charges">Change<span class="govuk-visually-hidden"> Victim</span></a></dd>
                       </div>
