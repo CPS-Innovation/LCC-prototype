@@ -876,6 +876,11 @@ router.post('/B-off-system-MVP/case-overview', function(req, res) {
     res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
 })
 
+router.post('/B-off-system-MVP/shared-drive', function(req, res) {
+    req.session.data.level = req.body['level']
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
+})
+
 
 
 // ************************************************** Old code **************************************************

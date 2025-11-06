@@ -1,8 +1,8 @@
 <!-- ///////////////////////////////// TAB 2 - CONTENT - START ///////////////////////////////// -->
 <div class="govuk-grid-row">
-    <h1 class="govuk-heading-m govuk-!-margin-left-3 govuk-!-margin-bottom-5 govuk-!-margin-top-0">Viewing shared drive &nbsp;| &nbsp;<span class="gocuk-heading-m"><a class="govuk-link">View egress drive</a></span></h1>
+    <h1 class="govuk-heading-l govuk-!-margin-left-3 govuk-!-margin-top-0">Manage materials on shared drive</h1>
     <!-- <p class="govuk-body govuk-!-margin-left-3"><a class="govuk-link">View egress</a></p> -->
-    <p class="govuk-body govuk-!-margin-left-3 govuk-!-margin-top-0 govuk-!-margin-bottom-8">Work in progress, thinking of ideas, don't panic, Phil and Neil!</p>
+    <p class="govuk-body govuk-!-margin-left-3 govuk-!-margin-top-0 govuk-!-margin-bottom-8">You can add, rename or remove materials and folders to the shared drive. You can also <a class="govuk-link">manage materials and folders on Egress</a>.</p>
 </div>
 <div class="govuk-grid-row">
 
@@ -81,7 +81,18 @@
         <nav class="govuk-breadcrumbs govuk-!-margin-top-0" aria-label="Breadcrumb">
         <ol class="govuk-breadcrumbs__list">
             <li class="govuk-breadcrumbs__list-item">
-                <a class="govuk-breadcrumbs__link" href="#">Shared drive</a>
+            <form action="/version-11/B-off-system-MVP/case-overview" method="post">
+            <td class="govuk-table__cell title_column">
+                <input type="hidden" name="folderName" value="{{ material.name }}">
+                <input type="hidden" name="level" value="1">
+
+                <button type="submit" name="materialId" value="{{ material.id }}" class="govuk-breadcrumbs__link">
+                    Shared drive7
+                </button>
+                </div>
+            </td>
+            </form>
+
             </li>
             <li class="govuk-breadcrumbs__list-item">
                 <a class="govuk-breadcrumbs__link" href="#">1. Case management</a>
