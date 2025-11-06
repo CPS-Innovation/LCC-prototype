@@ -462,25 +462,8 @@
                                                 Not entered
                                             {% endif %}
                                             </dd>
-                                            <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> victim details</span></a></dd>
+                                            <dd class="govuk-summary-list__actions"></dd>
                                         </div>
-
-                                        <!-- <div class="govuk-summary-list__row">
-                                            <dt class="govuk-summary-list__key">Offence location</dt>
-                                            <dd class="govuk-summary-list__value">
-                                                {% if data['offenceAddress1'][i] %} 
-                                                {{data['offenceAddress1'][i]}} 
-                                                {% if data['offenceAddress2'][i] %}<br>{{data['offenceAddress2'][i]}}{% endif %} 
-                                                {% if data['offenceTown'][i] %}<br>{{data['offenceTown'][i]}}{% endif %} 
-                                                {% if data['offencePostcode'][i] %}<br>{{data['offencePostcode'][i]}}{% endif %} 
-                                                {% if data['offenceCountry'][i] %}<br>{{data['offenceCountry'][i]}}{% endif %} 
-                                                {% else %} 
-                                                Not entered 
-                                                {% endif %}
-                                            </dd>
-                                            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> Victim</span></a></dd>
-                                        </div> -->
-
 
                                         {% if data['suspectOffenderType'][sid] == 'Both prolific priority offender (PPO) and prolific youth offender (PYO)' or data['suspectOffenderType'][sid] == 'Prolific youth offender (PYO)' or data['suspectOffenderType'][sid] == 'Youth offender (YO)' %}
                                         <div class="govuk-summary-list__row">

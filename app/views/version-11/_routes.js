@@ -646,17 +646,6 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
     req.session.data.chargeVictimIntimidated[count] = req.body['newCharge_Intimidated']
     req.session.data.chargeVictimWitness[count] = req.body['charge-victim-witness']
 
-    // req.session.data.chargeVictimId[req.session.data.chargeCount] = req.session.data.victims.length
-
-    // req.session.data.victims.push({
-    //     id: req.session.data.victims.length,
-    //     firstName: req.body['newCharge_Victim_FirstName'],
-    //     lastName: req.body['newCharge_Victim_SurnameName'],
-    //     vulnerable: req.body['newCharge_Vulnerable'],
-    //     intimidated: req.body['newCharge_Intimidated'],
-    //     witness: req.body['charge-victim-witness']
-    // });
-
 
     // Offence address
     // req.session.data.offenceAddress1[count] = req.body['addressLine1']
@@ -674,7 +663,13 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
     console.log("Charge count 2:",req.session.data.chargeCount)
     // console.log("Grouped:",req.session.data.grouped)
 
-   res.redirect('/version-11/B-off-system-MVP/create-case/04-add-charges-victim')
+    if (req.body['newCharge_Victim_YesNo'] === 'Yes') {
+        res.redirect('/version-11/B-off-system-MVP/create-case/04-add-charges-victim')
+    }
+    else {
+        res.redirect('/version-11/B-off-system-MVP/create-case/04-charges-summary')
+    }
+
 })
 
 // Charges victim
