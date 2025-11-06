@@ -1,8 +1,9 @@
 <!-- ///////////////////////////////// TAB 2 - CONTENT - START ///////////////////////////////// -->
 <div class="govuk-grid-row">
-    <h1 class="govuk-heading-m govuk-!-margin-left-3 govuk-!-margin-bottom-5 govuk-!-margin-top-0">Viewing shared drive &nbsp;| &nbsp;<span class="gocuk-heading-m"><a class="govuk-link">View egress drive</a></span></h1>
+    <!-- <h1 class="govuk-heading-m govuk-!-margin-left-3 govuk-!-margin-bottom-5 govuk-!-margin-top-0">Viewing shared drive &nbsp;| &nbsp;<span class="gocuk-heading-m"><a class="govuk-link">View egress drive</a></span></h1> -->
+    <h1 class="govuk-heading-l govuk-!-margin-left-3 govuk-!-margin-top-0">Manage materials on shared drive</h1>
     <!-- <p class="govuk-body govuk-!-margin-left-3"><a class="govuk-link">View egress</a></p> -->
-    <p class="govuk-body govuk-!-margin-left-3 govuk-!-margin-top-0 govuk-!-margin-bottom-8">Work in progress, thinking of ideas, don't panic, Phil and Neil!</p>
+    <p class="govuk-body govuk-!-margin-left-3 govuk-!-margin-top-0 govuk-!-margin-bottom-8">You can add, rename or remove materials and folders to the shared drive. You can also <a class="govuk-link">manage materials and folders on Egress</a>.</p>
 </div>
 <div class="govuk-grid-row">
 
@@ -16,21 +17,10 @@
 
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-half">
-                <!-- <div class="info_wrapper" style="display: flex; align-items: center; gap: 1rem; line-height: 1.5;"> -->
-                    <div class="info_wrapper" style="display:flex; align-items:center; gap:1rem;">
-                    <button id="toggle_filter_Materials" type="button" class="govuk-button govuk-button--secondary">
-                        Show filter
-                    </button>
-                    {% if data['discarding_material_COMPLETED'] == 'true' %}
-                        <p class="materials-status govuk-body govuk-!-margin-bottom-0">
-                            Showing <strong>{{materials.length -1}}</strong> materials out of <strong>{{materials.length -1}}</strong>
-                        </p>
-                    {% else %}
-                        <p class="materials-status govuk-body govuk-!-margin-bottom-0">
-                        Showing <strong>{{materials.length}}</strong> materials out of <strong>{{materials.length}}</strong>
-                        </p>                    
-                    {% endif %}
-                </div>
+                <!-- <div class="info_wrapper" style="display:flex; align-items:center; gap:1rem;"> -->
+                <button id="toggle_filter_Materials" type="button" class="govuk-button govuk-button--secondary">
+                    Show filter
+                </button>
             </div>
             <div class="govuk-grid-column-one-half">
                 <div class="actions_holder">
@@ -78,19 +68,24 @@
             </div>
         </div>
 
-        <nav class="govuk-breadcrumbs govuk-!-margin-top-0" aria-label="Breadcrumb">
+        <nav class="govuk-breadcrumbs govuk-!-margin-top-4 govuk-!-margin-bottom-4" aria-label="Breadcrumb">
         <ol class="govuk-breadcrumbs__list">
             <li class="govuk-breadcrumbs__list-item">
-            <a class="govuk-breadcrumbs__link" href="#">Shared drive</a>
+            <form method="post" action="/version-11/B-off-system-MVP/shared-drive" style="display:inline;">
+                <input type="hidden" name="level" value="1">
+                <button type="submit" class="govuk-breadcrumbs__link breadcrumb-button">
+                Shared drive
+                </button>
+            </form>
             </li>
+
             {% if data['level'] == '2' %}
             <li class="govuk-breadcrumbs__list-item">
-                <a class="govuk-breadcrumbs__link" href="#">{{data['folderName']}}</a>
+            <a class="govuk-breadcrumbs__link govuk-link--no-visited-state" href="#">
+                {{ data['folderName'] }}
+            </a>
             </li>
             {% endif %}
-            <!-- <li class="govuk-breadcrumbs__list-item">
-            <a class="govuk-breadcrumbs__link" href="#">Travel abroad</a>
-            </li> -->
         </ol>
         </nav>
 

@@ -1741,6 +1741,51 @@ main.case-files {
 ////////////////////////// Mónica - new styles //////////////////////////
 #toggle_filter_Materials { margin-bottom: 0; }
 
+// govlink back to its original blue colour
 .govuk-link {
   color: #1d70b8 !important;
+  cursor: pointer;
+}
+
+// Folder icon and tag alignment on materials table
+.openMe {
+  display: flex;
+  align-items: center;
+  gap: 0.4em; // spacing between elements (icon, text, tag)
+}
+
+.govuk-tag {
+  margin-right: 0.3em; // keep tag close to the folder icon
+}
+
+.icon-new.folder {
+  display: inline-block;
+  width: 1.4em;   // adjust to make icon bigger
+  height: 1.4em;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  vertical-align: middle;
+  margin-top: -0.05em; // small fine-tuning to align perfectly with text baseline
+}
+
+.breadcrumb-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: #0b0c0c; /* Standard breadcrumb text colour */
+  text-decoration: underline;
+  cursor: pointer; /* ✅ Makes it act like a link */
+  text-decoration-thickness: 1px;
+}
+
+.breadcrumb-button:hover {
+  color: #0b0c0c;
+  text-decoration-thickness: max(3px, .1875rem, .12em);
+}
+
+.breadcrumb-button:focus {
+  outline: 3px solid #ffbf47; /* GOV.UK yellow focus ring */
+  outline-offset: 1px;
 }
