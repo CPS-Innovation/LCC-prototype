@@ -846,6 +846,10 @@ router.post('/B-off-system-MVP/04A-create-egress-folder', function(req, res) {
 
 
 
+
+
+// ********************** Materials ********************** //
+
 // Handle materials filter POST
 router.post('/includes/materials/materials-filter', function(req, res) {
   req.session.data.filterNew = req.body['filterNew']
@@ -889,6 +893,85 @@ router.post('/B-off-system-MVP/shared-drive', function(req, res) {
     req.session.data.level = req.body['level']
     res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
 })
+
+
+
+router.post('/B-off-system-MVP/add-new-folder', function(req, res) {
+  const folderName = req.body.folderName?.trim();
+  if (!folderName) return res.redirect('/version-11/B-off-system-MVP/shared-drive');
+
+  // Make sure materials array exists
+//   req.session.data.materials = req.session.data.materials || [];
+
+//   const materials = req.session.data.materials;
+
+  // Determine next ID
+  const lastId = materials.length ? materials[materials.length - 1].id : 1000;
+
+  // Build new folder object
+  const newFolder = {
+    id: lastId + 1,
+    name: folderName,
+    type: null,
+    category: null,
+    date: new Date().toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    }),    
+    status: 'None',
+    new: true,
+    docLink: null,
+    previewLink: null,
+    parentId: null,
+    folder: true,
+    level: 1
+  };
+
+  // Add to session
+//   materials.push(newFolder);
+    materials.unshift(newFolder);
+
+  console.log('✅ New folder added:', newFolder);
+
+  // Redirect back to case overview (reloads tab-manage-materials.html)
+  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+});
+
+router.post('/version-11/B-off-system-MVP/case-overview', function (req, res) {
+  const data = req.session.data;
+  res.render('version-11/B-off-system-MVP/03-case-overview', { materials: data.materials || [], data });
+});
+
+// router.post('/B-off-system-MVP/add-new-folder', function(req, res) {
+//     console.log("Adding new folder:", req.body['folderName'])
+
+//     // Get the last ID (safe even if array is empty)
+//     const lastId = materials.length ? materials.at(-1).id : 1000; // start baseline if empty
+
+//     // Create new folder object
+//     const newFolder = {
+//     id: lastId + 1,
+//     name: req.body['folderName'],
+//     type: null,
+//     category: null,
+//     date: new Date().toLocaleDateString('en-GB'), // e.g. "10/11/2025"
+//     status: 'Used',
+//     new: true,
+//     docLink: null,
+//     previewLink: null,
+//     parentId: null,
+//     folder: true,
+//     level: 1
+//     };
+
+//     // Push it into the array
+//     materials.push(newFolder);
+
+//     console.log(materials);
+//     // req.session.data.newFolderName = req.body['folderName']
+//     res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
+// })
 
 
 
