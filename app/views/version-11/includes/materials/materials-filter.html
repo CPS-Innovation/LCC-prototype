@@ -1,10 +1,13 @@
 <!-- ///////////////////////////////// MATERIALS FILTER - CONTENT - START ///////////////////////////////// -->
 <div class="moj-filter" id="filter_Materials">
+  
   <div class="moj-filter__header">
     <div class="moj-filter__header-title">
       <h2 class="govuk-heading-m">Filters</h2>
     </div>
   </div>
+
+
 
   <form action="/version-11/includes/materials/materials-filter" method="post" novalidate>
     {% if (data['filterNew'] | default(false)) 
