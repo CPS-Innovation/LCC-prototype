@@ -906,7 +906,7 @@ router.post('/B-off-system-MVP/add-new-folder', function(req, res) {
   const materials = req.session.data.materials;
   const level = req.body.level || 0;
   
-  const parentName = req.body.folderName?.trim() || null;
+  const parentName = req.body.parentFolder?.trim() || null;
 
   console.log("Adding folder:", newFolderName, "at level:", level, "under parent folder:", parentName);
 
