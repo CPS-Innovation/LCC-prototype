@@ -132,8 +132,10 @@
                                         <h2 id="newFolderTitle" class="govuk-heading-m">Create new folder</h2>
                                         <form id="newFolderForm" action="/version-11/B-off-system-MVP/add-new-folder" method="post">
                                             <div class="govuk-form-group">
-                                                <label class="govuk-label" for="folderName">What is the name of the new folder?</label>
-                                                <input class="govuk-input" id="folderName" name="folderName" type="text" autocomplete="off">
+                                                <label class="govuk-label" for="newFolderName">What is the name of the new folder?</label>
+                                                <input class="govuk-input" id="newFolderName" name="newFolderName" type="text" autocomplete="off">
+                                                <input type="hidden" name="level" value="{{ data['level'] }}">
+                                                <input type="hidden" name="parentFolder" value="{{ data['folderName'] }}">
                                             </div>
                                             <div class="govuk-button-group govuk-!-margin-top-3">
                                                 <button type="submit" class="govuk-button">Create folder</button>
@@ -179,10 +181,10 @@
                                 //     closeModal(modal);
                                 //     form.reset();
                                 // });
-                                form.addEventListener('submit', () => {
-                                // Optional: you can close the modal or disable button here
+                                form.addEventListener('submit', (e) => {
                                 modal.hidden = true;
-                                });                                
+                                // allow the normal form submission to happen
+                                });
                                 }
 
                                 function closeModal(modal) {
@@ -231,7 +233,7 @@
             </thead>
             <tbody class="govuk-table__body">
                 
-                {% for material in materials %}
+                {% for material in data['materials'] %}
                     {% if
                     (not data['filterNew'] or material.new == true or material.new == 'true')
                     and (

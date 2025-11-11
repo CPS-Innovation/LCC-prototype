@@ -897,21 +897,35 @@ router.post('/B-off-system-MVP/shared-drive', function(req, res) {
 
 
 router.post('/B-off-system-MVP/add-new-folder', function(req, res) {
-  const folderName = req.body.folderName?.trim();
-  if (!folderName) return res.redirect('/version-11/B-off-system-MVP/shared-drive');
+  const newFolderName = req.body.newFolderName?.trim();
+  if (!newFolderName) return res.redirect('/version-11/B-off-system-MVP/shared-drive');
 
   // Make sure materials array exists
-//   req.session.data.materials = req.session.data.materials || [];
+  req.session.data.materials = req.session.data.materials || [];
 
-//   const materials = req.session.data.materials;
+  const materials = req.session.data.materials;
+  const level = req.body.level || 0;
+  
+  const parentName = req.body.folderName?.trim() || null;
+
+  console.log("Adding folder:", newFolderName, "at level:", level, "under parent folder:", parentName);
+
+  let parentFolder = null;
+  if (parentName) {
+    parentFolder = materials.find(m => m.name === parentName && m.folder);
+    }
+    const parentId = parentFolder ? parentFolder.id : null;  
 
   // Determine next ID
-  const lastId = materials.length ? materials[materials.length - 1].id : 1000;
+//  const lastId = materials.length ? materials[materials.length - 1].id : 1000;
+  const lastId = materials.length
+  ? Math.max(...materials.map(m => m.id || 0))
+  : 1000;
 
   // Build new folder object
   const newFolder = {
     id: lastId + 1,
-    name: folderName,
+    name: newFolderName,
     type: null,
     category: null,
     date: new Date().toLocaleDateString('en-GB', {
@@ -923,17 +937,17 @@ router.post('/B-off-system-MVP/add-new-folder', function(req, res) {
     new: true,
     docLink: null,
     previewLink: null,
-    parentId: null,
+    parentId: parentId,
     folder: true,
-    level: 1
+    level: level
   };
 
   // Add to session
 //   materials.push(newFolder);
     materials.unshift(newFolder);
 
-  console.log('✅ New folder added:', newFolder);
-
+    console.log('✅ New folder added:', newFolder);
+    res.set('Cache-Control', 'no-store');   
   // Redirect back to case overview (reloads tab-manage-materials.html)
   res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
@@ -943,35 +957,6 @@ router.post('/version-11/B-off-system-MVP/case-overview', function (req, res) {
   res.render('version-11/B-off-system-MVP/03-case-overview', { materials: data.materials || [], data });
 });
 
-// router.post('/B-off-system-MVP/add-new-folder', function(req, res) {
-//     console.log("Adding new folder:", req.body['folderName'])
-
-//     // Get the last ID (safe even if array is empty)
-//     const lastId = materials.length ? materials.at(-1).id : 1000; // start baseline if empty
-
-//     // Create new folder object
-//     const newFolder = {
-//     id: lastId + 1,
-//     name: req.body['folderName'],
-//     type: null,
-//     category: null,
-//     date: new Date().toLocaleDateString('en-GB'), // e.g. "10/11/2025"
-//     status: 'Used',
-//     new: true,
-//     docLink: null,
-//     previewLink: null,
-//     parentId: null,
-//     folder: true,
-//     level: 1
-//     };
-
-//     // Push it into the array
-//     materials.push(newFolder);
-
-//     console.log(materials);
-//     // req.session.data.newFolderName = req.body['folderName']
-//     res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
-// })
 
 
 
