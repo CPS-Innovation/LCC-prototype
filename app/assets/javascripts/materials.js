@@ -30,7 +30,111 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+// Manage materials table sorting
+document.addEventListener("DOMContentLoaded", function () {
+  const table = document.getElementById("materials_table");
+  if (!table) return;
 
+  const headerButtons = table.querySelectorAll("thead th .govuk-button");
+
+  // Header text → actual column index in your table
+  const COL_INDEX = { "Material": 1, "Last updated": 2, "Status": 3 };
+
+  // Attach handlers only to the 3 sortable headers
+  headerButtons.forEach(btn => {
+    const label = btn.textContent.trim();
+    if (!COL_INDEX[label]) return; // skip checkbox/empty columns
+
+    let dir = 1; // 1 = ASC, -1 = DESC
+    btn.style.cursor = "pointer";
+
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const col = COL_INDEX[label];
+      const tbody = table.querySelector("tbody");
+      const rows = Array.from(tbody.rows);
+
+      // Build row blocks so a main row stays with its following hidden preview row (if any)
+      const blocks = [];
+      for (let i = 0; i < rows.length; i++) {
+        const main = rows[i];
+        const block = [main];
+        const next = rows[i + 1];
+        if (next && next.classList.contains("hidden_row")) {
+          block.push(next);
+          i++;
+        }
+        // guard: skip stray hidden rows that don't follow a main row
+        if (!main.classList.contains("hidden_row")) blocks.push(block);
+      }
+
+      const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
+
+      const getCellText = (row, index) => {
+        const cell = row.cells[index];
+        if (!cell) return "";
+        // For Material, prefer the visible name inside .openMe
+        if (index === COL_INDEX["Material"]) {
+          const t = cell.querySelector(".openMe")?.innerText || cell.innerText;
+          return t.trim();
+        }
+        // Status cell contains a <strong> tag – innerText is fine
+        return cell.innerText.trim();
+      };
+
+      const parseUKDate = (str) => {
+        // e.g. "12 Nov 2025"
+        // Using Date with "Mon D, YYYY" is reliable
+        const [d, m, y] = str.split(" ");
+        return new Date(`${m} ${d}, ${y}`).getTime() || 0;
+      };
+
+      blocks.sort((A, B) => {
+        const aRow = A[0], bRow = B[0];
+
+        if (col === COL_INDEX["Last updated"]) {
+          return (parseUKDate(getCellText(aRow, col)) - parseUKDate(getCellText(bRow, col))) * dir;
+        } else {
+          return collator.compare(getCellText(aRow, col), getCellText(bRow, col)) * dir;
+        }
+      });
+
+      // Re-attach in new order (preserving preview rows)
+      blocks.forEach(block => block.forEach(r => tbody.appendChild(r)));
+
+     // Toggle direction
+     dir *= -1;
+
+     // Remove any existing arrows from all headers
+     headerButtons.forEach(h => {
+     // Reset to original label only (strip arrows if any)
+     h.textContent = h.textContent.replace(/[▲▼]/g, '').trim();
+     });
+
+     // Append a single arrow to the active header
+     btn.textContent = btn.textContent.replace(/[▲▼]/g, '').trim() + (dir === -1 ? ' ▼' : ' ▲');    });
+  });
+});
+
+// Preview document from clicking on its name
+// $(document).ready(function () {
+//   $('.toggle-preview').on('click', function (e) {
+//     e.preventDefault();
+//     const id = $(this).data('id');
+//     const $preview = $('#preview_' + id);
+
+//     // close all others first (optional)
+//     $('.material-preview').not($preview).attr('hidden', true);
+
+//     // toggle current one
+//     if ($preview.is('[hidden]')) {
+//       $preview.removeAttr('hidden');
+//     } else {
+//       $preview.attr('hidden', true);
+//     }
+//   });
+// });
 
 ///////////////////////////////////////////////////// Monica CODE - END /////////////////////////////////////////////////////
 

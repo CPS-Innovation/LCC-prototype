@@ -882,74 +882,86 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
   })
 })
 
-router.post('/B-off-system-MVP/case-overview', function(req, res) {
+router.post('/B-off-system-MVP/case-overview-folder', function(req, res) {
     req.session.data.folderName = req.body['folderName']
+    console.log("Selected folder name:", req.session.data.folderName)
     req.session.data.level = req.body['level']
-    console.log("Selected folder ID:", req.session.data.folderId)
+    console.log("Selected level:", req.session.data.level)
+    if (req.session.data.folderName) {
+        parentFolder = materials.find(m => m.name === req.session.data.folderName && m.folder);
+    }
+    const parentId = parentFolder ? parentFolder.id : null; 
+    req.session.data.parentId = parentId
+
+    console.log("Selected folder ID:", parentId)
     res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
 })
 
 router.post('/B-off-system-MVP/shared-drive', function(req, res) {
     req.session.data.level = req.body['level']
+    req.session.data.parentId = req.body['parentId']
+    console.log("Selected level (shared drive):", req.session.data.level)
+    console.log("Selected parent ID (shared drive):", req.session.data.parentId)
     res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
 })
 
 
 
 router.post('/B-off-system-MVP/add-new-folder', function(req, res) {
-  const newFolderName = req.body.newFolderName?.trim();
-  if (!newFolderName) return res.redirect('/version-11/B-off-system-MVP/shared-drive');
+    const newFolderName = req.body.newFolderName?.trim();
+    if (!newFolderName) return res.redirect('/version-11/B-off-system-MVP/shared-drive');
 
-  // Make sure materials array exists
-  req.session.data.materials = req.session.data.materials || [];
+    // Make sure materials array exists
+    req.session.data.materials = req.session.data.materials || [];
 
-  const materials = req.session.data.materials;
-  const level = req.body.level || 0;
-  
-  const parentName = req.body.parentFolder?.trim() || null;
+    const materials = req.session.data.materials;
+    const level = req.body.level || 0;
+    
+    const parentName = req.body.parentFolder?.trim() || null;
 
-  console.log("Adding folder:", newFolderName, "at level:", level, "under parent folder:", parentName);
+    console.log("Adding folder:", newFolderName, "at level:", level, "under parent folder:", parentName);
 
-  let parentFolder = null;
-  if (parentName) {
-    parentFolder = materials.find(m => m.name === parentName && m.folder);
+    let parentFolder = null;
+
+    if (parentName) {
+        parentFolder = materials.find(m => m.name === parentName && m.folder);
     }
-    const parentId = parentFolder ? parentFolder.id : null;  
+    const parentId = parentFolder ? parentFolder.id : 0; 
 
-  // Determine next ID
-//  const lastId = materials.length ? materials[materials.length - 1].id : 1000;
-  const lastId = materials.length
-  ? Math.max(...materials.map(m => m.id || 0))
-  : 1000;
+    // Determine next ID
+    //  const lastId = materials.length ? materials[materials.length - 1].id : 1000;
+    const lastId = materials.length
+    ? Math.max(...materials.map(m => m.id || 0))
+    : 1000;
 
-  // Build new folder object
-  const newFolder = {
-    id: lastId + 1,
-    name: newFolderName,
-    type: null,
-    category: null,
-    date: new Date().toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-    }),    
-    status: 'None',
-    new: true,
-    docLink: null,
-    previewLink: null,
-    parentId: parentId,
-    folder: true,
-    level: level
-  };
+    // Build new folder object
+    const newFolder = {
+        id: lastId + 1,
+        name: newFolderName,
+        type: null,
+        category: null,
+        date: new Date().toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        }),    
+        status: 'None',
+        new: true,
+        docLink: null,
+        previewLink: null,
+        parentId: parentId,
+        folder: true,
+        level: level
+    };
 
-  // Add to session
-//   materials.push(newFolder);
+    // Add to session
+    // materials.push(newFolder);
     materials.unshift(newFolder);
 
     console.log('✅ New folder added:', newFolder);
     res.set('Cache-Control', 'no-store');   
-  // Redirect back to case overview (reloads tab-manage-materials.html)
-  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+    // Redirect back to case overview (reloads tab-manage-materials.html)
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
 
 router.post('/version-11/B-off-system-MVP/case-overview', function (req, res) {
