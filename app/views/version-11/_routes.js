@@ -884,13 +884,14 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
 
 router.post('/B-off-system-MVP/case-overview-folder', function(req, res) {
     req.session.data.folderName = req.body['folderName']
+    req.session.data.breadcrumbs.push(req.session.data.folderName)
     console.log("Selected folder name:", req.session.data.folderName)
     req.session.data.level = req.body['level']
     console.log("Selected level:", req.session.data.level)
     if (req.session.data.folderName) {
         parentFolder = materials.find(m => m.name === req.session.data.folderName && m.folder);
     }
-    const parentId = parentFolder ? parentFolder.id : null; 
+    const parentId = parentFolder ? parentFolder.id : 0; 
     req.session.data.parentId = parentId
 
     console.log("Selected folder ID:", parentId)
@@ -970,9 +971,61 @@ router.post('/version-11/B-off-system-MVP/case-overview', function (req, res) {
 });
 
 
+// router.post('/B-off-system-MVP/discard-material', function(req, res) {
+//     req.session.data.discardingReason = req.body['discarding-material']
 
+//     res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
+// })
 
-// ************************************************** Old code **************************************************
+// Discard material
+router.post('/B-off-system-MVP/discard-material', function (req, res) {
+    const selected = req.body.material_selected
+        ? req.body.material_selected.split(',').map(s => s.trim())
+        : [];
+    const reason = req.body.discarding_material;
+
+    console.log('Discarding materials:', selected);
+    console.log('Reason:', reason);
+
+    // Remove selected materials entirely
+    req.session.data.materials = req.session.data.materials.filter(
+        m => !selected.includes(m.name)
+    );
+
+// (Optional) You could store the discard reason somewhere for audit, e.g.:
+    req.session.data.lastDiscard = { reason, items: selected, date: new Date().toISOString() };
+    console.log('Last discard action stored:', req.session.data.lastDiscard);
+
+  // Mark or remove discarded materials
+//   req.session.data.materials = req.session.data.materials.map(m => {
+//     if (selected.includes(m.name)) {
+//       m.status = 'Discarded (' + reason + ')';
+//     }
+//     return m;
+//   });
+
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+});
+
+// Rename material
+router.post('/B-off-system-MVP/B-rename-material-save', function (req, res) {
+  const oldName = req.body.rename_selected?.trim();
+  const newName = req.body.new_name?.trim();
+
+  if (!oldName || !newName) {
+    return res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+  }
+
+  req.session.data.materials = req.session.data.materials.map(m => {
+    if (m.name === oldName) {
+      return { ...m, name: newName };
+    }
+    return m;
+  });
+
+  console.log(`✏️ Renamed "${oldName}" → "${newName}"`);
+  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+});// ************************************************** Old code **************************************************
 
 // Add suspects
 // router.post('/B-off-system-MVP/create-case/04A-add-suspect', function(req, res) {
