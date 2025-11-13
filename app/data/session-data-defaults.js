@@ -93,6 +93,8 @@ module.exports = {
   "arrestDate": [],
   "aliasTempSuspectId": 0,
 
+  "removeSuspectId": "",
+
   // Edit suspect
   "editSuspect": 999,
   "displaySuspect": 999,

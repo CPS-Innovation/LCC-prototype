@@ -47,8 +47,13 @@
                   
                   <dd class="govuk-summary-list__actions hmrc-summary-list__actions">
                     <ul class="govuk-summary-list__actions-list">
+                    <li class="govuk-summary-list__actions-list-item">
+                    <form action="/version-11/B-off-system-MVP/create-case/remove-charge" method="post" novalidate>
+                        <input type="hidden" name="remove-charge-id" value="{{ data['chargeId'][i] }}">
+                        <button class="govuk-link govuk-link--no-visited-state suspect" type="submit">Remove</button>
+                    </form>
+                    </li>
                       <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Change</span><span class="govuk-visually-hidden">Change charge</span></a></li>
-                      <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Remove</span><span class="govuk-visually-hidden">Remove charge</span></a></li>
                     </ul>
                   </dd>
                 </div>
