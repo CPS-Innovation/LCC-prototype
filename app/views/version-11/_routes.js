@@ -445,6 +445,42 @@ router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function(req, r
 })
 
 
+router.post('/B-off-system-MVP/create-case/remove-suspect', function(req, res) {
+    req.session.data.removeSuspectId = Number(req.body['remove-suspect-id'])
+    res.redirect('/version-11/B-off-system-MVP/create-case/03-remove-suspect') 
+})
+
+
+router.post('/B-off-system-MVP/create-case/03-remove-suspect', function(req, res) {
+    if (req.body['submit-button'] == 'remove') {
+        req.session.data.suspectId.splice(req.session.data.removeSuspectId, 1)
+        req.session.data.suspectType.splice(req.session.data.removeSuspectId, 1)
+        req.session.data.suspectFirstName.splice(req.session.data.removeSuspectId, 1)
+        req.session.data.suspectLastName.splice(req.session.data.removeSuspectId, 1)
+        req.session.data.suspectDOB.splice(req.session.data.removeSuspectId, 1)
+        req.session.data.suspectGender.splice(req.session.data.removeSuspectId, 1)
+        req.session.data.suspectDisability.splice(req.session.data.removeSuspectId, 1)
+        req.session.data.suspectReligion.splice(req.session.data.removeSuspectId, 1)
+        req.session.data.suspectEthnicity.splice(req.session.data.removeSuspectId, 1)
+        req.session.data.suspectSDO.splice(req.session.data.removeSuspectId, 1)
+        req.session.data.suspectArrestSummons.splice(req.session.data.removeSuspectId, 1)
+        req.session.data.suspectOffenderType.splice(req.session.data.removeSuspectId, 1)
+        req.session.data.suspectCompanyName.splice(req.session.data.removeSuspectId, 1)
+
+        // Adjust suspect count
+        req.session.data.suspectCount = req.session.data.suspectCount - 1
+
+        if (req.session.data.suspectCount == 0) {
+            req.session.data.suspectDetailsYesNo = 'No'
+        }
+    }
+
+    res.redirect('/version-11/B-off-system-MVP/create-case/03B-suspect-summary') 
+})
+
+
+
+
 // Edit suspect
 router.post('/B-off-system-MVP/create-case/03-edit-suspect', function(req, res) {
     console.log("Edit suspect ID:",req.session.data.editSuspect)
@@ -717,6 +753,39 @@ router.get('/B-off-system-MVP/create-case/04-charges-summary', function(req, res
         grouped: req.session.data.grouped
     });
 })
+
+
+router.post('/B-off-system-MVP/create-case/remove-charge', function(req, res) {
+    req.session.data.removeChargeId = Number(req.body['remove-charge-id'])
+    console.log("Remove charge ID:",req.session.data.removeChargeId)
+    res.redirect('/version-11/B-off-system-MVP/create-case/04-remove-charge') 
+})
+
+
+router.post('/B-off-system-MVP/create-case/04-remove-charge', function(req, res) {
+    if (req.body['submit-button'] == 'remove') {
+        req.session.data.chargeId.splice(req.session.data.removeChargeId, 1)
+        console.log("Charge IDs after removal:",req.session.data.chargeId)
+        // req.session.data.chargeSuspectId.splice(req.session.data.removeChargeId, 1)
+        // req.session.data.chargeCode.splice(req.session.data.removeChargeId, 1)
+        // req.session.data.chargeDescription.splice(req.session.data.removeChargeId, 1)
+        // req.session.data.chargeFromDay.splice(req.session.data.removeChargeId, 1)
+        // req.session.data.chargeFromMonth.splice(req.session.data.removeChargeId, 1)
+        // req.session.data.chargeFromYear.splice(req.session.data.removeChargeId, 1)
+        // req.session.data.chargeToDay.splice(req.session.data.removeChargeId, 1)
+        // req.session.data.chargeToMonth.splice(req.session.data.removeChargeId, 1)
+        // req.session.data.chargeToYear.splice(req.session.data.removeChargeId, 1)
+        // req.session.data.chargeComments.splice(req.session.data.removeChargeId, 1)
+        // req.session.data.chargeVictimYesNo.splice(req.session.data.removeChargeId, 1)
+        // req.session.data.chargeVictimId.splice(req.session.data.removeChargeId, 1)
+
+        req.session.data.chargeCount = req.session.data.chargeCount - 1
+                
+    }
+
+    res.redirect('/version-11/B-off-system-MVP/create-case/04-charges-summary') 
+})
+
 
 // ************************************************** End of charges **************************************************
 
@@ -1008,9 +1077,17 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
 });
 
 // Rename material
+// Step 1: show rename page
+router.post('/B-off-system-MVP/B-rename-material', function (req, res) {
+  const selected = req.body.rename_selected || '';
+  req.session.data.rename_selected = selected;
+  res.redirect('/version-11/B-off-system-MVP/B-rename-material');
+});
+
+// Step 2: handle save
 router.post('/B-off-system-MVP/B-rename-material-save', function (req, res) {
-  const oldName = req.body.rename_selected?.trim();
-  const newName = req.body.new_name?.trim();
+  const oldName = req.body.rename_selected;
+  const newName = req.body.newName?.trim();
 
   if (!oldName || !newName) {
     return res.redirect('/version-11/B-off-system-MVP/03-case-overview');
@@ -1024,8 +1101,10 @@ router.post('/B-off-system-MVP/B-rename-material-save', function (req, res) {
   });
 
   console.log(`✏️ Renamed "${oldName}" → "${newName}"`);
+
   res.redirect('/version-11/B-off-system-MVP/03-case-overview');
-});// ************************************************** Old code **************************************************
+});
+// ************************************************** Old code **************************************************
 
 // Add suspects
 // router.post('/B-off-system-MVP/create-case/04A-add-suspect', function(req, res) {

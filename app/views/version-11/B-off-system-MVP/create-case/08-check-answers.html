@@ -66,27 +66,6 @@
                 </div>
                 <!-- ITEM 5 - END -->
 
-                <!-- ITEM 6 - START -->
-                {% if data['firstHearingDetailsYesNo'] == 'Yes' %}
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">First hearing court location</dt>
-                        <dd class="govuk-summary-list__value">{{ data['courtLocation'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="02-first-hearing-details">Change<span class="govuk-visually-hidden"> First Hearing court location</span></a></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">First hearing date</dt>
-                        <dd class="govuk-summary-list__value">{{ data['firstHearingDate'] }}</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="02-first-hearing-details">Change<span class="govuk-visually-hidden"> First Hearing date</span></a></dd>
-                    </div>
-                {% else %}
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">First Hearing details</dt>
-                        <dd class="govuk-summary-list__value">Not entered</dd>
-                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="02-first-hearing-details">Change<span class="govuk-visually-hidden"> First Hearing</span></a></dd>
-                    </div>
-                {% endif %}        
-                <!-- ITEM 6 - END -->
-
             </dl>
             <!-- //////////////////////////////////////////////////// SECTION 1 - END //////////////////////////////////////////////////// -->
 
@@ -96,7 +75,7 @@
                 <!-- ITEM 2 - START -->
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Suspects</dt>
-                    <dd class="govuk-summary-list__value">{{ data['suspectDetailsYesNo'] }}</dd>
+                    <dd class="govuk-summary-list__value">{% if data['suspectDetailsYesNo'] == 'No' %}Not entered{% else %}{{data['suspectDetailsYesNo']}}{%endif%}</dd>
                     <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="01-register-case">Change<span class="govuk-visually-hidden"> Suspects</span></a></dd>
                 </div>
             </dl>
@@ -507,6 +486,32 @@
             </dl>
 
             <!-- //////////////////////////////////////////////////// SECTION 2 - END //////////////////////////////////////////////////// -->
+
+
+            {% if data['chargeCount'] > 0 %}
+            <h2 class="govuk-heading-m govuk-!-margin-top-9">First hearing details</h2>
+            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+                {% if data['firstHearingDetailsYesNo'] == 'Yes' %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">First hearing court location</dt>
+                        <dd class="govuk-summary-list__value">{{ data['courtLocation'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="02-first-hearing-details">Change<span class="govuk-visually-hidden"> First hearing court location</span></a></dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">First hearing date</dt>
+                        <dd class="govuk-summary-list__value">{{ data['firstHearingDate'] }}</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="02-first-hearing-details">Change<span class="govuk-visually-hidden"> First hearing date</span></a></dd>
+                    </div>
+                {% else %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">First hearing details</dt>
+                        <dd class="govuk-summary-list__value">Not entered</dd>
+                        <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="02-first-hearing-details">Change<span class="govuk-visually-hidden"> First hearing</span></a></dd>
+                    </div>
+                {% endif %}        
+            </dl>
+            {% endif %}
+
 
         
             <!-- //////////////////////////////////////////////////// SECTION 3 - START //////////////////////////////////////////////////// -->

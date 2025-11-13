@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
               <p class="govuk-body">Current name: <strong id="currentMaterialName"></strong></p>
               <div class="govuk-form-group">
                 <label class="govuk-label" for="newName">New name</label>
-                <input class="govuk-input" id="newName" name="new_name" type="text" autocomplete="off">
+                <input class="govuk-input" id="newName" name="newName" type="text" autocomplete="off">
                 <input type="hidden" name="rename_selected" value="">
               </div>
               <div class="govuk-button-group govuk-!-margin-top-3">
