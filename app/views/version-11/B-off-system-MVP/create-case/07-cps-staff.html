@@ -23,9 +23,7 @@
                     <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                         <h2 class="govuk-fieldset__heading">
-
                             Do you want to add a prosecutor or caseworker?
-
                         </h2>
                         </legend>
                         <div class="govuk-radios" data-module="govuk-radios">
@@ -39,7 +37,7 @@
                                 <div class="govuk-form-group">
                                     <fieldset class="govuk-fieldset" aria-describedby="newCase_Prosecutor-hint">
                                         <div class="govuk-form-group">
-                                            <label class="govuk-label" for="newCase_Prosecutor">Prosecutor name</label>
+                                            <label class="govuk-label govuk-!-font-weight-bold" for="newCase_Prosecutor">Prosecutor name</label>
 
                                             <input class="govuk-input govuk-input--width-20" id="docType-Prosecutor" name="newCase_Prosecutor" type="text" value="{{ data['prosecutor'] }}">
                                         </div>
@@ -48,7 +46,7 @@
                                 <div class="govuk-form-group">
                                     <fieldset class="govuk-fieldset" aria-describedby="newCase_Caseworker-hint">
                                         <div class="govuk-form-group">
-                                            <label class="govuk-label" for="newCase_Caseworker">Caseworker name</label>
+                                            <label class="govuk-label govuk-!-font-weight-bold" for="newCase_Caseworker">Caseworker name</label>
 
                                             <input class="govuk-input govuk-input--width-20" id="docType-Caseworker" name="newCase_Caseworker" type="text" value="{{ data['caseworker'] }}">
                                         </div>
@@ -83,7 +81,7 @@
                             
                             <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-police">
                                 <div class="govuk-form-group">
-                                    <label class="govuk-label" for="newCase_Police_Rank">Rank (optional)</label>
+                                    <label class="govuk-label govuk-!-font-weight-bold" for="newCase_Police_Rank">Rank (optional)</label>
                                     <select class="govuk-select" id="newCase_Police_Rank" name="newCase_Police_Rank">
                                         <option value="-- Select --" selected>-- Select --</option>
                                         <option value="Police Constable (PC)" {% if data['newCase_Police_Rank'] == 'Police Constable (PC)' %} selected {% endif %}>Police Constable (PC)</option>
@@ -99,24 +97,28 @@
                                 </div>  
 
                                 <div class="govuk-form-group">
-                                    <label class="govuk-label" for="newCase_Police_FirstName">First name (optional)</label>
+                                    <label class="govuk-label govuk-!-font-weight-bold" for="newCase_Police_FirstName">First name (optional)</label>
                                     <input class="govuk-input govuk-input--width-20" id="newCase_Police_FirstName" name="newCase_Police_FirstName" type="text" value="{{ data['newCase_Police_FirstName'] }}">
                                 </div>   
 
                                 <div class="govuk-form-group">
-                                    <label class="govuk-label" for="newCase_Police_LastName">Last name</label>
+                                    <label class="govuk-label govuk-!-font-weight-bold" for="newCase_Police_LastName">Last name</label>
                                     <input class="govuk-input govuk-input--width-20" id="newCase_Police_LastName" name="newCase_Police_LastName" type="text" value="{{ data['newCase_Police_LastName'] }}">
                                 </div>  
 
                                 <div class="govuk-form-group">
-                                    <label class="govuk-label" for="newCase_Police_Number">Shoulder number (optional)</label>
+                                    <label class="govuk-label govuk-!-font-weight-bold" for="newCase_Police_Number">
+                                        <span class="govuk-!-font-weight-regular">Police unit: ABC123</span>
+                                        <br>
+                                        Shoulder number (optional)
+                                    </label>
                                     <input class="govuk-input govuk-input--width-20" id="newCase_Police_Number" name="newCase_Police_Number" type="text" value="{{ data['newCase_Police_Number'] }}">
                                 </div>  
 
-                                <div class="govuk-form-group">
+                                <!-- <div class="govuk-form-group">
                                     <label class="govuk-label" for="newCase_Police_Unit">Police unit (optional)</label>
                                     <input class="govuk-input govuk-input--width-20" id="newCase_Police_Unit" name="newCase_Police_Unit" type="text" value="{{ data['newCase_Police_Unit'] }}">
-                                </div>   
+                                </div>    -->
 
 
                                     <!-- <div class="govuk-form-group">

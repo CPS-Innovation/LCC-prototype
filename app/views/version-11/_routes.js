@@ -473,6 +473,12 @@ router.post('/B-off-system-MVP/create-case/03-remove-suspect', function(req, res
         if (req.session.data.suspectCount == 0) {
             req.session.data.suspectDetailsYesNo = 'No'
         }
+
+        for (let i = 0; i < req.session.data.chargeId.length; i++) {
+            if (req.session.data.chargeSuspectId[i] == req.session.data.removeSuspectId) {
+                req.session.data.chargeId.splice(i, 1)
+            }
+        }
     }
 
     res.redirect('/version-11/B-off-system-MVP/create-case/03B-suspect-summary') 
