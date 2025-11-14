@@ -270,10 +270,6 @@
                         data['filterStatusNone']
                         ]
                     )
-                    and (
-                        not data['searchURNModal']
-                        or (data['searchURNModal'] | lower) in (material.name | lower)
-                    )
                     %}                    
                         <!-- ||||||||||||||| Materials ||||||||||||||| -->
                         {% if data['discarding_material_COMPLETED'] == 'true' and data['material_selected'] == '{{material.name}}' %}

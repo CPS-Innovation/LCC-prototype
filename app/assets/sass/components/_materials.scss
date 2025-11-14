@@ -388,6 +388,18 @@ ul#tab-list {
                                              width: 2em;
                                              border-top: 2px solid black;
                                              border-right: 2px solid black;
+                                        };
+                                        button#materials_search_button {
+                                             position: absolute;
+                                             background: url("../images/search-white.svg") no-repeat $govuk-link-colour 50% 50%;
+                                             background-size: 0.95em;
+                                             text-indent: -1000em;
+                                             margin: 0;
+                                             right: 0;
+                                             top: 0;
+                                             width: 2em;
+                                             border-top: 2px solid black;
+                                             border-right: 2px solid black;
                                         }
                                    }
                               }
