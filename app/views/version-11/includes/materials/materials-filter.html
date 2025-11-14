@@ -104,9 +104,12 @@
         <div class="govuk-form-group search_container">
           <label class="govuk-label govuk-label--s" for="filter_materials__Search">Search materials</label>
           <div>
-            <input class="govuk-input" id="searchURNModal" name="searchURNModal" type="text">
-            <button id="search_materials" type="button" class="govuk-button" data-module="govuk-button"
-              onclick="openModal(); searchTerm();">Search</button>
+            <input class="govuk-input" id="searchURNModal" name="searchURNModal" type="text" value="{{ data['searchURNModal'] }}">>
+            <button id="search_materials" type="submit" class="govuk-button">
+                Search
+            </button>
+            <!-- <button id="search_materials" type="button" class="govuk-button" data-module="govuk-button"
+              onclick="openModal(); searchTerm();">Search</button> -->
           </div>
         </div>
         <!-- <p>debug: {{ data | dump }}</p> -->
