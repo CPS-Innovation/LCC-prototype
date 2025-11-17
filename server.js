@@ -149,6 +149,35 @@ var nunjucksAppEnv = nunjucks.configure(appViews, nunjucksConfig)
 // Add Nunjucks filters
 utils.addNunjucksFilters(nunjucksAppEnv)
 
+// ---------------------------------------------
+// Custom Nunjucks filter: highlight search terms
+// ---------------------------------------------
+nunjucksAppEnv.addFilter('highlight', function (str, query) {
+  // Normalise "str"
+  if (Array.isArray(str)) {
+    str = str[0];
+  }
+  if (str === null || str === undefined) {
+    return '';
+  }
+  str = String(str);
+
+  // Normalise "query"
+  if (Array.isArray(query)) {
+    query = query[0];
+  }
+  if (query === null || query === undefined || query === '') {
+    return str;
+  }
+  query = String(query);
+
+  // Escape regex characters in the user's query
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(escaped, 'gi');
+
+  return str.replace(regex, match => `<mark>${match}</mark>`);
+});
+
 // Set views engine
 app.set('view engine', 'html')
 

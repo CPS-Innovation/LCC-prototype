@@ -62,6 +62,7 @@
         </div>
 
 
+        <!-- Actions on selection button -->
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-half">
                 <div class="info_wrapper" style="display:flex; align-items:center; gap:1rem; margin-top: 1.5pc; margin-bottom: 1.5pc;">
@@ -230,7 +231,6 @@
             </div>
         </div>
         
-
         <table class="govuk-table sortable" id="materials_table">
             <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
@@ -257,6 +257,17 @@
                     <th scope="col" class="govuk-table__header"></th>
                 </tr>
             </thead>
+            {% if data['searchURNModal'] %}
+            <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-2">
+                Showing results for: 
+                <strong>{{ data['searchURNModal'] }}</strong>
+                <a href="/version-11/includes/materials/clear-filter?type=search" 
+                class="govuk-link govuk-link--no-visited-state govuk-!-margin-left-1">
+                Clear search
+                </a>
+            </div>
+            {% endif %}
+
             <tbody class="govuk-table__body">
                 
                 {% for material in data['materials'] %}
@@ -299,7 +310,7 @@
                                             <input type="hidden" name="folderName" value="{{ material.name }}">
                                             <input type="hidden" name="level" value="{{ material.level + 1 }}">
                                             <button type="submit" name="materialId" value="{{ material.id }}" class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-regular govuk-button--link">
-                                                {{ material.name }}
+                                                {{ material.name  }}
                                             </button>
                                         </div>
                                     </form>
@@ -356,6 +367,8 @@
 
             </tbody>
         </table>
+        {% endif %}
+
 
         <p class="no_results"><strong>No results</strong> found in materials</p>
     </div>
