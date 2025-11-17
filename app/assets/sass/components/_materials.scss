@@ -1850,3 +1850,31 @@ a.centred-link {
      display: inline-block;
      font-size: 1.18rem;
 }
+
+
+.search-wrapper {
+    position: relative;
+}
+
+.search-clear {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    line-height: 1;
+    opacity: 0.5;
+}
+
+.search-clear:hover {
+    opacity: 1;
+}
+
+// mark {
+//   background-color: #ffbf47; /* GOV.UK yellow */
+//   padding: 0 2px;
+// }

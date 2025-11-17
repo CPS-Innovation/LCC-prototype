@@ -297,6 +297,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 })();
 
+
+
+
 // Preview document from clicking on its name
 // $(document).ready(function () {
 //   $('.toggle-preview').on('click', function (e) {

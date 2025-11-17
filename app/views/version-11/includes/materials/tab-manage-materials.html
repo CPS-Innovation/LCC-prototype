@@ -61,7 +61,7 @@
             </nav>
         </div>
 
-
+        <!-- Actions on selection button -->
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-half">
                 <div class="info_wrapper" style="display:flex; align-items:center; gap:1rem; margin-top: 1.5pc; margin-bottom: 1.5pc;">
@@ -229,53 +229,62 @@
                 </div>
             </div>
         </div>
-        
-
-        <table class="govuk-table sortable" id="materials_table">
-            <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header">
-                        <div class="govuk-checkboxes govuk-checkboxes--small MT-15" data-module="govuk-checkboxes">
-                            <div class="govuk-checkboxes__item">
-                                <input class="govuk-checkboxes__input" id="materials_documents_ALL"
-                                    name="materials_document" type="checkbox" value="Select all">
-                                <label class="govuk-label govuk-checkboxes__label"
-                                    for="materials_documents_ALL"></label>
+        {% set searchMode = data['searchURNModal'] %}
+        {% if searchMode %}
+            {% include "../materials/materials-search-grouped.html" %}
+        {% else %}
+            <table class="govuk-table sortable" id="materials_table">
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header">
+                            <div class="govuk-checkboxes govuk-checkboxes--small MT-15" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="materials_documents_ALL"
+                                        name="materials_document" type="checkbox" value="Select all">
+                                    <label class="govuk-label govuk-checkboxes__label"
+                                        for="materials_documents_ALL"></label>
+                                </div>
                             </div>
-                        </div>
-                    </th>
-                    <th scope="col" class="govuk-table__header"><button class="govuk-button"
-                            data-module="govuk-button">Material</button></th>
-                    <!-- <th scope="col" class="govuk-table__header"><button class="govuk-button"
-                            data-module="govuk-button">Type</button></th>
-                    <th scope="col" class="govuk-table__header"><button class="govuk-button"
-                            data-module="govuk-button">Category</button></th> -->
-                    <th scope="col" class="govuk-table__header"><button class="govuk-button"
-                            data-module="govuk-button">Last updated</button></th>
-                    <th scope="col" class="govuk-table__header"><button class="govuk-button"
-                            data-module="govuk-button">Status</button></th>
-                    <th scope="col" class="govuk-table__header"></th>
-                </tr>
-            </thead>
-            <tbody class="govuk-table__body">
-                
-                {% for material in data['materials'] %}
-                    {% if
-                    (not data['filterNew'] or material.new == true or material.new == 'true')
-                    and (
-                        not (data['filterStatusUsed'] or data['filterStatusUnused'] or data['filterStatusNone'])
-                        or material.status in [
-                        data['filterStatusUsed'],
-                        data['filterStatusUnused'],
-                        data['filterStatusNone']
-                        ]
-                    )
-                    and (
-                        not data['searchURNModal']
-                        or (data['searchURNModal'] | lower) in (material.name | lower)
-                    )
-                    %}                    
-                        <!-- ||||||||||||||| Materials ||||||||||||||| -->
+                        </th>
+                        <th scope="col" class="govuk-table__header"><button class="govuk-button"
+                                data-module="govuk-button">Material</button></th>
+                        <!-- <th scope="col" class="govuk-table__header"><button class="govuk-button"
+                                data-module="govuk-button">Type</button></th>
+                        <th scope="col" class="govuk-table__header"><button class="govuk-button"
+                                data-module="govuk-button">Category</button></th> -->
+                        <th scope="col" class="govuk-table__header"><button class="govuk-button"
+                                data-module="govuk-button">Last updated</button></th>
+                        <th scope="col" class="govuk-table__header"><button class="govuk-button"
+                                data-module="govuk-button">Status</button></th>
+                        <th scope="col" class="govuk-table__header"></th>
+                    </tr>
+                </thead>
+                {% if data['searchURNModal'] %}
+                <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-2">
+                    Showing results for: 
+                    <strong>{{ data['searchURNModal'] }}</strong>
+                    <a href="/version-11/includes/materials/clear-filter?type=search" 
+                    class="govuk-link govuk-link--no-visited-state govuk-!-margin-left-1">
+                    Clear search
+                    </a>
+                </div>
+                {% endif %}
+
+                <tbody class="govuk-table__body">
+                    
+                    {% for material in data['materials'] %}
+                        {% if
+                            (not data['filterNew'] or material.new == true or material.new == 'true')
+                            and (
+                                not (data['filterStatusUsed'] or data['filterStatusUnused'] or data['filterStatusNone'])
+                                or material.status in [
+                                data['filterStatusUsed'],
+                                data['filterStatusUnused'],
+                                data['filterStatusNone']
+                                ]
+                            )
+                        %}                    
+                            <!-- ||||||||||||||| Materials ||||||||||||||| -->
                         {% if data['discarding_material_COMPLETED'] == 'true' and data['material_selected'] == '{{material.name}}' %}
 
                         {% else %}
@@ -303,7 +312,7 @@
                                             <input type="hidden" name="folderName" value="{{ material.name }}">
                                             <input type="hidden" name="level" value="{{ material.level + 1 }}">
                                             <button type="submit" name="materialId" value="{{ material.id }}" class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-regular govuk-button--link">
-                                                {{ material.name }}
+                                                {{ material.name | highlight(data['searchURNModal']) | safe }}
                                             </button>
                                         </div>
                                     </form>
@@ -314,7 +323,7 @@
                                         <strong class="govuk-tag govuk-tag--blue">New</strong>
                                         {% endif %}
                                         <div class="openMe">                                                                            
-                                            <a class="govuk-button show_material" data-id="{{ material.id }}" data-doc="{{ material.docLink }}">{{ material.name }}</a>
+                                            <a class="govuk-button show_material" data-id="{{ material.id }}" data-doc="{{ material.docLink }}">{{ material.name | highlight(data['searchURNModal']) | safe }}</a>
                                         </div>
                                     </td>
                                     </form>
@@ -354,12 +363,14 @@
                                 {% endif %}
                             {% endif %}
                         {% endif %}
-                    {% endif %}
-                {% endfor %}
-                <!-- ||||||||||||||| ROW 1 - END ||||||||||||||| -->
+                        {% endif %}
+                    {% endfor %}
+                    <!-- ||||||||||||||| ROW 1 - END ||||||||||||||| -->
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        {% endif %}
+
 
         <p class="no_results"><strong>No results</strong> found in materials</p>
     </div>
