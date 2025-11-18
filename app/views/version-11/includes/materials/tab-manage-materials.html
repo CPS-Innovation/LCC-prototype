@@ -34,6 +34,7 @@
             <ol class="govuk-breadcrumbs__list">
                 <li class="govuk-breadcrumbs__list-item">
                 <form method="post" action="/version-11/B-off-system-MVP/shared-drive" style="display:inline;">
+                    <input type="hidden" name="flag" value="0">
                     <input type="hidden" name="level" value="1">
                     <input type="hidden" name="parentId" value="0">
                     <input type="hidden" name="folderName" value="">
@@ -230,7 +231,10 @@
             </div>
         </div>
         {% set searchMode = data['filtersSearch'] %}
-        {% if searchMode %}
+        {% set searchLabel = data['flag'] %}
+        {% if searchLabel == 1 %}
+            {% include "../materials/materials-search-inside-folder.html" %}
+        {% elseif searchMode %}
             {% include "../materials/materials-search-grouped.html" %}
         {% else %}
             <table class="govuk-table sortable" id="materials_table">
@@ -259,10 +263,10 @@
                         <th scope="col" class="govuk-table__header"></th>
                     </tr>
                 </thead>
-                {% if data['searchURNModal'] %}
+                {% if data['filtersSearch'] %}
                 <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-2">
                     Showing results for: 
-                    <strong>{{ data['searchURNModal'] }}</strong>
+                    <strong>{{ data['filtersSearch'] }}</strong>
                     <a href="/version-11/includes/materials/clear-filter?type=search" 
                     class="govuk-link govuk-link--no-visited-state govuk-!-margin-left-1">
                     Clear search
@@ -311,8 +315,8 @@
                                             <span class="icon-new folder"></span>
                                             <input type="hidden" name="folderName" value="{{ material.name }}">
                                             <input type="hidden" name="level" value="{{ material.level + 1 }}">
-                                            <button type="submit" name="materialId" value="{{ material.id }}" class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-regular govuk-button--link">
-                                                {{ material.name | highlight(data['searchURNModal']) | safe }}
+                                            <button type="submit" name="folderId" value="{{ material.id }}" class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-regular govuk-button--link">
+                                                {{ material.name | highlight(data['filtersSearch']) | safe }}
                                             </button>
                                         </div>
                                     </form>
