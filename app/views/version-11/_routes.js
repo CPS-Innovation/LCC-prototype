@@ -1016,6 +1016,10 @@ router.post('/includes/materials/materials-filter', function (req, res) {
         );
     }
 
+    if (req.body['clearSearch'] == "x") {
+        req.session.data.filtersSearch = ""
+    }
+
     // Store results in session
     req.session.data.groupedSearchResults = buildGroupedSearchResults(materials, search);
 
@@ -1059,8 +1063,11 @@ router.get('/version-11/manage-materials', function (req, res) {
 
 
 router.post('/B-off-system-MVP/case-overview-folder', function(req, res) {
+    req.session.data.searchLabel = req.body['searchLabel']
+    req.session.data.folderId = req.body['folderId']
     req.session.data.folderName = req.body['folderName']
-    req.session.data.breadcrumbs.push(req.session.data.folderName)
+//    req.session.data.breadcrumbs.push(req.session.data.folderName)
+    console.log("Selected folder id:", req.session.data.folderId)
     console.log("Selected folder name:", req.session.data.folderName)
     req.session.data.level = req.body['level']
     console.log("Selected level:", req.session.data.level)
@@ -1069,16 +1076,75 @@ router.post('/B-off-system-MVP/case-overview-folder', function(req, res) {
     }
     const parentId = parentFolder ? parentFolder.id : 0; 
     req.session.data.parentId = parentId
+    
 
     console.log("Selected folder ID:", parentId)
     res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
 })
+
+
+router.post('/B-off-system-MVP/case-overview-search-folder', function(req, res) {
+
+    // Incoming from form/button
+    const folderId = req.body.folderId;
+    const search = (req.session.data.filtersSearch || "").trim().toLowerCase();
+    const flag = req.body.flag;
+
+    req.session.data.folderId = folderId;
+    // req.session.data.filtersSearch = search;
+    req.session.data.flag = flag;
+
+    console.log("Selected folderId:", folderId);
+    console.log("Search term:", req.session.data.filtersSearch);
+
+    // --- Always match folder by ID, not name ---
+    const parentFolder = materials.find(m =>
+        m.id == folderId && m.folder
+    );
+
+    const parentId = parentFolder ? parentFolder.id : null;
+    req.session.data.parentId = parentId;
+
+    console.log("ParentId:", parentId);
+
+    // Run your search inside this folder
+    req.session.data.folderSearchResults = getFilesInFolderBySearch(
+        materials,
+        parentId,
+        search
+    );
+
+    function getFilesInFolderBySearch(materials, parentId, search) {
+
+        if (!search || !parentId) return [];
+
+        const term = search.trim().toLowerCase();
+
+        return materials.filter(item =>
+            !item.folder &&
+            item.parentId == parentId &&
+            item.name.toLowerCase().includes(term)
+        );
+    }
+
+    console.log("Search results:", req.session.data.folderSearchResults);
+
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+});
+
 
 router.post('/B-off-system-MVP/shared-drive', function(req, res) {
     req.session.data.level = req.body['level']
     req.session.data.parentId = req.body['parentId']
     console.log("Selected level (shared drive):", req.session.data.level)
     console.log("Selected parent ID (shared drive):", req.session.data.parentId)
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
+})
+
+
+
+router.post('/B-off-system-MVP/clear-search', function(req, res) {
+    req.session.data.filtersSearch = ""
     res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
 })
 

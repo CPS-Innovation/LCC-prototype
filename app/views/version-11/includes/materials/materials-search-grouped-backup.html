@@ -66,7 +66,7 @@
                         <a class="govuk-button show_material"
                            data-id="{{ m.id }}"
                            data-doc="{{ m.docLink }}">
-                            {{ m.name | highlight(data.searchURNModal) | safe }}
+                            {{ m.name | highlight(data.filtersSearch) | safe }}
                         </a>
                     </div>
                 </td>

@@ -15,14 +15,6 @@
       or (data['filterStatusUsed'] | default(false))
       or (data['filterStatusUnused'] | default(false))
       or (data['filterStatusNone'] | default(false))
-      or (data['filterCategoryReview'] | default(false))
-      or (data['filterCategoryCaseOverview'] | default(false))
-      or (data['filterCategoryStatements'] | default(false))
-      or (data['filterCategoryExhibits'] | default(false))
-      or (data['filterCategoryForensics'] | default(false))
-      or (data['filterCategoryUnusedMaterial'] | default(false))
-      or (data['filterCategoryDefendant'] | default(false))
-      or (data['filterCategoryCourtPreparation'] | default(false)) 
     %}
 
     <div class="moj-filter__selected">
@@ -114,7 +106,7 @@
                 value="{{ data['filtersSearch'] }}">
 
           {% if data['filtersSearch'] %}
-            <button class="search-clear" type="submit" name="clearSearch" value="">×</button>
+            <button class="search-clear" type="submit" name="clearSearch" value="x">×</button>
           {% else %}
             <button id="search_materials" type="submit" name="search" class="govuk-button">Search</button>
           {% endif %}

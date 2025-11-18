@@ -431,6 +431,8 @@ module.exports = {
 
 "folderName": null,
 "level": 1,
+"folderId": null,
+"flag": 0,
 
 "materials": [
   {
