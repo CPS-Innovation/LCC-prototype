@@ -427,6 +427,7 @@ module.exports = {
 "filterCategoryUnusedMaterial": "", 
 "filterCategoryDefendant": "",
 "filterCategoryCourtPreparation": "",
+"filtersSearch": "",
 
 "folderName": null,
 "level": 1,
@@ -694,7 +695,7 @@ module.exports = {
     new: true,
     docLink: 'MG11_1.pdf',
     previewLink: '/public/files/MG11_1.pdf',
-    parentId: 0,
+    parentId: 1011,
     folder: false,
     level: 2
   },

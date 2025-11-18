@@ -458,3 +458,110 @@
 
 
 </div>
+
+
+
+
+                <tbody class="govuk-table__body">
+                    
+                    {% for material in data['materials'] %}
+                        {% if
+                            (not data['filterNew'] or material.new == true or material.new == 'true')
+                            and (
+                                not (data['filterStatusUsed'] or data['filterStatusUnused'] or data['filterStatusNone'])
+                                or material.status in [
+                                data['filterStatusUsed'],
+                                data['filterStatusUnused'],
+                                data['filterStatusNone']
+                                ]
+                            )
+                        %}                    
+                            <!-- ||||||||||||||| Materials ||||||||||||||| -->
+                        {% if data['discarding_material_COMPLETED'] == 'true' and data['material_selected'] == '{{material.name}}' %}
+
+                        {% else %}
+                                {% if data.searchMode == false %}
+                                    {% if not (material.level == data['level'] and material.parentId == data['parentId']) %}
+                                        {% set skip_item = true %}
+                                    {% endif %}
+                                {% endif %}
+                                {% if not skip_item %}
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table__cell">
+                                        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                            <div class="govuk-checkboxes__item">
+                                                <input class="govuk-checkboxes__input" id="{{material.id}}"
+                                                    name="materials_document" type="checkbox" value="{{material.name}}">
+                                                <label class="govuk-label govuk-checkboxes__label" for="materials_document_{{material.id}}"><span
+                                                        class="visuallyhidden">{{material.name}}</span></label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="govuk-table__cell title_column">
+                                    {% if material.folder == true %}
+                                    <form action="/version-11/B-off-system-MVP/case-overview-folder" method="post">
+                                        {% if material.new == true %}
+                                        <strong class="govuk-tag govuk-tag--blue">New</strong>
+                                        {% endif %}
+                                        <div class="openMe">
+                                            <span class="icon-new folder"></span>
+                                            <input type="hidden" name="folderName" value="{{ material.name }}">
+                                            <input type="hidden" name="level" value="{{ material.level + 1 }}">
+                                            <button type="submit" name="materialId" value="{{ material.id }}" class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-regular govuk-button--link">
+                                                {{ material.name | highlight(data['searchURNModal']) | safe }}
+                                            </button>
+                                        </div>
+                                    </form>
+                                    </td>
+                                    
+                                    {% else %}
+                                        {% if material.new == true %}
+                                        <strong class="govuk-tag govuk-tag--blue">New</strong>
+                                        {% endif %}
+                                        <div class="openMe">                                                                            
+                                            <a class="govuk-button show_material" data-id="{{ material.id }}" data-doc="{{ material.docLink }}">{{ material.name | highlight(data['searchURNModal']) | safe }}</a>
+                                        </div>
+                                    </td>
+                                    </form>
+                                    {% endif %}
+                                    <!-- <td class="govuk-table__cell">{{material.type}}</td>
+                                    <td class="govuk-table__cell">{{material.category}}</td> -->
+                                    <td class="govuk-table__cell numeric">{{material.date}}</td>
+                                    <td class="govuk-table__cell">
+                                    {% if material.status == 'None' %}
+                                        <strong class="govuk-tag govuk-tag--grey">
+                                    {% elseif material.status == 'Used' %}
+                                        <strong class="govuk-tag govuk-tag--blue">
+                                    {% else %}
+                                        <strong class="govuk-tag govuk-tag--yellow">
+                                    {% endif %}
+                                            {{material.status}}
+                                        </strong>
+                                    </td>
+                                    
+                                    <td class="govuk-table__cell toggle-panel">
+                                        {% if material.folder != true %}
+                                            <button type="button" class="govuk-button show_material_actions show-case"
+                                            onclick="return openMaterial(event);"
+                                            data-id="{{material.id}}"
+                                            data-doc="{{material.previewLink}}">
+                                            Preview <i class="fa-solid fa-chevron-down"></i>
+                                            </button>                        
+                                        {% endif %}
+                                    </td>
+                                    
+                                </tr>
+                                <tr class="govuk-table__row hidden_row" data-row_id="{{material.id}}">
+                                    <td colspan="7">
+                                        <div class="document_holder" id=""><embed src="{{material.previewLink}}"></div>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    <!-- ||||||||||||||| ROW 1 - END ||||||||||||||| -->
+
+                </tbody>
