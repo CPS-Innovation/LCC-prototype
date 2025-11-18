@@ -926,26 +926,103 @@ router.post('/B-off-system-MVP/04A-create-egress-folder', function(req, res) {
 // ********************** Materials ********************** //
 
 // Handle materials filter POST
-router.post('/includes/materials/materials-filter', function(req, res) {
-  req.session.data.filterNew = req.body['filterNew']
-  req.session.data.filterStatusUsed = req.body['filterStatusUsed']
-  req.session.data.filterStatusUnused = req.body['filterStatusUnused']
-  req.session.data.filterStatusNone = req.body['filterStatusNone']
+// router.post('/includes/materials/materials-filter', function(req, res) {
+//     req.session.data.filterNew = req.body['filterNew']
+//     req.session.data.filterStatusUsed = req.body['filterStatusUsed']
+//     req.session.data.filterStatusUnused = req.body['filterStatusUnused']
+//     req.session.data.filterStatusNone = req.body['filterStatusNone']
+//     req.session.data.filtersSearch = req.body['filtersSearch']
 
-  // ✅ singular 'Review' not 'Reviews'
-  req.session.data.filterCategoryReview = req.body['filterCategoryReview']
-  req.session.data.filterCategoryCaseOverview = req.body['filterCategoryCaseOverview']
-  req.session.data.filterCategoryStatements = req.body['filterCategoryStatements']
-  req.session.data.filterCategoryExhibits = req.body['filterCategoryExhibits']
-  req.session.data.filterCategoryForensics = req.body['filterCategoryForensics']
-  req.session.data.filterCategoryUnusedMaterial = req.body['filterCategoryUnusedMaterial']
-  req.session.data.filterCategoryDefendant = req.body['filterCategoryDefendant']
-  req.session.data.filterCategoryCourtPreparation = req.body['filterCategoryCourtPreparation']
+// //   req.session.data.filterCategoryReview = req.body['filterCategoryReview']
+// //   req.session.data.filterCategoryCaseOverview = req.body['filterCategoryCaseOverview']
+// //   req.session.data.filterCategoryStatements = req.body['filterCategoryStatements']
+// //   req.session.data.filterCategoryExhibits = req.body['filterCategoryExhibits']
+// //   req.session.data.filterCategoryForensics = req.body['filterCategoryForensics']
+// //   req.session.data.filterCategoryUnusedMaterial = req.body['filterCategoryUnusedMaterial']
+// //   req.session.data.filterCategoryDefendant = req.body['filterCategoryDefendant']
+// //   req.session.data.filterCategoryCourtPreparation = req.body['filterCategoryCourtPreparation']
+//     if (req.session.data.filtersSearch != "") {
+//         console.log("Search term:", req.body['filtersSearch'] )
+//     }
 
-  console.log("Filter data:", req.session.data)
-  res.redirect('/version-11/B-off-system-MVP/03-case-overview')
-})
+// //   console.log("Filter data:", req.session.data)
+//     res.redirect('/version-11/B-off-system-MVP/03-case-overview')
+// })
 
+
+// Handle materials filter POST
+router.post('/includes/materials/materials-filter', function (req, res) {
+
+    // Save user filter inputs
+    req.session.data.filterNew = req.body['filterNew'];
+    req.session.data.filterStatusUsed = req.body['filterStatusUsed'];
+    req.session.data.filterStatusUnused = req.body['filterStatusUnused'];
+    req.session.data.filterStatusNone = req.body['filterStatusNone'];
+    req.session.data.filtersSearch = req.body['filtersSearch'];
+
+    const materials = req.session.data.materials;
+    const search = (req.body['filtersSearch'] || "").trim().toLowerCase();
+
+
+    // -------------------------------------------------------------------
+    // Build grouped search results (MATCHES BOTH FOLDERS AND FILES)
+    // -------------------------------------------------------------------
+    function buildGroupedSearchResults(materials, search) {
+
+        if (!search) return [];
+
+        const groups = {};
+
+        materials.forEach(item => {
+            const itemName = (item.name || "").toString().trim().toLowerCase();
+            const searchMatches = itemName.includes(search);
+
+            // ----------- MATCHED FILE -----------
+            if (!item.folder && searchMatches) {
+                const folderId = item.parentId;
+
+                if (!groups[folderId]) {
+                    groups[folderId] = {
+                        folder: materials.find(m => m.id === folderId && m.folder) || null,
+                        matchesFolder: false,
+                        files: []
+                    };
+                }
+
+                groups[folderId].files.push(item);
+            }
+
+            // ----------- MATCHED FOLDER NAME -----------
+            if (item.folder && searchMatches) {
+                const folderId = item.id;
+
+                if (!groups[folderId]) {
+                    groups[folderId] = {
+                        folder: item,
+                        matchesFolder: true,
+                        files: []
+                    };
+                } else {
+                    groups[folderId].matchesFolder = true;
+                }
+            }
+        });
+
+        // CLEAN-UP RULE:
+        // If a folder has NO matching files and matchesFolder=false,
+        // do not include it.
+        return Object.values(groups).filter(g =>
+            g.matchesFolder || g.files.length > 0
+        );
+    }
+
+    // Store results in session
+    req.session.data.groupedSearchResults = buildGroupedSearchResults(materials, search);
+
+    console.log("Grouped search results:");
+    console.dir(req.session.data.groupedSearchResults, { depth: null });
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+});
 
 
 
@@ -958,6 +1035,28 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     materials: req.session.data.materials
   })
 })
+
+
+router.get('/version-11/manage-materials', function (req, res) {
+
+  const search = req.session.data['filtersSearch'];
+  let results = materialsData;   // your full array
+
+  if (search && search.trim() !== "") {
+    const term = search.toLowerCase();
+
+    results = materialsData.filter(m =>
+      m.name.toLowerCase().includes(term) ||
+      m.type.toLowerCase().includes(term) ||
+      m.category.toLowerCase().includes(term)
+    );
+  }
+
+  res.render('version-11/manage-materials', {
+    results    // send filtered list to HTML
+  });
+});
+
 
 router.post('/B-off-system-MVP/case-overview-folder', function(req, res) {
     req.session.data.folderName = req.body['folderName']
@@ -985,6 +1084,7 @@ router.post('/B-off-system-MVP/shared-drive', function(req, res) {
 
 
 
+// Add a new folder
 router.post('/B-off-system-MVP/add-new-folder', function(req, res) {
     const newFolderName = req.body.newFolderName?.trim();
     if (!newFolderName) return res.redirect('/version-11/B-off-system-MVP/shared-drive');
@@ -1048,11 +1148,6 @@ router.post('/version-11/B-off-system-MVP/case-overview', function (req, res) {
 });
 
 
-// router.post('/B-off-system-MVP/discard-material', function(req, res) {
-//     req.session.data.discardingReason = req.body['discarding-material']
-
-//     res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
-// })
 
 // Discard material
 router.post('/B-off-system-MVP/discard-material', function (req, res) {
@@ -1069,17 +1164,17 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
         m => !selected.includes(m.name)
     );
 
-// (Optional) You could store the discard reason somewhere for audit, e.g.:
+//  (Optional) You could store the discard reason somewhere for audit, e.g.:
     req.session.data.lastDiscard = { reason, items: selected, date: new Date().toISOString() };
     console.log('Last discard action stored:', req.session.data.lastDiscard);
 
-  // Mark or remove discarded materials
-//   req.session.data.materials = req.session.data.materials.map(m => {
-//     if (selected.includes(m.name)) {
-//       m.status = 'Discarded (' + reason + ')';
-//     }
-//     return m;
-//   });
+//  Mark or remove discarded materials
+    // req.session.data.materials = req.session.data.materials.map(m => {
+    // if (selected.includes(m.name)) {
+    //     m.status = 'Discarded (' + reason + ')';
+    // }
+    // return m;
+    // });
 
     res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
@@ -1112,101 +1207,7 @@ router.post('/B-off-system-MVP/B-rename-material-save', function (req, res) {
 
   res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
-// ************************************************** Old code **************************************************
 
-// Add suspects
-// router.post('/B-off-system-MVP/create-case/04A-add-suspect', function(req, res) {
-//     count = req.session.data.suspectCount
-    
-//     req.session.data.suspectType[count] = req.body['suspect-type']
-//     req.session.data.suspectId[count] = count
-
-//     if (req.body['suspect-type'] == 'Person') {
-//         req.session.data.suspectFirstName[count] = req.body['suspect-person-first-name']
-//         req.session.data.suspectLastName[count] = req.body['suspect-person-last-name']
-//         req.session.data.suspectDayBirth[count] = req.body['date-of-birth-day']
-//         req.session.data.suspectMonthBirth[count] = Number(req.body['date-of-birth-month'])
-//         req.session.data.suspectYearBirth[count] = req.body['date-of-birth-year'] 
-//     }
-//     else {
-//         req.session.data.suspectCompanyName[count] = req.body['suspect-company-name']
-//     }
-    
-//     req.session.data.suspectCount = count + 1
-    
-//     res.redirect('/version-11/B-off-system-MVP/create-case/04B-suspect-summary')
-// })
-// // End of add suspects
-
-// // Suspect summary
-// router.post('/B-off-system-MVP/create-case/04B-suspect-summary', function(req, res) {
-//     if (req.body['add-another'] === 'Yes') {
-//         res.redirect('/version-11/B-off-system-MVP/create-case/04A-add-suspect')
-//     }
-//     else {
-//         res.redirect('/version-11/B-off-system-MVP/create-case/04-want-to-add-charges') 
-//     }    
-// })
-// // End of suspect summary
-
-
-// // Edit suspect
-// router.post('/B-off-system-MVP/create-case/04-edit-suspect', function(req, res) {
-//     console.log("Edit suspect ID:",req.session.data.editSuspect)
-//     console.log("Display suspect ID:",req.session.data.displaySuspect)
-
-//     var x = Number(req.session.data.editSuspect)
-
-//     if (req.body['suspect-type'] == 'Person') {
-//         req.session.data.suspectFirstName[x] = req.body['suspect-person-first-name']
-//         req.session.data.suspectLastName[x] = req.body['suspect-person-last-name']
-//         // req.session.data.suspectDOB[x] = req.body['suspect-date-of-birth']
-//         req.session.data.suspectDayBirth[x] = req.body['date-of-birth-day']
-//         req.session.data.suspectMonthBirth[x] = Number(req.body['date-of-birth-month'])
-//         req.session.data.suspectYearBirth[x] = req.body['date-of-birth-year'] 
-//     }
-//     else {
-//         req.session.data.suspectCompanyName[x] = req.body['suspect-company-name']
-//     }
-
-//     req.session.data.displaySuspect = 999
-//     req.session.data.editSuspect = 999
-
-//     res.redirect('/version-11/B-off-system-MVP/create-case/04B-suspect-summary')
-// })
-
-// router.post('/B-off-system-MVP/create-case/04-edit-suspect-router', function(req, res) {
-//     req.session.data.editSuspect = Number(req.body['edit-suspect'])
-//     req.session.data.displaySuspect = Number(req.body['edit-suspect']) + 1
-//     console.log("Edit suspect ID:",req.session.data.editSuspect)
-//     console.log("Display suspect ID:",req.session.data.displaySuspect)
-//     res.redirect('/version-11/B-off-system-MVP/create-case/04A-add-suspect')
-// })
-// End of edit suspect
-
-// router.post('/B-off-system-MVP/create-case/03-edit-suspect', function(req, res) {
-//     req.session.data.editSuspect = req.body['edit-suspect']
-//     console.log("Edit suspect ID:",req.session.data.editSuspect)
-//     res.redirect('/version-11/B-off-system-MVP/create-case/03A-add-suspect')
-// })
-
-
-// End of suspects
-
-
-// router.post('/B-off-system-MVP/create-case/07A-pre-existing-material', function(req, res) {
-//     req.session.data.existingEgressFolder = req.body['existing-egress-folder']
-//     req.session.data.existingDriveFolder = req.body['existing-drive-folder']
-//     if (req.body['existing-egress-folder'] === 'Egress folder') {
-//         res.redirect('/version-11/B-off-system-MVP/04A-egress-files')
-//     }
-//     else if (req.body['existing-drive-folder'] === 'Shared drive folder') {
-//         res.redirect('/version-11/B-off-system-MVP/05A-p-drive-files') 
-//     }
-//     else {
-//         res.redirect('/version-11/B-off-system-MVP/create-case/08-check-your-answers') 
-//     }    
-// })
 
 
 

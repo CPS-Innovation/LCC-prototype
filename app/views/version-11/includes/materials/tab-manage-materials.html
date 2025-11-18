@@ -229,7 +229,7 @@
                 </div>
             </div>
         </div>
-        {% set searchMode = data['searchURNModal'] %}
+        {% set searchMode = data['filtersSearch'] %}
         {% if searchMode %}
             {% include "../materials/materials-search-grouped.html" %}
         {% else %}
@@ -322,8 +322,7 @@
                                         {% if material.new == true %}
                                         <strong class="govuk-tag govuk-tag--blue">New</strong>
                                         {% endif %}
-                                        <div class="openMe">                                                                            
-                                            <a class="govuk-button show_material" data-id="{{ material.id }}" data-doc="{{ material.docLink }}">{{ material.name | highlight(data['searchURNModal']) | safe }}</a>
+                                        {{ material.name | highlight(data['filtersSearch']) | safe }}
                                         </div>
                                     </td>
                                     </form>
