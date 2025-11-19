@@ -1079,7 +1079,7 @@ router.post('/B-off-system-MVP/case-overview-folder', function(req, res) {
     
 
     console.log("Selected folder ID:", parentId)
-    res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
+    res.redirect('/version-11/B-off-system-MVP/manage-materials') 
 })
 
 
@@ -1087,7 +1087,7 @@ router.post('/B-off-system-MVP/case-overview-search-folder', function(req, res) 
 
     // Incoming from form/button
     const folderId = req.body.folderId;
-    const search = (req.session.data.filtersSearch || "").trim().toLowerCase();
+    const search = (req.body.searchLabel || "").trim().toLowerCase();
     const flag = req.body.flag;
 
     req.session.data.folderId = folderId;
@@ -1145,7 +1145,7 @@ router.post('/B-off-system-MVP/shared-drive', function(req, res) {
 
 router.post('/B-off-system-MVP/clear-search', function(req, res) {
     req.session.data.filtersSearch = ""
-    res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
+    res.redirect('/version-11/B-off-system-MVP/manage-materials') 
 })
 
 

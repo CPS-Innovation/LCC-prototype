@@ -1874,6 +1874,155 @@ a.centred-link {
     opacity: 1;
 }
 
+
+
+
+/* ============================================================
+   ACTIVITY LOG — SPACING NORMALISATION
+   Applies ONLY to the standalone page
+=========================================================== */
+
+.off-cms-activity-log {
+
+     /* 1. Sub-navigation (remove inherited large bottom margin) */
+     .moj-sub-navigation {
+          margin-bottom: 0;
+     }
+
+     /* 2. Remove panel top padding (adds 30px by default) */
+     .panel {
+          padding-top: 0;
+          margin-top: 0;
+     }
+
+     /* 3. H2 “Activity log” heading spacing */
+     h2.govuk-heading-m {
+          margin-top: 10px;
+          margin-bottom: 5px;
+     }
+
+     /* 4. Last updated spacing */
+     .govuk-caption-m {
+          margin-bottom: 20px;
+     }
+
+     /* 5. Section title (Activity) spacing */
+     section .title-wrapper {
+          margin-top: 10px;
+          margin-bottom: 10px;
+     }
+
+     /* 6. Timeline: remove over-spacing from wrapper */
+     .section-wrapper {
+          margin-top: 0;
+          padding-top: 0;
+     }
+
+     /* 7. Timeline items spacing */
+     .hods-timeline__item {
+          margin-top: 20px;
+          margin-bottom: 30px;
+     }
+}
+
+.off-cms-activity-log .hods-timeline__item {
+  float: none !important;
+  width: 100% !important;
+}
+
+
+/* ============================================================
+   MATERIALS TAB — SPACING NORMALISATION
+   Applies ONLY within .off-cms-overview tab panel
+============================================================ */
+
+// .off-cms-overview {
+
+//      /* -----------------------------------------
+//      1. Sub-navigation spacing
+//      ----------------------------------------- */
+//      .moj-sub-navigation {
+//           margin-bottom: 0;   // removes large built-in MOJ spacing
+//      }
+
+//      /* -----------------------------------------
+//      2. Panel container (tab content wrapper)
+//      ----------------------------------------- */
+//      .panel {
+//           padding-top: 0;
+//           margin-top: 0;
+//      }
+
+//      /* -----------------------------------------
+//      3. Heading & intro spacing
+//      ----------------------------------------- */
+//      h2.govuk-heading-l {
+//           margin-top: 10px;     // fixes big gap after nav
+//      }
+
+//      p.govuk-body {
+//           margin-bottom: 20px;  // tighter and consistent
+//      }
+
+//      /* -----------------------------------------
+//      4. “Show filters” link
+//      ----------------------------------------- */
+//      #toggle_filter_Materials {
+//           margin-top: 0;
+//           margin-bottom: 10px;
+//           display: inline-block;
+//      }
+
+//      /* -----------------------------------------
+//      5. Filters column
+//      ----------------------------------------- */
+//      #materials_column_1 {
+
+//           .moj-filter-layout__filter {
+//                margin-top: 0;
+//                padding-top: 0;
+//           }
+//      }
+
+//   /* Reduce “filters row top margin” */
+//      .govuk-grid-row[class*="govuk-!-margin-top-2"] {
+//           margin-top: 10px;
+//      }
+
+//      /* -----------------------------------------
+//      6. Breadcrumbs spacing
+//      ----------------------------------------- */
+//      #materials_column_2 nav.govuk-breadcrumbs {
+//           margin-top: 0;
+//           padding-top: 0;
+//      }
+
+//      /* -----------------------------------------
+//      7. Actions bar
+//      ----------------------------------------- */
+//      .info_wrapper {
+//           margin-top: 10px;
+//           margin-bottom: 20px;
+//      }
+
+//      /* -----------------------------------------
+//      8. Table spacing
+//      ----------------------------------------- */
+//      #materials_table {
+//           margin-top: 10px;
+
+//      thead th {
+//                padding-top: 10px;
+//           }
+//      }
+
+//      /* Inset text (e.g. search results) */
+//      .govuk-inset-text {
+//           margin-top: 10px;
+//           margin-bottom: 10px;
+//      }
+// }
+
 // mark {
 //   background-color: #ffbf47; /* GOV.UK yellow */
 //   padding: 0 2px;
