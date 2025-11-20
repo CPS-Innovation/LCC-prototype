@@ -411,6 +411,11 @@ module.exports = {
 "egressTemplate": "",
 "addMaterials": "",
 
+"createEgress": "",
+"connectEgress": "",
+"createSharedDrive": "",
+"connectSharedDrive": "",
+
 
 
 

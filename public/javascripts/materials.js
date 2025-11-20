@@ -1601,4 +1601,15 @@ function closeNotesModal() {
 })();
 
 
+const search = (req.session.data.filtersSearch || "").toLowerCase();
+
+groupedSearchResults = groupedSearchResults.map(entry => {
+    const folder = entry.folder;
+    const folderName = folder.name.toLowerCase();
+
+    return {
+        ...entry,
+        folderMatchesSearch: search && folderName.includes(search)
+    };
+});
 

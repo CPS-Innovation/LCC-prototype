@@ -883,38 +883,77 @@ router.post('/B-off-system-MVP/create-case/09-confirmation', function(req, res) 
 
 
 router.post('/B-off-system-MVP/04A-create-or-link-folders', function(req, res) {
-    req.session.data.foldersAction = req.body['folders']
-    if (req.session.data.foldersAction === 'Create folders') {
-        req.session.data.newEgressFolder = req.body['new-egress-folder']
-        req.session.data.newDriveFolder = req.body['new-drive-folder']
-        if (req.session.data.newEgressFolder === 'Egress folder') {
-            res.redirect('/version-11/B-off-system-MVP/04A-create-egress-folder')
-        }
-        else if (req.session.data.newDriveFolder === 'Shared drive folder') {
-            res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
-        }
-        else {
-            res.redirect('/version-11/B-off-system-MVP/04A-create-or-link-folders') 
-        }
+    req.session.data.newEgressFolder = req.body['create-egress']
+    req.session.data.existingEgressFolder = req.body['connect-egress']
+    req.session.data.newDriveFolder = req.body['create-shared-drive']
+    req.session.data.existingDriveFolder = req.body['connect-shared-drive']
+
+    if (req.session.data.newEgressFolder != undefined) {
+        res.redirect('/version-11/B-off-system-MVP/04A-create-egress-folder')
     }
+
+    else if (req.session.data.existingEgressFolder != undefined) {
+        res.redirect('/version-11/B-off-system-MVP/04A-egress-files')
+    }
+
+    else if (req.session.data.existingDriveFolder != undefined) {
+        res.redirect('/version-11/B-off-system-MVP/05A-p-drive-files')
+    }
+
     else {
-        req.session.data.existingEgressFolder = req.body['linked-egress-folder']
-        req.session.data.existingDriveFolder = req.body['linked-drive-folder']
-        if (req.session.data.existingEgressFolder === 'Egress folder') {
-            res.redirect('/version-11/B-off-system-MVP/04A-egress-files')
-        }
-        else if (req.session.data.existingDriveFolder === 'Shared drive folder') {
-            res.redirect('/version-11/B-off-system-MVP/05A-p-drive-files') 
-        }    
-        else {
-            res.redirect('/version-11/B-off-system-MVP/04A-create-or-link-folders') 
-        }
+        res.redirect('/version-11/B-off-system-MVP/03-case-overview')
     }
+    
 })
+
+
+// router.post('/B-off-system-MVP/04A-create-or-link-folders', function(req, res) {
+//     req.session.data.foldersAction = req.body['folders']
+//     if (req.session.data.foldersAction === 'Create folders') {
+//         req.session.data.newEgressFolder = req.body['new-egress-folder']
+//         req.session.data.newDriveFolder = req.body['new-drive-folder']
+//         if (req.session.data.newEgressFolder === 'Egress folder') {
+//             res.redirect('/version-11/B-off-system-MVP/04A-create-egress-folder')
+//         }
+//         else if (req.session.data.newDriveFolder === 'Shared drive folder') {
+//             res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
+//         }
+//         else {
+//             res.redirect('/version-11/B-off-system-MVP/04A-create-or-link-folders') 
+//         }
+//     }
+//     else {
+//         req.session.data.existingEgressFolder = req.body['linked-egress-folder']
+//         req.session.data.existingDriveFolder = req.body['linked-drive-folder']
+//         if (req.session.data.existingEgressFolder === 'Egress folder') {
+//             res.redirect('/version-11/B-off-system-MVP/04A-egress-files')
+//         }
+//         else if (req.session.data.existingDriveFolder === 'Shared drive folder') {
+//             res.redirect('/version-11/B-off-system-MVP/05A-p-drive-files') 
+//         }    
+//         else {
+//             res.redirect('/version-11/B-off-system-MVP/04A-create-or-link-folders') 
+//         }
+//     }
+// })
+
+
 
 router.post('/B-off-system-MVP/04A-create-egress-folder', function(req, res) {
     req.session.data.egressTemplate = req.body['egress-template']
-    res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
+    
+    if (req.session.data.existingEgressFolder != undefined) {
+        res.redirect('/version-11/B-off-system-MVP/04A-egress-files')
+    }
+
+    else if (req.session.data.existingDriveFolder != undefined) {
+        res.redirect('/version-11/B-off-system-MVP/05A-p-drive-files')
+    }
+
+    else {
+        res.redirect('/version-11/B-off-system-MVP/03-case-overview')
+    }
+ 
 })
 // End of materials
 
