@@ -19,7 +19,7 @@
                     {% if data['suspectType'][data['removeSuspectId']] == 'Person' %}
                     <span class="uppercase">{{data['suspectLastName'][data['removeSuspectId']]}}</span> {{data['suspectFirstName'][data['removeSuspectId']]}}
                     {% else %}
-                    <span class="uppercase">{{data['suspectCompanyName'][data['removeSuspectId']]}}</span>
+                    {{data['suspectCompanyName'][data['removeSuspectId']]}}
                     {% endif %}    
                     ?
                 </h1>
