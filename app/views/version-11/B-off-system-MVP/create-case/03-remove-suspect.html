@@ -17,7 +17,7 @@
 
                     Are you sure you want to remove 
                     {% if data['suspectType'][data['removeSuspectId']] == 'Person' %}
-                    <span class="uppercase">{{data['suspectLastName'][data['removeSuspectId']]}}</span> {{data['suspectFirstName'][data['removeSuspectId']]}}
+                    <span class="uppercase">{{data['suspectLastName'][data['removeSuspectId']]}}</span>, {{data['suspectFirstName'][data['removeSuspectId']]}}
                     {% else %}
                     {{data['suspectCompanyName'][data['removeSuspectId']]}}
                     {% endif %}    

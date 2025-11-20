@@ -11,7 +11,7 @@
   <div class="govuk-grid-column-two-thirds">
 
     <!-- <h1 class="govuk-heading-l">You have added {{ data['aliasCount']}} {% if data['aliasCount'] == 1 %} alias {% else %} aliases{% endif %} for {{data['suspect-person-first-name']}} {{data['suspect-person-last-name']}}</h1> -->
-    <h1 class="govuk-heading-l">Aliases for {{data['suspect-person-first-name']}} {{data['suspect-person-last-name']}}</h1>
+    <h1 class="govuk-heading-l">Aliases for <span class="uppercase">{{data['suspectLastName'][data['removeSuspectId']]}}</span>, {{data['suspectFirstName'][data['removeSuspectId']]}}</h1>
     <div class="govuk-form-group">
 
       <dl class="govuk-summary-list hmrc-list-with-actions hmrc-list-with-actions--short">
