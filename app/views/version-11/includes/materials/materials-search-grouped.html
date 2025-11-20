@@ -43,15 +43,28 @@
     {% for entry in data.groupedSearchResults %}
         {% set folder = entry.folder %}
         {% set files = entry.files %}
+        {% set filtersSearch = data.filtersSearch  %}
 
         {# -------------------------------
         FOLDER ROW (clickable + checkbox)
         -------------------------------- #}
-        <!-- <tr class="govuk-table__row folder-row folder-clickable"
+        {% if entry.matchesFolder %}
+
+        <tr class="govuk-table__row folder-row folder-clickable"
             onclick="document.getElementById('folderForm_{{ folder.id }}').submit();"
-            style="cursor:pointer; background: #f3f2f1;">
+            style="cursor:pointer;">
 
             <td class="govuk-table__cell">
+                <div class="govuk-checkboxes govuk-checkboxes--small">
+                    <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input"
+                               id="{{ m.id }}"
+                               type="checkbox"
+                               name="materials_document"
+                               value="{{ m.name }}">
+                        <label class="govuk-label govuk-checkboxes__label" for="{{ m.id }}"></label>
+                    </div>
+                </div>
             </td>
             <td class="govuk-table__cell title_column">
                 <form action="/version-11/B-off-system-MVP/case-overview-search-folder" method="post">
@@ -77,7 +90,8 @@
 
             <td class="govuk-table__cell"></td>
         </tr>
- -->
+        {% endif %}
+
         {# -------------------------------
            CHILD FILES
            -------------------------------- #}
