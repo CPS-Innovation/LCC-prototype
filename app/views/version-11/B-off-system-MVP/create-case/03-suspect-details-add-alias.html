@@ -16,7 +16,7 @@
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
             <!-- <span class="govuk-caption-m">Alias {{data['aliasCount'] + 1}}</span> -->
             <h1 class="govuk-fieldset__heading">
-              What alias does {{data['suspect-person-first-name']}} {{data['suspect-person-last-name']}} use? 
+              What alias does <span class="uppercase">{{data['suspectLastName'][data['removeSuspectId']]}}</span>, {{data['suspectFirstName'][data['removeSuspectId']]}} use? 
             </h1>
           </legend>
           <div id="changedName-hint" class="govuk-hint">
