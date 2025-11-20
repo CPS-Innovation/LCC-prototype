@@ -1931,6 +1931,10 @@ a.centred-link {
 }
 
 
+table#materials_table td .govuk-tag {
+    float: none !important;
+}
+
 /* ============================================================
    MATERIALS TAB — SPACING NORMALISATION
    Applies ONLY within .off-cms-overview tab panel

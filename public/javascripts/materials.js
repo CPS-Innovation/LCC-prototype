@@ -984,11 +984,11 @@ $(window).scroll(function() {
     var $version11 = $('.version-11');
     var scroll = $(window).scrollTop();
 
-    if (scroll >= 375) {
-        $version11.find(".actions_holder").addClass("sticky");
-    } else {
-        $version11.find(".actions_holder").removeClass("sticky");
-    }
+//     if (scroll >= 375) {
+//         $version11.find(".actions_holder").addClass("sticky");
+//     } else {
+//         $version11.find(".actions_holder").removeClass("sticky");
+//     }
 
 });
 

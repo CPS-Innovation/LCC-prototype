@@ -58,6 +58,8 @@
                 </dd>
               </div>
           </dl>
+
+          {% if data['suspectDOB'][id] or data['suspectGender'][id] or data['suspectDisability'][id] or data['suspectReligion'][id] or data['suspectEthnicity'][id] or data['suspectAlias'][id] or data['suspectSDO'][id] or data['suspectArrestSummons'][id] or data['suspectOffenderType'][id] %}
           <!-- Suspect details -->
           <details class="govuk-details suspect_details_panel govuk-!-margin-top-1 govuk-!-margin-bottom-2">
             <summary class="govuk-details__summary">
@@ -67,66 +69,88 @@
             </summary>
             <div class="govuk-details__text">
 
-              <!-- <h2 class="govuk-heading-m">Suspect details</h2> -->
+              {% if data['suspectDOB'][id] %}
               <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Date of birth</dt>
                   <dd class="govuk-summary-list__value">{% if data['suspectDayBirth'][id] %} {{data['suspectDayBirth'][id]}} {{data['monthName'][data['suspectMonthBirth'][id]]}} {{data['suspectYearBirth'][id]}} {% else %} Not entered {% endif %}</dd>
                   <dd class="govuk-summary-list__actions"></dd>
               </div>
+              {% endif %}
+
+              {% if data['suspectGender'][id] %}
               <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Gender</dt>
                   <dd class="govuk-summary-list__value">{% if data['suspectGender'][id] %}{{ data['suspectGender'][id] }}{% else %} Unknown {% endif %}</dd>
                   <dd class="govuk-summary-list__actions"></dd>
                   </dd>
               </div>
+              {% endif %}
+
+              {% if data['suspectDisability'][id] %}
               <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Disability</dt>
                   <dd class="govuk-summary-list__value">{% if data['suspectDisability'][id] %}{{ data['suspectDisability'][id] }}{% else %} Unknown {% endif %}</dd>
                   <dd class="govuk-summary-list__actions"></dd>
               </div>
+              {% endif %}
+
+              {% if data['suspectReligion'][id] %}
               <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Religion</dt>
                   <dd class="govuk-summary-list__value">{% if data['suspectReligion'][id] %}{{ data['suspectReligion'][id] }}{% else %} Not provided {% endif %}</dd>
                   <dd class="govuk-summary-list__actions"></dd>
                   </dd>
               </div>
+              {% endif %}
+
+              {% if data['suspectEthnicity'][id] %}
               <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Ethnicity</dt>
                   <dd class="govuk-summary-list__value">{% if data['suspectEthnicity'][id] %}{{ data['suspectEthnicity'][id] }}{% else %} Not provided, NP {% endif %}</dd>
                   <dd class="govuk-summary-list__actions"></dd>
                   </dd>
               </div>
-
-              {% if data['aliasId'].length == 0 %}
-              <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Alias details</dt>
-                  <dd class="govuk-summary-list__value">Not entered</dd>
-                  <dd class="govuk-summary-list__actions"></dd>
-                  </dd>
-              </div>
-              {% else %}
-                {% for i in data['aliasId'] %}     
-                  {% if data['aliasSuspectID'][i] == data['suspectId'][id] %}
-                  <div class="govuk-summary-list__row">
-                      <!-- <dt class="govuk-summary-list__key">Alias {{ i +1 }}</dt> -->
-                      <dt class="govuk-summary-list__key">Alias</dt>
-                      <dd class="govuk-summary-list__value"><span class="uppercase">{{data['aliasLastName'][i]}}</span>{% if data['aliasFirstName'][i] %}, {{data['aliasFirstName'][i]}}{% endif %}</dd>
-                      <dd class="govuk-summary-list__actions"></dd>
-                  </div>
-                  {% endif %}
-                {% endfor %}
               {% endif %}
 
+              {% if data['suspectAlias'][id] %}
+                {% if data['aliasId'].length == 0 %}
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Alias details</dt>
+                    <dd class="govuk-summary-list__value">Not entered</dd>
+                    <dd class="govuk-summary-list__actions"></dd>
+                    </dd>
+                </div>
+                {% else %}
+                  {% for i in data['aliasId'] %}     
+                    {% if data['aliasSuspectID'][i] == data['suspectId'][id] %}
+                    <div class="govuk-summary-list__row">
+                        <!-- <dt class="govuk-summary-list__key">Alias {{ i +1 }}</dt> -->
+                        <dt class="govuk-summary-list__key">Alias</dt>
+                        <dd class="govuk-summary-list__value"><span class="uppercase">{{data['aliasLastName'][i]}}</span>{% if data['aliasFirstName'][i] %}, {{data['aliasFirstName'][i]}}{% endif %}</dd>
+                        <dd class="govuk-summary-list__actions"></dd>
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              {% endif %}
+
+              {% if data['suspectSDO'][id] %}
               <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Serious dangerous offender (SDO)</dt>
                   <dd class="govuk-summary-list__value">{% if data['suspectSDO'][id] %}{{ data['suspectSDO'][id] }}{% else %} No {% endif %}</dd>
                   <dd class="govuk-summary-list__actions"></dd>
               </div>
+              {% endif %}
+
+              {% if data['suspectArrestSummons'][id] %}
               <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Arrest summons</dt>
                   <dd class="govuk-summary-list__value">{% if data['suspectArrestSummons'][id] %}{{ data['suspectArrestSummons'][id] }}{% else %} Not entered {% endif %}</dd>
                   <dd class="govuk-summary-list__actions"></dd>
               </div>
+              {% endif %}
+
+              {% if data['suspectOffenderType'][id] %}
               <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">Type of offender</dt>
                   <dd class="govuk-summary-list__value">{% if data['suspectOffenderType'][id] %}{{ data['suspectOffenderType'][id] }}{% else %} Unspecified {% endif %}</dd>
@@ -139,12 +163,14 @@
                   <dd class="govuk-summary-list__actions"></dd>
               </div>
               {% endif %}
+              {% endif %}
 
 
 
             </div>
           </details>         
           <!-- End suspect details -->
+           {% endif %}
 
         {% else %}
           <dl class="govuk-summary-list hmrc-list-with-actions hmrc-list-with-actions--short govuk-!-margin-bottom-0">
