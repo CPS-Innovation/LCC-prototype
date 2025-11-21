@@ -323,10 +323,11 @@
                                     </td>
                                     
                                     {% else %}
-                                        {{ material.name | highlight(data['filtersSearch']) | safe }}
-                                        {% if material.new == true %}
-                                        <strong class="govuk-tag govuk-tag--blue">New</strong>
-                                        {% endif %}
+                                        <div class="openMe">
+                                            {{ material.name | highlight(data['filtersSearch']) | safe }}
+                                            {% if material.new == true %}
+                                            <strong class="govuk-tag govuk-tag--blue">New</strong>
+                                            {% endif %}
                                         </div>
                                     </td>
                                     </form>
