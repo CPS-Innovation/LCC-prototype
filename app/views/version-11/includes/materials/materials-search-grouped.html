@@ -68,9 +68,6 @@
             </td>
             <td class="govuk-table__cell title_column">
                 <form action="/version-11/B-off-system-MVP/case-overview-search-folder" method="post">
-                    {% if folder.new == true %}
-                        <strong class="govuk-tag govuk-tag--blue">New</strong>
-                    {% endif %}
                     <div class="openMe">
                         <span class="icon-new folder"></span>
                         <input type="hidden" name="flag" value="1">
@@ -79,6 +76,9 @@
                         <button type="submit" name="folderId" value="{{ folder.id }}" class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-regular govuk-button--link">
                             {{ folder.name | highlight(data['filtersSearch']) | safe }}
                         </button>
+                        {% if folder.new == true %}
+                            <strong class="govuk-tag govuk-tag--blue">New</strong>
+                        {% endif %}
                     </div>
                 </form>
             </td>
