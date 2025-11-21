@@ -9,11 +9,10 @@
 {% block content %}
 
 
-<div class="govuk-grid-row" id="homepage-journey">
+<div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <div class="wrapper main-cotent">
 
-            {% if data['existingDriveFolder'] === 'Shared drive folder' %}
+            {% if data['existingDriveFolder'] === 1 %}
                 <form method="post" action="05A-p-drive-files" id="">  
             {% else %}
                 <form method="post" action="03-case-overview" id="">  
