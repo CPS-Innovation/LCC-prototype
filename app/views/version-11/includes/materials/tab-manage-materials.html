@@ -81,13 +81,13 @@
                                 <!-- Rename should only be available for single selections, not multiple -->
                                 <!-- <button type="button" class="govuk-button govuk-button--disabled reclassify_Document_Multiple_Docs rename-Document" data-module="govuk-button" onclick="return openRenameModal();" data-rename="1">Rename</button> -->
                                 <form id="renameForm" method="post" action="/version-11/B-off-system-MVP/B-rename-material-save">
-                                <input id="rename_selected" name="rename_selected" type="hidden" value="">
-                                <button id="renameButton"
-                                        class="govuk-button govuk-button--disabled reclassify_Document_Multiple_Docs"
-                                        data-module="govuk-button"
-                                        type="button">
-                                    Rename
-                                </button>
+                                    <input id="rename_selected" name="rename_selected" type="hidden" value="">
+                                    <button id="renameButton"
+                                            class="govuk-button govuk-button--disabled reclassify_Document_Multiple_Docs"
+                                            data-module="govuk-button"
+                                            type="button">
+                                        Rename
+                                    </button>
                                 </form>
                                 <!-- <form method="post" action="B-discard_material">
                                     <input id="material_selected" name="material_selected" type="text" value="MCLOVE MG3" style="display: none;">
@@ -109,12 +109,18 @@
                                         class="govuk-button govuk-button--disabled reclassify_Document_Multiple_Docs"
                                 data-module="govuk-button" disabled>Mark as unused</button>
                             </div>
-                            <button id="newFolder" type="button" class="govuk-button govuk-button--secondary">
+                            <!-- <button id="newFolder" type="button" class="govuk-button govuk-button--secondary">
+                                New folder
+                            </button> -->
+                            <button type="button" class="govuk-button govuk-button--secondary" onclick="window.location.href='/version-11/B-off-system-MVP/new-folder';">
                                 New folder
                             </button>
-
+                            <!-- <a href="/version-11/B-off-system-MVP/new-folder?parent={{ parentFolder.id }}"
+                            class="govuk-button govuk-button--secondary">
+                                New folder
+                            </a> -->
                             <!------------ New folder modal ------------>
-                            <script>
+                            <!-- <script>
                             (function () {
                             try {
                                 const CSS_ID = 'new-folder-modal-css';
@@ -222,7 +228,7 @@
                                 console.error('New folder modal init error:', err);
                             }
                             })();
-                            </script>                            
+                            </script>                             -->
 
 
                         </div>

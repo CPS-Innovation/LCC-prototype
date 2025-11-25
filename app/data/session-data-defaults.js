@@ -433,6 +433,20 @@ module.exports = {
 
 "materials": [
   {
+    id: 0,
+    name: 'Shared Drive',
+    type: 'MG3',
+    category: 'Review',
+    date: '18 May 2022',
+    status: 'Used',
+    new: false,
+    docLink: '',
+    previewLink: '',
+    parentId: null,
+    folder: true,
+    level: 1
+  },
+  {
     id: 1,
     name: 'MCLOVE MG3',
     type: 'MG3',
@@ -925,6 +939,7 @@ module.exports = {
 ],
 
 "parentId": 0,
+"currentFolder": 0,
 "breadcrumbs": ['Shared drive'],
 "lastdiscard": []
 
