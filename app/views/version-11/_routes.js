@@ -1364,34 +1364,100 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
     res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
 
-// Rename material
-// Step 1: show rename page
-router.post('/B-off-system-MVP/B-rename-material', function (req, res) {
-  const selected = req.body.rename_selected || '';
-  req.session.data.rename_selected = selected;
-  res.redirect('/version-11/B-off-system-MVP/B-rename-material');
-});
 
-// Step 2: handle save
-router.post('/B-off-system-MVP/B-rename-material-save', function (req, res) {
-  const oldName = req.body.rename_selected;
-  const newName = req.body.newName?.trim();
+// -----------------------------------------------------
+// RENAME MATERIAL (page)
+// -----------------------------------------------------
 
-  if (!oldName || !newName) {
-    return res.redirect('/version-11/B-off-system-MVP/03-case-overview');
-  }
+router.get('/B-off-system-MVP/rename', function (req, res) {
+    const data = req.session.data;
+    const materials = data.materials || [];
+    const id = Number(req.query.id);
 
-  req.session.data.materials = req.session.data.materials.map(m => {
-    if (m.name === oldName) {
-      return { ...m, name: newName };
+    const item = materials.find(m => m.id === id);
+
+    if (!item) {
+        return res.redirect('/version-11/B-off-system-MVP/03-case-overview');
     }
-    return m;
-  });
 
-  console.log(`✏️ Renamed "${oldName}" → "${newName}"`);
-
-  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+    res.render('version-11/B-off-system-MVP/rename', {
+        item
+    });
 });
+
+
+router.post('/B-off-system-MVP/rename', function (req, res) {
+    const data = req.session.data;
+    let materials = data.materials || [];
+
+    const id = Number(req.body.id);
+    const newName = req.body.newName?.trim();
+
+    const item = materials.find(m => m.id === id);
+
+    if (!item) {
+        return res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+    }
+
+    if (!newName) {
+        return res.render('version-11/B-off-system-MVP/rename', {
+            item,
+            error: "Enter a name"
+        });
+    }
+
+    // Apply rename
+    item.name = newName;
+    item.date = new Date().toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    });
+    
+    console.log(`✏️ Renamed material ID ${id} to "${newName}" and last update "${item.date}"`);
+
+    // Save back to session
+    data.materials = materials;
+
+    // 🔙 Redirect to correct place based on parent folder
+    const parent = item.parentId || 0;
+
+    if (parent !== 0) {
+        return res.redirect(`/version-11/B-off-system-MVP/03-case-overview?folder=${parent}`);
+    }
+
+    return res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+});
+
+
+// Rename material modal
+// Step 1: show rename page
+// router.post('/B-off-system-MVP/B-rename-material', function (req, res) {
+//   const selected = req.body.rename_selected || '';
+//   req.session.data.rename_selected = selected;
+//   res.redirect('/version-11/B-off-system-MVP/B-rename-material');
+// });
+
+// // Step 2: handle save
+// router.post('/B-off-system-MVP/B-rename-material-save', function (req, res) {
+//   const oldName = req.body.rename_selected;
+//   const newName = req.body.newName?.trim();
+
+//   if (!oldName || !newName) {
+//     return res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+//   }
+
+//   req.session.data.materials = req.session.data.materials.map(m => {
+//     if (m.name === oldName) {
+//       return { ...m, name: newName };
+//     }
+//     return m;
+//   });
+
+//   console.log(`✏️ Renamed "${oldName}" → "${newName}"`);
+
+//   res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+// });
 
 
 

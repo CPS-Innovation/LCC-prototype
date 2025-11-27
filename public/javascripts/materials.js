@@ -297,7 +297,32 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 })();
 
+// ---------------------------
+// Rename using selected item
+// ---------------------------
+document.addEventListener('DOMContentLoaded', function () {
 
+    const renameBtn = document.getElementById('renameButton');
+    if (!renameBtn) return;
+
+    renameBtn.addEventListener('click', function () {
+
+        // Find the selected checkbox (single-selection only)
+        const selected = document.querySelector('input[name="materials_document"]:checked');
+
+        if (!selected) {
+            console.warn("Rename attempted but no material selected");
+            return;
+        }
+
+        // The material ID is the checkbox id
+        const materialId = selected.id;
+
+        // Redirect to rename page
+        window.location.href = `/version-11/B-off-system-MVP/rename?id=${materialId}`;
+    });
+
+});
 
 
 // Preview document from clicking on its name

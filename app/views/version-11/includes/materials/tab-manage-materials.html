@@ -80,7 +80,14 @@
                             <div class="hidden_buttons" id="materials_Actions">
                                 <!-- Rename should only be available for single selections, not multiple -->
                                 <!-- <button type="button" class="govuk-button govuk-button--disabled reclassify_Document_Multiple_Docs rename-Document" data-module="govuk-button" onclick="return openRenameModal();" data-rename="1">Rename</button> -->
-                                <form id="renameForm" method="post" action="/version-11/B-off-system-MVP/B-rename-material-save">
+                                <button id="renameButton" class="govuk-button govuk-button--disabled">
+                                    Rename
+                                </button>
+                                <!-- <button type="button" id="renameButton" class="govuk-button govuk-button--disabled reclassify_Document_Multiple_Docs"
+                                        onclick="window.location.href='/version-11/B-off-system-MVP/rename?id={{ material.id }}'">
+                                    Rename
+                                </button> -->
+                                <!-- <form id="renameForm" method="post" action="/version-11/B-off-system-MVP/B-rename-material-save">
                                     <input id="rename_selected" name="rename_selected" type="hidden" value="">
                                     <button id="renameButton"
                                             class="govuk-button govuk-button--disabled reclassify_Document_Multiple_Docs"
@@ -88,7 +95,7 @@
                                             type="button">
                                         Rename
                                     </button>
-                                </form>
+                                </form> -->
                                 <!-- <form method="post" action="B-discard_material">
                                     <input id="material_selected" name="material_selected" type="text" value="MCLOVE MG3" style="display: none;">
                                     <button class="govuk-button govuk-button--disabled reclassify_Document_Multiple_Docs" data-module="govuk-button" type="submit">Discard</button>
