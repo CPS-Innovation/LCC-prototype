@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const headerButtons = table.querySelectorAll("thead th .govuk-button");
 
   // Header text → actual column index in your table
-  const COL_INDEX = { "Material": 1, "Last updated": 2, "Status": 3 };
+  const COL_INDEX = { "File or folder": 1, "Last updated": 2, "Status": 3 };
 
   // Attach handlers only to the 3 sortable headers
   headerButtons.forEach(btn => {
