@@ -1086,13 +1086,38 @@ router.post('/includes/materials/materials-filter', function (req, res) {
 
 // AI //
 
-// Route for the materials page
+const createMaterialsUtils = require('../../helpers/materials.js');
+
 router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
+
+  const data = req.session.data;
+  const materials = data.materials || [];
+
+  // Attach helper functions safely
+  const utils = createMaterialsUtils(materials);
+
+  // Fallback: default to shared drive
+  const folderId = Number(data.folderId) || 0;
+
+  // These do NOT override your session data — they just add new info
+  const children = utils.getChildren(folderId);
+  const breadcrumbs = utils.getBreadcrumbs(folderId);
+
   res.render('version-11/B-off-system-MVP/03-case-overview', {
-    // materialsData: req.session.data.materialsData,
-    materials: req.session.data.materials
-  })
-})
+    materials,
+    data,
+    children,
+    breadcrumbs
+  });
+});
+
+// Route for the materials page
+// router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
+//   res.render('version-11/B-off-system-MVP/03-case-overview', {
+//     // materialsData: req.session.data.materialsData,
+//     materials: req.session.data.materials
+//   })
+// })
 
 
 router.get('/version-11/manage-materials', function (req, res) {
@@ -1117,6 +1142,8 @@ router.get('/version-11/manage-materials', function (req, res) {
 
 
 router.post('/B-off-system-MVP/case-overview-folder', function(req, res) {
+    // req.session.data.currentLevel = req.body['currentLevel']
+    // req.session.data.selectedFolder = req.body['selectedFolder']
     req.session.data.searchLabel = req.body['searchLabel']
     req.session.data.folderId = req.body['folderId']
     req.session.data.folderName = req.body['folderName']
@@ -1307,7 +1334,7 @@ router.post('/B-off-system-MVP/new-folder', function(req, res) {
             year: 'numeric'
             }),
         status: "None",
-        new: true,
+        new: false,
         docLink: null,
         previewLink: null,
         parentId: parentFolder ? Number(parentFolder) : currentFolder,
