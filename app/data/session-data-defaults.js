@@ -431,7 +431,7 @@ module.exports = {
 "folderId": null,
 "flag": 0,
 
-"materials": [
+"old-materials": [
   {
     id: 0,
     name: 'Shared Drive',
@@ -938,26 +938,10 @@ module.exports = {
   }
 ],
 
-"new-materials": [
-  {
-    id: 0,
-    name: 'Shared Drive',
-    type: 'MG3',
-    category: 'Review',
-    date: '18 May 2022',
-    status: 'Used',
-    new: false,
-    docLink: '',
-    previewLink: '',
-    parentId: null,
-    folder: true,
-    level: 1
-  },
+"materials": [
   {
     id: 1,
     name: 'MCLOVE MG3',
-    type: 'MG3',
-    category: 'Review',
     date: '18 May 2022',
     status: 'None',
     new: false,
@@ -970,8 +954,6 @@ module.exports = {
   {
     id: 2,
     name: 'Case overview and officer comments',
-    type: 'PDF',
-    category: 'Case overview',
     date: '9 Aug 2022',
     status: 'None',
     new: true,
@@ -984,8 +966,6 @@ module.exports = {
   {
     id: 3,
     name: 'MG05 MCLOVE',
-    type: 'MG05',
-    category: 'Case overview',
     date: '14 Jan 2023',
     status: 'Used',
     new: true,
@@ -998,8 +978,6 @@ module.exports = {
   {
     id: 4,
     name: 'MG06 3 June',
-    type: 'MG05',
-    category: 'Unused material',
     date: '2 Mar 2023',
     status: 'Used',
     new: true,
@@ -1012,8 +990,6 @@ module.exports = {
   {
     id: 5,
     name: 'MG06 10 June',
-    type: 'MG05',
-    category: 'Unused material',
     date: '24 Jul 2023',
     status: 'Used',
     new: true,
@@ -1026,8 +1002,6 @@ module.exports = {
   {
     id: 6,
     name: 'stmt BLAYNEE 2034 1 JUNE mg11',
-    type: 'MG11',
-    category: 'Statements',
     date: '11 Oct 2023',
     status: 'Used',
     new: true,
@@ -1040,8 +1014,6 @@ module.exports = {
   {
     id: 7,
     name: 'stmt Lucy Doyle MG11',
-    type: 'MG11',
-    category: 'Statements',
     date: '6 Dec 2023',
     status: 'Used',
     new: true,
@@ -1054,8 +1026,6 @@ module.exports = {
   {
     id: 8,
     name: 'stmt Shelagh McLove MG11',
-    type: 'MG11',
-    category: 'Statements',
     date: '9 Jan 2024',
     status: 'Used',
     new: true,
@@ -1068,8 +1038,6 @@ module.exports = {
   {
     id: 9,
     name: 'Shelagh McLove VPS mg11',
-    type: 'MG11',
-    category: 'Statements',
     date: '27 Feb 2024',
     status: 'Used',
     new: true,
@@ -1082,8 +1050,6 @@ module.exports = {
   {
     id: 10,
     name: 'MG11 Shelagh MCLOVE retraction',
-    type: 'MG11',
-    category: 'Statements',
     date: '12 Apr 2024',
     status: 'Used',
     new: false,
@@ -1096,8 +1062,6 @@ module.exports = {
   {
     id: 11,
     name: 'MCLOVE MG12',
-    type: 'MG12',
-    category: 'Exhibits',
     date: '23 May 2024',
     status: 'Used',
     new: false,
@@ -1110,8 +1074,6 @@ module.exports = {
   {
     id: 12,
     name: 'MCLOVE MG00',
-    type: 'MG00',
-    category: 'Exhibits',
     date: '1 Jul 2024',
     status: 'Used',
     new: true,
@@ -1124,8 +1086,6 @@ module.exports = {
   {
     id: 13,
     name: 'UNUSED 1 - STORM LOG 1881 01.6.20 - EDITED 2020-11-23 MCLOVE',
-    type: 'MG11',
-    category: 'Unused material',
     date: '15 Aug 2024',
     status: 'Unused',
     new: false,
@@ -1138,8 +1098,6 @@ module.exports = {
   {
     id: 14,
     name: 'SDC_items to_be Disclosed MCLOVE',
-    type: 'MG11',
-    category: 'Unused material',
     date: '20 Sep 2024',
     status: 'Unused',
     new: true,
@@ -1152,8 +1110,6 @@ module.exports = {
   {
     id: 15,
     name: 'MG20_5_JUNE',
-    type: 'MG20',
-    category: 'Exhibits',
     date: '2 Nov 2024',
     status: 'Unused',
     new: true,
@@ -1166,8 +1122,6 @@ module.exports = {
   {
     id: 16,
     name: 'MG20_10_JUNE',
-    type: 'MG20',
-    category: 'Exhibits',
     date: '11 Dec 2024',
     status: 'Unused',
     new: true,
@@ -1180,8 +1134,6 @@ module.exports = {
   {
     id: 17,
     name: 'PRE CONS D',
-    type: 'MG20',
-    category: 'Defendant',
     date: '29 Jan 2025',
     status: 'Used',
     new: true,
@@ -1194,8 +1146,6 @@ module.exports = {
   {
     id: 18,
     name: 'Asset Rec 1',
-    type: 'MG20',
-    category: 'Exhibits',
     date: '19 Mar 2025',
     status: 'None',
     new: true,
@@ -1208,8 +1158,6 @@ module.exports = {
   {
     id: 19,
     name: 'MG11 - 1',
-    type: 'MG11',
-    category: 'Statements',
     date: '22 Jun 2025',
     status: 'None',
     new: true,
@@ -1222,8 +1170,6 @@ module.exports = {
   {
     id: 20,
     name: 'Exhibit - 1',
-    type: 'MG11',
-    category: 'Exhibits',
     date: '14 Aug 2025',
     status: 'None',
     new: true,
@@ -1236,8 +1182,6 @@ module.exports = {
   {
     id: 1000,
     name: '1. Case management',
-    type: null,
-    category: null,
     date: '8 Nov 2022',
     status: 'Used',
     new: true,
@@ -1250,8 +1194,6 @@ module.exports = {
   {
     id: 1001,
     name: '2. Conference hearing notes',
-    type: null,
-    category: null,
     date: '14 Feb 2023',
     status: 'Used',
     new: false,
@@ -1264,8 +1206,6 @@ module.exports = {
   {
     id: 1002,
     name: '3. Experts',
-    type: null,
-    category: null,
     date: '7 May 2023',
     status: 'None',
     new: false,
@@ -1278,8 +1218,6 @@ module.exports = {
   {
     id: 1003,
     name: '4. Counsel',
-    type: null,
-    category: null,
     date: '28 Aug 2023',
     status: 'None',
     new: false,
@@ -1292,8 +1230,6 @@ module.exports = {
   {
     id: 1004,
     name: '5. Correspondence',
-    type: null,
-    category: null,
     date: '22 Nov 2023',
     status: 'None',
     new: false,
@@ -1306,8 +1242,6 @@ module.exports = {
   {
     id: 1005,
     name: '6. Disclosure',
-    type: null,
-    category: null,
     date: '9 Feb 2024',
     status: 'Used',
     new: false,
@@ -1320,8 +1254,6 @@ module.exports = {
   {
     id: 1006,
     name: '7. Finance',
-    type: null,
-    category: null,
     date: '17 Apr 2024',
     status: 'None',
     new: false,
@@ -1334,8 +1266,6 @@ module.exports = {
   {
     id: 1007,
     name: '8. Lawyer working copies',
-    type: null,
-    category: null,
     date: '23 Jun 2024',
     status: 'Used',
     new: false,
@@ -1348,8 +1278,6 @@ module.exports = {
   {
     id: 1008,
     name: '9. PO working copies',
-    type: null,
-    category: null,
     date: '12 Sep 2024',
     status: 'Unused',
     new: false,
@@ -1362,8 +1290,6 @@ module.exports = {
   {
     id: 1009,
     name: '10. Police',
-    type: null,
-    category: null,
     date: '27 Nov 2024',
     status: 'Used',
     new: false,
@@ -1376,8 +1302,6 @@ module.exports = {
   {
     id: 1010,
     name: '11. Media',
-    type: null,
-    category: null,
     date: '9 Jan 2025',
     status: 'None',
     new: false,
@@ -1390,8 +1314,6 @@ module.exports = {
   {
     id: 1011,
     name: '12. Victims and Witnesses',
-    type: null,
-    category: null,
     date: '4 Mar 2025',
     status: 'Unused',
     new: false,
@@ -1404,8 +1326,6 @@ module.exports = {
   {
     id: 1012,
     name: '13. DCS',
-    type: null,
-    category: null,
     date: '28 May 2025',
     status: 'Used',
     new: false,
@@ -1418,8 +1338,6 @@ module.exports = {
   {
     id: 1013,
     name: '14. Magistrates Court',
-    type: null,
-    category: null,
     date: '19 Jul 2025',
     status: 'Unused',
     new: false,
@@ -1432,8 +1350,6 @@ module.exports = {
   {
     id: 1014,
     name: '15. IDPC',
-    type: null,
-    category: null,
     date: '1 Nov 2025',
     status: 'None',
     new: false,
@@ -1444,6 +1360,9 @@ module.exports = {
     level: 1
   }
 ],
+
+"currentLevel": 1,
+"selectedFolder": 0,
 
 "parentId": 0,
 "currentFolderId": 0,
