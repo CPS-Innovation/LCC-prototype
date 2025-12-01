@@ -195,65 +195,68 @@
                             </td>
 
                             <!-- Title column -->
+                            {% if item.folder %}
                             <td class="govuk-table__cell title_column">
+                                <form method="post"
+                                        action="/version-11/B-off-system-MVP/case-overview-folder">
+                                    <input type="hidden" name="folderId" value="{{ item.id }}">
+                                    <input type="hidden" name="folderName" value="{{ item.name }}">
 
-                                {% if item.folder %}
-                                    <form method="post"
-                                          action="/version-11/B-off-system-MVP/case-overview-folder">
-                                        <input type="hidden" name="folderId" value="{{ item.id }}">
-                                        <input type="hidden" name="folderName" value="{{ item.name }}">
-
-                                        <button type="submit"
-                                                class="govuk-link govuk-link--no-visited-state govuk-button--link">
-                                            <span class="icon-new folder"></span>
-                                            {{ item.name }}
-                                        </button>
-
-                                        {% if item.unread or item.new %}
-                                            <strong class="govuk-tag govuk-tag--blue">Unread</strong>
-                                        {% endif %}
-                                    </form>
-
-                                {% else %}
-                                    <div class="openMe">
+                                    <button type="submit"
+                                            class="govuk-link govuk-link--no-visited-state govuk-button--link">
+                                        <span class="icon-new folder"></span>
                                         {{ item.name }}
-                                        {% if item.unread or item.new %}
-                                            <strong class="govuk-tag govuk-tag--blue">Unread</strong>
-                                        {% endif %}
-                                    </div>
-                                {% endif %}
-                            </td>
-
-                            <!-- Date -->
-                            <td class="govuk-table__cell numeric">
-                                {{ item.date }}
-                            </td>
-
-                            <!-- Status -->
-                            <td class="govuk-table__cell">
-                                {% if item.status %}
-                                    {% if item.status == 'None' %}
-                                        <strong class="govuk-tag govuk-tag--grey">{{ item.status }}</strong>
-                                    {% elseif item.status == 'Used' %}
-                                        <strong class="govuk-tag govuk-tag--blue">{{ item.status }}</strong>
-                                    {% else %}
-                                        <strong class="govuk-tag govuk-tag--yellow">{{ item.status }}</strong>
-                                    {% endif %}
-                                {% endif %}
-                            </td>
-
-                            <!-- Preview for files -->
-                            <td class="govuk-table__cell toggle-panel">
-                                {% if not item.folder %}
-                                    <button type="button"
-                                            class="govuk-button show_material_actions show-case"
-                                            data-id="{{ item.id }}"
-                                            data-doc="{{ item.previewLink }}">
-                                        Preview <i class="fa-solid fa-chevron-down"></i>
                                     </button>
-                                {% endif %}
+                                    <td class="govuk-table__cell"></td>
+                                    <td class="govuk-table__cell"></td>
+                                    <td class="govuk-table__cell"></td>
+
+                                    <!-- {% if item.unread or item.new %}
+                                        <strong class="govuk-tag govuk-tag--blue">Unread</strong>
+                                    {% endif %} -->
+                                </form>
                             </td>
 
+                            {% else %}
+                            <td class="govuk-table__cell title_column">
+                                <div class="openMe">
+                                    {{ item.name }}
+                                    {% if item.unread or item.new %}
+                                        <strong class="govuk-tag govuk-tag--blue">Unread</strong>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Date -->
+                                <td class="govuk-table__cell numeric">
+                                    {{ item.date }}
+                                </td>
+
+                                <!-- Status -->
+                                <td class="govuk-table__cell">
+                                    {% if item.status %}
+                                        {% if item.status == 'None' %}
+                                            <strong class="govuk-tag govuk-tag--grey">{{ item.status }}</strong>
+                                        {% elseif item.status == 'Used' %}
+                                            <strong class="govuk-tag govuk-tag--blue">{{ item.status }}</strong>
+                                        {% else %}
+                                            <strong class="govuk-tag govuk-tag--yellow">{{ item.status }}</strong>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+
+                                <!-- Preview for files -->
+                                <td class="govuk-table__cell toggle-panel">
+                                    {% if not item.folder %}
+                                        <button type="button"
+                                                class="govuk-button show_material_actions show-case"
+                                                data-id="{{ item.id }}"
+                                                data-doc="{{ item.previewLink }}">
+                                            Preview <i class="fa-solid fa-chevron-down"></i>
+                                        </button>
+                                    {% endif %}
+                                </td>
+                            </td>
+                            {% endif %}
                         </tr>
 
                         {% if not item.folder %}
