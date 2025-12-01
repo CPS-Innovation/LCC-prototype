@@ -181,121 +181,121 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // Renaming modal
-(function () {
-  try {
-    const CSS_ID = 'rename-modal-css';
-    if (!document.getElementById(CSS_ID)) {
-      const style = document.createElement('style');
-      style.id = CSS_ID;
-      style.textContent = `
-        .govuk-modal{position:fixed;inset:0;display:none;justify-content:center;align-items:center;z-index:10000}
-        .govuk-modal.is-open{display:flex!important}
-        .govuk-modal__overlay{position:absolute;inset:0;background:rgba(0,0,0,.45)}
-        .govuk-modal__content{position:relative;background:#fff;padding:30px;max-width:520px;width:90%;
-        box-shadow:0 5px 20px rgba(0,0,0,.25);border-top:5px solid #1d70b8;z-index:1}
-      `;
-      document.head.appendChild(style);
-    }
+// (function () {
+//   try {
+//     const CSS_ID = 'rename-modal-css';
+//     if (!document.getElementById(CSS_ID)) {
+//       const style = document.createElement('style');
+//       style.id = CSS_ID;
+//       style.textContent = `
+//         .govuk-modal{position:fixed;inset:0;display:none;justify-content:center;align-items:center;z-index:10000}
+//         .govuk-modal.is-open{display:flex!important}
+//         .govuk-modal__overlay{position:absolute;inset:0;background:rgba(0,0,0,.45)}
+//         .govuk-modal__content{position:relative;background:#fff;padding:30px;max-width:520px;width:90%;
+//         box-shadow:0 5px 20px rgba(0,0,0,.25);border-top:5px solid #1d70b8;z-index:1}
+//       `;
+//       document.head.appendChild(style);
+//     }
 
-    const renameButton = document.getElementById('renameButton');
-    const renameForm = document.getElementById('renameForm');
-    const hiddenInput = document.getElementById('rename_selected');
-    const checkboxes = document.querySelectorAll('#materials_table input[name="materials_document"]');
+//     const renameButton = document.getElementById('renameButton');
+//     const renameForm = document.getElementById('renameForm');
+//     const hiddenInput = document.getElementById('rename_selected');
+//     const checkboxes = document.querySelectorAll('#materials_table input[name="materials_document"]');
 
-    function getSelectedMaterial() {
-      const selected = Array.from(checkboxes).filter(cb => cb.checked);
-      return selected.length === 1 ? selected[0].value.trim() : null;
-    }
+//     function getSelectedMaterial() {
+//       const selected = Array.from(checkboxes).filter(cb => cb.checked);
+//       return selected.length === 1 ? selected[0].value.trim() : null;
+//     }
 
-    function updateRenameState() {
-      const selected = Array.from(checkboxes).filter(cb => cb.checked);
-      if (selected.length === 1) {
-        renameButton.classList.remove('govuk-button--disabled');
-        renameButton.removeAttribute('disabled');
-      } else {
-        renameButton.classList.add('govuk-button--disabled');
-        renameButton.setAttribute('disabled', 'disabled');
-      }
-    }
-    checkboxes.forEach(cb => cb.addEventListener('change', updateRenameState));
+//     function updateRenameState() {
+//       const selected = Array.from(checkboxes).filter(cb => cb.checked);
+//       if (selected.length === 1) {
+//         renameButton.classList.remove('govuk-button--disabled');
+//         renameButton.removeAttribute('disabled');
+//       } else {
+//         renameButton.classList.add('govuk-button--disabled');
+//         renameButton.setAttribute('disabled', 'disabled');
+//       }
+//     }
+//     checkboxes.forEach(cb => cb.addEventListener('change', updateRenameState));
 
-    renameButton.addEventListener('click', function (e) {
-      e.preventDefault();
-      const selectedName = getSelectedMaterial();
-      if (!selectedName) return;
+//     renameButton.addEventListener('click', function (e) {
+//       e.preventDefault();
+//       const selectedName = getSelectedMaterial();
+//       if (!selectedName) return;
 
-      hiddenInput.value = selectedName;
-      openRenameModal(selectedName);
-    });
+//       hiddenInput.value = selectedName;
+//       openRenameModal(selectedName);
+//     });
 
-    function openRenameModal(selectedName) {
-      let modal = document.getElementById('renameModal');
+//     function openRenameModal(selectedName) {
+//       let modal = document.getElementById('renameModal');
 
-      if (!modal) {
-        modal = document.createElement('div');
-        modal.id = 'renameModal';
-        modal.className = 'govuk-modal is-open';
-        modal.setAttribute('role', 'dialog');
-        modal.setAttribute('aria-modal', 'true');
-        modal.setAttribute('aria-labelledby', 'renameTitle');
+//       if (!modal) {
+//         modal = document.createElement('div');
+//         modal.id = 'renameModal';
+//         modal.className = 'govuk-modal is-open';
+//         modal.setAttribute('role', 'dialog');
+//         modal.setAttribute('aria-modal', 'true');
+//         modal.setAttribute('aria-labelledby', 'renameTitle');
 
-        modal.innerHTML = `
-          <div class="govuk-modal__overlay" data-close></div>
-          <div class="govuk-modal__content">
-            <h2 id="renameTitle" class="govuk-heading-m">Rename material</h2>
-            <form id="renameSubmitForm" action="/version-11/B-off-system-MVP/B-rename-material-save" method="post">
-              <p class="govuk-body">Current name: <strong id="currentMaterialName"></strong></p>
-              <div class="govuk-form-group">
-                <label class="govuk-label" for="newName">New name</label>
-                <input class="govuk-input" id="newName" name="newName" type="text" autocomplete="off">
-                <input type="hidden" name="rename_selected" value="">
-              </div>
-              <div class="govuk-button-group govuk-!-margin-top-3">
-                <button type="submit" class="govuk-button">Save</button>
-                <a href="#" class="govuk-link" data-close>Cancel</a>
-              </div>
-            </form>
-          </div>
-        `;
-        document.body.appendChild(modal);
-        wireModal(modal);
-      } else {
-        modal.classList.add('is-open');
-        modal.removeAttribute('hidden');
-      }
+//         modal.innerHTML = `
+//           <div class="govuk-modal__overlay" data-close></div>
+//           <div class="govuk-modal__content">
+//             <h2 id="renameTitle" class="govuk-heading-m">Rename material</h2>
+//             <form id="renameSubmitForm" action="/version-11/B-off-system-MVP/B-rename-material-save" method="post">
+//               <p class="govuk-body">Current name: <strong id="currentMaterialName"></strong></p>
+//               <div class="govuk-form-group">
+//                 <label class="govuk-label" for="newName">New name</label>
+//                 <input class="govuk-input" id="newName" name="newName" type="text" autocomplete="off">
+//                 <input type="hidden" name="rename_selected" value="">
+//               </div>
+//               <div class="govuk-button-group govuk-!-margin-top-3">
+//                 <button type="submit" class="govuk-button">Save</button>
+//                 <a href="#" class="govuk-link" data-close>Cancel</a>
+//               </div>
+//             </form>
+//           </div>
+//         `;
+//         document.body.appendChild(modal);
+//         wireModal(modal);
+//       } else {
+//         modal.classList.add('is-open');
+//         modal.removeAttribute('hidden');
+//       }
 
-      // Set values dynamically
-      modal.querySelector('#currentMaterialName').textContent = selectedName;
-      modal.querySelector('input[name="rename_selected"]').value = selectedName;
-      modal.querySelector('#newName').value = selectedName;
+//       // Set values dynamically
+//       modal.querySelector('#currentMaterialName').textContent = selectedName;
+//       modal.querySelector('input[name="rename_selected"]').value = selectedName;
+//       modal.querySelector('#newName').value = selectedName;
 
-      // Focus input
-      setTimeout(() => modal.querySelector('#newName')?.focus(), 0);
-    }
+//       // Focus input
+//       setTimeout(() => modal.querySelector('#newName')?.focus(), 0);
+//     }
 
-    function wireModal(modal) {
-      modal.addEventListener('click', (e) => {
-        if (e.target.closest('[data-close]')) {
-          e.preventDefault();
-          closeModal(modal);
-        }
-      });
+//     function wireModal(modal) {
+//       modal.addEventListener('click', (e) => {
+//         if (e.target.closest('[data-close]')) {
+//           e.preventDefault();
+//           closeModal(modal);
+//         }
+//       });
 
-      // ESC to close
-      document.addEventListener('keydown', escHandler);
-      function escHandler(e) {
-        if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal(modal);
-      }
+//       // ESC to close
+//       document.addEventListener('keydown', escHandler);
+//       function escHandler(e) {
+//         if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal(modal);
+//       }
 
-      function closeModal(m) {
-        m.classList.remove('is-open');
-        m.setAttribute('hidden', '');
-      }
-    }
-  } catch (err) {
-    console.error('Rename modal error:', err);
-  }
-})();
+//       function closeModal(m) {
+//         m.classList.remove('is-open');
+//         m.setAttribute('hidden', '');
+//       }
+//     }
+//   } catch (err) {
+//     console.error('Rename modal error:', err);
+//   }
+// })();
 
 // ---------------------------
 // Rename using selected item
@@ -305,20 +305,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const renameBtn = document.getElementById('renameButton');
     if (!renameBtn) return;
 
-    renameBtn.addEventListener('click', function () {
+    renameBtn.addEventListener('click', function (e) {
+        e.preventDefault();
 
-        // Find the selected checkbox (single-selection only)
         const selected = document.querySelector('input[name="materials_document"]:checked');
 
         if (!selected) {
             console.warn("Rename attempted but no material selected");
+            alert("Select one file or folder to rename.");
             return;
         }
 
-        // The material ID is the checkbox id
-        const materialId = selected.id;
+        // ID now comes from the checkbox VALUE
+        const materialId = selected.value;
 
-        // Redirect to rename page
         window.location.href = `/version-11/B-off-system-MVP/rename?id=${materialId}`;
     });
 
