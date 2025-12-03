@@ -1,4 +1,5 @@
 ///////////////////////////////////////////////////// Monica CODE - START /////////////////////////////////////////////////////
+console.log("materials.js loaded!");
 
 // Make it global so inline onclick can see it
 window.openMaterial = function (event) {
@@ -1626,15 +1627,102 @@ function closeNotesModal() {
 })();
 
 
-const search = (req.session.data.filtersSearch || "").toLowerCase();
+// Wrong place here, it belongs in routes. Commenting it didn't break anything.
+// const search = (req.session.data.filtersSearch || "").toLowerCase();
 
-groupedSearchResults = groupedSearchResults.map(entry => {
-    const folder = entry.folder;
-    const folderName = folder.name.toLowerCase();
+// groupedSearchResults = groupedSearchResults.map(entry => {
+//     const folder = entry.folder;
+//     const folderName = folder.name.toLowerCase();
 
-    return {
-        ...entry,
-        folderMatchesSearch: search && folderName.includes(search)
-    };
-});
+//     return {
+//         ...entry,
+//         folderMatchesSearch: search && folderName.includes(search)
+//     };
+// });
 
+
+function getSelectedMaterialIds() {
+  return Array.from(
+    document.querySelectorAll('input[name="materials_document"]:checked')
+  ).map(x => x.value);
+}
+
+
+// … existing materials.js code …
+
+// ----------------------------------------
+// COPY + MOVE MODE (Layer 2)
+// ----------------------------------------
+
+(function() {
+     console.log("Copy code is running");
+     document.body.dataset.materialsMode = "copy";
+
+     const copyBtn = document.getElementById('copyButton');
+     const moveBtn = document.getElementById('moveButton');
+     const toggleBtn = document.getElementById('show_Materials_Actions');
+
+     function getSelectedMaterialIds() {
+          return Array.from(
+               document.querySelectorAll('input[name="materials_document"]:checked')
+          ).map(x => x.value);
+     }
+
+     function activateMode(mode) {
+          if (toggleBtn) toggleBtn.click();
+
+          document.querySelectorAll('.show_material_actions').forEach(btn => btn.remove());
+
+          const selected = getSelectedMaterialIds();
+
+          if (selected.length === 0) {
+               alert("Select at least one item first.");
+               return;
+          }
+
+          window.materialsSelectedForAction = selected;
+
+          document.querySelectorAll('.material-row[data-folder="true"]').forEach(row => {
+               const tds = row.querySelectorAll('td');
+               const lastCell = tds[tds.length - 1];
+
+               if (lastCell.querySelector('.here-action')) return;
+
+               const link = document.createElement('a');
+               link.href = '#';
+               link.className = 'govuk-link here-action';
+               link.textContent = (mode === 'copy') ? 'Copy here' : 'Move here';
+
+               link.addEventListener('click', function(ev) {
+               ev.preventDefault();
+               const dest = row.dataset.id;
+               submitAction(mode, dest);
+               });
+
+               lastCell.appendChild(link);
+          });
+     }
+
+     function submitAction(mode, destinationFolder) {
+          const selected = window.materialsSelectedForAction || [];
+
+          const form = document.createElement('form');
+          form.method = 'post';
+
+          form.action = (mode === 'copy')
+               ? '/version-11/B-off-system-MVP/copy-material'
+               : '/version-11/B-off-system-MVP/move-material';
+
+          form.innerHTML = `
+               <input type="hidden" name="selected_ids" value="${selected.join(',')}">
+               <input type="hidden" name="destinationFolder" value="${destinationFolder}">
+          `;
+
+          document.body.appendChild(form);
+          form.submit();
+     }
+
+     if (copyBtn) copyBtn.addEventListener('click', () => activateMode('copy'));
+     if (moveBtn) moveBtn.addEventListener('click', () => activateMode('move'));
+
+})();

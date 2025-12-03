@@ -49,8 +49,7 @@
                                       style="display:inline;">
                                     <input type="hidden" name="folderId" value="{{ crumb.id }}">
                                     <input type="hidden" name="folderName" value="{{ crumb.name }}">
-                                    <button type="submit"
-                                            class="govuk-breadcrumbs__link breadcrumb-button">
+                                    <button type="submit" class="govuk-breadcrumbs__link breadcrumb-button">
                                         {{ crumb.name }}
                                     </button>
                                 </form>
@@ -83,8 +82,19 @@
                             </button>
 
                             <div class="hidden_buttons" id="materials_Actions">
+                                <button id="copyButton" class="govuk-button" type="button">Copy</button>
+                                <button id="moveButton" class="govuk-button" type="button">Move</button>
+                                
                                 <button id="renameButton" class="govuk-button govuk-button--disabled">
                                     Rename
+                                </button>
+
+                                <button class="govuk-button mark_as_Read" type="button">
+                                    Mark as read
+                                </button>
+
+                                <button class="govuk-button" type="button">
+                                    Mark as unused
                                 </button>
 
                                 <form id="discardForm"
@@ -99,15 +109,6 @@
                                     </button>
                                 </form>
 
-                                <button class="govuk-button mark_as_Read govuk-button--disabled"
-                                        type="button">
-                                    Mark as read
-                                </button>
-
-                                <button class="govuk-button govuk-button--disabled"
-                                        type="button" disabled>
-                                    Mark as unused
-                                </button>
                             </div>
 
                             <button type="button"
@@ -138,7 +139,7 @@
             <!-- MAIN TABLE -->
             <table class="govuk-table sortable" id="materials_table">
                 <thead class="govuk-table__head">
-                    <tr class="govuk-table__row">
+                    <tr class="govuk-table__row material-row" data-id="{{ item.id }}" data-folder="{{ item.folder }}">
 
                         <th scope="col" class="govuk-table__header">
                             <div class="govuk-checkboxes govuk-checkboxes--small MT-15">
@@ -176,7 +177,7 @@
 
                     {% for item in children %}
 
-                        <tr class="govuk-table__row">
+                        <tr class="govuk-table__row material-row" data-id="{{ item.id }}" data-folder="{{ item.folder }}">
 
                             <!-- Checkbox -->
                             <td class="govuk-table__cell">
@@ -208,7 +209,7 @@
                                     </button>
                                     <td class="govuk-table__cell"></td>
                                     <td class="govuk-table__cell"></td>
-                                    <td class="govuk-table__cell"></td>
+                                    <td class="govuk-table__cell preview-cell"></td>
 
                                     <!-- {% if item.unread or item.new %}
                                         <strong class="govuk-tag govuk-tag--blue">Unread</strong>
