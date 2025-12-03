@@ -1373,7 +1373,7 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
 
     // Remove selected materials entirely
     req.session.data.materials = req.session.data.materials.filter(
-        m => !selected.includes(m.name)
+        m => !selected.includes(String(m.id))
     );
 
 //  (Optional) You could store the discard reason somewhere for audit, e.g.:
@@ -1486,8 +1486,51 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
 //   res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 // });
 
+router.post('/B-off-system-MVP/copy-material', function (req, res) {
+  const ids = req.body.selected_ids
+    ? req.body.selected_ids.split(',').map(x => String(x).trim())
+    : [];
+
+  const destinationFolderId = req.body.destinationFolder;
+
+  console.log("Copying:", ids, "into folder", destinationFolderId);
+
+  // get the array
+  const materials = req.session.data.materials;
+
+  // copy items (duplicate with new parentId)
+  ids.forEach(id => {
+    const original = materials.find(m => String(m.id) === id);
+    if (original) {
+      const clone = { ...original };
+      clone.id = Date.now() + Math.random(); // simple unique ID
+      clone.parentId = destinationFolderId;
+      materials.push(clone);
+    }
+  });
+
+  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+});
 
 
+router.post('/B-off-system-MVP/move-material', function (req, res) {
+  const ids = req.body.selected_ids
+    ? req.body.selected_ids.split(',').map(x => String(x).trim())
+    : [];
+
+  const destinationFolderId = req.body.destinationFolder;
+
+  console.log("Moving:", ids, "into folder", destinationFolderId);
+
+  req.session.data.materials = req.session.data.materials.map(m => {
+    if (ids.includes(String(m.id))) {
+      return { ...m, parentId: destinationFolderId };
+    }
+    return m;
+  });
+
+  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+});
 
 
 module.exports = router

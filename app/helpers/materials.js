@@ -21,7 +21,7 @@ module.exports = function(materials) {
 
     // Always ensure shared drive
     if (!crumbs.length || crumbs[0].id !== 0) {
-      crumbs.unshift({ id: 0, name: "Shared drive" });
+      crumbs.unshift({ id: 0, name: "Home: Thundercat" });
     }
 
     return crumbs;
