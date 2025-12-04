@@ -1179,6 +1179,435 @@ module.exports = {
     folder: false,
     level: 2
   },
+
+  /* ======== FOLDERS BELOW — cleaned ======== */
+
+  {
+    id: 1000,
+    name: '1. Case management',
+    date: null,
+    status: null,
+    new: true,
+    docLink: null,
+    previewLink: null,
+    parentId: 0,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1001,
+    name: '2. Conference hearing notes',
+    date: null,
+    status: null,
+    new: false,
+    docLink: null,
+    previewLink: null,
+    parentId: 0,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1002,
+    name: '3. Experts',
+    date: null,
+    status: null,
+    new: false,
+    docLink: null,
+    previewLink: null,
+    parentId: 0,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1003,
+    name: '4. Counsel',
+    date: null,
+    status: null,
+    new: false,
+    docLink: null,
+    previewLink: null,
+    parentId: 0,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1004,
+    name: '5. Correspondence',
+    date: null,
+    status: null,
+    new: false,
+    docLink: null,
+    previewLink: null,
+    parentId: 0,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1005,
+    name: '6. Disclosure',
+    date: null,
+    status: null,
+    new: false,
+    docLink: null,
+    previewLink: null,
+    parentId: 0,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1006,
+    name: '7. Finance',
+    date: null,
+    status: null,
+    new: false,
+    docLink: null,
+    previewLink: null,
+    parentId: 0,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1007,
+    name: '8. Lawyer working copies',
+    date: null,
+    status: null,
+    new: false,
+    docLink: null,
+    previewLink: null,
+    parentId: 0,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1008,
+    name: '9. PO working copies',
+    date: null,
+    status: null,
+    new: false,
+    docLink: null,
+    previewLink: null,
+    parentId: 0,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1009,
+    name: '10. Police',
+    date: null,
+    status: null,
+    new: false,
+    docLink: null,
+    previewLink: null,
+    parentId: 0,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1010,
+    name: '11. Media',
+    date: null,
+    status: null,
+    new: false,
+    docLink: null,
+    previewLink: null,
+    parentId: 0,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1011,
+    name: '12. Victims and Witnesses',
+    date: null,
+    status: null,
+    new: false,
+    docLink: null,
+    previewLink: null,
+    parentId: 0,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1012,
+    name: '13. DCS',
+    date: null,
+    status: null,
+    new: false,
+    docLink: null,
+    previewLink: null,
+    parentId: 0,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1013,
+    name: '14. Magistrates Court',
+    date: null,
+    status: null,
+    new: false,
+    docLink: null,
+    previewLink: null,
+    parentId: 0,
+    folder: true,
+    level: 1
+  },
+  {
+    id: 1014,
+    name: '15. IDPC',
+    date: null,
+    status: null,
+    new: false,
+    docLink: null,
+    previewLink: null,
+    parentId: 0,
+    folder: true,
+    level: 1
+  }
+],
+
+"materials-files": [
+  {
+    id: 1,
+    name: 'MCLOVE MG3',
+    date: '18 May 2022',
+    status: 'None',
+    new: false,
+    docLink: 'MCLOVEMG3.pdf',
+    previewLink: '/files/MCLOVEMG3.pdf',
+    parentId: 1000,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 2,
+    name: 'Case overview and officer comments',
+    date: '9 Aug 2022',
+    status: 'None',
+    new: true,
+    docLink: 'CM01.pdf',
+    previewLink: '/files/CM01.pdf',
+    parentId: 1000,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 3,
+    name: 'MG05 MCLOVE',
+    date: '14 Jan 2023',
+    status: 'Used',
+    new: true,
+    docLink: 'MG05MCLOVE.pdf',
+    previewLink: '/files/MG05MCLOVE.pdf',
+    parentId: 1000,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 4,
+    name: 'MG06 3 June',
+    date: '2 Mar 2023',
+    status: 'Used',
+    new: true,
+    docLink: 'MG06_3June.pdf',
+    previewLink: '/files/MG06_3June.pdf',
+    parentId: 1005,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 5,
+    name: 'MG06 10 June',
+    date: '24 Jul 2023',
+    status: 'Used',
+    new: true,
+    docLink: 'MG06_10june.pdf',
+    previewLink: '/files/MG06_10june.pdf',
+    parentId: 1005,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 6,
+    name: 'stmt BLAYNEE 2034 1 JUNE mg11',
+    date: '11 Oct 2023',
+    status: 'Used',
+    new: true,
+    docLink: 'stmt_BLAYNEE_2034_1_JUNE_mg11.pdf',
+    previewLink: '/files/stmt_BLAYNEE_2034_1_JUNE_mg11.pdf',
+    parentId: 1011,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 7,
+    name: 'stmt Lucy Doyle MG11',
+    date: '6 Dec 2023',
+    status: 'Used',
+    new: true,
+    docLink: 'stmt_Lucy_Doyle_MG11.pdf',
+    previewLink: '/files/stmt_Lucy_Doyle_MG11.pdf',
+    parentId: 1011,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 8,
+    name: 'stmt Shelagh McLove MG11',
+    date: '9 Jan 2024',
+    status: 'Used',
+    new: true,
+    docLink: 'stmt_Shelagh_McLove_MG11.pdf',
+    previewLink: '/files/stmt_Shelagh_McLove_MG11.pdf',
+    parentId: 1011,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 9,
+    name: 'Shelagh McLove VPS mg11',
+    date: '27 Feb 2024',
+    status: 'Used',
+    new: true,
+    docLink: 'Shelagh_McLove_VPS_mg11.pdf',
+    previewLink: '/files/Shelagh_McLove_VPS_mg11.pdf',
+    parentId: 1011,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 10,
+    name: 'MG11 Shelagh MCLOVE retraction',
+    date: '12 Apr 2024',
+    status: 'Used',
+    new: false,
+    docLink: 'MG11_Shelagh_MCLOVE_retraction.pdf',
+    previewLink: '/files/MG11_Shelagh_MCLOVE_retraction.pdf',
+    parentId: 1011,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 11,
+    name: 'MCLOVE MG12',
+    date: '23 May 2024',
+    status: 'Used',
+    new: false,
+    docLink: 'MG12.pdf',
+    previewLink: '/files/MG12.pdf',
+    parentId: 1005,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 12,
+    name: 'MCLOVE MG00',
+    date: '1 Jul 2024',
+    status: 'Used',
+    new: true,
+    docLink: 'MG00.pdf',
+    previewLink: '/files/MG00.pdf',
+    parentId: 1005,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 13,
+    name: 'UNUSED 1 - STORM LOG 1881 01.6.20 - EDITED 2020-11-23 MCLOVE',
+    date: '15 Aug 2024',
+    status: 'Unused',
+    new: false,
+    docLink: 'UNUSED_1_STORM_LOG_1881_01.6.20_EDITED_2020-11-23_MCLOVE.pdf',
+    previewLink: '/files/UNUSED_1_STORM_LOG_1881_01.6.20_EDITED_2020-11-23_MCLOVE.pdf',
+    parentId: 1005,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 14,
+    name: 'SDC_items to_be Disclosed MCLOVE',
+    date: '20 Sep 2024',
+    status: 'Unused',
+    new: true,
+    docLink: 'SDC_items_to_be_Disclosed_MCLOVE.pdf',
+    previewLink: '/files/SDC_items_to_be_Disclosed_MCLOVE.pdf',
+    parentId: 1005,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 15,
+    name: 'MG20_5_JUNE',
+    date: '2 Nov 2024',
+    status: 'Unused',
+    new: true,
+    docLink: 'MG20_5_JUNE.pdf',
+    previewLink: '/files/MG20_5_JUNE.pdf',
+    parentId: 1005,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 16,
+    name: 'MG20_10_JUNE',
+    date: '11 Dec 2024',
+    status: 'Unused',
+    new: true,
+    docLink: 'MG20_10_JUNE.pdf',
+    previewLink: '/files/MG20_10_JUNE.pdf',
+    parentId: 1005,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 17,
+    name: 'PRE CONS D',
+    date: '29 Jan 2025',
+    status: 'Used',
+    new: true,
+    docLink: 'PRE_CONS_D.pdf',
+    previewLink: '/files/PRE_CONS_D.pdf',
+    parentId: 1000,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 18,
+    name: 'Asset Rec 1',
+    date: '19 Mar 2025',
+    status: 'None',
+    new: true,
+    docLink: 'defendants.pdf',
+    previewLink: '/files/Asset-Rec-1.png',
+    parentId: 1000,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 19,
+    name: 'MG11 - 1',
+    date: '22 Jun 2025',
+    status: 'None',
+    new: true,
+    docLink: 'MG11_1.pdf',
+    previewLink: '/files/MG11_1.pdf',
+    parentId: 1011,
+    folder: false,
+    level: 2
+  },
+  {
+    id: 20,
+    name: 'Exhibit - 1',
+    date: '14 Aug 2025',
+    status: 'None',
+    new: true,
+    docLink: 'MG12.pdf',
+    previewLink: '/files/MG11_2.pdf',
+    parentId: 1011,
+    folder: false,
+    level: 2
+  },
+
+  /* FOLDERS (unchanged) */
+
   {
     id: 1000,
     name: '1. Case management',
@@ -1361,6 +1790,8 @@ module.exports = {
   }
 ],
 
+// "materialsMode": "copy",
+
 "currentLevel": 1,
 "selectedFolder": 0,
 
@@ -1368,5 +1799,6 @@ module.exports = {
 "currentFolderId": 0,
 "breadcrumbs": ['Shared drive > Thunderstruck'],
 "lastdiscard": []
+
 
 }

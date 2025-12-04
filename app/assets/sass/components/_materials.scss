@@ -1935,7 +1935,35 @@ table#materials_table td .govuk-tag {
     float: none !important;
 }
 
+/* Right-align the Copy/Move button in its cell */
+.materials-action-cell {
+  text-align: right;
+  vertical-align: middle;
+  white-space: nowrap;
+}
 
+/* Make sure forms in table cells don't add weird spacing */
+.materials-action-cell form {
+  display: inline-block;
+  margin: 0;
+}
+
+.folder-inline-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* space between button and folder name */
+}
+
+.inline-action-form,
+.inline-folder-form {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+
+.folder-link {
+  vertical-align: middle;
+}
 
 /* ============================================================
    MATERIALS TAB — SPACING NORMALISATION
