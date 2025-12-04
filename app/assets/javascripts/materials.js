@@ -1662,6 +1662,24 @@ function getSelectedMaterialIds() {
      const moveBtn = document.getElementById('moveButton');
      const toggleBtn = document.getElementById('show_Materials_Actions');
 
+     // function updateButtonState() {
+     //      const selected = Array.from(checkboxes).filter(cb => cb.checked);
+     //      if (selected.length > 0) {
+     //           copyButton.classList.remove('govuk-button--disabled');
+     //           copyButton.removeAttribute('disabled');
+     //           moveButton.classList.remove('govuk-button--disabled');
+     //           moveButton.removeAttribute('disabled');
+     //      } else {
+     //           copyButton.classList.add('govuk-button--disabled');
+     //           copyButton.setAttribute('disabled', 'disabled');
+     //           moveButton.classList.add('govuk-button--disabled');
+     //           moveButton.setAttribute('disabled', 'disabled');
+     //      }
+     // }
+
+     // checkboxes.forEach(cb => cb.addEventListener('change', updateButtonState));
+
+
      function getSelectedMaterialIds() {
           return Array.from(
                document.querySelectorAll('input[name="materials_document"]:checked')
@@ -1694,9 +1712,9 @@ function getSelectedMaterialIds() {
                link.textContent = (mode === 'copy') ? 'Copy here' : 'Move here';
 
                link.addEventListener('click', function(ev) {
-               ev.preventDefault();
-               const dest = row.dataset.id;
-               submitAction(mode, dest);
+                    ev.preventDefault();
+                    const dest = row.dataset.id;
+                    submitAction(mode, dest);
                });
 
                lastCell.appendChild(link);
@@ -1726,3 +1744,24 @@ function getSelectedMaterialIds() {
      if (moveBtn) moveBtn.addEventListener('click', () => activateMode('move'));
 
 })();
+
+
+function getSelectedMaterialIds() {
+  return Array.from(document.querySelectorAll('input[name="materials_document"]:checked'))
+    .map(cb => cb.value)
+    .join(',');
+}
+
+const copyForm = document.getElementById('copyForm');
+if (copyForm) {
+  copyForm.addEventListener('submit', () => {
+    document.getElementById('copy_selected_ids').value = getSelectedMaterialIds();
+  });
+}
+
+const moveForm = document.getElementById('moveForm');
+if (moveForm) {
+  moveForm.addEventListener('submit', () => {
+    document.getElementById('move_selected_ids').value = getSelectedMaterialIds();
+  });
+}

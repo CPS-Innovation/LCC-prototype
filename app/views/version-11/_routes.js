@@ -1328,12 +1328,8 @@ router.post('/B-off-system-MVP/new-folder', function(req, res) {
         name: newFolderName,
         type: null,
         category: null,
-        date: new Date().toLocaleDateString('en-GB', {
-            day: '2-digit',
-            month: 'short',
-            year: 'numeric'
-            }),
-        status: "None",
+        date: null,
+        status: null,
         new: false,
         docLink: null,
         previewLink: null,
@@ -1486,6 +1482,16 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
 //   res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 // });
 
+router.post('/B-off-system-MVP/set-materials-mode', function (req, res) {
+  const mode = req.body.mode;
+  const selectedIds = req.body.selected_ids || '';
+
+  req.session.data.materialsMode = mode || null;
+  req.session.data.materialsSelected = selectedIds;   // <-- THIS LINE IS THE KEY
+
+  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+});
+
 router.post('/B-off-system-MVP/copy-material', function (req, res) {
   const ids = req.body.selected_ids
     ? req.body.selected_ids.split(',').map(x => String(x).trim())
@@ -1495,41 +1501,52 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
 
   console.log("Copying:", ids, "into folder", destinationFolderId);
 
-  // get the array
   const materials = req.session.data.materials;
 
-  // copy items (duplicate with new parentId)
+  // Duplicate each selected item
   ids.forEach(id => {
     const original = materials.find(m => String(m.id) === id);
     if (original) {
       const clone = { ...original };
-      clone.id = Date.now() + Math.random(); // simple unique ID
+      clone.id = Date.now() + Math.random();
       clone.parentId = destinationFolderId;
       materials.push(clone);
     }
   });
 
+  // CLEAR MODE AFTER ACTION
+  req.session.data.materialsMode = null;
+  req.session.data.materialsSelected = '';
+
+  req.session.data.copySuccess = true;
+
   res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
 
-
 router.post('/B-off-system-MVP/move-material', function (req, res) {
-  const ids = req.body.selected_ids
-    ? req.body.selected_ids.split(',').map(x => String(x).trim())
-    : [];
+    console.log("Move material request body:", req.body);
+    const ids = req.body.selected_ids
+        ? req.body.selected_ids.split(',').map(x => String(x).trim())
+        : [];
 
-  const destinationFolderId = req.body.destinationFolder;
+    const destinationFolderId = req.body.destinationFolder;
 
-  console.log("Moving:", ids, "into folder", destinationFolderId);
+    console.log("Moving:", ids, "into folder", destinationFolderId);
 
-  req.session.data.materials = req.session.data.materials.map(m => {
-    if (ids.includes(String(m.id))) {
-      return { ...m, parentId: destinationFolderId };
-    }
-    return m;
-  });
+    req.session.data.materials = req.session.data.materials.map(m => {
+        if (ids.includes(String(m.id))) {
+        return { ...m, parentId: destinationFolderId };
+        }
+        return m;
+    });
 
-  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+      // CLEAR MODE AFTER ACTION
+    req.session.data.materialsMode = null;
+    req.session.data.materialsSelected = '';
+
+    req.session.data.moveSuccess = true;
+
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
 
 
