@@ -1,4 +1,33 @@
 <!-- ///////////////////////////////// TAB 2 - CONTENT - START ///////////////////////////////// -->
+{% if copySuccess %}
+    <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+            Success
+            </h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+            <h3 class="govuk-notification-banner__heading">
+            The selected materials have been copied successfully.
+            </h3>
+            <!-- <p class="govuk-body">Contact <a class="govuk-notification-banner__link" href="#">example@department.gov.uk</a> if you think there’s a problem.</p> -->
+        </div>
+    </div>
+{% elseif moveSuccess %}
+    <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+            Success
+            </h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+            <h3 class="govuk-notification-banner__heading">
+            The selected materials have been moved successfully.
+            </h3>
+            <!-- <p class="govuk-body">Contact <a class="govuk-notification-banner__link" href="#">example@department.gov.uk</a> if you think there’s a problem.</p> -->
+        </div>
+    </div>
+{% endif %}
 
 <div class="govuk-grid-row">
     
@@ -154,12 +183,29 @@
 
         {% else %}
 
+        {% if data.materialsMode %}
+            <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-4">
+                You're choosing a folder to <strong>{{ data.materialsMode }}</strong> materials to.
+                <form method="post"
+                    action="/version-11/B-off-system-MVP/set-materials-mode"
+                    style="display:inline;">
+                    <input type="hidden" name="mode" value="">
+                    <input type="hidden" name="selected_ids" value="">
+                    <button type="submit"
+                            class="govuk-link govuk-link--no-visited-state govuk-!-margin-left-1">
+                        Cancel {{ data.materialsMode }}
+                    </button>
+                </form>
+            </div>
+        {% endif %}
+
             <!-- MAIN TABLE -->
             <table class="govuk-table sortable" id="materials_table">
                 <thead class="govuk-table__head">
                     <tr class="govuk-table__row material-row" data-id="{{ item.id }}" data-folder="{{ item.folder }}">
 
                         <th scope="col" class="govuk-table__header">
+                        {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
                             <div class="govuk-checkboxes govuk-checkboxes--small MT-15">
                                 <div class="govuk-checkboxes__item">
                                     <input class="govuk-checkboxes__input"
@@ -169,6 +215,7 @@
                                            for="materials_documents_ALL"></label>
                                 </div>
                             </div>
+                        {% endif %}
                         </th>
 
                         <th scope="col" class="govuk-table__header">
@@ -192,7 +239,7 @@
 
                 <!-- Children rendering from helper -->
                 <tbody class="govuk-table__body">
-
+                    
                     {% for item in children %}
                         {% if item.folder %}
                         {# =============== FOLDER ROW =============== #}
@@ -201,6 +248,7 @@
 
                             <!-- Checkbox -->
                             <td class="govuk-table__cell">
+                            {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
                                 <div class="govuk-checkboxes govuk-checkboxes--small">
                                     <div class="govuk-checkboxes__item">
                                         <input class="govuk-checkboxes__input"
@@ -211,6 +259,7 @@
                                         <label class="govuk-label govuk-checkboxes__label" for="mat_{{ item.id }}"></label>
                                     </div>
                                 </div>
+                            {% endif %}
                             </td>
 
                             <!-- Folder title (clickable) -->
@@ -218,33 +267,31 @@
                             <div class="folder-inline-wrapper">
 
                                 {# COPY / MOVE BUTTON - only show when mode active #}
-                                {% if data.materialsMode == "copy" %}
-                                    <form method="post"
-                                        action="/version-11/B-off-system-MVP/copy-material"
-                                        class="inline-action-form">
+                                {% if item.folder and data.materialsMode and ((item.id | string) not in data.materialsSelected) %}
 
-                                        {# selected items: same value your Copy button uses #}
-                                        <input type="hidden" name="selected_ids" value="{{ data.materialsSelected }}">
+                                    {% if data.materialsMode == "copy" %}
+                                        <form method="post"
+                                            action="/version-11/B-off-system-MVP/copy-material"
+                                            class="inline-action-form">
+                                            <input type="hidden" name="selected_ids" value="{{ data.materialsSelected }}">
+                                            <input type="hidden" name="destinationFolder" value="{{ item.id }}">
+                                            <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0">
+                                                Copy here
+                                            </button>
+                                        </form>
 
-                                        {# THIS folder is the destination #}
-                                        <input type="hidden" name="destinationFolder" value="{{ item.id }}">
+                                    {% elseif data.materialsMode == "move" %}
+                                        <form method="post"
+                                            action="/version-11/B-off-system-MVP/move-material"
+                                            class="inline-action-form">
+                                            <input type="hidden" name="selected_ids" value="{{ data.materialsSelected }}">
+                                            <input type="hidden" name="destinationFolder" value="{{ item.id }}">
+                                            <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0">
+                                                Move here
+                                            </button>
+                                        </form>
+                                    {% endif %}
 
-                                        <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0">
-                                            Copy here
-                                        </button>
-                                    </form>
-                                {% elseif data.materialsMode == "move" %}
-                                    <form method="post"
-                                        action="/version-11/B-off-system-MVP/move-material"
-                                        class="inline-action-form">
-
-                                        <input type="hidden" name="selected_ids" value="{{ data.materialsSelected }}">
-                                        <input type="hidden" name="destinationFolder" value="{{ item.id }}">
-
-                                        <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0">
-                                            Move here
-                                        </button>
-                                    </form>                                
                                 {% endif %}
 
                                 <form method="post" action="/version-11/B-off-system-MVP/case-overview-folder">
@@ -272,21 +319,6 @@
 
                             <!-- Copy / Move here action -->
                             <td class="govuk-table__cell materials-action-cell">
-                                <!-- {% if data.materialsMode == "copy" %}
-                                    <form method="post" action="/version-11/B-off-system-MVP/copy-here">
-                                        <input type="hidden" name="targetFolderId" value="{{ item.id }}">
-                                        <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0">
-                                            Copy here
-                                        </button>
-                                    </form>
-                                {% elseif data.materialsMode == "move" %}
-                                    <form method="post" action="/version-11/B-off-system-MVP/move-here">
-                                        <input type="hidden" name="targetFolderId" value="{{ item.id }}">
-                                        <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0">
-                                            Move here
-                                        </button>
-                                    </form>
-                                {% endif %} -->
                             </td>
                         </tr>
 
@@ -296,6 +328,7 @@
 
                             <!-- Checkbox -->
                             <td class="govuk-table__cell">
+                            {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
                                 <div class="govuk-checkboxes govuk-checkboxes--small">
                                     <div class="govuk-checkboxes__item">
                                         <input class="govuk-checkboxes__input"
@@ -306,6 +339,7 @@
                                         <label class="govuk-label govuk-checkboxes__label" for="mat_{{ item.id }}"></label>
                                     </div>
                                 </div>
+                            {% endif %}
                             </td>
                             <!-- File title -->
                             <td class="govuk-table__cell title_column">

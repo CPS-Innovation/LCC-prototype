@@ -1765,3 +1765,4 @@ if (moveForm) {
     document.getElementById('move_selected_ids').value = getSelectedMaterialIds();
   });
 }
+

@@ -1089,26 +1089,35 @@ router.post('/includes/materials/materials-filter', function (req, res) {
 const createMaterialsUtils = require('../../helpers/materials.js');
 
 router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
+    const data = req.session.data;
+    const materials = data.materials || [];
 
-  const data = req.session.data;
-  const materials = data.materials || [];
+    // Extract success flags for THIS render only
+    const copySuccess = data.copySuccess || false;
+    const moveSuccess = data.moveSuccess || false;
 
-  // Attach helper functions safely
-  const utils = createMaterialsUtils(materials);
+    // Immediately reset so banner NEVER reappears after this render
+    req.session.data.copySuccess = false;
+    req.session.data.moveSuccess = false;
 
-  // Fallback: default to shared drive
-  const folderId = Number(data.folderId) || 0;
+    // Attach helper functions safely
+    const utils = createMaterialsUtils(materials);
 
-  // These do NOT override your session data — they just add new info
-  const children = utils.getChildren(folderId);
-  const breadcrumbs = utils.getBreadcrumbs(folderId);
+    // Fallback: default to shared drive
+    const folderId = Number(data.folderId) || 0;
 
-  res.render('version-11/B-off-system-MVP/03-case-overview', {
-    materials,
-    data,
-    children,
-    breadcrumbs
-  });
+    // These do NOT override your session data — they just add new info
+    const children = utils.getChildren(folderId);
+    const breadcrumbs = utils.getBreadcrumbs(folderId);
+
+    res.render('version-11/B-off-system-MVP/03-case-overview', {
+        materials,
+        data,
+        children,
+        breadcrumbs,
+        copySuccess,
+        moveSuccess
+    });
 });
 
 // Route for the materials page
@@ -1493,6 +1502,7 @@ router.post('/B-off-system-MVP/set-materials-mode', function (req, res) {
 });
 
 router.post('/B-off-system-MVP/copy-material', function (req, res) {
+    req.session.data.moveSuccess = false;
   const ids = req.body.selected_ids
     ? req.body.selected_ids.split(',').map(x => String(x).trim())
     : [];
@@ -1524,6 +1534,7 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
 });
 
 router.post('/B-off-system-MVP/move-material', function (req, res) {
+    req.session.data.copySuccess = false;
     console.log("Move material request body:", req.body);
     const ids = req.body.selected_ids
         ? req.body.selected_ids.split(',').map(x => String(x).trim())
@@ -1540,11 +1551,11 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
         return m;
     });
 
-      // CLEAR MODE AFTER ACTION
+    req.session.data.moveSuccess = true;
+
+    // CLEAR MODE AFTER ACTION
     req.session.data.materialsMode = null;
     req.session.data.materialsSelected = '';
-
-    req.session.data.moveSuccess = true;
 
     res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
