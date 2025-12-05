@@ -1089,35 +1089,56 @@ router.post('/includes/materials/materials-filter', function (req, res) {
 const createMaterialsUtils = require('../../helpers/materials.js');
 
 router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
-    const data = req.session.data;
-    const materials = data.materials || [];
 
-    // Extract success flags for THIS render only
-    const copySuccess = data.copySuccess || false;
-    const moveSuccess = data.moveSuccess || false;
+  const data = req.session.data;
+  const materials = data.materials || [];
 
-    // Immediately reset so banner NEVER reappears after this render
-    req.session.data.copySuccess = false;
-    req.session.data.moveSuccess = false;
+  // Extract flags + lists for THIS render only
+  const copySuccess = data.copySuccess === true;
+  const moveSuccess = data.moveSuccess === true;
 
-    // Attach helper functions safely
-    const utils = createMaterialsUtils(materials);
+  const copyList = data.copyList || [];
+  const moveList = data.moveList || [];
 
-    // Fallback: default to shared drive
-    const folderId = Number(data.folderId) || 0;
+  const copyDestinationName = data.copyDestinationName || null;
+  const moveDestinationName = data.moveDestinationName || null;
 
-    // These do NOT override your session data — they just add new info
-    const children = utils.getChildren(folderId);
-    const breadcrumbs = utils.getBreadcrumbs(folderId);
+  const copyPreviewTree = data.copyPreviewTree || [];
+  const movePreviewTree = data.movePreviewTree || [];
 
-    res.render('version-11/B-off-system-MVP/03-case-overview', {
-        materials,
-        data,
-        children,
-        breadcrumbs,
-        copySuccess,
-        moveSuccess
-    });
+  // Immediately reset so they only show once
+  req.session.data.copySuccess = false;
+  req.session.data.moveSuccess = false;
+  req.session.data.copyList = [];
+  req.session.data.moveList = [];
+  req.session.data.copyDestinationName = null;
+  req.session.data.moveDestinationName = null;
+  req.session.data.copyPreviewTree = [];
+  req.session.data.movePreviewTree = [];
+
+  // Attach helper functions safely
+  const utils = createMaterialsUtils(materials);
+
+  // Fallback: default to shared drive
+  const folderId = Number(data.folderId) || 0;
+
+  const children = utils.getChildren(folderId);
+  const breadcrumbs = utils.getBreadcrumbs(folderId);
+
+  res.render('version-11/B-off-system-MVP/03-case-overview', {
+    materials,
+    data,
+    children,
+    breadcrumbs,
+    copySuccess,
+    moveSuccess,
+    copyList,
+    moveList,
+    copyDestinationName,
+    moveDestinationName,
+    copyPreviewTree,
+    movePreviewTree
+  });
 });
 
 // Route for the materials page
@@ -1238,69 +1259,6 @@ router.post('/B-off-system-MVP/clear-search', function(req, res) {
     res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
 })
 
-
-
-// Add a new folder
-// router.post('/B-off-system-MVP/add-new-folder', function(req, res) {
-//     const newFolderName = req.body.newFolderName?.trim();
-//     if (!newFolderName) return res.redirect('/version-11/B-off-system-MVP/shared-drive');
-
-//     // Make sure materials array exists
-//     req.session.data.materials = req.session.data.materials || [];
-
-//     const materials = req.session.data.materials;
-//     const level = req.body.level || 0;
-    
-//     const parentName = req.body.parentFolder?.trim() || null;
-
-//     console.log("Adding folder:", newFolderName, "at level:", level, "under parent folder:", parentName);
-
-//     let parentFolder = null;
-
-//     if (parentName) {
-//         parentFolder = materials.find(m => m.name === parentName && m.folder);
-//     }
-//     const parentId = parentFolder ? parentFolder.id : 0; 
-
-//     // Determine next ID
-//     //  const lastId = materials.length ? materials[materials.length - 1].id : 1000;
-//     const lastId = materials.length
-//     ? Math.max(...materials.map(m => m.id || 0))
-//     : 1000;
-
-//     // Build new folder object
-//     const newFolder = {
-//         id: lastId + 1,
-//         name: newFolderName,
-//         type: null,
-//         category: null,
-//         date: new Date().toLocaleDateString('en-GB', {
-//             day: 'numeric',
-//             month: 'short',
-//             year: 'numeric'
-//         }),    
-//         status: 'None',
-//         new: true,
-//         docLink: null,
-//         previewLink: null,
-//         parentId: parentId,
-//         folder: true,
-//         level: level
-//     };
-
-//     // Add to session
-//     // materials.push(newFolder);
-//     materials.unshift(newFolder);
-
-//     console.log('✅ New folder added:', newFolder);
-//     res.set('Cache-Control', 'no-store');   
-//     // Redirect back to case overview (reloads tab-manage-materials.html)
-//     res.redirect('/version-11/B-off-system-MVP/03-case-overview');
-// });
-
-// -----------------------------------------------
-// NEW FOLDER (PAGE)
-// -----------------------------------------------
 
 router.get('/B-off-system-MVP/new-folder', function(req, res) {
     console.log("parentId in session:", req.session.data.currentFolder);
@@ -1501,64 +1459,185 @@ router.post('/B-off-system-MVP/set-materials-mode', function (req, res) {
   res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
 
+// Helper: recursively collect ALL descendants of a folder (flat list)
+function getAllDescendants(materials, parentId) {
+  const results = [];
+  const stack = [parentId];
+
+  while (stack.length > 0) {
+    const currentId = stack.pop();
+
+    const children = materials.filter(m => String(m.parentId) === String(currentId));
+
+    children.forEach(child => {
+      results.push(child);
+      stack.push(child.id);
+    });
+  }
+
+  return results;
+}
+
+// Helper: build a nested tree for preview in the banner
+function buildPreviewTree(materials, rootIds) {
+  const byId = {};
+  materials.forEach(m => {
+    byId[String(m.id)] = m;
+  });
+
+  function buildNode(item) {
+    const children = materials
+      .filter(m => String(m.parentId) === String(item.id))
+      .map(buildNode);
+
+    return {
+      id: item.id,
+      name: item.name,
+      isFolder: !!item.folder,
+      children
+    };
+  }
+
+  return rootIds
+    .map(id => byId[String(id)])
+    .filter(Boolean)
+    .map(buildNode);
+}
+
 router.post('/B-off-system-MVP/copy-material', function (req, res) {
-    req.session.data.moveSuccess = false;
+
+  req.session.data.moveSuccess = false;   // Clear move flag
+
   const ids = req.body.selected_ids
     ? req.body.selected_ids.split(',').map(x => String(x).trim())
     : [];
 
   const destinationFolderId = req.body.destinationFolder;
+  const materials = req.session.data.materials || [];
 
   console.log("Copying:", ids, "into folder", destinationFolderId);
 
-  const materials = req.session.data.materials;
+  // Take a snapshot BEFORE we mutate materials, for preview tree
+  const originalMaterials = [...materials];
 
-  // Duplicate each selected item
+  // For banner
+  const copiedNames = [];
+
+  // Destination folder name for the banner
+  let destinationFolderName = null;
+  const destFolder = materials.find(m => String(m.id) === String(destinationFolderId));
+  if (destFolder) {
+    destinationFolderName = destFolder.name;
+  }
+
+  // Build tree preview from the original structure (before copying)
+  const copyPreviewTree = buildPreviewTree(originalMaterials, ids);
+
+  // Actually perform the copy (with full structure)
   ids.forEach(id => {
     const original = materials.find(m => String(m.id) === id);
-    if (original) {
-      const clone = { ...original };
-      clone.id = Date.now() + Math.random();
-      clone.parentId = destinationFolderId;
-      materials.push(clone);
-    }
+    if (!original) return;
+
+    // Record for banner
+    copiedNames.push(original.name);
+
+    // Map old→new IDs so structure stays intact
+    const idMap = {};
+    const newId = Date.now() + Math.random();
+    idMap[id] = newId;
+
+    // Clone the folder/file itself
+    const topClone = {
+      ...original,
+      id: newId,
+      parentId: destinationFolderId
+    };
+    materials.push(topClone);
+
+    // Get all nested descendants
+    const descendants = getAllDescendants(originalMaterials, id);
+
+    descendants.forEach(child => {
+      const newChildId = Date.now() + Math.random();
+      idMap[child.id] = newChildId;
+
+      materials.push({
+        ...child,
+        id: newChildId,
+        parentId: idMap[child.parentId]   // reconnect the tree
+      });
+
+      copiedNames.push(child.name); // Add to banner list
+    });
   });
 
-  // CLEAR MODE AFTER ACTION
+  // Store results for banner
+  req.session.data.copyList = copiedNames;
+  req.session.data.copyDestinationName = destinationFolderName;
+  req.session.data.copyPreviewTree = copyPreviewTree;
+  req.session.data.copySuccess = true;
+
+  // Reset selection + mode
   req.session.data.materialsMode = null;
   req.session.data.materialsSelected = '';
-
-  req.session.data.copySuccess = true;
 
   res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
 
+
 router.post('/B-off-system-MVP/move-material', function (req, res) {
-    req.session.data.copySuccess = false;
-    console.log("Move material request body:", req.body);
-    const ids = req.body.selected_ids
-        ? req.body.selected_ids.split(',').map(x => String(x).trim())
-        : [];
 
-    const destinationFolderId = req.body.destinationFolder;
+  req.session.data.copySuccess = false;  // Clear copy flag
 
-    console.log("Moving:", ids, "into folder", destinationFolderId);
+  const ids = req.body.selected_ids
+    ? req.body.selected_ids.split(',').map(x => String(x).trim())
+    : [];
 
-    req.session.data.materials = req.session.data.materials.map(m => {
-        if (ids.includes(String(m.id))) {
-        return { ...m, parentId: destinationFolderId };
-        }
-        return m;
-    });
+  const destinationFolderId = req.body.destinationFolder;
+  const materials = req.session.data.materials || [];
 
-    req.session.data.moveSuccess = true;
+  console.log("Moving:", ids, "into folder", destinationFolderId);
 
-    // CLEAR MODE AFTER ACTION
-    req.session.data.materialsMode = null;
-    req.session.data.materialsSelected = '';
+  // Snapshot BEFORE we move items (for preview)
+  const originalMaterials = [...materials];
 
-    res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+  // List for flat banner summary
+  const movedNames = [];
+
+  ids.forEach(id => {
+    const original = originalMaterials.find(m => String(m.id) === String(id));
+    if (original) movedNames.push(original.name);
+  });
+
+  // Destination folder name for banner
+  let destinationFolderName = null;
+  const destFolder = originalMaterials.find(m => String(m.id) === String(destinationFolderId));
+  if (destFolder) {
+    destinationFolderName = destFolder.name;
+  }
+
+  // Build nested preview tree (based on original structure)
+  const movePreviewTree = buildPreviewTree(originalMaterials, ids);
+
+  // Perform the move
+  req.session.data.materials = materials.map(m => {
+    if (ids.includes(String(m.id))) {
+      return { ...m, parentId: destinationFolderId };
+    }
+    return m;
+  });
+
+  // Banner data
+  req.session.data.moveList = movedNames;
+  req.session.data.moveDestinationName = destinationFolderName;
+  req.session.data.movePreviewTree = movePreviewTree;
+  req.session.data.moveSuccess = true;
+
+  // Reset selection + mode
+  req.session.data.materialsMode = null;
+  req.session.data.materialsSelected = '';
+
+  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
-
 
 module.exports = router
