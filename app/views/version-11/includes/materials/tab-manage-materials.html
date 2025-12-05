@@ -1,30 +1,94 @@
 <!-- ///////////////////////////////// TAB 2 - CONTENT - START ///////////////////////////////// -->
+{% macro renderTree(nodes) %}
+  <ul class="govuk-list govuk-list--bullet">
+    {% for node in nodes %}
+
+      {% if node.isFolder %}
+        <li class="no-bullet" style="list-style-type:none; margin-left:-1em;">
+
+          <span class="icon-new folder"></span>
+          <strong>{{ node.name }}</strong>
+
+          {% if node.children and (node.children | length) > 0 %}
+            {{ renderTree(node.children) }}
+          {% endif %}
+        </li>
+
+      {% else %}
+        <li>
+          {{ node.name }}
+        </li>
+      {% endif %}
+
+    {% endfor %}
+  </ul>
+{% endmacro %}
+
 {% if copySuccess %}
-    <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+    <div class="govuk-notification-banner govuk-notification-banner--success"
+         role="alert"
+         data-module="govuk-notification-banner">
         <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-            Success
-            </h2>
+            <h2 class="govuk-notification-banner__title">Success</h2>
         </div>
         <div class="govuk-notification-banner__content">
             <h3 class="govuk-notification-banner__heading">
-            The selected materials have been copied successfully.
+                Materials have been copied successfully.
             </h3>
-            <!-- <p class="govuk-body">Contact <a class="govuk-notification-banner__link" href="#">example@department.gov.uk</a> if you think there’s a problem.</p> -->
+
+            {% if copyDestinationName %}
+                <p class="govuk-body">
+                    Destination folder:
+                    <strong>{{ copyDestinationName }}</strong>
+                </p>
+            {% endif %}
+
+            {% if copyPreviewTree and (copyPreviewTree | length) > 0 %}
+                <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
+                    <summary class="govuk-details__summary">
+                        <span class="govuk-details__summary-text">
+                            Copied materials
+                        </span>
+                    </summary>
+                    <div class="govuk-details__text">
+                        {{ renderTree(copyPreviewTree) }}
+                    </div>
+                </details>
+            {% endif %}
         </div>
     </div>
+
 {% elseif moveSuccess %}
-    <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+    <div class="govuk-notification-banner govuk-notification-banner--success"
+         role="alert"
+         data-module="govuk-notification-banner">
         <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-            Success
-            </h2>
+            <h2 class="govuk-notification-banner__title">Success</h2>
         </div>
         <div class="govuk-notification-banner__content">
             <h3 class="govuk-notification-banner__heading">
-            The selected materials have been moved successfully.
+                Materials have been moved successfully.
             </h3>
-            <!-- <p class="govuk-body">Contact <a class="govuk-notification-banner__link" href="#">example@department.gov.uk</a> if you think there’s a problem.</p> -->
+
+            {% if moveDestinationName %}
+                <p class="govuk-body">
+                    Destination folder:
+                    <strong>{{ moveDestinationName }}</strong>
+                </p>
+            {% endif %}
+
+            {% if movePreviewTree and (movePreviewTree | length) > 0 %}
+                <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
+                    <summary class="govuk-details__summary">
+                        <span class="govuk-details__summary-text">
+                            Moved materials
+                        </span>
+                    </summary>
+                    <div class="govuk-details__text">
+                        {{ renderTree(movePreviewTree) }}
+                    </div>
+                </details>
+            {% endif %}
         </div>
     </div>
 {% endif %}
