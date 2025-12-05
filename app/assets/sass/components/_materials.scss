@@ -1729,25 +1729,25 @@ main.case-files {
 }
 
 /* Success notification banner styling */
-.govuk-notification-banner--success {
-     border: 5px solid #00703c;
+// .govuk-notification-banner--success {
+//      border: 5px solid #00703c;
      
-     .govuk-notification-banner__header {
-          background-color: #00703c;
+//      .govuk-notification-banner__header {
+//           background-color: #00703c;
           
-          .govuk-notification-banner__title {
-               color: white;
-          }
-     }
+//           .govuk-notification-banner__title {
+//                color: white;
+//           }
+//      }
      
-     .govuk-notification-banner__content {
-          background-color: #f3f9f1;
+//      .govuk-notification-banner__content {
+//           background-color: #f3f9f1;
           
-          .govuk-notification-banner__heading {
-               color: #00703c;
-          }
-     }
-}
+//           .govuk-notification-banner__heading {
+//                color: #00703c;
+//           }
+//      }
+// }
 
 
 ////////////////////////// Mónica - new styles //////////////////////////
@@ -1965,99 +1965,15 @@ table#materials_table td .govuk-tag {
   vertical-align: middle;
 }
 
-/* ============================================================
-   MATERIALS TAB — SPACING NORMALISATION
-   Applies ONLY within .off-cms-overview tab panel
-============================================================ */
-
-// .off-cms-overview {
-
-//      /* -----------------------------------------
-//      1. Sub-navigation spacing
-//      ----------------------------------------- */
-//      .moj-sub-navigation {
-//           margin-bottom: 0;   // removes large built-in MOJ spacing
-//      }
-
-//      /* -----------------------------------------
-//      2. Panel container (tab content wrapper)
-//      ----------------------------------------- */
-//      .panel {
-//           padding-top: 0;
-//           margin-top: 0;
-//      }
-
-//      /* -----------------------------------------
-//      3. Heading & intro spacing
-//      ----------------------------------------- */
-//      h2.govuk-heading-l {
-//           margin-top: 10px;     // fixes big gap after nav
-//      }
-
-//      p.govuk-body {
-//           margin-bottom: 20px;  // tighter and consistent
-//      }
-
-//      /* -----------------------------------------
-//      4. “Show filters” link
-//      ----------------------------------------- */
-//      #toggle_filter_Materials {
-//           margin-top: 0;
-//           margin-bottom: 10px;
-//           display: inline-block;
-//      }
-
-//      /* -----------------------------------------
-//      5. Filters column
-//      ----------------------------------------- */
-//      #materials_column_1 {
-
-//           .moj-filter-layout__filter {
-//                margin-top: 0;
-//                padding-top: 0;
-//           }
-//      }
-
-//   /* Reduce “filters row top margin” */
-//      .govuk-grid-row[class*="govuk-!-margin-top-2"] {
-//           margin-top: 10px;
-//      }
-
-//      /* -----------------------------------------
-//      6. Breadcrumbs spacing
-//      ----------------------------------------- */
-//      #materials_column_2 nav.govuk-breadcrumbs {
-//           margin-top: 0;
-//           padding-top: 0;
-//      }
-
-//      /* -----------------------------------------
-//      7. Actions bar
-//      ----------------------------------------- */
-//      .info_wrapper {
-//           margin-top: 10px;
-//           margin-bottom: 20px;
-//      }
-
-//      /* -----------------------------------------
-//      8. Table spacing
-//      ----------------------------------------- */
-//      #materials_table {
-//           margin-top: 10px;
-
-//      thead th {
-//                padding-top: 10px;
-//           }
-//      }
-
-//      /* Inset text (e.g. search results) */
-//      .govuk-inset-text {
-//           margin-top: 10px;
-//           margin-bottom: 10px;
-//      }
+// /* Nuclear override for banner background */
+// div.govuk-notification-banner.govuk-notification-banner--success,
+// div.govuk-notification-banner.govuk-notification-banner--success .govuk-notification-banner__content,
+// div.govuk-notification-banner.govuk-notification-banner--success .govuk-notification-banner__header {
+//     background-color: #ffffff !important;
 // }
 
-// mark {
-//   background-color: #ffbf47; /* GOV.UK yellow */
-//   padding: 0 2px;
+// /* Reapply proper GDS header strip */
+// div.govuk-notification-banner.govuk-notification-banner--success .govuk-notification-banner__header {
+//     background-color: #00703c !important;
+//     color: #ffffff !important;
 // }
