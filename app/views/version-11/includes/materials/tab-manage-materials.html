@@ -262,50 +262,47 @@
 
         {% else %}
 
-        {% if data.materialsMode %}
-        <div class="govuk-grid-column-two-thirds">
-            <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-4">
-                Choose where to {{ data.materialsMode }} your selected files or folders, or
-                
-                if you want to {{ data.materialsMode }} to the home folder, 
-                {% if data.materialsMode == "copy" %}
-                <form method="post"
-                    action="/version-11/B-off-system-MVP/copy-material"
-                    class="inline-action-form">
-                    <input type="hidden" name="selected_ids" value="{{ data.materialsSelected }}">
-                    <input type="hidden" name="destinationFolder" value="{{ item.id }}">
-                    <button class="govuk-link govuk-link--no-visited-state suspect govuk-!-margin-bottom-1 govuk-!-margin-top-1">
-                        copy to Home: Thundercat
-                    </button>
-                </form>
+            {% if data.materialsMode %}
+            <div class="govuk-grid-column-two-thirds">
+                <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-4">
 
-                {% elseif data.materialsMode == "move" %}
+                    Select where you want to {{ data.materialsMode }} your selected files or folders.
+                    <br>
+
+                        {% set showHomeOption = false %}
+                        {% for m in data.materials %}
+                            {% if (m.id | string) in data.materialsSelected and m.parentId != 0 %}
+                                {% set showHomeOption = true %}
+                            {% endif %}
+                        {% endfor %}                    
+                        {% if showHomeOption %}
+                        To {{ data.materialsMode }} to the home folder, choose
+                        <form method="post"
+                            action="/version-11/B-off-system-MVP/{{ data.materialsMode }}-material"
+                            class="inline-action-form">
+                            <input type="hidden" name="selected_ids" value="{{ data.materialsSelected }}">
+                            <input type="hidden" name="destinationFolder" value="{{ item.id }}">
+                            <button class="govuk-link govuk-link--no-visited-state suspect govuk-!-margin-bottom-1 govuk-!-margin-top-1">
+                                Home: Thundercat
+                            </button>
+                        </form>
+                        <br>
+                    {% endif %}
+
                     <form method="post"
-                        action="/version-11/B-off-system-MVP/move-material"
-                        class="inline-action-form">
-                        <input type="hidden" name="selected_ids" value="{{ data.materialsSelected }}">
-                        <input type="hidden" name="destinationFolder" value="{{ item.id }}">
-                        <button class="govuk-link govuk-link--no-visited-state suspect govuk-!-margin-bottom-1 govuk-!-margin-top-1">
-                            Move  to Home: Thundercat
+                        action="/version-11/B-off-system-MVP/set-materials-mode"
+                        style="display:inline;">
+                        <input type="hidden" name="mode" value="">
+                        <input type="hidden" name="selected_ids" value="">
+                        <button type="submit"
+                                class="govuk-link govuk-link--no-visited-state suspect">
+                            Cancel {{ data.materialsMode }}
                         </button>
                     </form>
-                {% endif %}
-                <br>
 
-                <form method="post"
-                    action="/version-11/B-off-system-MVP/set-materials-mode"
-                    style="display:inline;">
-                    <input type="hidden" name="mode" value="">
-                    <input type="hidden" name="selected_ids" value="">
-                    <button type="submit"
-                            class="govuk-link govuk-link--no-visited-state suspect">
-                        Cancel {{ data.materialsMode }}
-                    </button>
-                </form>
+                </div>
             </div>
-        </div>
-        {% endif %}
-
+            {% endif %}
             <!-- MAIN TABLE -->
             <table class="govuk-table sortable" id="materials_table">
                 <thead class="govuk-table__head">

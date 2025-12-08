@@ -2021,6 +2021,21 @@ table#materials_table td .govuk-tag {
 }
 
 
+.home-action-row {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* increase or decrease to taste */
+}
+
+.home-action-row form {
+    margin: 0;
+    padding: 0;
+}
+
+.cancel-link {
+    padding-left: 4px; /* optional micro-adjustment */
+}
+
 
 // /* Nuclear override for banner background */
 // div.govuk-notification-banner.govuk-notification-banner--success,
