@@ -1965,6 +1965,63 @@ table#materials_table td .govuk-tag {
   vertical-align: middle;
 }
 
+.capitalise {
+     text-transform: capitalize;
+}
+
+.selected-filters-panel {
+  background: #e5e3df; /* screenshot grey */
+  padding: 20px;
+  border-bottom: 1px solid #b1b4b6;
+}
+
+.selected-filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.selected-clear-link {
+  color: #4c2c92;
+  text-decoration: underline;
+}
+
+.filter-section {
+  margin-bottom: 25px;
+}
+
+.filter-section-title {
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  background: white;
+  border: 2px solid black;
+  padding: 5px 10px 6px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  color: #0b0c0c;
+}
+
+.filter-chip:hover {
+  background: #f3f2f1;
+}
+
+.chip-remove {
+  font-size: 18px;
+  margin-left: 8px;
+  line-height: 1;
+}
+
+
+
 // /* Nuclear override for banner background */
 // div.govuk-notification-banner.govuk-notification-banner--success,
 // div.govuk-notification-banner.govuk-notification-banner--success .govuk-notification-banner__content,

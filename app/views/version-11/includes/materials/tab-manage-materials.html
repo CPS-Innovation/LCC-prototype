@@ -36,13 +36,18 @@
             </div>
             <div class="govuk-notification-banner__content">
                 <h3 class="govuk-notification-banner__heading">
-                    Materials have been copied successfully.
+                    The materials have been copied
                 </h3>
 
                 {% if copyDestinationName %}
                     <p class="govuk-body">
-                        Destination folder:
+                        They are in:
                         <strong>{{ copyDestinationName }}</strong>
+                    </p>
+                {% else %}    
+                    <p class="govuk-body">
+                        They are in:
+                        <strong>Home: Thundercat</strong>
                     </p>
                 {% endif %}
 
@@ -50,7 +55,7 @@
                     <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
                         <summary class="govuk-details__summary">
                             <span class="govuk-details__summary-text">
-                                Copied materials
+                                Show copied materials
                             </span>
                         </summary>
                         <div class="govuk-details__text">
@@ -70,13 +75,18 @@
         </div>
         <div class="govuk-notification-banner__content">
             <h3 class="govuk-notification-banner__heading">
-                Materials have been moved successfully.
+                The materials have been moved
             </h3>
 
             {% if moveDestinationName %}
                 <p class="govuk-body">
-                    Destination folder:
+                    They are in:
                     <strong>{{ moveDestinationName }}</strong>
+                </p>
+            {% else %}    
+                <p class="govuk-body">
+                    They are in:
+                    <strong>Home: Thundercat</strong>
                 </p>
             {% endif %}
 
@@ -84,7 +94,7 @@
                 <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
                     <summary class="govuk-details__summary">
                         <span class="govuk-details__summary-text">
-                            Moved materials
+                            Show moved materials
                         </span>
                     </summary>
                     <div class="govuk-details__text">
@@ -134,7 +144,7 @@
     <div class="govuk-grid-column-three-quarters" id="materials_column_2">
 
         <!-- BREADCRUMBS -->
-        <div class="govuk-grid-row govuk-!-margin-top-0">
+        <div class="govuk-grid-row">
             <nav class="govuk-breadcrumbs govuk-!-margin-left-3" aria-label="Breadcrumb">
                 <ol class="govuk-breadcrumbs__list">
 
@@ -253,19 +263,47 @@
         {% else %}
 
         {% if data.materialsMode %}
+        <div class="govuk-grid-column-two-thirds">
             <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-4">
-                You're choosing a folder to <strong>{{ data.materialsMode }}</strong> materials to.
+                Choose where to {{ data.materialsMode }} your selected files or folders, or
+                
+                if you want to {{ data.materialsMode }} to the home folder, 
+                {% if data.materialsMode == "copy" %}
+                <form method="post"
+                    action="/version-11/B-off-system-MVP/copy-material"
+                    class="inline-action-form">
+                    <input type="hidden" name="selected_ids" value="{{ data.materialsSelected }}">
+                    <input type="hidden" name="destinationFolder" value="{{ item.id }}">
+                    <button class="govuk-link govuk-link--no-visited-state suspect govuk-!-margin-bottom-1 govuk-!-margin-top-1">
+                        copy to Home: Thundercat
+                    </button>
+                </form>
+
+                {% elseif data.materialsMode == "move" %}
+                    <form method="post"
+                        action="/version-11/B-off-system-MVP/move-material"
+                        class="inline-action-form">
+                        <input type="hidden" name="selected_ids" value="{{ data.materialsSelected }}">
+                        <input type="hidden" name="destinationFolder" value="{{ item.id }}">
+                        <button class="govuk-link govuk-link--no-visited-state suspect govuk-!-margin-bottom-1 govuk-!-margin-top-1">
+                            Move  to Home: Thundercat
+                        </button>
+                    </form>
+                {% endif %}
+                <br>
+
                 <form method="post"
                     action="/version-11/B-off-system-MVP/set-materials-mode"
                     style="display:inline;">
                     <input type="hidden" name="mode" value="">
                     <input type="hidden" name="selected_ids" value="">
                     <button type="submit"
-                            class="govuk-link govuk-link--no-visited-state govuk-!-margin-left-1">
+                            class="govuk-link govuk-link--no-visited-state suspect">
                         Cancel {{ data.materialsMode }}
                     </button>
                 </form>
             </div>
+        </div>
         {% endif %}
 
             <!-- MAIN TABLE -->
@@ -280,6 +318,8 @@
                                     <input class="govuk-checkboxes__input"
                                            id="materials_documents_ALL"
                                            type="checkbox" value="Select all">
+                                    <input type="hidden" name="destinationFolder" value="{{ item.id }}">
+
                                     <label class="govuk-label govuk-checkboxes__label"
                                            for="materials_documents_ALL"></label>
                                 </div>
@@ -345,7 +385,7 @@
                                             <input type="hidden" name="selected_ids" value="{{ data.materialsSelected }}">
                                             <input type="hidden" name="destinationFolder" value="{{ item.id }}">
                                             <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0">
-                                                Copy here
+                                                Copy to
                                             </button>
                                         </form>
 
@@ -356,7 +396,7 @@
                                             <input type="hidden" name="selected_ids" value="{{ data.materialsSelected }}">
                                             <input type="hidden" name="destinationFolder" value="{{ item.id }}">
                                             <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0">
-                                                Move here
+                                                Move to
                                             </button>
                                         </form>
                                     {% endif %}

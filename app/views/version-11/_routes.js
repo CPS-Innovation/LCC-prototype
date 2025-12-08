@@ -1007,81 +1007,98 @@ router.post('/B-off-system-MVP/04A-create-egress-folder', function(req, res) {
 // Handle materials filter POST
 router.post('/includes/materials/materials-filter', function (req, res) {
 
-    // Save user filter inputs
-    req.session.data.filterNew = req.body['filterNew'];
-    req.session.data.filterStatusUsed = req.body['filterStatusUsed'];
-    req.session.data.filterStatusUnused = req.body['filterStatusUnused'];
-    req.session.data.filterStatusNone = req.body['filterStatusNone'];
-    req.session.data.filtersSearch = req.body['filtersSearch'];
+  const data = req.session.data;
+  const body = req.body;
 
-    const materials = req.session.data.materials;
-    const search = (req.body['filtersSearch'] || "").trim().toLowerCase();
+  // ----------------------------
+  // READ / UNREAD CHECKBOXES
+  // (new pattern: filterUnread + filterRead)
+  // ----------------------------
+  data.filterUnread = body.filterUnread ? 'Unread' : '';
+  data.filterRead   = body.filterRead   ? 'Read'   : '';
 
+  // ----------------------------
+  // STATUS CHECKBOXES (multi-select)
+  // ----------------------------
+  data.filterStatusUsed   = body.filterStatusUsed   ? 'Used'   : '';
+  data.filterStatusUnused = body.filterStatusUnused ? 'Unused' : '';
+  data.filterStatusNone   = body.filterStatusNone   ? 'None'   : '';
 
-    // -------------------------------------------------------------------
-    // Build grouped search results (MATCHES BOTH FOLDERS AND FILES)
-    // -------------------------------------------------------------------
-    function buildGroupedSearchResults(materials, search) {
+  // ----------------------------
+  // SEARCH TERM + CLEAR SEARCH
+  // ----------------------------
+  if (body.clearSearch === 'x') {
+    // user clicked the × button
+    data.filtersSearch = '';
+  } else if (typeof body.filtersSearch === 'string') {
+    data.filtersSearch = body.filtersSearch.trim();
+  }
 
-        if (!search) return [];
+  const materials = data.materials || [];
+  const search = (data.filtersSearch || "").trim().toLowerCase();
 
-        const groups = {};
+  // -------------------------------------------------------------------
+  // Build grouped search results (MATCHES BOTH FOLDERS AND FILES)
+  // (unchanged logic, just moved into a helper function here)
+  // -------------------------------------------------------------------
+  function buildGroupedSearchResults(materials, search) {
 
-        materials.forEach(item => {
-            const itemName = (item.name || "").toString().trim().toLowerCase();
-            const searchMatches = itemName.includes(search);
+    if (!search) return [];
 
-            // ----------- MATCHED FILE -----------
-            if (!item.folder && searchMatches) {
-                const folderId = item.parentId;
+    const groups = {};
 
-                if (!groups[folderId]) {
-                    groups[folderId] = {
-                        folder: materials.find(m => m.id === folderId && m.folder) || null,
-                        matchesFolder: false,
-                        files: []
-                    };
-                }
+    materials.forEach(item => {
+      const itemName = (item.name || "").toString().trim().toLowerCase();
+      const searchMatches = itemName.includes(search);
 
-                groups[folderId].files.push(item);
-            }
+      // ----------- MATCHED FILE -----------
+      if (!item.folder && searchMatches) {
+        const folderId = item.parentId;
 
-            // ----------- MATCHED FOLDER NAME -----------
-            if (item.folder && searchMatches) {
-                const folderId = item.id;
+        if (!groups[folderId]) {
+          groups[folderId] = {
+            folder: materials.find(m => m.id === folderId && m.folder) || null,
+            matchesFolder: false,
+            files: []
+          };
+        }
 
-                if (!groups[folderId]) {
-                    groups[folderId] = {
-                        folder: item,
-                        matchesFolder: true,
-                        files: []
-                    };
-                } else {
-                    groups[folderId].matchesFolder = true;
-                }
-            }
-        });
+        groups[folderId].files.push(item);
+      }
 
-        // CLEAN-UP RULE:
-        // If a folder has NO matching files and matchesFolder=false,
-        // do not include it.
-        return Object.values(groups).filter(g =>
-            g.matchesFolder || g.files.length > 0
-        );
-    }
+      // ----------- MATCHED FOLDER NAME -----------
+      if (item.folder && searchMatches) {
+        const folderId = item.id;
 
-    if (req.body['clearSearch'] == "x") {
-        req.session.data.filtersSearch = ""
-    }
+        if (!groups[folderId]) {
+          groups[folderId] = {
+            folder: item,
+            matchesFolder: true,
+            files: []
+          };
+        } else {
+          groups[folderId].matchesFolder = true;
+        }
+      }
+    });
 
-    // Store results in session
-    req.session.data.groupedSearchResults = buildGroupedSearchResults(materials, search);
+    // CLEAN-UP RULE:
+    // If a folder has NO matching files and matchesFolder=false,
+    // do not include it.
+    return Object.values(groups).filter(g =>
+      g.matchesFolder || g.files.length > 0
+    );
+  }
 
-    console.log("Grouped search results:");
-    console.dir(req.session.data.groupedSearchResults, { depth: null });
-    res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+  // Store results in session (used by materials-search-grouped.html)
+  data.groupedSearchResults = buildGroupedSearchResults(materials, search);
+
+  console.log("Grouped search results:");
+  console.dir(data.groupedSearchResults, { depth: null });
+
+  // Back to case overview, where GET will apply filters + search
+  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
-
 
 
 // AI //
@@ -1089,85 +1106,124 @@ router.post('/includes/materials/materials-filter', function (req, res) {
 const createMaterialsUtils = require('../../helpers/materials.js');
 
 router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
+    const data = req.session.data;
+    const materials = data.materials || [];
 
-  const data = req.session.data;
-  const materials = data.materials || [];
+    // Extract flags + lists for THIS render only
+    const copySuccess = data.copySuccess === true;
+    const moveSuccess = data.moveSuccess === true;
 
-  // Extract flags + lists for THIS render only
-  const copySuccess = data.copySuccess === true;
-  const moveSuccess = data.moveSuccess === true;
+    const copyList = data.copyList || [];
+    const moveList = data.moveList || [];
 
-  const copyList = data.copyList || [];
-  const moveList = data.moveList || [];
+    const copyDestinationName = data.copyDestinationName || null;
+    const moveDestinationName = data.moveDestinationName || null;
 
-  const copyDestinationName = data.copyDestinationName || null;
-  const moveDestinationName = data.moveDestinationName || null;
+    const copyPreviewTree = data.copyPreviewTree || [];
+    const movePreviewTree = data.movePreviewTree || [];
 
-  const copyPreviewTree = data.copyPreviewTree || [];
-  const movePreviewTree = data.movePreviewTree || [];
+    // Immediately reset so they only show once
+    req.session.data.copySuccess = false;
+    req.session.data.moveSuccess = false;
+    req.session.data.copyList = [];
+    req.session.data.moveList = [];
+    req.session.data.copyDestinationName = null;
+    req.session.data.moveDestinationName = null;
+    req.session.data.copyPreviewTree = [];
+    req.session.data.movePreviewTree = [];
 
-  // Immediately reset so they only show once
-  req.session.data.copySuccess = false;
-  req.session.data.moveSuccess = false;
-  req.session.data.copyList = [];
-  req.session.data.moveList = [];
-  req.session.data.copyDestinationName = null;
-  req.session.data.moveDestinationName = null;
-  req.session.data.copyPreviewTree = [];
-  req.session.data.movePreviewTree = [];
+    // Helper utils
+    const utils = createMaterialsUtils(materials);
 
-  // Attach helper functions safely
-  const utils = createMaterialsUtils(materials);
+    // Current folder fallback
+    const folderId = Number(data.folderId) || 0;
 
-  // Fallback: default to shared drive
-  const folderId = Number(data.folderId) || 0;
+    // ================================
+    // 1. Get the raw children of this folder
+    // ================================
+    let children = utils.getChildren(folderId);
 
-  const children = utils.getChildren(folderId);
-  const breadcrumbs = utils.getBreadcrumbs(folderId);
+    // ================================
+    // 2. Apply filters
+    // ================================
+    const filters = {
+    unread: data.filterUnread ? true : false,
+    read: data.filterRead ? true : false,
+    used: data.filterStatusUsed ? true : false,
+    unused: data.filterStatusUnused ? true : false,
+    none: data.filterStatusNone ? true : false
+    };
 
-  res.render('version-11/B-off-system-MVP/03-case-overview', {
-    materials,
-    data,
-    children,
-    breadcrumbs,
-    copySuccess,
-    moveSuccess,
-    copyList,
-    moveList,
-    copyDestinationName,
-    moveDestinationName,
-    copyPreviewTree,
-    movePreviewTree
-  });
+    // -------------------------
+    // READ / UNREAD FILTERING
+    // -------------------------
+    if (filters.unread && !filters.read) {
+    // unread only
+    children = children.filter(m => m.new === true);
+    }
+
+    if (!filters.unread && filters.read) {
+    // read only
+    children = children.filter(m => m.new === false);
+    }
+
+    // if both checked → no filter
+    // if none checked → no filter
+
+    // -------------------------
+    // STATUS MULTI-SELECT
+    // -------------------------
+
+    const statusFilters = [];
+
+    if (filters.used) statusFilters.push("Used");
+    if (filters.unused) statusFilters.push("Unused");
+    if (filters.none) statusFilters.push("None");
+
+    if (statusFilters.length > 0) {
+    children = children.filter(m => statusFilters.includes(m.status));
+    }
+    // Breadcrumbs unaffected
+    const breadcrumbs = utils.getBreadcrumbs(folderId);
+
+    // ================================
+    // 3. Render page with filtered children
+    // ================================
+    res.render('version-11/B-off-system-MVP/03-case-overview', {
+        materials,
+        data,
+        children,           // now filtered!
+        breadcrumbs,
+        copySuccess,
+        moveSuccess,
+        copyList,
+        moveList,
+        copyDestinationName,
+        moveDestinationName,
+        copyPreviewTree,
+        movePreviewTree
+    });
 });
-
-// Route for the materials page
-// router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
-//   res.render('version-11/B-off-system-MVP/03-case-overview', {
-//     // materialsData: req.session.data.materialsData,
-//     materials: req.session.data.materials
-//   })
-// })
 
 
 router.get('/version-11/manage-materials', function (req, res) {
 
-  const search = req.session.data['filtersSearch'];
-  let results = materialsData;   // your full array
+    const search = req.session.data['filtersSearch'];
+    let results = materialsData;   // your full array
 
-  if (search && search.trim() !== "") {
-    const term = search.toLowerCase();
+    if (search && search.trim() !== "") {
+        const term = search.toLowerCase();
 
-    results = materialsData.filter(m =>
-      m.name.toLowerCase().includes(term) ||
-      m.type.toLowerCase().includes(term) ||
-      m.category.toLowerCase().includes(term)
-    );
-  }
+        results = materialsData.filter(m =>
+        m.name.toLowerCase().includes(term) ||
+        m.type.toLowerCase().includes(term) ||
+        m.category.toLowerCase().includes(term)
+        );
+    }
 
-  res.render('version-11/manage-materials', {
-    results    // send filtered list to HTML
-  });
+    res.render('version-11/manage-materials', {
+        results    // send filtered list to HTML
+    });
 });
 
 
@@ -1639,5 +1695,39 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
 
   res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
+
+
+// CLEAR ALL FILTERS
+router.get('/includes/materials/clear-filters', function (req, res) {
+
+  // Wipe all filter fields you use
+  req.session.data.filterUnread = null;
+  req.session.data.filterRead = null;
+
+  req.session.data.filterStatusUsed = null;
+  req.session.data.filterStatusUnused = null;
+  req.session.data.filterStatusNone = null;
+
+  req.session.data.filtersSearch = null;
+
+  // Redirect back to the materials page
+  res.redirect('/version-11/B-off-system-MVP/03-case-overview'); 
+  // change this to whatever your main materials URL is
+});
+
+// CLEAR A SPECIFIC FILTER
+router.get('/includes/materials/clear-filter', function (req, res) {
+
+  const type = req.query.type;
+
+  // Safely delete it from session
+  if (type && req.session.data.hasOwnProperty(type)) {
+    req.session.data[type] = null;
+  }
+
+  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+  // again: use your actual materials page URL
+});
+
 
 module.exports = router
