@@ -1454,11 +1454,13 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
 
     // Apply rename
     item.name = newName;
-    item.date = new Date().toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
-    });
+    if (item.folder == false) {
+        item.date = new Date().toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric'
+        });
+    }
     
     console.log(`✏️ Renamed material ID ${id} to "${newName}" and last update "${item.date}"`);
 
