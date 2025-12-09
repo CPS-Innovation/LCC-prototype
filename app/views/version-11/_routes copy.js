@@ -1005,99 +1005,342 @@ router.post('/B-off-system-MVP/04A-create-egress-folder', function(req, res) {
 
 
 // Handle materials filter POST
+// router.post('/includes/materials/materials-filter', function (req, res) {
+
+//     const data = req.session.data;
+//     const body = req.body;
+
+//     // ----------------------------
+//     // READ / UNREAD CHECKBOXES
+//     // (new pattern: filterUnread + filterRead)
+//     // ----------------------------
+//     data.filterUnread = body.filterUnread ? 'Unread' : '';
+//     data.filterRead   = body.filterRead   ? 'Read'   : '';
+
+//     // ----------------------------
+//     // STATUS CHECKBOXES (multi-select)
+//     // ----------------------------
+//     data.filterStatusUsed   = body.filterStatusUsed   ? 'Used'   : '';
+//     data.filterStatusUnused = body.filterStatusUnused ? 'Unused' : '';
+//     data.filterStatusNone   = body.filterStatusNone   ? 'None'   : '';
+
+//     // ----------------------------
+//     // SEARCH TERM + CLEAR SEARCH
+//     // ----------------------------
+//     if (body.clearSearch === 'x') {
+//         // user clicked the × button
+//         data.filtersSearch = '';
+//     } else if (typeof body.filtersSearch === 'string') {
+//         data.filtersSearch = body.filtersSearch.trim();
+//     }
+
+//     const materials = data.materials || [];
+//     const search = (data.filtersSearch || "").trim().toLowerCase();
+
+//     // Build folder path from root down to a given folderId
+//     function buildFolderPath(materials, folderId) {
+//     const names = [];
+
+//     if (!folderId && folderId !== 0) return names;
+
+//     let current = materials.find(m => m.folder && m.id === folderId);
+
+//     while (current) {
+//         names.unshift(current.name); // add to start
+//         if (current.parentId === null || current.parentId === 0) break;
+//         current = materials.find(m => m.folder && m.id === current.parentId);
+//     }
+
+//     return names;
+//     }
+
+//     // Build "Folder A / Folder B / Folder C" for a given folderId
+//     function buildFolderBreadcrumb(materials, folderId) {
+//         if (!folderId) return ""; // no parent folder? no breadcrumb.
+
+//         const names = [];
+//         let current = materials.find(m => m.folder && m.id === folderId);
+
+//         while (current) {
+//             names.unshift(current.name);
+
+//             // Find next parent folder
+//             const parent = materials.find(m => m.folder && m.id === current.parentId);
+
+//             // If no valid parent folder found, we've reached root
+//             if (!parent) break;
+
+//             current = parent;
+//         }
+
+//         return names.join(" / ");
+//     }
+
+//     // function getAllAncestors(materials, startId) {
+//     //     const chain = [];
+//     //     let current = materials.find(m => m.folder && m.id === startId);
+
+//     //     while (current) {
+//     //         chain.unshift(current);
+//     //         current = materials.find(m => m.folder && m.id === current.parentId);
+//     //     }
+
+//     //     return chain;
+//     // }
+
+//     // -------------------------------------------------------------------
+//     // Build grouped search results (MATCHES BOTH FOLDERS AND FILES)
+//     // (unchanged logic, just moved into a helper function here)
+//     // -------------------------------------------------------------------
+//     // function buildGroupedSearchResults(materials, search) {
+
+//     //     if (!search) return [];
+
+//     //     const groups = {};
+
+//     //     materials.forEach(item => {
+//     //     const itemName = (item.name || "").toString().trim().toLowerCase();
+//     //     const searchMatches = itemName.includes(search);
+
+//     //     // ----------- MATCHED FILE -----------
+//     //     if (!item.folder && searchMatches) {
+//     //         const folderId = item.parentId;
+
+//     //         if (!groups[folderId]) {
+//     //         groups[folderId] = {
+//     //             folder: materials.find(m => m.id === folderId && m.folder) || null,
+//     //             matchesFolder: false,
+//     //             files: []
+//     //         };
+//     //         }
+
+//     //         groups[folderId].files.push(item);
+//     //     }
+
+//     //     // ----------- MATCHED FOLDER NAME -----------
+//     //     if (item.folder && searchMatches) {
+//     //         const folderId = item.id;
+
+//     //         if (!groups[folderId]) {
+//     //         groups[folderId] = {
+//     //             folder: item,
+//     //             matchesFolder: true,
+//     //             files: []
+//     //         };
+//     //         } else {
+//     //         groups[folderId].matchesFolder = true;
+//     //         }
+//     //     }
+//     //     });
+
+//     //     // CLEAN-UP RULE:
+//     //     // If a folder has NO matching files and matchesFolder=false,
+//     //     // do not include it.
+//     //     return Object.values(groups).filter(g =>
+//     //     g.matchesFolder || g.files.length > 0
+//     //     );
+//     // }
+
+//     console.log("SEARCH TERM =", search);
+//     console.log("MATERIALS LENGTH =", materials.length);
+//     console.log("FIRST FEW MATERIALS =", materials.slice(0, 5));
+
+//     function buildGroupedSearchResults(materials, search) {
+//         if (!search) return [];
+
+//         const groups = {};
+//         const term = (search || "").toString().trim().toLowerCase();
+
+//         materials.forEach(item => {
+//             const itemName = (item.name || "").trim().toLowerCase();
+//             const searchMatches = itemName.includes(term);
+
+//             // ----------- MATCHED FILE -----------
+//             if (!item.folder && searchMatches) {
+//                 const folderId = item.parentId;
+
+//                 if (!groups[folderId]) {
+//                     groups[folderId] = {
+//                         folder: materials.find(m => m.id === folderId && m.folder) || null,
+//                         matchesFolder: false,
+//                         files: []
+//                     };
+//                 }
+
+//                 groups[folderId].files.push(item);
+//             }
+
+//             // ----------- MATCHED FOLDER NAME -----------
+//             if (item.folder && searchMatches) {
+//                 const folderId = item.id;
+
+//                 if (!groups[folderId]) {
+//                     groups[folderId] = {
+//                         folder: item,
+//                         matchesFolder: true,
+//                         files: []
+//                     };
+//                 } else {
+//                     groups[folderId].matchesFolder = true;
+//                 }
+//             }
+//         });
+
+//         return Object.values(groups).filter(g =>
+//             g.matchesFolder || g.files.length > 0
+//         );
+//     }
+
+
+//     // Store results in session (used by materials-search-grouped.html)
+//     data.groupedSearchResults = buildGroupedSearchResults(materials, search);
+//     console.log("RESULTS =", data.groupedSearchResults);
+
+
+//     console.log("Grouped search results:");
+//     console.dir(data.groupedSearchResults, { depth: null });
+
+//     // Back to case overview, where GET will apply filters + search
+//     res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+// });
+
 router.post('/includes/materials/materials-filter', function (req, res) {
+    console.log("------ MATERIALS FILTER SUBMITTED ------");
+    console.log("BODY:", req.body);
+    console.log("filtersSearch BEFORE:", req.session.data.filtersSearch);
 
-  const data = req.session.data;
-  const body = req.body;
+    const data = req.session.data;
+    const body = req.body;
 
-  // ----------------------------
-  // READ / UNREAD CHECKBOXES
-  // (new pattern: filterUnread + filterRead)
-  // ----------------------------
-  data.filterUnread = body.filterUnread ? 'Unread' : '';
-  data.filterRead   = body.filterRead   ? 'Read'   : '';
+    // ----------------------------
+    // READ / UNREAD CHECKBOXES
+    // ----------------------------
+    data.filterUnread = body.filterUnread ? 'Unread' : '';
+    data.filterRead   = body.filterRead   ? 'Read'   : '';
 
-  // ----------------------------
-  // STATUS CHECKBOXES (multi-select)
-  // ----------------------------
-  data.filterStatusUsed   = body.filterStatusUsed   ? 'Used'   : '';
-  data.filterStatusUnused = body.filterStatusUnused ? 'Unused' : '';
-  data.filterStatusNone   = body.filterStatusNone   ? 'None'   : '';
+    // ----------------------------
+    // STATUS CHECKBOXES (multi-select)
+    // ----------------------------
+    data.filterStatusUsed   = body.filterStatusUsed   ? 'Used'   : '';
+    data.filterStatusUnused = body.filterStatusUnused ? 'Unused' : '';
+    data.filterStatusNone   = body.filterStatusNone   ? 'None'   : '';
 
-  // ----------------------------
-  // SEARCH TERM + CLEAR SEARCH
-  // ----------------------------
-  if (body.clearSearch === 'x') {
-    // user clicked the × button
-    data.filtersSearch = '';
-  } else if (typeof body.filtersSearch === 'string') {
-    data.filtersSearch = body.filtersSearch.trim();
-  }
+    // ----------------------------
+    // SEARCH TERM + CLEAR SEARCH
+    // ----------------------------
+    if (body.clearSearch === 'x') {
+        // user clicked the × button (the little × in the input)
+        data.filtersSearch = '';
+    } else if (typeof body.filtersSearch === 'string') {
+        // user typed something in the search box
+        data.filtersSearch = body.filtersSearch.trim();
+    }
 
-  const materials = data.materials || [];
-  const search = (data.filtersSearch || "").trim().toLowerCase();
+    const materials = data.materials || [];
+    const search = (data.filtersSearch || '').trim().toLowerCase();
 
-  // -------------------------------------------------------------------
-  // Build grouped search results (MATCHES BOTH FOLDERS AND FILES)
-  // (unchanged logic, just moved into a helper function here)
-  // -------------------------------------------------------------------
-  function buildGroupedSearchResults(materials, search) {
+    // ----------------------------
+    // BREADCRUMB HELPER
+    // ----------------------------
+    function buildFolderBreadcrumb(materials, folderId) {
+        if (folderId === null || typeof folderId === 'undefined') return '';
 
-    if (!search) return [];
+        const names = [];
+        let current = materials.find(m => m.folder && m.id === folderId);
 
-    const groups = {};
+        while (current) {
+            names.unshift(current.name);
 
-    materials.forEach(item => {
-      const itemName = (item.name || "").toString().trim().toLowerCase();
-      const searchMatches = itemName.includes(search);
+            if (!current.parentId || current.parentId === 0) break;
 
-      // ----------- MATCHED FILE -----------
-      if (!item.folder && searchMatches) {
-        const folderId = item.parentId;
-
-        if (!groups[folderId]) {
-          groups[folderId] = {
-            folder: materials.find(m => m.id === folderId && m.folder) || null,
-            matchesFolder: false,
-            files: []
-          };
+            current = materials.find(m => m.folder && m.id === current.parentId);
         }
 
-        groups[folderId].files.push(item);
-      }
+        return names.join(' / ');
+    }
 
-      // ----------- MATCHED FOLDER NAME -----------
-      if (item.folder && searchMatches) {
-        const folderId = item.id;
+    // -------------------------------------------------------------------
+    // Build grouped search results (MATCHES BOTH FOLDERS AND FILES)
+    // ORIGINAL WORKING LOGIC + breadcrumb added
+    // -------------------------------------------------------------------
+    function getFolderChain(materials, folderId) {
+        const chain = [];
 
-        if (!groups[folderId]) {
-          groups[folderId] = {
-            folder: item,
-            matchesFolder: true,
-            files: []
-          };
-        } else {
-          groups[folderId].matchesFolder = true;
+        let current = materials.find(m => m.folder && m.id === folderId);
+
+        while (current) {
+            chain.unshift(current.name);
+            if (current.parentId === null || current.parentId === 0) break;
+            current = materials.find(m => m.folder && m.id === current.parentId);
         }
-      }
-    });
 
-    // CLEAN-UP RULE:
-    // If a folder has NO matching files and matchesFolder=false,
-    // do not include it.
-    return Object.values(groups).filter(g =>
-      g.matchesFolder || g.files.length > 0
-    );
-  }
+        return chain.join(" / ");
+    }
 
-  // Store results in session (used by materials-search-grouped.html)
-  data.groupedSearchResults = buildGroupedSearchResults(materials, search);
+    function buildGroupedSearchResults(materials, search) {
+        if (!search) return [];
 
-  console.log("Grouped search results:");
-  console.dir(data.groupedSearchResults, { depth: null });
+        const term = search.toLowerCase();
+        const groups = {};
 
-  // Back to case overview, where GET will apply filters + search
-  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+        materials.forEach(item => {
+            const nameMatch = (item.name || "").toLowerCase().includes(term);
+
+            // FILE MATCHES
+            if (!item.folder && nameMatch) {
+                const folderId = item.parentId;
+
+                if (!groups[folderId]) {
+                    groups[folderId] = {
+                        folder: materials.find(m => m.folder && m.id === folderId) || null,
+                        matchesFolder: false,
+                        files: []
+                    };
+                }
+
+                const breadcrumb = getFolderChain(materials, folderId);
+
+                groups[folderId].files.push({
+                    ...item,
+                    breadcrumb
+                });
+            }
+
+            // FOLDER MATCHES
+            if (item.folder && nameMatch) {
+                const folderId = item.id;
+
+                const breadcrumb = getFolderChain(materials, folderId);
+
+                if (!groups[folderId]) {
+                    groups[folderId] = {
+                        folder: {
+                            ...item,
+                            breadcrumb
+                        },
+                        matchesFolder: true,
+                        files: []
+                    };
+                } else {
+                    groups[folderId].matchesFolder = true;
+                    groups[folderId].folder = {
+                        ...item,
+                        breadcrumb
+                    };
+                }
+            }
+        });
+
+        return Object.values(groups).filter(g => g.matchesFolder || g.files.length > 0);
+    }
+
+    data.groupedSearchResults = buildGroupedSearchResults(materials, search);
+
+    console.log('filtersSearch =', data.filtersSearch);
+    console.log('groupedSearchResults length =', data.groupedSearchResults.length);
+
+    // Back to case overview
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
 
 
@@ -1259,7 +1502,7 @@ router.post('/B-off-system-MVP/case-overview-search-folder', function(req, res) 
 
     req.session.data.folderId = folderId;
     // req.session.data.filtersSearch = search;
-    req.session.data.flag = flag;
+    req.session.data.flag = flag || null;
 
     console.log("Selected folderId:", folderId);
     console.log("Search term:", req.session.data.filtersSearch);
@@ -1311,6 +1554,7 @@ router.post('/B-off-system-MVP/shared-drive', function(req, res) {
 
 
 router.post('/B-off-system-MVP/clear-search', function(req, res) {
+    req.session.data.flag = null;
     req.session.data.filtersSearch = ""
     res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
 })
