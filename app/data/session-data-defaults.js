@@ -1613,7 +1613,7 @@ module.exports = {
   status: 'Used',
   new: true,
   docLink: 'stmt_Lucy_Doyle_MG11.pdf',
-  previewLink: '/public/files/stmt_Lucy_Doyle_MG11.pdf',
+  previewLink: '/public/files/blank.pdf',
   parentId: 1017,
   folder: false,
   level: 3
