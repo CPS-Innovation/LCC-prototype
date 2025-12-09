@@ -250,19 +250,25 @@
             </div>
         </div>
 
-        <!-- SEARCH MODES -->
-        {% set searchMode = data['filtersSearch'] %}
-        {% set searchLabel = data['flag'] %}
+        <!-- <p style="color:red;">
+            DEBUG: filtersSearch="{{ data.filtersSearch }}", flag="{{ data.flag }}", grouped="{{ data.groupedSearchResults | length }}"
+        </p> -->
 
-        {% if searchLabel == 1 %}
+        <!-- SEARCH MODES -->
+        {% set searchTerm = data.filtersSearch %}
+        {% set insideFolderSearch = (data.flag == "1") %}
+
+        {% if insideFolderSearch %}
             {% include "../materials/materials-search-inside-folder.html" %}
 
-        {% elseif searchMode %}
+        {% elseif searchTerm and searchTerm | trim | length > 0 %}
             {% include "../materials/materials-search-grouped.html" %}
 
         {% else %}
 
+
             {% if data.materialsMode %}
+            <!-- Copy /Move mode active -->
             <div class="govuk-grid-column-two-thirds">
                 <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-4">
 
