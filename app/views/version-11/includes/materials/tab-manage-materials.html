@@ -256,12 +256,10 @@
 
         <!-- SEARCH MODES -->
         {% set searchTerm = data.filtersSearch %}
-        {% set insideFolderSearch = (data.flag == "1") %}
+        <!-- {{ searchTerm }}
+        {% set insideFolderSearch = (data.flag == "1") %} -->
 
-        {% if insideFolderSearch %}
-            {% include "../materials/materials-search-inside-folder.html" %}
-
-        {% elseif searchTerm and searchTerm | trim | length > 0 %}
+        {% if searchTerm and searchTerm | trim | length > 0 %}
             {% include "../materials/materials-search-grouped.html" %}
 
         {% else %}

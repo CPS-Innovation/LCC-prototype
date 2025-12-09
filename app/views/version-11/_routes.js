@@ -1246,6 +1246,8 @@ router.post('/B-off-system-MVP/case-overview-folder', function(req, res) {
     
 
     console.log("Selected folder ID:", parentId)
+    req.session.data.filtersSearch = ""
+    console.log("Cleared search term", req.session.data.filtersSearch)
     res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
 })
 
