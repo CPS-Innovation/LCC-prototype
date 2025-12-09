@@ -1179,6 +1179,30 @@ module.exports = {
     folder: false,
     level: 2
   },
+  {
+    id: 21,
+    name: 'MCLOVE MG12',
+    date: '23 May 2024',
+    status: 'Used',
+    new: false,
+    docLink: 'MG12.pdf',
+    previewLink: '/public/files/MG12.pdf',
+    parentId: 1015,
+    folder: false,
+    level: 3
+  },
+  {
+    id: 22,
+    name: 'MCLOVE MG00',
+    date: '1 Jul 2024',
+    status: 'Used',
+    new: true,
+    docLink: 'MG00.pdf',
+    previewLink: '/public/files/MG00.pdf',
+    parentId: 1015,
+    folder: false,
+    level: 3
+  },
 
   /* ======== FOLDERS BELOW — cleaned ======== */
 
@@ -1361,7 +1385,229 @@ module.exports = {
     parentId: 0,
     folder: true,
     level: 1
-  }
+  },
+  {
+    id: 1015,
+    name: 'McLove',
+    date: null,
+    status: null,
+    new: false,
+    docLink: null,
+    previewLink: null,
+    parentId: 1000,
+    folder: true,
+    level: 2
+  },
+
+  {
+  id: 1016,
+  name: 'Digital Evidence',
+  date: null,
+  status: null,
+  new: true,
+  docLink: null,
+  previewLink: null,
+  parentId: 1009,
+  folder: true,
+  level: 1
+},
+{
+  id: 1017,
+  name: 'Intelligence',
+  date: null,
+  status: null,
+  new: false,
+  docLink: null,
+  previewLink: null,
+  parentId: 1009,
+  folder: true,
+  level: 1
+},
+{
+  id: 1018,
+  name: 'CCTV Footage',
+  date: null,
+  status: null,
+  new: true,
+  docLink: null,
+  previewLink: null,
+  parentId: 1016,
+  folder: true,
+  level: 2
+},
+{
+  id: 1019,
+  name: 'Phone Downloads',
+  date: null,
+  status: null,
+  new: false,
+  docLink: null,
+  previewLink: null,
+  parentId: 1016,
+  folder: true,
+  level: 2
+},
+{
+  id: 1020,
+  name: 'Social Media Captures',
+  date: null,
+  status: null,
+  new: false,
+  docLink: null,
+  previewLink: null,
+  parentId: 1016,
+  folder: true,
+  level: 2
+},
+{
+  id: 1021,
+  name: 'Location – High Street',
+  date: null,
+  status: null,
+  new: false,
+  docLink: null,
+  previewLink: null,
+  parentId: 1018,
+  folder: true,
+  level: 3
+},
+{
+  id: 1022,
+  name: 'Location – Riverside Park',
+  date: null,
+  status: null,
+  new: false,
+  docLink: null,
+  previewLink: null,
+  parentId: 1018,
+  folder: true,
+  level: 3
+},
+{
+  id: 1023,
+  name: 'Device 1 – iPhone',
+  date: null,
+  status: null,
+  new: false,
+  docLink: null,
+  previewLink: null,
+  parentId: 1019,
+  folder: true,
+  level: 3
+},
+{
+  id: 1024,
+  name: 'Device 2 – Samsung Android',
+  date: null,
+  status: null,
+  new: false,
+  docLink: null,
+  previewLink: null,
+  parentId: 1019,
+  folder: true,
+  level: 3
+},
+{
+  id: 1025,
+  name: 'Facebook Screenshots',
+  date: null,
+  status: null,
+  new: false,
+  docLink: null,
+  previewLink: null,
+  parentId: 1020,
+  folder: true,
+  level: 3
+},
+
+/* =================== FILES (IDs 23–29) =================== */
+
+{
+  id: 23,
+  name: 'CCTV_HighStreet_Cam1_12-06-2024',
+  date: '12 Jun 2024',
+  status: 'Used',
+  new: false,
+  docLink: 'cctv_highstreet_cam1.mp4',
+  previewLink: '/public/files/cctv_highstreet_cam1.mp4',
+  parentId: 1021,
+  folder: false,
+  level: 4
+},
+{
+  id: 24,
+  name: 'CCTV_HighStreet_Cam2_12-06-2024',
+  date: '12 Jun 2024',
+  status: 'Used',
+  new: true,
+  docLink: 'cctv_highstreet_cam2.mp4',
+  previewLink: '/public/files/cctv_highstreet_cam2.mp4',
+  parentId: 1021,
+  folder: false,
+  level: 4
+},
+{
+  id: 25,
+  name: 'CCTV_Riverside_Cam5_03-04-2024',
+  date: '3 Apr 2024',
+  status: 'None',
+  new: true,
+  docLink: 'cctv_riverside_cam5.mp4',
+  previewLink: '/public/files/cctv_riverside_cam5.mp4',
+  parentId: 1022,
+  folder: false,
+  level: 4
+},
+{
+  id: 26,
+  name: 'iPhone_MessageDump_2024-07-01',
+  date: '1 Jul 2024',
+  status: 'Used',
+  new: true,
+  docLink: 'iphone_dump.zip',
+  previewLink: '/public/files/iphone_dump.zip',
+  parentId: 1023,
+  folder: false,
+  level: 4
+},
+{
+  id: 27,
+  name: 'iPhone_Photos_Archive',
+  date: '1 Jul 2024',
+  status: 'None',
+  new: true,
+  docLink: 'iphone_photos.zip',
+  previewLink: '/public/files/iphone_photos.zip',
+  parentId: 1023,
+  folder: false,
+  level: 4
+},
+{
+  id: 28,
+  name: 'Samsung_SMS_Extraction',
+  date: '3 Jul 2024',
+  status: 'Unused',
+  new: false,
+  docLink: 'samsung_sms.zip',
+  previewLink: '/public/files/samsung_sms.zip',
+  parentId: 1024,
+  folder: false,
+  level: 4
+},
+{
+  id: 29,
+  name: 'FB_Screenshot_Thread1',
+  date: '8 Jul 2024',
+  status: 'Used',
+  new: true,
+  docLink: 'fb_thread1.png',
+  previewLink: '/public/files/fb_thread1.png',
+  parentId: 1025,
+  folder: false,
+  level: 4
+}
+  
+
 ],
 
 "materials-files": [

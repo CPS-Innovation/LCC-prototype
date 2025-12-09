@@ -131,10 +131,10 @@
                 type="text"
                 value="{{ data['filtersSearch'] }}">
 
+          <button id="search_materials" type="submit" name="search" class="govuk-button">Search</button>
+
           {% if data['filtersSearch'] %}
-            <button class="search-clear" type="submit" name="clearSearch" value="x">×</button>
-          {% else %}
-            <button id="search_materials" type="submit" name="search" class="govuk-button">Search</button>
+              <button class="search-clear" type="submit" name="clearSearch" value="x">×</button>
           {% endif %}
         </div>
       </div>        
