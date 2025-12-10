@@ -96,7 +96,9 @@
            CHILD FILES
            -------------------------------- #}
         {% for m in files %}
-        <tr class="govuk-table__row">
+        <tr class="govuk-table__row material-row"
+            data-id="{{ m.id }}"
+            data-folder="false">
             <td class="govuk-table__cell">
                 <div class="govuk-checkboxes govuk-checkboxes--small">
                     <div class="govuk-checkboxes__item">
@@ -114,9 +116,9 @@
                 <span class="material-title">
                 <form action="/version-11/B-off-system-MVP/case-overview-folder" method="post">
                     <div class="openMe">
-                        {% if folder.name %}
+                        <!-- {% if folder.name %}
                         <span class="icon-new folder"></span>
-                        {% endif %}
+                        {% endif %} -->
                         <input type="hidden" name="flag" value="1">
                         <input type="hidden" name="folderName" value="{{ folder.name }}">
                         <input type="hidden" name="level" value="{{ folder.level + 1 }}">

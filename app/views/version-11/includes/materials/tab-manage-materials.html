@@ -334,7 +334,9 @@
             <!-- MAIN TABLE -->
             <table class="govuk-table sortable" id="materials_table">
                 <thead class="govuk-table__head">
-                    <tr class="govuk-table__row material-row" data-id="{{ item.id }}" data-folder="{{ item.folder }}">
+                    <tr class="govuk-table__row material-row"
+                        data-id="{{ item.id }}"
+                        {% if item.folder %}data-folder="true"{% else %}data-folder="false"{% endif %}>
 
                         <th scope="col" class="govuk-table__header">
                         {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
@@ -378,7 +380,9 @@
                         {% if item.folder %}
                         {# =============== FOLDER ROW =============== #}
 
-                        <tr class="govuk-table__row material-row" data-id="{{ item.id }}" data-folder="{{ item.folder }}">
+                        <tr class="govuk-table__row material-row"
+                            data-id="{{ item.id }}"
+                            {% if item.folder %}data-folder="true"{% else %}data-folder="false"{% endif %}>
 
                             <!-- Checkbox -->
                             <td class="govuk-table__cell">
@@ -458,7 +462,9 @@
 
                         {% else %}
                         {# =============== FILE ROW =============== #}
-                        <tr class="govuk-table__row material-row" data-id="{{ item.id }}" data-folder="{{ item.folder }}">
+                        <tr class="govuk-table__row material-row"
+                            data-id="{{ item.id }}"
+                            {% if item.folder %}data-folder="true"{% else %}data-folder="false"{% endif %}>
 
                             <!-- Checkbox -->
                             <td class="govuk-table__cell">
@@ -517,16 +523,15 @@
                         {% endif %}
 
                         {# Preview row only for files #}
-                        {% if not item.folder %}
-                            <tr class="govuk-table__row hidden_row" data-row_id="{{ item.id }}">
-                                <td colspan="5">
-                                    <div class="document_holder">
-                                        <embed src="{{ item.previewLink }}">
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endif %}
-
+                        <tr class="govuk-table__row hidden_row" data-row_id="{{ item.id }}">
+                            <td colspan="5">
+                                {% if not item.folder %}
+                                <div class="document_holder">
+                                    <embed src="{{ item.previewLink }}">
+                                </div>
+                                {% endif %}
+                            </td>
+                        </tr>
                     {% endfor %}
 
                 </tbody>
