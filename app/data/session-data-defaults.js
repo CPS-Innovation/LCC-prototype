@@ -2067,7 +2067,8 @@ module.exports = {
 "parentId": 0,
 "currentFolderId": 0,
 "breadcrumbs": ['Shared drive > Thunderstruck'],
-"lastdiscard": []
+"lastdiscard": [],
+"folderId": 0
 
 
 }
