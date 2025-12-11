@@ -1,0 +1,13 @@
+{% extends "layoutCPS-OFF.html" %}
+
+{% block content %}
+<div class="ur-dec-2025">
+    {% block v11Content %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="/public/javascripts/ur-dec-2025/materials-ur-dec-2025.js"></script>
+  {% block pageScripts %}{% endblock %}
+{% endblock %}
