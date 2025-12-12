@@ -244,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function () {
 //           <div class="govuk-modal__overlay" data-close></div>
 //           <div class="govuk-modal__content">
 //             <h2 id="renameTitle" class="govuk-heading-m">Rename material</h2>
-//             <form id="renameSubmitForm" action="/ur-dec-2025/B-off-system-MVP/B-rename-material-save" method="post">
+//             <form id="renameSubmitForm" action="/ur-december-2025/B-off-system-MVP/B-rename-material-save" method="post">
 //               <p class="govuk-body">Current name: <strong id="currentMaterialName"></strong></p>
 //               <div class="govuk-form-group">
 //                 <label class="govuk-label" for="newName">New name</label>
@@ -320,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // ID now comes from the checkbox VALUE
         const materialId = selected.value;
 
-        window.location.href = `/ur-dec-2025/B-off-system-MVP/rename?id=${materialId}`;
+        window.location.href = `/ur-december-2025/B-off-system-MVP/rename?id=${materialId}`;
     });
 
 });
@@ -585,8 +585,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // TABS
 $(document).ready(function() {
-    // Only target elements within ur-dec-2025
-    var $version11 = $('.ur-dec-2025');
+    // Only target elements within ur-december-2025
+    var $version11 = $('.ur-december-2025');
 
     $version11.find("#new-tabs .tab-link").on("click", function (e) {
         e.preventDefault();
@@ -641,8 +641,8 @@ $(document).ready(function() {
 
 // FILTER
 $(document).ready(function() {
-     // Only target elements within ur-dec-2025
-     var $version11 = $('.ur-dec-2025');
+     // Only target elements within ur-december-2025
+     var $version11 = $('.ur-december-2025');
 
      $version11.find('#show_filter_Comms, #show_filter_Materials, .no_results, #show_filter_Redactions').hide();
 
@@ -973,8 +973,8 @@ $(document).ready(function() {
 
 // ACTIONS - MATERIALS & COMMS
 $(document).ready(function() {
-     // Only target elements within ur-dec-2025
-     var $version11 = $('.ur-dec-2025');
+     // Only target elements within ur-december-2025
+     var $version11 = $('.ur-december-2025');
 
      $version11.find("#show_Materials_Actions").click(function(){
           $(this).toggleClass('active');
@@ -989,7 +989,7 @@ $(document).ready(function() {
 });
 
 $(document).mouseup(function(e) {
-     var $version11 = $('.ur-dec-2025');
+     var $version11 = $('.ur-december-2025');
      var container = $version11.find("#materials_Actions");
 
      if (!container.is(e.target) && container.has(e.target).length === 0) {
@@ -1007,7 +1007,7 @@ $(document).mouseup(function(e) {
 });
 
 $(window).scroll(function() { 
-    var $version11 = $('.ur-dec-2025');
+    var $version11 = $('.ur-december-2025');
     var scroll = $(window).scrollTop();
 
 //     if (scroll >= 375) {
@@ -1020,8 +1020,8 @@ $(window).scroll(function() {
 
 // SELECTING MATERIALS & COMMS
 $(document).ready(function() {
-     // Only target elements within ur-dec-2025
-     var $version11 = $('.ur-dec-2025');
+     // Only target elements within ur-december-2025
+     var $version11 = $('.ur-december-2025');
 
      $version11.find('#tab-list, #auto_reclassify').hide();
 
@@ -1184,8 +1184,8 @@ function closeTab() {
 
 // MARK AS READ
 $(document).ready(function() {
-     // Only target elements within ur-dec-2025
-     var $version11 = $('.ur-dec-2025');
+     // Only target elements within ur-december-2025
+     var $version11 = $('.ur-december-2025');
 
      $version11.find('#mark_as').hide();
 
@@ -1249,8 +1249,8 @@ function mark_as_Read() {
 
 // RENAME
 $(document).ready(function() {
-     // Only target elements within ur-dec-2025
-     var $version11 = $('.ur-dec-2025');
+     // Only target elements within ur-december-2025
+     var $version11 = $('.ur-december-2025');
 
      $version11.find('#completing_rename, #rename_COMPLETE').hide();
 
@@ -1315,18 +1315,18 @@ function renameDocument() {
 }
 
 function openRenameModal() {
-     $('.ur-dec-2025').find("#openRenameModal").removeClass("rj-dont-display");
+     $('.ur-december-2025').find("#openRenameModal").removeClass("rj-dont-display");
 }
 
 function closeRenameModal() {
-     $('.ur-dec-2025').find("#openRenameModal").addClass("rj-dont-display");
-     $('.ur-dec-2025').find('#materials_table tr.govuk-table__row').removeClass('rename_document');
+     $('.ur-december-2025').find("#openRenameModal").addClass("rj-dont-display");
+     $('.ur-december-2025').find('#materials_table tr.govuk-table__row').removeClass('rename_document');
 }
 
 // REDACT DOCUMENT
 $(document).ready(function() {
-     // Only target elements within ur-dec-2025
-     var $version11 = $('.ur-dec-2025');
+     // Only target elements within ur-december-2025
+     var $version11 = $('.ur-december-2025');
 
      $version11.find("input[name=materials_document]").click(function(){
           if ($(this).is(':checked')) {
@@ -1728,8 +1728,8 @@ function getSelectedMaterialIds() {
           form.method = 'post';
 
           form.action = (mode === 'copy')
-               ? '/ur-dec-2025/B-off-system-MVP/copy-material'
-               : '/ur-dec-2025/B-off-system-MVP/move-material';
+               ? '/ur-december-2025/B-off-system-MVP/copy-material'
+               : '/ur-december-2025/B-off-system-MVP/move-material';
 
           form.innerHTML = `
                <input type="hidden" name="selected_ids" value="${selected.join(',')}">
