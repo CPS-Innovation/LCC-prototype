@@ -1709,7 +1709,7 @@ function getSelectedMaterialIds() {
                const link = document.createElement('a');
                link.href = '#';
                link.className = 'govuk-link here-action';
-               // link.textContent = (mode === 'copy') ? 'Copy here' : 'Move here';
+               link.textContent = (mode === 'copy') ? 'Copy here' : 'Move here';
 
                link.addEventListener('click', function(ev) {
                     ev.preventDefault();
@@ -1765,4 +1765,3 @@ if (moveForm) {
     document.getElementById('move_selected_ids').value = getSelectedMaterialIds();
   });
 }
-
