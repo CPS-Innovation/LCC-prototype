@@ -162,63 +162,38 @@
      });
 
 
-     // Renaming one material
+     // Renaming materials Monica 15 Dec 2025
      document.addEventListener('DOMContentLoaded', function () {
-     const renameForm = document.getElementById('renameForm');
-     const hiddenInput = document.getElementById('rename_selected');
-     const renameButton = document.getElementById('renameButton');
-     const checkboxes = document.querySelectorAll('#materials_table input[name="materials_document"]');
+          const renameBtn = document.getElementById('renameSubmit');
+          const renameInput = document.getElementById('rename_id');
+          const checkboxes = document.querySelectorAll('#materials_table input[name="materials_document"]');
 
-     function updateRenameState() {
-     const selected = Array.from(checkboxes).filter(cb => cb.checked);
-     if (selected.length === 1) {
-          renameButton.classList.remove('govuk-button--disabled');
-          renameButton.removeAttribute('disabled');
-     } else {
-          renameButton.classList.add('govuk-button--disabled');
-          renameButton.setAttribute('disabled', 'disabled');
-     }
-     }
+          if (!renameBtn || !renameInput) return;
 
-     checkboxes.forEach(cb => cb.addEventListener('change', updateRenameState));
+          function updateRenameState() {
+          const selected = [...checkboxes].filter(cb => cb.checked);
 
-     renameForm.addEventListener('submit', function (e) {
-     const selected = Array.from(checkboxes).filter(cb => cb.checked);
-     if (selected.length !== 1) {
-          e.preventDefault();
-          return;
-     }
-     hiddenInput.value = selected[0].value.trim();
-     });
-     });
-
-
-
-     document.addEventListener('DOMContentLoaded', function () {
-
-     const renameBtn = document.getElementById('renameButton');
-     if (!renameBtn) return;
-
-     renameBtn.addEventListener('click', function (e) {
-          e.preventDefault();
-
-          const selected = document.querySelector('input[name="materials_document"]:checked');
-
-          if (!selected) {
-               console.warn("Rename attempted but no material selected");
-               alert("Select one file or folder to rename.");
-               return;
+          if (selected.length === 1) {
+               renameBtn.disabled = false;
+               renameBtn.classList.remove('govuk-button--disabled');
+               renameInput.value = selected[0].value;
+          } else {
+               renameBtn.disabled = true;
+               renameBtn.classList.add('govuk-button--disabled');
+               renameInput.value = '';
+          }
           }
 
-          // ID now comes from the checkbox VALUE
-          const materialId = selected.value;
-
-          window.location.href = `/ur-dec-2025/B-off-system-MVP/rename?id=${materialId}`;
+          checkboxes.forEach(cb =>
+          cb.addEventListener('change', updateRenameState)
+          );
      });
 
+     document.addEventListener('click', function (e) {
+          if (e.target.closest('#renameSubmit')) {
+          e.stopPropagation();
+          }
      });
-
-
 
      ///////////////////////////////////////////////////// Monica CODE - END /////////////////////////////////////////////////////
 
@@ -230,7 +205,7 @@
      // TABS
      $(document).ready(function() {
      // Only target elements within ur-dec-2025
-     var $version11 = $('.ur-dec-2025');
+     var $version11 = $('.version-11');
 
      $version11.find("#new-tabs .tab-link").on("click", function (e) {
           e.preventDefault();
@@ -618,13 +593,13 @@
      // ACTIONS - MATERIALS & COMMS
      $(document).ready(function() {
           // Only target elements within ur-dec-2025
-          var $version11 = $('.ur-dec-2025');
+          var $version11 = $('.version-11');
 
           $version11.find("#show_Materials_Actions").click(function(){
                $(this).toggleClass('active');
-               $version11.find('.hidden_buttons').toggle();
+               $version11.find('#materials_Actions').toggle();
           });
-
+          
           $version11.find("#show_Comms_Actions").click(function(){
                $(this).toggleClass('active');
                $version11.find('.hidden_buttons').toggle();
@@ -662,149 +637,6 @@
 
      });
 
-     // SELECTING MATERIALS & COMMS
-     $(document).ready(function() {
-          // Only target elements within ur-dec-2025
-          var $version11 = $('.ur-dec-2025');
-
-          $version11.find('#tab-list, #auto_reclassify').hide();
-
-          // RECLASSIFY
-          $version11.find(".auto_reclassify_Documents").click(function(){
-               $version11.find('#discard_successful, #rename_COMPLETE, #mark_as').hide();
-               $version11.find('#auto_reclassify').show();
-          });
-
-          // MATERIALS
-          $version11.find("#materials_documents_ALL").click(function(){
-               if ($(this).is(':checked')) {
-                    $version11.find('input[name=materials_document]').prop('checked', true);
-               } else {
-                    $version11.find('input[name=materials_document]').prop('checked', false);
-               }
-          });
-
-          $('input[name=materials_document]').click(function(){
-               if ($("input[name=materials_document]:checked").length >= 1) {
-                    $('.reclassify_Document_Multiple_Docs, .redact_Document_Multiple_Docs').removeAttr('disabled').removeClass('govuk-button--disabled');
-               } else if ($("input[name=materials_document]:checked").length == 0) {
-                    $('.reclassify_Document_Multiple_Docs, .redact_Document_Multiple_Docs').attr('disabled','disabled').addClass('govuk-button--disabled').removeAttr('onClick');
-               }
-          });
-
-          // COMMS
-          $("#comms_documents_ALL").click(function(){
-               if ($(this).is(':checked')) {
-                    $('input[name=comms_document]').prop('checked', true);
-               } else {
-                    $('input[name=comms_document]').prop('checked', false);
-               }
-          });
-
-          $('input[name=comms_document]').click(function(){
-               if ($("input[name=comms_document]:checked").length >= 1) {
-                    $('.reclassify_Comms_Multiple_Docs').removeAttr('disabled').removeClass('govuk-button--disabled');
-                    $('.redact_Comms_Multiple_Docs').removeAttr('disabled').removeClass('govuk-button--disabled');
-               } else if ($("input[name=comms_document]:checked").length == 0) { 
-                    $('.reclassify_Comms_Multiple_Docs').attr('disabled','disabled').addClass('govuk-button--disabled');
-                    $('.redact_Comms_Multiple_Docs').attr('disabled','disabled').addClass('govuk-button--disabled');
-               }
-          });
-
-          $('.show_material, .show_material_actions').click(function(){
-               $('#discard_successful').hide();
-
-               var materialsNumber = $(this).data('id');
-               if (materialsNumber == 1) { $('table#materials_table tr[data-row_id="1"').toggle(); $('button.show_material_actions[data-id="1"]').toggleClass('hide'); }
-               if (materialsNumber == 2) { $('table#materials_table tr[data-row_id="2"').toggle(); $('button.show_material_actions[data-id="2"]').toggleClass('hide'); }
-               if (materialsNumber == 3) { $('table#materials_table tr[data-row_id="3"').toggle(); $('button.show_material_actions[data-id="3"]').toggleClass('hide'); }
-               if (materialsNumber == 4) { $('table#materials_table tr[data-row_id="4"').toggle(); $('button.show_material_actions[data-id="4"]').toggleClass('hide'); }
-               if (materialsNumber == 5) { $('table#materials_table tr[data-row_id="5"').toggle(); $('button.show_material_actions[data-id="5"]').toggleClass('hide'); }
-               if (materialsNumber == 6) { $('table#materials_table tr[data-row_id="6"').toggle(); $('button.show_material_actions[data-id="6"]').toggleClass('hide'); }
-               if (materialsNumber == 7) { $('table#materials_table tr[data-row_id="7"').toggle(); $('button.show_material_actions[data-id="7"]').toggleClass('hide'); }
-               if (materialsNumber == 8) { $('table#materials_table tr[data-row_id="8"').toggle(); $('button.show_material_actions[data-id="8"]').toggleClass('hide'); }
-               if (materialsNumber == 9) { $('table#materials_table tr[data-row_id="9"').toggle(); $('button.show_material_actions[data-id="9"]').toggleClass('hide'); }
-               if (materialsNumber == 10) { $('table#materials_table tr[data-row_id="10"').toggle(); $('button.show_material_actions[data-id="10"]').toggleClass('hide'); }
-               if (materialsNumber == 11) { $('table#materials_table tr[data-row_id="11"').toggle(); $('button.show_material_actions[data-id="11"]').toggleClass('hide'); }
-               if (materialsNumber == 12) { $('table#materials_table tr[data-row_id="12"').toggle(); $('button.show_material_actions[data-id="12"]').toggleClass('hide'); }
-               if (materialsNumber == 13) { $('table#materials_table tr[data-row_id="13"').toggle(); $('button.show_material_actions[data-id="13"]').toggleClass('hide'); }
-               if (materialsNumber == 14) { $('table#materials_table tr[data-row_id="14"').toggle(); $('button.show_material_actions[data-id="14"]').toggleClass('hide'); }
-               if (materialsNumber == 15) { $('table#materials_table tr[data-row_id="15"').toggle(); $('button.show_material_actions[data-id="15"]').toggleClass('hide'); }
-               if (materialsNumber == 16) { $('table#materials_table tr[data-row_id="16"').toggle(); $('button.show_material_actions[data-id="16"]').toggleClass('hide'); }
-               if (materialsNumber == 17) { $('table#materials_table tr[data-row_id="17"').toggle(); $('button.show_material_actions[data-id="17"]').toggleClass('hide'); }
-               if (materialsNumber == 18) { $('table#materials_table tr[data-row_id="18"').toggle(); $('button.show_material_actions[data-id="18"]').toggleClass('hide'); }
-               if (materialsNumber == 19) { $('table#materials_table tr[data-row_id="19"').toggle(); $('button.show_material_actions[data-id="19"]').toggleClass('hide'); }
-               if (materialsNumber == 20) { $('table#materials_table tr[data-row_id="20"').toggle(); $('button.show_material_actions[data-id="20"]').toggleClass('hide'); }
-          });
-
-          $('.show_material_actions').click(function(){
-               if ($(this).hasClass('hide')) {
-                    $(this).html('Hide <i class="fa-solid fa-chevron-down"></i>');
-               } else {
-                    $(this).html('Actions <i class="fa-solid fa-chevron-down"></i>');
-               }
-          });
-
-          // $('.show_material_actions.hide').click(function(){
-          //      $(this).html('Actions <i class="fa-solid fa-chevron-down"></i>').removeClass('hide');
-          //      $('table#materials_table tr.hidden_row').hide();     
-          // });
-
-          $('.redact_Document_Multiple_Docs').click(function(){
-               $('ul#tab-list').show();
-
-               $('ul#new-tabs li').removeClass('list-item--selected govuk-tabs__list-item--selected');
-               $('ul#new-tabs li.tab-3-content_link').addClass('list-item--selected govuk-tabs__list-item--selected');
-
-               $('.panel').hide();
-               $('#tab_content_2').hide();
-               $('#docCopy').hide();
-               $('#tab_content_3').show();
-
-               var redactedDocuments = parseInt($("input[name=materials_document]:checked").length);
-               var existingNUmber = parseInt($('.redacted_documents').text());
-               $('.redacted_documents').text(redactedDocuments + existingNUmber);
-               
-               // Scroll to a position above the tabs
-               scrollToTab3Position();
-          });
-          
-          $('.redact_Document').click(function(){
-               $('.panel').hide();
-               $('#tab_content_2').hide();
-               $('#tab_content_3').show();
-               $('#tab-list').show();
-
-               $('#new-tabs li').removeClass('list-item--selected govuk-tabs__list-item--selected');
-               $('#new-tabs li.tab-3-content_link').addClass('list-item--selected govuk-tabs__list-item--selected');
-
-               $('#docCopy').hide();
-
-               var redactedDocuments = parseInt($('.redacted_documents').text());
-               $('.redacted_documents').text(redactedDocuments + 1);
-               
-               // Scroll to a position above the tabs
-               scrollToTab3Position();
-          });
-
-          $('#filter_Redactions table .openMe a').click(function(){
-               $('ul#tab-list').show();
-               var redactedDocuments = parseInt($('.redacted_documents').text());
-               $('.redacted_documents').text(redactedDocuments + 1);
-
-               $('.panel').hide();
-               $('#tab_content_3').show();
-
-               $('#filter_Redactions table tbody tr').removeClass('active_document');
-               // $('#filter_Redactions table tbody tr td strong.govuk-tag').remove();
-               $(this).closest('tr').addClass('active_document').removeClass('unread_document');
-               $(this).closest('td').prepend(`<strong class="govuk-tag active_document">Active document</strong>`);
-               
-               // Scroll to a position above the tabs
-               scrollToTab3Position();
-          });            
-
-     });
 
      function scrollToTab3Position() {
           // Get the tabs position
@@ -826,215 +658,6 @@
           
      }
 
-     // MARK AS READ
-     $(document).ready(function() {
-          // Only target elements within ur-dec-2025
-          var $version11 = $('.ur-dec-2025');
-
-          $version11.find('#mark_as').hide();
-
-          $version11.find('.mark_as_Read').click(function(){
-               $(this).toggleClass('read');
-
-               $version11.find('#discard_successful, #auto_reclassify').hide();
-
-               $version11.find('#mark_as').show().toggleClass('read');
-
-               var document_title = $(this).closest('.openMe').find('.redact_Document').text();
-               $version11.find('.document_title').text(document_title);
-
-               var row_ID = parseInt($(this).closest('tr').data('row_id'));
-               if (row_ID == 1) { $('table#materials_table .document_row_1').toggleClass('read'); }
-               if (row_ID == 2) { $('table#materials_table .document_row_2').toggleClass('read'); }
-               if (row_ID == 3) { $('table#materials_table .document_row_3').toggleClass('read'); }
-               if (row_ID == 4) { $('table#materials_table .document_row_4').toggleClass('read'); }
-               if (row_ID == 5) { $('table#materials_table .document_row_5').toggleClass('read'); }
-               if (row_ID == 6) { $('table#materials_table .document_row_6').toggleClass('read'); }
-               if (row_ID == 7) { $('table#materials_table .document_row_7').toggleClass('read'); }
-               if (row_ID == 8) { $('table#materials_table .document_row_8').toggleClass('read'); }
-               if (row_ID == 9) { $('table#materials_table .document_row_9').toggleClass('read'); }
-               if (row_ID == 10) { $('table#materials_table .document_row_10').toggleClass('read'); }
-               if (row_ID == 11) { $('table#materials_table .document_row_11').toggleClass('read'); }
-               if (row_ID == 12) { $('table#materials_table .document_row_12').toggleClass('read'); }
-               if (row_ID == 13) { $('table#materials_table .document_row_13').toggleClass('read'); }
-               if (row_ID == 14) { $('table#materials_table .document_row_14').toggleClass('read'); }
-               if (row_ID == 15) { $('table#materials_table .document_row_15').toggleClass('read'); }
-               if (row_ID == 16) { $('table#materials_table .document_row_16').toggleClass('read'); }
-               if (row_ID == 17) { $('table#materials_table .document_row_17').toggleClass('read'); }
-               if (row_ID == 18) { $('table#materials_table .document_row_18').toggleClass('read'); }
-               if (row_ID == 19) { $('table#materials_table .document_row_19').toggleClass('read'); }
-               if (row_ID == 20) { $('table#materials_table .document_row_20').toggleClass('read'); }
-
-               if ($(this).hasClass('read')) {
-                    $(this).html('Mark as unread');
-               } else {
-                    $(this).html('Mark as read');
-               }
-
-               if ($('#mark_as').hasClass('read')) {
-                    $('#mark_as .govuk-notification-banner__title').text('Mark as read successful');
-                    $('#mark_as .govuk-notification-banner__heading .status').text('read');
-               } else {
-                    $('#mark_as .govuk-notification-banner__title').text('Mark as unread successful');
-                    $('#mark_as .govuk-notification-banner__heading .status').text('unread');
-               }
-
-          });   
-
-     });
-
-     function mark_as_Read() {
-          $('#filter_Redactions table tr.active_document strong').hide();
-          $('#mark_as').show();
-          $('html,body').scrollTop(0);
-          var document_title = $('#filter_Redactions table tr.active_document a.show-case').text();
-          $('.document_title').text(document_title);
-     }
-
-     // RENAME
-     $(document).ready(function() {
-          // Only target elements within ur-dec-2025
-          var $version11 = $('.ur-dec-2025');
-
-          $version11.find('#completing_rename, #rename_COMPLETE').hide();
-
-          $version11.find('.rename-Document').click(function(){
-               var document_title = $(this).closest('.openMe').find('.redact_Document').text();
-               $version11.find('#rename-Document').val(document_title);
-               var rename_document = parseInt($(this).data('rename'));
-               if (rename_document == 1) { $('table#materials_table .document_row_1').addClass('rename_document'); }
-               if (rename_document == 2) { $('table#materials_table .document_row_2').addClass('rename_document'); }
-               if (rename_document == 3) { $('table#materials_table .document_row_3').addClass('rename_document'); }
-               if (rename_document == 4) { $('table#materials_table .document_row_4').addClass('rename_document'); }
-               if (rename_document == 5) { $('table#materials_table .document_row_5').addClass('rename_document'); }
-               if (rename_document == 6) { $('table#materials_table .document_row_6').addClass('rename_document'); }
-               if (rename_document == 7) { $('table#materials_table .document_row_7').addClass('rename_document'); }
-               if (rename_document == 8) { $('table#materials_table .document_row_8').addClass('rename_document'); }
-               if (rename_document == 9) { $('table#materials_table .document_row_9').addClass('rename_document'); }
-               if (rename_document == 10) { $('table#materials_table .document_row_10').addClass('rename_document'); }
-               if (rename_document == 11) { $('table#materials_table .document_row_11').addClass('rename_document'); }
-               if (rename_document == 12) { $('table#materials_table .document_row_12').addClass('rename_document'); }
-               if (rename_document == 13) { $('table#materials_table .document_row_13').addClass('rename_document'); }
-               if (rename_document == 14) { $('table#materials_table .document_row_14').addClass('rename_document'); }
-               if (rename_document == 15) { $('table#materials_table .document_row_15').addClass('rename_document'); }
-               if (rename_document == 16) { $('table#materials_table .document_row_16').addClass('rename_document'); }
-               if (rename_document == 17) { $('table#materials_table .document_row_17').addClass('rename_document'); }
-               if (rename_document == 18) { $('table#materials_table .document_row_18').addClass('rename_document'); }
-               if (rename_document == 19) { $('table#materials_table .document_row_19').addClass('rename_document'); }
-               if (rename_document == 20) { $('table#materials_table .document_row_20').addClass('rename_document'); }
-          });   
-
-     });
-
-     function documentRename() {
-          var documentName = $('#filter_Redactions table tr.active_document a.show-case').text();
-          $('#rename-Document').val(documentName);
-     }
-
-     function renameDocument() {
-          $('#rename_form').hide();
-          $('#completing_rename').show();
-          var newDocumentName = $('#rename-Document').val();
-          setTimeout(function () {
-               $('#discard_successful, #auto_reclassify, #mark_as').hide();
-               $("#openRenameModal").addClass("rj-dont-display");
-               $("#rename_COMPLETE").show();       
-               $('table#materials_table tr.rename_document').find('.show_material').text(newDocumentName);
-
-               $('#filter_Redactions table tr.active_document').find('.show-case').text(newDocumentName);
-               $('.document-panel .docSummaryTopPage p.inPageSearchMargins2').text(newDocumentName);
-               $('ul#tab-list li.govuk-tabs__list-item--selected a').text(newDocumentName);
-
-               $('table#materials_table tr.rename_document td.title_column').find('strong.govuk-tag').hide();
-               $('table#materials_table tr.rename_document td.title_column').prepend(`<strong class="govuk-tag govuk-tag--green">Renamed</strong>`);
-
-
-          }, 6000)
-     // var newDocumentName = $('#rename-Document').val();
-     // $('.updated-message p strong').text(newDocumentName);
-     // // $('.updated-message .info-text').text('Document has been renamed ' + newDocumentName);
-     // $('ul.sticky-tabs li.govuk-tabs__list-item--selected a').text(newDocumentName);
-     // $('table tbody tr td.change-DocumentName a.show-case').text(newDocumentName);
-     // $('#documentNameHeader .inPageSearchMargins2').text(newDocumentName);   
-     }
-
-     function openRenameModal() {
-          $('.ur-dec-2025').find("#openRenameModal").removeClass("rj-dont-display");
-     }
-
-     function closeRenameModal() {
-          $('.ur-dec-2025').find("#openRenameModal").addClass("rj-dont-display");
-          $('.ur-dec-2025').find('#materials_table tr.govuk-table__row').removeClass('rename_document');
-     }
-
-     // REDACT DOCUMENT
-     $(document).ready(function() {
-          // Only target elements within ur-dec-2025
-          var $version11 = $('.ur-dec-2025');
-
-          $version11.find("input[name=materials_document]").click(function(){
-               if ($(this).is(':checked')) {
-                    $(this).closest('tr').addClass('selected_for_readcation');
-               } else {
-                    $(this).closest('tr').removeClass('selected_for_readcation');
-               }
-          });
-
-          $('.activate_Statements, .activate_MG_Forms, .activate_Other').hide();
-
-          $("select[name=review_materials]").on("change", function () {
-               if ($(this).val() == 'Show all documents') {
-                    $('.activate_All_Documents').show();
-                    $('.activate_Statements, .activate_MG_Forms, .activate_Other').hide();
-               } else if ($(this).val() == 'Statements') {
-                    $('.activate_Statements').show();
-                    $('.activate_All_Documents, .activate_MG_Forms, .activate_Other').hide();
-               } else if ($(this).val() == 'MG Forms') {
-                    $('.activate_MG_Forms').show();
-                    $('activate_All_Documents, .activate_Statements, .activate_Other').hide();
-               } else if ($(this).val() == 'Other materials') {
-                    $('.activate_Other').show();
-                    $('.activate_All_Documents, .activate_Statements, .activate_MG_Forms').hide();
-               }
-          });
-
-          $(".activate_All_Documents, .activate_Statements, .activate_MG_Forms, .activate_Other").click(function(){
-               $('ul#tab-list').show();
-               $('#docCopy').hide();
-          });
-
-          $(".show-case").on("click", function (e) {
-               var pageCount = $(this).attr("data-page");
-               $('.page-counter').addClass('show');
-               $('.page-counter strong').text(pageCount);
-          });
-
-          $('.accordion-section-body').hide();
-
-          $(".accordion-section-header").on("click", function (e) {
-               $(this).toggleClass('active');
-               $(this).closest('.accordion-section').toggleClass('active');
-               $(this).closest('.accordion-section').find('.accordion-section-body').toggle();
-          });
-
-
-     });
-
-
-     // LEGACY MODALS
-     function openModalProblem() {
-          $('#problemModal').removeClass("rj-dont-display");
-     }
-     function closeModalProblem() {
-          $('#problemModal').addClass("rj-dont-display");
-     }
-
-     function openModal() {
-          $('#searchModal').removeClass("rj-dont-display");
-     }
-     function closeModal() {
-          $('#searchModal').addClass("rj-dont-display");
-     }
 
      // =================================== Search button =================================== //
      $(document).ready(function () {
@@ -1107,193 +730,8 @@
      }
 
 
-     // =================================== NOTES =================================== //
-     $(document).ready(function () {
 
-     $(".redact_Document").on("click", function (e) {
-               // $('div').attr('data-tab-id', 'MCLOVE%20MG3-content').find('.date_details').text('test');
-               // $('div').attr('data-tab-id', 'MCLOVE%20MG3-content').find('.time_details').text('test');
-
-               // $('div').attr('data-tab-id', 'Case%20overview%20and%20officer%20comments-content').find('.date_details').text('test  r ewfwef');
-               // $('div').attr('data-tab-id', 'Case%20overview%20and%20officer%20comments-content').find('.time_details').text('test  r ewfwef');
-     });
-
-     })
-
-     // function documentDetails() {
-     //      if ($('.document-panel').data('tab-id','MCLOVE%20MG3-content')) {
-     //           alert('working');
-     //      }
-          
-     // }
-
-     function openNewNotesModal() {
-          $("#openNewNotesModal").removeClass("rj-dont-display");
-     }
-     function closeNewNotesModal() {
-          $("#openNewNotesModal").addClass("rj-dont-display");
-     }
-
-     function openNotesModal() {
-     $("#openNotesModal").removeClass("rj-dont-display");
-     $('#notes-Comments').val('');
-     }
-
-     function closeNotesModal() {
-     $("#openNotesModal").addClass("rj-dont-display");
-     }
-
-
-
-
-
-
-
-
-     // ChatGPT fixes [Monica]
-     // ====== ACTIONS DROPDOWN: MODAL HELPERS (add at the end of materials.js) ======
-     (function () {
-     // Utility: find any of a list of selectors, return the first jQuery element that exists
-     function $firstExisting(selectors) {
-     for (const sel of selectors) {
-          const $el = $(sel);
-          if ($el.length) return $el;
-     }
-     return $(); // empty
-     }
-
-     // Utility: show/hide modal containers that are initially hidden with CSS classes
-     function showModal($container) {
-     if (!$container.length) return false;
-     // Remove any "display: none" / hiding classes you use
-     $container.removeClass('rj-dont-display').show();
-     // Optional a11y attributes
-     $container.attr('aria-hidden', 'false');
-     return false;
-     }
-
-     function hideModal($container) {
-     if (!$container.length) return false;
-     $container.addClass('rj-dont-display').hide();
-     $container.attr('aria-hidden', 'true');
-     return false;
-     }
-
-     // Count selected materials (checkboxes in the table)
-     function selectedMaterials() {
-     return $('input[name="materials_document"]:checked');
-     }
-
-     // ===== Rename modal =====
-     window.openRenameModal = function () {
-     const $sel = selectedMaterials();
-     if ($sel.length !== 1) {
-          // Guard: rename is single-selection only
-          // (You can swap this for a GDS error summary if you prefer)
-          alert('Please select exactly one document to rename.');
-          return false;
-     }
-
-     // Optionally put the current title into the modal
-     const docTitle = $sel.first().val() || 'Document title';
-     $('.document-title-10').text(docTitle);
-     $('#rename-Document').val(docTitle);
-
-     // Reset state banners
-     $('.saving-panel-rename, .success-banner-rename, .secondary-action').hide();
-     $('.initial-action').show();
-
-     // Show the modal container from includes/modals/rename.html
-     const $modal = $('#openRenameModal');
-     return showModal($modal);
-     };
-
-     window.closeRenameModal = function () {
-     const $modal = $('#openRenameModal');
-     return hideModal($modal);
-     };
-
-     window.renameDocument = function () {
-     // Fake a quick save UX: hide initial buttons, show "saving", then "success"
-     $('.initial-action').hide();
-     $('.saving-panel-rename').show();
-
-     setTimeout(function () {
-          $('.saving-panel-rename').hide();
-          $('.success-banner-rename, .secondary-action').show();
-
-          // Reflect new name back into the table UI (optional)
-          const newName = ($('#rename-Document').val() || '').trim();
-          if (newName) {
-          const $sel = selectedMaterials();
-          if ($sel.length === 1) {
-               // Update the visible button text in the Title column that matches this checkbox row
-               const idAttr = $sel.attr('id'); // e.g. materials_document_6
-               if (idAttr) {
-               const $row = $('#' + idAttr).closest('tr');
-               $row.find('.title_column .openMe .govuk-button.show_material').text(newName);
-               }
-          }
-          }
-     }, 400); // tweak the delay if you want
-     return false;
-     };
-
-     // ===== Update Statement / Exhibit modals =====
-     // Your HTML uses onclick="return openUpdateStatement()" and "...Exhibit()"
-     // We’ll look for a few likely IDs and open whichever exists.
-     function openGenericModal(possibleSelectors) {
-     const $modal = $firstExisting(possibleSelectors);
-     if (!$modal.length) {
-          console.warn('Update modal not found. Tried:', possibleSelectors.join(', '));
-          // Fall back to a gentle alert so users aren’t stuck
-          alert('This modal is not wired yet in this prototype.');
-          return false;
-     }
-     return showModal($modal);
-     }
-
-     window.openUpdateStatement = function () {
-     return openGenericModal([
-          '#updateStatementModal',
-          '#openUpdateStatementModal',
-          '#update-statement-modal'
-     ]);
-     };
-
-     window.openUpdateExhibit = function () {
-     return openGenericModal([
-          '#updateExhibitModal',
-          '#openUpdateExhibitModal',
-          '#update-exhibit-modal'
-     ]);
-     };
-     })();
-
-
-     // Wrong place here, it belongs in routes. Commenting it didn't break anything.
-     // const search = (req.session.data.filtersSearch || "").toLowerCase();
-
-     // groupedSearchResults = groupedSearchResults.map(entry => {
-     //     const folder = entry.folder;
-     //     const folderName = folder.name.toLowerCase();
-
-     //     return {
-     //         ...entry,
-     //         folderMatchesSearch: search && folderName.includes(search)
-     //     };
-     // });
-
-
-     // function getSelectedMaterialIds() {
-     //      return Array.from(
-     //      document.querySelectorAll('input[name="materials_document"]:checked')
-     //      ).map(x => x.value);
-     // }
-
-
-     // … existing materials.js code …
-
+     // =================================== Monica =================================== //
      // ----------------------------------------
      // COPY + MOVE MODE (Layer 2)
      // ----------------------------------------

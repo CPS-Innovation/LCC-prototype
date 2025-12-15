@@ -281,9 +281,24 @@
                                     </button>
                                 </form>
                                 
-                                <button id="renameButton" type="button" class="govuk-button govuk-button--disabled">
+                                <!-- <button id="renameButton" type="button" class="govuk-button govuk-button--disabled">
                                     Rename
-                                </button>
+                                </button> -->
+
+                                <!-- <form id="renameForm" method="get" action="../../../ur-dec-2025/B-off-system-MVP/rename">
+                                    <input id="rename_selected" name="rename_selected" type="hidden" value="">
+                                    <button id="renameSubmit" class="govuk-button govuk-button--disabled" type="submit">
+                                        Rename
+                                    </button>
+                                </form> -->
+
+                                <form id="renameForm" method="get" action="/ur-dec-2025/B-off-system-MVP/rename">
+                                    <input type="hidden" id="rename_id" name="id" value="">
+                                    <button id="renameSubmit" type="submit" class="govuk-button govuk-button--disabled" disabled>
+                                        Rename
+                                    </button>
+                                </form>
+
 
                                 <button class="govuk-button mark_as_Read" type="button">
                                     Mark as read
