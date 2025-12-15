@@ -1,0 +1,69 @@
+{% extends "layoutCPS-OFF-V11.html" %}
+
+{% block pageTitle %}
+  Create a new folder – {{ serviceName }} – Prototype
+{% endblock %}
+
+{% block header %}
+    {% include "../includes/banner-OFF-V6.html" %}
+{% endblock %}
+
+
+{% extends "layoutCPS-NEW-INDEX.html" %}
+
+{% block beforeContent %}
+<a href="javascript:history.back()" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <h1 class="govuk-heading-l">Rename item</h1>
+
+    <form method="post">
+
+      <input type="hidden" name="id" value="{{ item.id }}">
+
+      {% if error %}
+      <div class="govuk-error-summary" role="alert">
+        <h2 class="govuk-error-summary__title">There is a problem</h2>
+        <ul class="govuk-error-summary__list">
+          <li><a href="#newName">{{ error }}</a></li>
+        </ul>
+      </div>
+      {% endif %}
+
+      <div class="govuk-form-group {% if error %}govuk-form-group--error{% endif %}">
+        <label class="govuk-label govuk-label--m" for="newName">
+          New name
+        </label>
+
+        {% if error %}
+        <p class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error:</span> {{ error }}
+        </p>
+        {% endif %}
+
+        <input
+          class="govuk-input govuk-input--width-20"
+          id="newName"
+          name="newName"
+          type="text"
+          value="{{ item.name }}"
+        >
+      </div>
+
+      <button class="govuk-button" type="submit">Save name</button>
+
+      <p class="govuk-body">
+        <a href="javascript:history.back()" class="govuk-link govuk-link--no-visited-state">
+          Cancel
+        </a>
+      </p>
+
+    </form>
+
+  </div>
+</div>
+{% endblock %}

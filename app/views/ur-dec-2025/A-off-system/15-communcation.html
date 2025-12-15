@@ -1,0 +1,453 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row" id="">
+    <div class="govuk-grid-column-two-thirds">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+        <div class="wrapper gov-pages">
+
+            {% if data['comms_Type'] == 'comms_Type_1' %}
+                <h1 class="govuk-heading-xl" style="">Asset Recovery details</h1>
+            {% elseif data['comms_Type'] == 'comms_Type_2' %}
+                <h1 class="govuk-heading-xl" style="">Asset Recovery 3rd Party details</h1>
+            {% elseif data['comms_Type'] == 'comms_Type_3' %}
+                <h1 class="govuk-heading-xl" style="">Complaint</h1>
+            {% elseif data['comms_Type'] == 'comms_Type_4' %}
+                <h1 class="govuk-heading-xl" style="">Conference with Counsel details</h1>
+            {% elseif data['comms_Type'] == 'comms_Type_5' %}
+                <h1 class="govuk-heading-xl" style="">Correspondence details</h1>
+            {% elseif data['comms_Type'] == 'comms_Type_6' %}
+                <h1 class="govuk-heading-xl" style="">Counsel Case Acknowledgement details</h1>
+            {% elseif data['comms_Type'] == 'comms_Type_7' %}
+                <h1 class="govuk-heading-xl" style="">CPS WCU Communication details</h1>
+            {% elseif data['comms_Type'] == 'comms_Type_8' %}
+                <h1 class="govuk-heading-xl" style="">Meeting details</h1>
+            {% elseif data['comms_Type'] == 'comms_Type_9' %}
+                <h1 class="govuk-heading-xl" style="">Other Communication details</h1>
+            {% elseif data['comms_Type'] == 'comms_Type_10' %}
+                <h1 class="govuk-heading-xl" style="">Physical Media details</h1>
+            {% elseif data['comms_Type'] == 'comms_Type_11' %}
+                <h1 class="govuk-heading-xl" style="">Record Communication details</h1>
+            {% elseif data['comms_Type'] == 'comms_Type_12' %}
+                <h1 class="govuk-heading-xl" style="">Service of ABE details</h1>
+            {% endif %}
+
+            <form method="get" action="5-case-overview#eaTab" id="">  
+
+                <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+
+                    <!-- OPTION 1 - START -->
+                    {% if data['comms_Type'] == 'comms_Type_7' or data['comms_Type'] == 'comms_Type_8' or data['comms_Type'] == 'comms_Type_11' %}
+
+                    {% else %}
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset" aria-describedby="comms_Form_Type-hint">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Type of comms</legend>
+                                <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_Type-In" name="comms_Form_Type" type="radio" value="In">
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_Type-In">In</label>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_Type-Out" name="comms_Form_Type" type="radio" value="Out">
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_Type-Out">Out</label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>                    
+                    {% endif %}
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    {% if data['comms_Type'] == 'comms_Type_7' %}
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset" aria-describedby="comms_Form_With-hint">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Who is it with?</legend>
+                                <div id="contact-hint" class="govuk-hint">Select one option</div>
+                                <div class="govuk-radios" data-module="govuk-radios">
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-Counsel" name="comms_Form_With" type="radio" value="Counsel" data-aria-controls="conditional-comms_Form_With-Counsel" disabled>
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-Counsel">Counsel</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-Counsel">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-Counsel-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Counsel-Text" name="comms_Form_With-Counsel-Text" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-Court" name="comms_Form_With" type="radio" value="Court" data-aria-controls="conditional-comms_Form_With-Court" disabled>
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-Court">Court</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-Court">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-Court-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Court-Text" name="comms_Form_With-Court-Text" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-Defence" name="comms_Form_With" type="radio" value="Defence" data-aria-controls="conditional-comms_Form_With-Defence" disabled>
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-Defence">Defence</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-Defence">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-Defence-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Defence-Text" name="comms_Form_With-Defence-Text" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-Police" name="comms_Form_With" type="radio" value="Police" data-aria-controls="conditional-comms_Form_With-Police" disabled>
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-Police">Police</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-Police">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-Police-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Police-Text" name="comms_Form_With-Police-Text" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-WCU" name="comms_Form_With" type="radio" value="WCU" data-aria-controls="conditional-comms_Form_With-WCU" checked disabled>
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-WCU">WCU</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-WCU">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-WCU-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Police-Text" name="comms_Form_With-WCU-Text" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-Other" name="comms_Form_With" type="radio" value="Other" data-aria-controls="conditional-comms_Form_With-Other" disabled>
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-Other">Other</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-Other">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-Other-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Other-Text" name="comms_Form_With-Other-Text" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div> 
+                    {% elseif data['comms_Type'] == 'comms_Type_11' %}
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset" aria-describedby="comms_Form_With-hint">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Who is it with?</legend>
+                                <div id="contact-hint" class="govuk-hint">Select one option</div>
+                                <div class="govuk-radios" data-module="govuk-radios">
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-Counsel" name="comms_Form_With" type="radio" value="Counsel" data-aria-controls="conditional-comms_Form_With-Counsel">
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-Counsel">Counsel</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-Counsel">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-Counsel-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Counsel-Text" name="comms_Form_With-Counsel-Text" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-Court" name="comms_Form_With" type="radio" value="Court" data-aria-controls="conditional-comms_Form_With-Court">
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-Court">Court</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-Court">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-Court-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Court-Text" name="comms_Form_With-Court-Text" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-Defence" name="comms_Form_With" type="radio" value="Defence" data-aria-controls="conditional-comms_Form_With-Defence">
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-Defence">Defence</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-Defence">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-Defence-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Defence-Text" name="comms_Form_With-Defence-Text" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-Police" name="comms_Form_With" type="radio" value="Police" data-aria-controls="conditional-comms_Form_With-Police">
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-Police">Police</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-Police">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-Police-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Police-Text" name="comms_Form_With-Police-Text" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-WCU" name="comms_Form_With" type="radio" value="WCU" data-aria-controls="conditional-comms_Form_With-WCU">
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-WCU">WCU</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-WCU">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-WCU-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Police-Text" name="comms_Form_With-WCU-Text" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div> 
+                    {% else %}
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset" aria-describedby="comms_Form_With-hint">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Who is it with?</legend>
+                                <div id="contact-hint" class="govuk-hint">Select one option</div>
+                                <div class="govuk-radios" data-module="govuk-radios">
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-Counsel" name="comms_Form_With" type="radio" value="Counsel" data-aria-controls="conditional-comms_Form_With-Counsel">
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-Counsel">Counsel</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-Counsel">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-Counsel-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Counsel-Text" name="comms_Form_With-Counsel-Text" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-Court" name="comms_Form_With" type="radio" value="Court" data-aria-controls="conditional-comms_Form_With-Court">
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-Court">Court</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-Court">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-Court-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Court-Text" name="comms_Form_With-Court-Text" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-Defence" name="comms_Form_With" type="radio" value="Defence" data-aria-controls="conditional-comms_Form_With-Defence">
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-Defence">Defence</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-Defence">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-Defence-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Defence-Text" name="comms_Form_With-Defence-Text" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-Police" name="comms_Form_With" type="radio" value="Police" data-aria-controls="conditional-comms_Form_With-Police">
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-Police">Police</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-Police">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-Police-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Police-Text" name="comms_Form_With-Police-Text" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-WCU" name="comms_Form_With" type="radio" value="WCU" data-aria-controls="conditional-comms_Form_With-WCU">
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-WCU">WCU</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-WCU">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-WCU-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Police-Text" name="comms_Form_With-WCU-Text" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="comms_Form_With-Other" name="comms_Form_With" type="radio" value="Other" data-aria-controls="conditional-comms_Form_With-Other">
+                                        <label class="govuk-label govuk-radios__label" for="comms_Form_With-Other">Other</label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-comms_Form_With-Other">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-visually-hidden" for="comms_Form_With-Other-Text">Who it was with?</label>
+                                            <input class="govuk-input govuk-!-width-one-third" id="comms_Form_With-Other-Text" name="comms_Form_With-Other-Text" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div> 
+                    {% endif %}
+                    <!-- OPTION 2 - END -->
+
+                    <!-- OPTION 3 - START -->
+                        <div class="govuk-form-group">
+                            {% if data['comms_Type'] == 'comms_Type_11' %}
+                                <label class="govuk-label govuk-label--s" for="comms_Form_Title">Subject</label>
+                            {% else %}
+                                <label class="govuk-label govuk-label--s" for="comms_Form_Title">Title</label>
+                            {% endif %}
+                            {% if data['comms_Type'] == 'comms_Type_1' %}
+                                <input class="govuk-input govuk-input--width-20" id="comms_Form_Title" name="comms_Form_Title" type="text" value="Asset Recovery">
+                            {% elseif data['comms_Type'] == 'comms_Type_2' %}
+                                <input class="govuk-input govuk-input--width-20" id="comms_Form_Title" name="comms_Form_Title" type="text" value="Asset Recovery 3rd Party">
+                            {% elseif data['comms_Type'] == 'comms_Type_3' %}
+                                <input class="govuk-input govuk-input--width-20" id="comms_Form_Title" name="comms_Form_Title" type="text" value="Complaint">
+                            {% elseif data['comms_Type'] == 'comms_Type_4' %}
+                                <input class="govuk-input govuk-input--width-20" id="comms_Form_Title" name="comms_Form_Title" type="text" value="Conference with Counsel">
+                            {% elseif data['comms_Type'] == 'comms_Type_5' %}
+                                <input class="govuk-input govuk-input--width-20" id="comms_Form_Title" name="comms_Form_Title" type="text" value="Correspondence">
+                            {% elseif data['comms_Type'] == 'comms_Type_6' %}
+                                <input class="govuk-input govuk-input--width-20" id="comms_Form_Title" name="comms_Form_Title" type="text" value="Counsel Case Acknowledgement">
+                            {% elseif data['comms_Type'] == 'comms_Type_7' %}
+                                <input class="govuk-input govuk-input--width-20" id="comms_Form_Title" name="comms_Form_Title" type="text" value="CPS WCU Communication">
+                            {% elseif data['comms_Type'] == 'comms_Type_8' %}
+                                <input class="govuk-input govuk-input--width-20" id="comms_Form_Title" name="comms_Form_Title" type="text" value="Meeting">
+                            {% elseif data['comms_Type'] == 'comms_Type_9' %}
+                                <input class="govuk-input govuk-input--width-20" id="comms_Form_Title" name="comms_Form_Title" type="text" value="Other Communication">
+                            {% elseif data['comms_Type'] == 'comms_Type_10' %}
+                                <input class="govuk-input govuk-input--width-20" id="comms_Form_Title" name="comms_Form_Title" type="text" value="Physical Media">
+                            {% elseif data['comms_Type'] == 'comms_Type_11' %}
+                                <input class="govuk-input govuk-input--width-20" id="comms_Form_Title" name="comms_Form_Title" type="text" value="Record Communication">
+                            {% elseif data['comms_Type'] == 'comms_Type_12' %}
+                                <input class="govuk-input govuk-input--width-20" id="comms_Form_Title" name="comms_Form_Title" type="text" value="Service of ABE">
+                            {% else %}
+                                <input class="govuk-input govuk-input--width-20" id="comms_Form_Title" name="comms_Form_Title" type="text" value="">
+                            {% endif %}
+                        </div>                    
+                    <!-- OPTION 3 - END -->
+
+                    <!-- OPTION 4 & 5 - START -->
+                    {% if data['comms_Type'] == 'comms_Type_4' %}
+                        <div class="govuk-form-group">
+                            <label class="govuk-label govuk-label--s" for="comms_Form_Location">Location</label>
+                            <input class="govuk-input govuk-input--width-20" id="comms_Form_Location" name="comms_Form_Location" type="text">
+                        </div>                    
+                        <div class="govuk-form-group govuk-label--s">
+                            <label class="govuk-label" for="comms_Form_Duration">Duration</label>
+                            <input class="govuk-input govuk-input--width-10" id="comms_Form_Duration" name="comms_Form_Duration" type="text">
+                        </div>                    
+                    {% else %}
+
+                    {% endif %}
+                    <!-- OPTION 4 && 5 - END -->
+
+                    <!-- OPTION 6 - START -->
+                    <div class="date_range_wrapper">
+                        <div class="govuk-form-group" id="dateRange-Container">
+                            <fieldset class="govuk-fieldset" role="group" aria-describedby="comms_Form_Date-hint">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Date received</legend>
+                                <div class="govuk-date-input" id="comms_Form_Date">
+                                    <div class="govuk-date-input__item">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-date-input__label" for="comms_Form_Date-Day">Day</label>
+                                            {% if data['comms_Type'] == 'comms_Type_11' %}
+                                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="comms_Form_Date-Day" name="comms_Form_Date-Day" type="text" inputmode="numeric" value="10">
+                                            {% else %}
+                                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="comms_Form_Date-Day" name="comms_Form_Date-Day" type="text" inputmode="numeric">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="govuk-date-input__item">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-date-input__label" for="comms_Form_Date-Month">Month</label>
+                                            {% if data['comms_Type'] == 'comms_Type_11' %}
+                                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="comms_Form_Date-Month" name="comms_Form_Date-Month" type="text" inputmode="numeric" value="12">
+                                            {% else %}
+                                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="comms_Form_Date-Month" name="comms_Form_Date-Month" type="text" inputmode="numeric">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="govuk-date-input__item">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-date-input__label" for="comms_Form_Date-Year">Year</label>
+                                            {% if data['comms_Type'] == 'comms_Type_11' %}
+                                                <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="comms_Form_Date-Year" name="comms_Form_Date-Year" type="text" inputmode="numeric" value="2024">
+                                            {% else %}
+                                                <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="comms_Form_Date-Year" name="comms_Form_Date-Year" type="text" inputmode="numeric">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <button type="button" class="govuk-button datePicker" data-module="govuk-button" onclick="return datePicker2();">Date picker</button>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <!-- OPTION 6 - END -->
+
+                    <!-- OPTION 7 - START -->
+                    {% if data['comms_Type'] == 'comms_Type_10' %}
+
+                    {% else %}
+                        <div class="govuk-form-group">
+                            <label class="govuk-label govuk-label--s" for="comms_Form_fileUpload">Upload a file</label>
+                            <input class="govuk-file-upload" id="comms_Form_fileUpload" name="comms_Form_fileUpload" type="file">
+                        </div>                    
+                    {% endif %}
+                    <!-- OPTION 7 - END -->
+
+                    <!-- OPTION 8 - START -->
+                    <div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="4000">
+                        <label class="govuk-label govuk-label--s" for="comms_Form_Description">Description</label>
+                        <textarea class="govuk-textarea govuk-js-character-count" id="comms_Form_Description" name="comms_Form_Description" rows="5" aria-describedby="comms_Form_Description-info with-hint-hint"></textarea>
+                        <div id="comms_Form_Description-info" class="govuk-hint govuk-character-count__message">You can enter up to 4000 characters</div> 
+                    </div>                  
+                    <!-- OPTION 8 - END -->
+
+                    <!-- OPTION 9 - START -->
+                    {% if data['comms_Type'] == 'comms_Type_11' %}
+
+                    {% else %}
+                        {% if data['comms_Type'] == 'comms_Type_1' or data['comms_Type'] == 'comms_Type_2' or data['comms_Type'] == 'comms_Type_3' or data['comms_Type'] == 'comms_Type_6' %}
+                            <div class="govuk-form-group govuk-!-margin-bottom-2">
+                        {% else %}
+                            <div class="govuk-form-group">
+                        {% endif %}
+                            <fieldset class="govuk-fieldset">
+                                <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" id="comms_Form_commsTask" name="comms_Form_commsTask" type="checkbox" value="Create 'Check New Communications' Task">
+                                        <label class="govuk-label govuk-checkboxes__label" for="comms_Form_commsTask">Create 'Check New Communications' Task</label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    {% endif %}
+                    <!-- OPTION 9 - END -->
+
+                    <!-- OPTION 10 - START -->
+                    {% if data['comms_Type'] == 'comms_Type_11' %}
+
+                    {% else %}
+                        {% if data['comms_Type'] == 'comms_Type_1' or data['comms_Type'] == 'comms_Type_2' or data['comms_Type'] == 'comms_Type_3' or data['comms_Type'] == 'comms_Type_6' %}
+                            <div class="govuk-form-group">
+                                <fieldset class="govuk-fieldset">
+                                    <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                        <div class="govuk-checkboxes__item">
+                                            <input class="govuk-checkboxes__input" id="comms_Form_markRead" name="comms_Form_markRead" type="checkbox" value="Mark as Read">
+                                            <label class="govuk-label govuk-checkboxes__label" for="comms_Form_markRead">Mark as Read</label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        {% else %}
+
+                        {% endif %}
+                    {% endif %}
+                    <!-- OPTION 10 - END -->
+
+                    <!-- OPTION 11 - START -->
+                    {% if data['comms_Type'] == 'comms_Type_11' %}
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" id="comms_Form_phoneCall" name="comms_Form_phoneCall" type="checkbox" value="Raise check Phone Call Task">
+                                        <label class="govuk-label govuk-checkboxes__label" for="comms_Form_phoneCall">Raise check Phone Call Task</label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    {% else %}
+
+                    {% endif %}
+                    <!-- OPTION 11 - END -->
+
+                </fieldset>
+
+                <input id="comms_Form_Completed" name="comms_Form_Completed" type="text" value="true" style="display: none;">
+                <button id="comms_Form_Completed-Button" type="submit" class="govuk-button" style="" onclick="return saveComms();">Continue</button>
+                <button type="button" onclick="location.href='5-case-overview#eaTab';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
