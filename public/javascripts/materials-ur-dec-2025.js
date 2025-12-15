@@ -19,14 +19,14 @@ window.openMaterial = function (event) {
 };
 
 // Defensive: run after other inits and put our label back
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('button.show_material_actions').forEach(btn => {
-    // If some script replaced the text with "Actions", restore ours:
-    if (/^\s*Actions\s*$/i.test(btn.textContent.trim())) {
-      btn.innerHTML = 'Preview <i class="fa-solid fa-chevron-down"></i>';
-    }
-  });
-});
+// document.addEventListener('DOMContentLoaded', () => {
+//   document.querySelectorAll('button.show_material_actions').forEach(btn => {
+//     // If some script replaced the text with "Actions", restore ours:
+//     if (/^\s*Actions\s*$/i.test(btn.textContent.trim())) {
+//       btn.innerHTML = 'Preview <i class="fa-solid fa-chevron-down"></i>';
+//     }
+//   });
+// });
 
 
 
@@ -152,30 +152,59 @@ document.addEventListener('DOMContentLoaded', function () {
 // ---------------------------
 // Rename using selected item
 // ---------------------------
+// document.addEventListener('DOMContentLoaded', function () {
+
+//     const renameBtn = document.getElementById('renameButton');
+//     if (!renameBtn) return;
+
+//     renameBtn.addEventListener('click', function (e) {
+//         e.preventDefault();
+
+//         const selected = document.querySelector('input[name="materials_document"]:checked');
+
+//         if (!selected) {
+//             console.warn("Rename attempted but no material selected");
+//             alert("Select one file or folder to rename.");
+//             return;
+//         }
+
+//         // ID now comes from the checkbox VALUE
+//         const materialId = selected.value;
+
+//         window.location.href = `/ur-dec-2025/B-off-system-MVP/rename?id=${materialId}`;
+//     });
+
+// });
+
+
 document.addEventListener('DOMContentLoaded', function () {
+     const renameButton = document.getElementById('renameButtonURDec2025');
+     const renameInput = document.getElementById('rename_selected');
+     const checkboxes = document.querySelectorAll(
+     '#materials_table input[name="materials_document"]'
+     );
 
-    const renameBtn = document.getElementById('renameButton');
-    if (!renameBtn) return;
+     if (!renameButton || !renameInput) return;
 
-    renameBtn.addEventListener('click', function (e) {
-        e.preventDefault();
+     function updateRenameState() {
+          console.log('Rename selected count:', selected.length);
+          const selected = Array.from(checkboxes).filter(cb => cb.checked);
 
-        const selected = document.querySelector('input[name="materials_document"]:checked');
+          if (selected.length === 1) {
+               renameButton.disabled = false;
+               renameButton.classList.remove('govuk-button--disabled');
+               renameInput.value = selected[0].value;
+          } else {
+               renameButton.disabled = true;
+               renameButton.classList.add('govuk-button--disabled');
+               renameInput.value = '';
+          }
+     }
 
-        if (!selected) {
-            console.warn("Rename attempted but no material selected");
-            alert("Select one file or folder to rename.");
-            return;
-        }
-
-        // ID now comes from the checkbox VALUE
-        const materialId = selected.value;
-
-        window.location.href = `/ur-dec-2025/B-off-system-MVP/rename?id=${materialId}`;
-    });
-
+     checkboxes.forEach(cb =>
+     cb.addEventListener('change', updateRenameState)
+     );
 });
-
 
 ///////////////////////////////////////////////////// Monica CODE - END /////////////////////////////////////////////////////
 
@@ -1079,3 +1108,66 @@ if (moveForm) {
   });
 }
 
+
+
+
+
+// Rename addition - Monica
+// document.addEventListener('DOMContentLoaded', function () {
+//   const renameForm = document.getElementById('renameFormURDec2025');
+//   const renameInput = document.getElementById('rename_selected');
+
+//   if (!renameForm || !renameInput) return;
+
+//   renameForm.addEventListener('submit', function () {
+//     const selected = document.querySelector(
+//       '#materials_table input[name="materials_document"]:checked'
+//     );
+
+//     if (selected) {
+//       renameInput.value = selected.value;
+//     }
+//   });
+// });
+
+// document.addEventListener('DOMContentLoaded', () => {
+//   const btn = document.getElementById('renameButtonURDec2025');
+//   const input = document.getElementById('rename_selected');
+//   const boxes = document.querySelectorAll('input[name="materials_document"]');
+
+//   function update() {
+//     const selected = [...boxes].filter(b => b.checked);
+
+//     if (selected.length === 1) {
+//       btn.disabled = false;
+//       input.value = selected[0].value;
+//     } else {
+//       btn.disabled = true;
+//       input.value = '';
+//     }
+//   }
+
+//   boxes.forEach(b => b.addEventListener('change', update));
+// });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  const renameForm = document.getElementById('renameForm');
+  const renameInput = document.getElementById('rename_selected');
+
+  if (!renameForm || !renameInput) return;
+
+  renameForm.addEventListener('submit', function (e) {
+    const selected = Array.from(
+      document.querySelectorAll('input[name="materials_document"]:checked')
+    );
+
+    if (selected.length !== 1) {
+      e.preventDefault();
+      alert('Select exactly one file or folder to rename.');
+      return;
+    }
+
+    renameInput.value = selected[0].value;
+  });
+});

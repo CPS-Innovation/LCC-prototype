@@ -1417,67 +1417,139 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
 // RENAME MATERIAL (page)
 // -----------------------------------------------------
 
-router.get('/B-off-system-MVP/rename', function (req, res) {
-    const data = req.session.data;
-    const materials = data.materials || [];
-    const id = Number(req.query.id);
+// router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
+//     const id = Number(req.body.material_selected);
 
-    const item = materials.find(m => m.id === id);
+//     if (!id) {
+//         return res.redirect('/ur-dec-2025/B-off-system-MVP/03-case-overview');
+//     }
 
-    if (!item) {
+//     res.redirect(`/ur-dec-2025/B-off-system-MVP/rename?id=${id}`);
+// });
+
+
+router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
+    const id = Number(req.body.material_selected);
+
+    console.log('Rename-from-list ID:', id);
+
+    if (!id) {
+        console.log('❌ Rename-from-list: invalid ID');
         return res.redirect('/ur-dec-2025/B-off-system-MVP/03-case-overview');
     }
 
-    res.render('ur-dec-2025/B-off-system-MVP/rename', {
-        item
-    });
+    const materials = req.session.data.materials || [];
+    const item = materials.find(m => m.id === id);
+
+    if (!item) {
+        console.log('❌ Rename-from-list: item not found', id);
+        return res.redirect('/ur-dec-2025/B-off-system-MVP/03-case-overview');
+    }
+
+    res.render('ur-dec-2025/B-off-system-MVP/rename', { item });
 });
 
 
 router.post('/B-off-system-MVP/rename', function (req, res) {
-    const data = req.session.data;
-    let materials = data.materials || [];
-
-    const id = Number(req.body.id);
-    const newName = req.body.newName?.trim();
-
-    const item = materials.find(m => m.id === id);
-
-    if (!item) {
-        return res.redirect('/ur-dec-2025/B-off-system-MVP/03-case-overview');
-    }
-
-    if (!newName) {
-        return res.render('ur-dec-2025/B-off-system-MVP/rename', {
-            item,
-            error: "Enter a name"
-        });
-    }
-
-    // Apply rename
-    item.name = newName;
-    if (item.folder == false) {
-        item.date = new Date().toLocaleDateString('en-GB', {
-            day: '2-digit',
-            month: 'short',
-            year: 'numeric'
-        });
-    }
+    console.log('Rename POST body:', req.body);
     
-    console.log(`✏️ Renamed material ID ${id} to "${newName}" and last update "${item.date}"`);
+  const data = req.session.data;
+  const materials = data.materials || [];
 
-    // Save back to session
-    data.materials = materials;
+  const id = Number(req.body.id);
+  const newName = req.body.newName?.trim();
 
-    // 🔙 Redirect to correct place based on parent folder
-    const parent = item.parentId || 0;
+  const item = materials.find(m => m.id === id);
 
-    if (parent !== 0) {
-        return res.redirect(`/ur-dec-2025/B-off-system-MVP/03-case-overview?folder=${parent}`);
-    }
-
+  if (!item) {
     return res.redirect('/ur-dec-2025/B-off-system-MVP/03-case-overview');
+  }
+
+  if (!newName) {
+    return res.render('ur-dec-2025/B-off-system-MVP/rename', {
+      item,
+      error: 'Enter a name'
+    });
+  }
+
+  item.name = newName;
+
+  if (!item.folder) {
+    item.date = new Date().toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+  }
+
+  data.materials = materials;
+
+  return res.redirect('/ur-dec-2025/B-off-system-MVP/03-case-overview');
 });
+
+
+
+// router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
+//     const data = req.session.data;
+//     const materials = data.materials || [];
+//     const id = Number(req.body.material_selected);
+
+//     const item = materials.find(m => m.id === id);
+
+//     if (!item) {
+//         return res.redirect('/ur-dec-2025/B-off-system-MVP/03-case-overview');
+//     }
+
+//     res.render('ur-dec-2025/B-off-system-MVP/rename', {
+//         item
+//     });
+// });
+
+
+// router.post('/B-off-system-MVP/rename', function (req, res) {
+//     const data = req.session.data;
+//     let materials = data.materials || [];
+
+//     const id = Number(req.body.id);
+//     const newName = req.body.newName?.trim();
+
+//     const item = materials.find(m => m.id === id);
+
+//     if (!item) {
+//         return res.redirect('/ur-dec-2025/B-off-system-MVP/03-case-overview');
+//     }
+
+//     if (!newName) {
+//         return res.render('ur-dec-2025/B-off-system-MVP/rename', {
+//             item,
+//             error: "Enter a name"
+//         });
+//     }
+
+//     // Apply rename
+//     item.name = newName;
+//     if (item.folder == false) {
+//         item.date = new Date().toLocaleDateString('en-GB', {
+//             day: '2-digit',
+//             month: 'short',
+//             year: 'numeric'
+//         });
+//     }
+    
+//     console.log(`✏️ Renamed material ID ${id} to "${newName}" and last update "${item.date}"`);
+
+//     // Save back to session
+//     data.materials = materials;
+
+//     // 🔙 Redirect to correct place based on parent folder
+//     const parent = item.parentId || 0;
+
+//     if (parent !== 0) {
+//         return res.redirect(`/ur-dec-2025/B-off-system-MVP/03-case-overview?folder=${parent}`);
+//     }
+
+//     return res.redirect('/ur-dec-2025/B-off-system-MVP/03-case-overview');
+// });
 
 
 // Rename material modal
