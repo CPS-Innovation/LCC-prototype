@@ -301,29 +301,29 @@ document.addEventListener('DOMContentLoaded', function () {
 // ---------------------------
 // Rename using selected item
 // ---------------------------
-document.addEventListener('DOMContentLoaded', function () {
+// document.addEventListener('DOMContentLoaded', function () {
 
-    const renameBtn = document.getElementById('renameButton');
-    if (!renameBtn) return;
+//     const renameBtn = document.getElementById('renameButton');
+//     if (!renameBtn) return;
 
-    renameBtn.addEventListener('click', function (e) {
-        e.preventDefault();
+//     renameBtn.addEventListener('click', function (e) {
+//         e.preventDefault();
 
-        const selected = document.querySelector('input[name="materials_document"]:checked');
+//         const selected = document.querySelector('input[name="materials_document"]:checked');
 
-        if (!selected) {
-            console.warn("Rename attempted but no material selected");
-            alert("Select one file or folder to rename.");
-            return;
-        }
+//         if (!selected) {
+//             console.warn("Rename attempted but no material selected");
+//             alert("Select one file or folder to rename.");
+//             return;
+//         }
 
-        // ID now comes from the checkbox VALUE
-        const materialId = selected.value;
+//         // ID now comes from the checkbox VALUE
+//         const materialId = selected.value;
 
-        window.location.href = `/version-11/B-off-system-MVP/rename?id=${materialId}`;
-    });
+//         window.location.href = `/version-11/B-off-system-MVP/rename?id=${materialId}`;
+//     });
 
-});
+// });
 
 
 // Preview document from clicking on its name
