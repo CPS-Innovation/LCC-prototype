@@ -1,0 +1,87 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+
+        <div class="ea-title-wrapper">
+            {% if data['existing_Case'] == 'true' %}
+                <h1 class="govuk-heading-l govuk-!-margin-bottom-0" style="">Groundhog day</h1>
+                <span class="govuk-caption-m">920620952/24</span>
+            {% else %}
+                {% if data['caseName_Type'] == 'Operation name' %}
+                    <h1 class="govuk-heading-l govuk-!-margin-bottom-0" style="">{{ data['newCase_OperationName'] }}</h1>
+                {% else %}
+                    <h1 class="govuk-heading-l govuk-!-margin-bottom-0" style=""><span class="uppercase">{{ data['newCase_DefendantName-Surname'] }}, </span>{{ data['newCase_DefendantName-Forename'] }}</h1>
+                {% endif %}                               
+                <span class="govuk-caption-m">
+                    {{ data['newCase_URN-A'] }}
+                    {{ data['newCase_URN-B'] }}
+                    {{ data['newCase_URN-C'] }}
+                    /
+                    {{ data['newCase_URN-D'] }}
+                </span>
+            {% endif %} 
+            <p>Autosave is on. Last saved <span id="auto-save">10:24:53</span></p>
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible govuk-!-margin-top-0 govuk-!-margin-bottom-10">
+        </div>
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="wrapper gov-pages">
+
+            <form method="get" action="" id="newChargeCode_A">  
+
+                <!-- ERROR MESSAGE - START -->
+                <div class="govuk-error-summary" data-module="govuk-error-summary" id="newChargeCode_ErrorPanel-A">
+                    <div role="alert">
+                        <h2 class="govuk-error-summary__title">There is a problem</h2>
+                        <div class="govuk-error-summary__body">
+                            <ul class="govuk-list govuk-error-summary__list">
+                                <li class=""><a href="#newChargeCode">Enter a valid offence code</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- ERROR MESSAGE - END -->
+
+                <!-- OPTION 1 - START -->
+                <div class="govuk-form-group" id="newChargeCode_Error">
+                    <h1 class="govuk-label-wrapper"><label class="govuk-label" for="newChargeCode">What is the offence code?</label></h1>
+                    <p id="newChargeCode_Error-A" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter a valid offence code</p>
+                    <input class="govuk-input govuk-input--width-10" id="newChargeCode" name="newChargeCode" type="text">
+                    <p class="floating-link"><a href="#">Look up code</a></p>
+                </div>
+                <!-- OPTION 1 - END -->
+
+                <div class="create-charge-error">
+                    <button type="button" class="govuk-button" style="" id="newCharge_ErrorActivate">Continue</button>
+                    <button type="button" onclick="location.href='5-case-overview';" class="non-button margin-left" id="">Cancel</button>
+                </div>
+
+                <div class="create-charge-continue">
+                    <input id="chargeAdded" name="chargeAdded" type="text" value="true" style="display: none;">
+                    <button type="submit" class="govuk-button" style="">Continue</button>
+                    <button type="button" onclick="location.href='5-case-overview';" class="non-button margin-left" id="">Cancel</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}

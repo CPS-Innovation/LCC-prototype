@@ -1,0 +1,66 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row" id="">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+        <div class="wrapper gov-pages">
+
+            <h1 class="govuk-heading-xl" style="">Contact methods</h1>
+
+            <form method="get" action="5-case-overview#witnessesTab" id="addWitness_Form-C">  
+
+                <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+
+                    <!-- OPTION § - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addWitness_Form-Email">Email address</label>
+                        {% if data['addWitness_Form-Email'] %}
+                            <input class="govuk-input govuk-input--width-20" id="addWitness_Form-Email" name="addWitness_Form-Email" type="text" value="{{ data['addWitness_Form-Email'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="addWitness_Form-Email" name="addWitness_Form-Email" type="text">
+                        {% endif %}
+                    </div>                    
+                    <!-- OPTION § - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addWitness_Form-Mobile">Mobile number</label>
+                        {% if data['addWitness_Form-Mobile'] %}
+                            <input class="govuk-input govuk-input--width-20" id="addWitness_Form-Mobile" name="addWitness_Form-Mobile" type="text" value="{{ data['addWitness_Form-Mobile'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="addWitness_Form-Mobile" name="addWitness_Form-Mobile" type="text">
+                        {% endif %}
+                    </div>                    
+                    <!-- OPTION 2 - END -->
+
+                    <!-- OPTION 3 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="addWitness_Form-Telephone">Home number</label>
+                        {% if data['addWitness_Form-Telephone'] %}
+                            <input class="govuk-input govuk-input--width-20" id="addWitness_Form-Telephone" name="addWitness_Form-Telephone" type="text" value="{{ data['addWitness_Form-Telephone'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="addWitness_Form-Telephone" name="addWitness_Form-Telephone" type="text">
+                        {% endif %}
+                    </div>                    
+                    <!-- OPTION 3 - END -->
+
+                </fieldset>
+
+                <input id="addWitness" name="addWitness" type="text" value="true" style="display: none;">
+                <button type="submit" class="govuk-button" style="">Continue</button>
+                <button type="button" onclick="location.href='5-case-overview#witnessesTab';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

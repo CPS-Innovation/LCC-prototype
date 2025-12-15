@@ -1,0 +1,78 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row" id="create-case-journey">
+    <div class="govuk-grid-column-two-thirds">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+        <div class="wrapper gov-pages">
+
+            <form method="get" action="14-lock-down " id="newCase_Form-B">  
+
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">Case details</h1>
+                    </legend>
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label govuk-label--s" for="newCase_SharedAccess">What platform(s) will be used for evidence management?</label>
+                        <div id="newCase_SharedAccess-hint" class="govuk-hint">Select all that apply</div>
+                        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+
+<!--                             <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="newCase_SharedAccess-REMs" name="newCase_SharedAccess" type="checkbox" value="REMs">
+                                <label class="govuk-label govuk-checkboxes__label" for="newCase_SharedAccess-REMs">REMs</label>
+                            </div>
+ -->                            
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="newCase_SharedAccess-CMS" name="newCase_SharedAccess" type="checkbox" value="CMS">
+                                <label class="govuk-label govuk-checkboxes__label" for="newCase_SharedAccess-CMS">CMS</label>
+                            </div>                            
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="newCase_SharedAccess-External" name="newCase_SharedAccess" type="checkbox" value="External media drives (USB's, etc...)">
+                                <label class="govuk-label govuk-checkboxes__label" for="newCase_SharedAccess-External">External media drives (USBs, etc...)</label>
+                            </div>
+                       </div>
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <div class="govuk-inset-text">
+                        <strong>Shared drive</strong>, <strong>Egress</strong>, <strong>Outlook</strong> and <strong>REMs</strong> folders will be set up automatically for you
+                    </div>
+
+                    <!-- OPTION 2 - START -->
+<!--                     <div class="govuk-form-group">
+                        <label class="govuk-label govuk-label--s" for="newCase_Access-Role">What is your role on this case?</label>
+                        <select class="govuk-select" id="newCase_Access-Role" name="newCase_Access-Role">
+                            <option value="Administrator" selected>Administrator</option>
+                            <option value="Lead Prosecutor">Lead Prosecutor</option>
+                            <option value="Prosecutor">Prosecutor</option>
+                            <option value="Lead Paralegal officer">Lead Paralegal officer</option>
+                            <option value="Paralegal officer">Paralegal officer</option>
+                            <option value="Unit manager">Unit manager</option>
+                            <option value="Crown Advocate (HCA)">Crown Advocate (HCA)</option>
+                        </select>
+                    </div>
+ -->                    <!-- OPTION 2 - END -->
+
+                </fieldset>
+
+                <button type="submit" class="govuk-button" style="" id="newCase_SharedAccess">Continue</button>
+                <button type="button" onclick="location.href='2-homepage';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}

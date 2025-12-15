@@ -1,0 +1,197 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row" id="">
+    <div class="govuk-grid-column-two-thirds">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+        <div class="wrapper gov-pages">
+
+            <h1 class="govuk-heading-xl" style="">Case details</h1>
+
+            <form method="get" action="5-case-overview" id="caseSettings_Form">  
+
+                <fieldset class="govuk-fieldset">
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label govuk-label--s" for="caseDetails_Crest">Crest/Indictment no.</label>
+                        {% if data['caseDetails_Crest'] %}
+                            <input class="govuk-input govuk-input--width-20" id="caseDetails_Crest" name="caseDetails_Crest" type="text" value="{{ data['caseDetails_Crest'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="caseDetails_Crest" name="caseDetails_Crest" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 1 - END -->
+
+                    <!-- OPTION 2 - START -->
+                    <div class="govuk-form-group">
+                        <label class="govuk-label govuk-label--s" for="caseDetails_Agency">Force/Investigative Agency</label>
+                        {% if data['caseDetails_Agency'] %}
+                            <input class="govuk-input govuk-input--width-20" id="caseDetails_Agency" name="caseDetails_Agency" type="text" value="{{ data['caseDetails_Agency'] }}">
+                        {% else %}
+                            <input class="govuk-input govuk-input--width-20" id="caseDetails_Agency" name="caseDetails_Agency" type="text">
+                        {% endif %}
+                    </div>
+                    <!-- OPTION 2 - END -->
+
+                    <!-- OPTION 3 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                <h1 class="govuk-fieldset__heading">Complexity rating</h1>
+                            </legend>
+                            <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['caseDetails_Complexity'] == 'Low' %}
+                                        <input class="govuk-radios__input" id="caseDetails_Complexity-Low" name="caseDetails_Complexity" type="radio" value="Low" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="caseDetails_Complexity-Low" name="caseDetails_Complexity" type="radio" value="Low">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="caseDetails_Complexity-Low">Low</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['caseDetails_Complexity'] == 'Medium' %}
+                                        <input class="govuk-radios__input" id="caseDetails_Complexity-Medium" name="caseDetails_Complexity" type="radio" value="Medium" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="caseDetails_Complexity-Medium" name="caseDetails_Complexity" type="radio" value="Medium">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="caseDetails_Complexity-Medium">Medium</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['caseDetails_Complexity'] == 'High' %}
+                                        <input class="govuk-radios__input" id="caseDetails_Complexity-High" name="caseDetails_Complexity" type="radio" value="High" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="caseDetails_Complexity-High" name="caseDetails_Complexity" type="radio" value="High">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="caseDetails_Complexity-High">High</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['caseDetails_Complexity'] == 'Exceptional' %}
+                                        <input class="govuk-radios__input" id="caseDetails_Complexity-Exceptional" name="caseDetails_Complexity" type="radio" value="Exceptional" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="caseDetails_Complexity-Exceptional" name="caseDetails_Complexity" type="radio" value="Exceptional">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="caseDetails_Complexity-Exceptional">Exceptional</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 3 - END -->
+
+                    <!-- OPTION 4 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                <h1 class="govuk-fieldset__heading">Current case status</h1>
+                            </legend>
+                            <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    {% if data['caseDetails_Status'] == 'Early Advice' %}
+                                        <input class="govuk-radios__input" id="caseDetails_Status-EA" name="caseDetails_Status" type="radio" value="Early Advice" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="caseDetails_Status-EA" name="caseDetails_Status" type="radio" value="Early Advice">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="caseDetails_Status-EA">Early Advice</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['caseDetails_Status'] == 'Pre-Charge Request' %}
+                                        <input class="govuk-radios__input" id="caseDetails_Status-PreCharge" name="caseDetails_Status" type="radio" value="Pre-Charge Request" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="caseDetails_Status-PreCharge" name="caseDetails_Status" type="radio" value="Pre-Charge Request">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="caseDetails_Status-PreCharge">Pre-Charge Request</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    {% if data['caseDetails_Status'] == 'Charged' %}
+                                        <input class="govuk-radios__input" id="caseDetails_Status-Charged" name="caseDetails_Status" type="radio" value="Charged" checked>
+                                    {% else %}
+                                        <input class="govuk-radios__input" id="caseDetails_Status-Charged" name="caseDetails_Status" type="radio" value="Charged">
+                                    {% endif %}
+                                    <label class="govuk-label govuk-radios__label" for="caseDetails_Status-Charged">Charged</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 4 - END -->
+
+                    <!-- OPTION 5 - START -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <label class="govuk-label govuk-label--s" for="caseDetails_Type">Proceeding type</label>
+                            <select class="govuk-select" id="caseDetails_Type" name="caseDetails_Type">
+                                {% if data['caseDetails_Type'] == 'Early Advice' %}
+                                    <option value="Early Advice" selected>Early Advice</option>
+                                {% else %}
+                                    <option value="Early Advice">Early Advice</option>
+                                {% endif %}
+                                {% if data['caseDetails_Type'] == 'Pre Charge (File received)' %}
+                                    <option value="Pre Charge (File received)" selected>Pre Charge (File received)</option>
+                                {% else %}
+                                    <option value="Pre Charge (File received)">Pre Charge (File received)</option>
+                                {% endif %}
+                                {% if data['caseDetails_Type'] == 'Charged' %}
+                                    <option value="Charged" selected>Charged</option>
+                                {% else %}
+                                    <option value="Charged">Charged</option>
+                                {% endif %}
+                                {% if data['caseDetails_Type'] == 'Not-Charged' %}
+                                    <option value="Not-Charged" selected>Not-Charged</option>
+                                {% else %}
+                                    <option value="Not-Charged">Not-Charged</option>
+                                {% endif %}
+                                {% if data['caseDetails_Type'] == 'First Appearance' %}
+                                    <option value="First Appearance" selected>First Appearance</option>
+                                {% else %}
+                                    <option value="First Appearance">First Appearance</option>
+                                {% endif %}
+                                {% if data['caseDetails_Type'] == 'PTPH' %}
+                                    <option value="PTPH" selected>PTPH</option>
+                                {% else %}
+                                    <option value="PTPH">PTPH</option>
+                                {% endif %}
+                                {% if data['caseDetails_Type'] == 'Trial' %}
+                                    <option value="Trial" selected>Trial</option>
+                                {% else %}
+                                    <option value="Trial">Trial</option>
+                                {% endif %}
+                                {% if data['caseDetails_Type'] == 'Sentence' %}
+                                    <option value="Sentence" selected>Sentence</option>
+                                {% else %}
+                                    <option value="Sentence">Sentence</option>
+                                {% endif %}
+                                {% if data['caseDetails_Type'] == 'Confiscation' %}
+                                    <option value="Confiscation" selected>Confiscation</option>
+                                {% else %}
+                                    <option value="Confiscation">Confiscation</option>
+                                {% endif %}
+                                {% if data['caseDetails_Type'] == 'Appeal' %}
+                                    <option value="Appeal" selected>Appeal</option>
+                                {% else %}
+                                    <option value="Appeal">Appeal</option>
+                                {% endif %}
+                            </select>
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 5 - END -->
+
+                </fieldset>
+
+                <button type="submit" class="govuk-button" style="">Continue</button>
+                <button type="button" onclick="location.href='5-case-overview';" class="non-button margin-left" id="">Cancel</button>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}
