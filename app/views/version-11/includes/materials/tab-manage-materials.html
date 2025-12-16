@@ -281,9 +281,16 @@
                                     </button>
                                 </form>
                                 
-                                <button id="renameButton" class="govuk-button govuk-button--disabled">
+                                <form method="post" action="/version-11/B-off-system-MVP/rename-from-list" id="renameForm">
+                                    <input type="hidden" name="material_selected" id="rename_selected">
+                                    <button id="renameButton" class="govuk-button govuk-button--disabled">
+                                        Rename
+                                    </button>
+                                </form>
+
+                                <!-- <button id="renameButton" class="govuk-button govuk-button--disabled">
                                     Rename
-                                </button>
+                                </button> -->
 
                                 <button class="govuk-button mark_as_Read" type="button">
                                     Mark as read

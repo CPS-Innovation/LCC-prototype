@@ -1,4 +1,5 @@
 ///////////////////////////////////////////////////// Monica CODE - START /////////////////////////////////////////////////////
+console.log('🔥 materials-ur-dec-2025.js LOADED');
 
 // Make it global so inline onclick can see it
 window.openMaterial = function (event) {
@@ -177,20 +178,50 @@ document.addEventListener('DOMContentLoaded', function () {
 // });
 
 
+// document.addEventListener('DOMContentLoaded', function () {
+//      const renameButton = document.getElementById('renameButtonURDec2025');
+//      const renameInput = document.getElementById('rename_selected');
+//      const checkboxes = document.querySelectorAll(
+//      '#materials_table input[name="materials_document"]'
+//      );
+
+//      if (!renameButton || !renameInput) return;
+
+//      function updateRenameState() {
+//           console.log('Rename selected count:', selected.length);
+//           const selected = Array.from(checkboxes).filter(cb => cb.checked);
+
+//           if (selected.length === 1) {
+//                renameButton.disabled = false;
+//                renameButton.classList.remove('govuk-button--disabled');
+//                renameInput.value = selected[0].value;
+//           } else {
+//                renameButton.disabled = true;
+//                renameButton.classList.add('govuk-button--disabled');
+//                renameInput.value = '';
+//           }
+//      }
+
+//      checkboxes.forEach(cb =>
+//      cb.addEventListener('change', updateRenameState)
+//      );
+// });
+
+
 document.addEventListener('DOMContentLoaded', function () {
+     console.log('Test to see if we get here');
      const renameButton = document.getElementById('renameButtonURDec2025');
      const renameInput = document.getElementById('rename_selected');
-     const checkboxes = document.querySelectorAll(
-     '#materials_table input[name="materials_document"]'
-     );
 
      if (!renameButton || !renameInput) return;
 
+     const checkboxes = document.querySelectorAll('#materials_table input[name="materials_document"]');
+
      function updateRenameState() {
-          console.log('Rename selected count:', selected.length);
           const selected = Array.from(checkboxes).filter(cb => cb.checked);
 
           if (selected.length === 1) {
+               console.log('Rename selected count:', selected.length);
                renameButton.disabled = false;
                renameButton.classList.remove('govuk-button--disabled');
                renameInput.value = selected[0].value;
@@ -205,6 +236,31 @@ document.addEventListener('DOMContentLoaded', function () {
      cb.addEventListener('change', updateRenameState)
      );
 });
+
+// document.addEventListener('change', function (e) {
+//   if (!e.target.matches('input[name="materials_document"]')) return;
+
+//   const renameButton = document.getElementById('renameButtonURDec2025');
+//   const renameInput = document.getElementById('rename_selected');
+
+//   const selected = document.querySelectorAll(
+//     '#materials_table input[name="materials_document"]:checked'
+//   );
+
+//   console.log('Rename selected count:', selected.length);
+
+//   if (selected.length === 1) {
+//     renameButton.disabled = false;
+//     renameButton.classList.remove('govuk-button--disabled');
+//     renameInput.value = selected[0].value;
+//   } else {
+//     renameButton.disabled = true;
+//     renameButton.classList.add('govuk-button--disabled');
+//     renameInput.value = '';
+//   }
+// });
+
+
 
 ///////////////////////////////////////////////////// Monica CODE - END /////////////////////////////////////////////////////
 
@@ -608,14 +664,14 @@ $(document).ready(function() {
      var $urDec2025 = $('.ur-dec-2025');
 
      $urDec2025.find("#show_Materials_Actions").on("click", function (e) {
-          e.stopPropagation();
+     e.stopPropagation();
 
-          const $menu = $urDec2025.find("#materials_Actions");
+     const $menu = $urDec2025.find("#materials_Actions");
+     $menu.toggle();
+     $(this).toggleClass("active");
 
-          console.log("Toggling materials actions");
-
-          $menu.toggle();
-          $(this).toggleClass("active");
+     // 👇 force rename button visual update
+     refreshRenameButtonState();
      });
 
      $urDec2025.find("#show_Comms_Actions").click(function(){
