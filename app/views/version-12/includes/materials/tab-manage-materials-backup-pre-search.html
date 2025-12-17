@@ -1,0 +1,377 @@
+<!-- ///////////////////////////////// TAB 2 - CONTENT - START ///////////////////////////////// -->
+<div class="govuk-grid-row">
+    <!-- <h1 class="govuk-heading-m govuk-!-margin-left-3 govuk-!-margin-bottom-5 govuk-!-margin-top-0">Viewing shared drive &nbsp;| &nbsp;<span class="gocuk-heading-m"><a class="govuk-link">View egress drive</a></span></h1> -->
+    <h1 class="govuk-heading-l govuk-!-margin-left-3 govuk-!-margin-top-0 govuk-!-margin-bottom-4">Manage materials on the shared drive</h1>
+    <!-- <p class="govuk-body govuk-!-margin-left-3"><a class="govuk-link">View egress</a></p> -->
+    <p class="govuk-body govuk-!-margin-left-3 govuk-!-margin-top-0 govuk-!-margin-bottom-6">You can add, rename or remove materials and folders. You can also <a class="govuk-link">manage materials and folders on Egress</a>.</p>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+        <a class="govuk-link govuk-!-margin-bottom-9 govuk-!-margin-top-0" id="toggle_filter_Materials" href="#" style="text-align: right;">Show filters >></a>
+    </div>
+</div>
+
+
+<div class="govuk-grid-row govuk-!-margin-top-2">
+    <div class="govuk-grid-column-one-quarter" id="materials_column_1">
+        <div class="moj-filter-layout__filter">
+            {% include "../materials/materials-filter.html" %}
+        </div>
+    </div>
+
+    <div class="govuk-grid-column-three-quarters" id="materials_column_2">
+
+        <!-- <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-half">
+                <a class="govuk-link govuk-!-margin-bottom-9 govuk-!-margin-top-0" id="toggle_filter_Materials" href="#">Show filter >></a>
+            </div>
+        </div> -->
+
+        <!-- Breadcrumbs -->
+        <div class="govuk-grid-row">
+            <nav class="govuk-breadcrumbs govuk-!-margin-top-0 govuk-!-margin-bottom-0 govuk-!-margin-left-3" aria-label="Breadcrumb">
+            <ol class="govuk-breadcrumbs__list">
+                <li class="govuk-breadcrumbs__list-item">
+                <form method="post" action="/version-12/B-off-system-MVP/shared-drive" style="display:inline;">
+                    <input type="hidden" name="level" value="1">
+                    <input type="hidden" name="parentId" value="0">
+                    <input type="hidden" name="folderName" value="">
+                    <button type="submit" class="govuk-breadcrumbs__link breadcrumb-button">
+                    {{ data['breadcrumbs'][0] }}
+                    </button>
+                </form>
+                </li>
+
+                {% if data['level'] == '2' %}
+                <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link govuk-link--no-visited-state" href="#">
+                    {{ data['folderName'] }}
+                </a>
+                </li>
+                {% endif %}
+                {% if data['level'] == '3' %}
+                <li class="govuk-breadcrumbs__list-item">
+                <a class="govuk-breadcrumbs__link govuk-link--no-visited-state" href="#">
+                    {{ data['folderName'] }}
+                </a>
+                </li>
+                {% endif %}
+            </ol>
+            </nav>
+        </div>
+
+
+        <!-- Actions on selection button -->
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-half">
+                <div class="info_wrapper" style="display:flex; align-items:center; gap:1rem; margin-top: 1.5pc; margin-bottom: 1.5pc;">
+                    <!-- <button id="toggle_filter_Materials" type="button" class="govuk-button govuk-button--secondary">
+                        Show filter
+                    </button> -->
+                    <div class="actions_holder">
+                        <div class="moj-button-menu">
+                            <button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button"
+                                id="show_Materials_Actions">
+                                Actions on selection <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.5 0L11 5L0 5L5.5 0Z" fill="currentColor"></path>
+                                </svg>
+                            </button>
+                            <div class="hidden_buttons" id="materials_Actions">
+                                <!-- Rename should only be available for single selections, not multiple -->
+                                <!-- <button type="button" class="govuk-button govuk-button--disabled reclassify_Document_Multiple_Docs rename-Document" data-module="govuk-button" onclick="return openRenameModal();" data-rename="1">Rename</button> -->
+                                <form id="renameForm" method="post" action="/version-12/B-off-system-MVP/B-rename-material-save">
+                                <input id="rename_selected" name="rename_selected" type="hidden" value="">
+                                <button id="renameButton"
+                                        class="govuk-button govuk-button--disabled reclassify_Document_Multiple_Docs"
+                                        data-module="govuk-button"
+                                        type="button">
+                                    Rename
+                                </button>
+                                </form>
+                                <!-- <form method="post" action="B-discard_material">
+                                    <input id="material_selected" name="material_selected" type="text" value="MCLOVE MG3" style="display: none;">
+                                    <button class="govuk-button govuk-button--disabled reclassify_Document_Multiple_Docs" data-module="govuk-button" type="submit">Discard</button>
+                                </form> -->
+                                <form id="discardForm" method="post" action="../../../version-12/B-off-system-MVP/B-discard_material">
+                                    <input id="material_selected" name="material_selected" type="hidden" value="">
+                                    <button id="discardButton"
+                                            class="govuk-button govuk-button--disabled reclassify_Document_Multiple_Docs"
+                                            data-module="govuk-button"
+                                            type="submit">
+                                        Discard
+                                    </button>
+                                </form>                                
+
+                                <button class="govuk-button mark_as_Read govuk-button--disabled reclassify_Document_Multiple_Docs" data-module="govuk-button" type="button">Mark as read</button>
+
+                                <button type="button"
+                                        class="govuk-button govuk-button--disabled reclassify_Document_Multiple_Docs"
+                                data-module="govuk-button" disabled>Mark as unused</button>
+                            </div>
+                            <button id="newFolder" type="button" class="govuk-button govuk-button--secondary">
+                                New folder
+                            </button>
+
+                            <!------------ New folder modal ------------>
+                            <script>
+                            (function () {
+                            try {
+                                const CSS_ID = 'new-folder-modal-css';
+
+                                // 1) Ensure modal CSS exists (only once)
+                                if (!document.getElementById(CSS_ID)) {
+                                const style = document.createElement('style');
+                                style.id = CSS_ID;
+                                style.textContent = `
+                                    .govuk-modal{position:fixed;inset:0;display:none;justify-content:center;align-items:center;z-index:10000}
+                                    .govuk-modal.is-open{display:flex !important}
+                                    .govuk-modal__overlay{position:absolute;inset:0;background:rgba(0,0,0,.45)}
+                                    .govuk-modal__content{position:relative;background:#fff;padding:30px;max-width:520px;width:90%;
+                                    box-shadow:0 5px 20px rgba(0,0,0,.25);border-top:5px solid #1d70b8;z-index:1}
+                                `;
+                                document.head.appendChild(style);
+                                }
+
+                                // 2) Open on click (delegated)
+                                document.addEventListener('click', function (e) {
+                                const openBtn = e.target.closest('#newFolder');
+                                if (!openBtn) return;
+                                e.preventDefault();
+                                openNewFolderModal();
+                                });
+
+                                function openNewFolderModal() {
+                                let modal = document.getElementById('newFolderModal');
+
+                                // Build and append to <body> if not present
+                                if (!modal) {
+                                    modal = document.createElement('div');
+                                    modal.id = 'newFolderModal';
+                                    modal.className = 'govuk-modal is-open';
+                                    modal.setAttribute('role','dialog');
+                                    modal.setAttribute('aria-modal','true');
+                                    modal.setAttribute('aria-labelledby','newFolderTitle');
+
+                                    modal.innerHTML = `
+                                    <div class="govuk-modal__overlay" data-close></div>
+                                    <div class="govuk-modal__content">
+                                        <h2 id="newFolderTitle" class="govuk-heading-m">Create new folder</h2>
+                                        <form id="newFolderForm" action="/version-12/B-off-system-MVP/add-new-folder" method="post">
+                                            <div class="govuk-form-group">
+                                                <label class="govuk-label" for="newFolderName">What is the name of the new folder?</label>
+                                                <input class="govuk-input" id="newFolderName" name="newFolderName" type="text" autocomplete="off">
+                                                <input type="hidden" name="level" value="{{ data['level'] }}">
+                                                <input type="hidden" name="parentFolder" value="{% if data['folderName'] %} {{ data['folderName'] }} {% else %} 0 {% endif %}">
+                                            </div>
+                                            <div class="govuk-button-group govuk-!-margin-top-3">
+                                                <button type="submit" class="govuk-button">Create folder</button>
+                                                <a href="#" class="govuk-link" data-close>Cancel</a>
+                                            </div>                                        
+                                        </form>
+                                    </div>
+                                    `;
+                                    document.body.appendChild(modal);
+
+                                    // Wire events once
+                                    wireModal(modal);
+                                } else {
+                                    modal.classList.add('is-open');
+                                    modal.removeAttribute('hidden');
+                                }
+
+                                // Focus input after paint
+                                setTimeout(() => document.getElementById('newFolderName')?.focus(), 0);
+                                }
+
+                                function wireModal(modal) {
+                                const form = modal.querySelector('#newFolderForm');
+
+                                // Close on overlay / Cancel
+                                modal.addEventListener('click', (e) => {
+                                    if (e.target.closest('[data-close]')) {
+                                    e.preventDefault();
+                                    closeModal(modal);
+                                    }
+                                });
+
+                                // ESC to close
+                                document.addEventListener('keydown', escHandler);
+                                function escHandler(e){ if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal(modal); }
+
+                                // Submit
+                                // form.addEventListener('submit', (e) => {
+                                //     e.preventDefault();
+                                //     const name = modal.querySelector('#folderName').value.trim();
+                                //     if (!name) { modal.querySelector('#folderName').focus(); return; }
+                                //     console.log('Creating folder:', name); // <-- replace with your route/POST
+                                //     closeModal(modal);
+                                //     form.reset();
+                                // });
+                                form.addEventListener('submit', (e) => {
+                                modal.hidden = true;
+                                // allow the normal form submission to happen
+                                });
+                                }
+
+                                function closeModal(modal) {
+                                modal.classList.remove('is-open');
+                                modal.setAttribute('hidden','');
+                                }
+                            } catch (err) {
+                                console.error('New folder modal init error:', err);
+                            }
+                            })();
+                            </script>                            
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <table class="govuk-table sortable" id="materials_table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">
+                        <div class="govuk-checkboxes govuk-checkboxes--small MT-15" data-module="govuk-checkboxes">
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="materials_documents_ALL"
+                                    name="materials_document" type="checkbox" value="Select all">
+                                <label class="govuk-label govuk-checkboxes__label"
+                                    for="materials_documents_ALL"></label>
+                            </div>
+                        </div>
+                    </th>
+                    <th scope="col" class="govuk-table__header"><button class="govuk-button"
+                            data-module="govuk-button">Material</button></th>
+                    <!-- <th scope="col" class="govuk-table__header"><button class="govuk-button"
+                            data-module="govuk-button">Type</button></th>
+                    <th scope="col" class="govuk-table__header"><button class="govuk-button"
+                            data-module="govuk-button">Category</button></th> -->
+                    <th scope="col" class="govuk-table__header"><button class="govuk-button"
+                            data-module="govuk-button">Last updated</button></th>
+                    <th scope="col" class="govuk-table__header"><button class="govuk-button"
+                            data-module="govuk-button">Status</button></th>
+                    <th scope="col" class="govuk-table__header"></th>
+                </tr>
+            </thead>
+            {% if data['searchURNModal'] %}
+            <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-2">
+                Showing results for: 
+                <strong>{{ data['searchURNModal'] }}</strong>
+                <a href="/version-12/includes/materials/clear-filter?type=search" 
+                class="govuk-link govuk-link--no-visited-state govuk-!-margin-left-1">
+                Clear search
+                </a>
+            </div>
+            {% endif %}
+
+            <tbody class="govuk-table__body">
+                
+                {% for material in data['materials'] %}
+                    {% if
+                    (not data['filterNew'] or material.new == true or material.new == 'true')
+                    and (
+                        not (data['filterStatusUsed'] or data['filterStatusUnused'] or data['filterStatusNone'])
+                        or material.status in [
+                        data['filterStatusUsed'],
+                        data['filterStatusUnused'],
+                        data['filterStatusNone']
+                        ]
+                    )
+                    %}                    
+                        <!-- ||||||||||||||| Materials ||||||||||||||| -->
+                        {% if data['discarding_material_COMPLETED'] == 'true' and data['material_selected'] == '{{material.name}}' %}
+
+                        {% else %}
+                            {% if material.level == data['level'] %}
+                                {% if material.parentId == data['parentId'] %}
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table__cell">
+                                        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                            <div class="govuk-checkboxes__item">
+                                                <input class="govuk-checkboxes__input" id="{{material.id}}"
+                                                    name="materials_document" type="checkbox" value="{{material.name}}">
+                                                <label class="govuk-label govuk-checkboxes__label" for="materials_document_{{material.id}}"><span
+                                                        class="visuallyhidden">{{material.name}}</span></label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="govuk-table__cell title_column">
+                                    {% if material.folder == true %}
+                                    <form action="/version-12/B-off-system-MVP/case-overview-folder" method="post">
+                                        {% if material.new == true %}
+                                        <strong class="govuk-tag govuk-tag--blue">New</strong>
+                                        {% endif %}
+                                        <div class="openMe">
+                                            <span class="icon-new folder"></span>
+                                            <input type="hidden" name="folderName" value="{{ material.name }}">
+                                            <input type="hidden" name="level" value="{{ material.level + 1 }}">
+                                            <button type="submit" name="materialId" value="{{ material.id }}" class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-regular govuk-button--link">
+                                                {{ material.name  }}
+                                            </button>
+                                        </div>
+                                    </form>
+                                    </td>
+                                    
+                                    {% else %}
+                                        {% if material.new == true %}
+                                        <strong class="govuk-tag govuk-tag--blue">New</strong>
+                                        {% endif %}
+                                        <div class="openMe">                                                                            
+                                            <a class="govuk-button show_material" data-id="{{ material.id }}" data-doc="{{ material.docLink }}">{{ material.name }}</a>
+                                        </div>
+                                    </td>
+                                    </form>
+                                    {% endif %}
+                                    <!-- <td class="govuk-table__cell">{{material.type}}</td>
+                                    <td class="govuk-table__cell">{{material.category}}</td> -->
+                                    <td class="govuk-table__cell numeric">{{material.date}}</td>
+                                    <td class="govuk-table__cell">
+                                    {% if material.status == 'None' %}
+                                        <strong class="govuk-tag govuk-tag--grey">
+                                    {% elseif material.status == 'Used' %}
+                                        <strong class="govuk-tag govuk-tag--blue">
+                                    {% else %}
+                                        <strong class="govuk-tag govuk-tag--yellow">
+                                    {% endif %}
+                                            {{material.status}}
+                                        </strong>
+                                    </td>
+                                    
+                                    <td class="govuk-table__cell toggle-panel">
+                                        {% if material.folder != true %}
+                                            <button type="button" class="govuk-button show_material_actions show-case"
+                                            onclick="return openMaterial(event);"
+                                            data-id="{{material.id}}"
+                                            data-doc="{{material.previewLink}}">
+                                            Preview <i class="fa-solid fa-chevron-down"></i>
+                                            </button>                        
+                                        {% endif %}
+                                    </td>
+                                    
+                                </tr>
+                                <tr class="govuk-table__row hidden_row" data-row_id="{{material.id}}">
+                                    <td colspan="7">
+                                        <div class="document_holder" id=""><embed src="{{material.previewLink}}"></div>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                <!-- ||||||||||||||| ROW 1 - END ||||||||||||||| -->
+
+            </tbody>
+        </table>
+        {% endif %}
+
+
+        <p class="no_results"><strong>No results</strong> found in materials</p>
+    </div>
+
+</div>
+<!-- ///////////////////////////////// TAB 2 - CONTENT - END ///////////////////////////////// -->

@@ -1,0 +1,84 @@
+{% extends "layoutCPS-NEW-INDEX.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row" id="">
+    <div class="govuk-grid-column-two-thirds">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+        <div class="wrapper gov-pages">
+
+            <!-- ERROR MESSAGE - START -->
+            <div class="govuk-error-summary" data-module="govuk-error-summary" id="addSuspect_Errors">
+                <div role="alert">
+                    <h2 class="govuk-error-summary__title">There is a problem</h2>
+                    <div class="govuk-error-summary__body">
+                        <ul class="govuk-list govuk-error-summary__list">
+                            <li class="addSuspect_Errors-Type"><a href="#addSuspect_Details">Select a suspect type</a></li>
+                            <li class="addSuspect_Errors-CompanyName"><a href="#addSuspect_CompanyName">Enter a Company name</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- ERROR MESSAGE - END -->
+
+            <form method="get" action="" id="addSuspect_Form-A">  
+
+                <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+
+                    <!-- OPTION 1 - START -->
+                    <div class="govuk-form-group" id="addSuspect_Details-Type">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                <h1 class="govuk-fieldset__heading">Add a suspect</h1>
+                            </legend>
+                            <div id="addSuspect_Details-hint" class="govuk-hint">Select the type of suspect for the case</div>
+                            <p id="addSuspect_Details-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Select a suspect type</p>
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="addSuspect_Details_Person" name="addSuspect_Details" type="radio" value="Individual">
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Details_Person">Individual</label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="addSuspect_Details_Company" name="addSuspect_Details" type="radio" value="Company" data-aria-controls="addSuspect_Company">
+                                    <label class="govuk-label govuk-radios__label" for="addSuspect_Details_Company">Company</label>
+                                </div>
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="addSuspect_Company">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="addSuspect_CompanyName">Company name</label>
+                                        <p id="addSuspect_CompanyDetails-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Enter a company name</p>
+                                        <input class="govuk-input govuk-!-width-one-third" id="addSuspect_CompanyName" name="addSuspect_CompanyName" type="text" spellcheck="false">
+                                    </div>
+                                </div>                            
+                            </div>  
+                        </fieldset>
+                    </div>                    
+                    <!-- OPTION 1 - END -->
+
+                </fieldset>
+
+                <div class="add-suspect-error">
+                    <button type="submit" class="govuk-button" style="" id="addSuspect_ErrorActivate">Continue</button>
+                    <button type="button" onclick="location.href='2-homepage';" class="non-button margin-left" id="">Cancel</button>
+                </div>
+
+                <div class="add-suspect-continue">
+                    <input id="addSuspectStarted" name="addSuspectStarted" type="text" value="true" style="display: none;">
+                    <button type="submit" class="govuk-button" style="">Continue</button>
+                    <button type="button" onclick="location.href='5-case-overview';" class="non-button margin-left" id="">Cancel</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}
