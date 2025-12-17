@@ -1,0 +1,289 @@
+{% extends "layoutCPS-OFF.html" %}
+{% block header %}
+    {% include "../includes/banner-OFF-V2.html" %}
+<!--     <div class="search-bar-wrapper-OFF">
+        <div class="govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <form method="get" action="13B-search-results">
+                        <fieldset>
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-label--xl">Complex case work</label>
+                                <span span class="govuk-caption-m">You can use the <strong>Operation name</strong>, <strong>defendants name</strong>, <strong>URN</strong> or <strong>team member</strong> to search</span>
+                                <label class="override" for="searchOFF_URN">Search</label>
+                                <div class="search-wrapper">
+                                    <input class="govuk-input govuk-!-width-full" id="searchOFF_URN" name="searchOFF_URN" type="text" placeholder="" value="" />
+                                    <button type="submit" class="govuk-button" style="">Search</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="govuk-grid-column-one-third create-case">
+                    <div class="create-case-wrapper">
+                        <h2 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Create a case</h2>
+                        <p class="govuk-caption-m">Create a new case in complex case work</p>
+                        <form method="get" action="4A-create-case">
+                            <button type="submit" class="govuk-button" style="">Get started <span class="icon"></span></button>         
+                        </form>      
+                    </div>     
+                </div>
+            </div>
+        </div>
+    </div>
+ -->{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-grid-row" id="homepage-journey">
+    <div class="govuk-grid-column-full">
+        <div class="wrapper main-cotent">
+
+            <h2 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Cases</h2>
+            <div class="my-cases-filter">
+                <p class="govuk-caption-m">Last updated <span id="my-cases-timestamp">today 12:04pm</span></p>
+                <div class="govuk-form-group">
+                    <label class="govuk-label" for="myCases-Sort">Filter by</label>
+                    <select class="govuk-select" id="myCases-Sort" name="myCases-Sort">
+                        <option selected disabled>-- Please select --</option>
+                        <option value="All cases">All cases</option>
+                        <option value="Charged">Charged</option>
+                        <option value="Pre-charge">Pre-charge</option>
+                        <option value="Shared with me">Shared with me</option>
+                        <option value="My cases">My cases</option>
+                    </select>
+                </div>       
+
+                {% if data['createCaseStarted'] == 'true' %}
+                    <p class="total">Showing (8) of 17</p>
+                {% else %}
+                    <p class="total">Showing (8) of 16</p>
+                {% endif %}
+            </div>
+
+            <table class="govuk-table" id="my-cases-table">
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        {% if 'poc' in data['offCMS_Username'] or 'POC' in data['offCMS_Username'] %}
+                            <th scope="col" class="govuk-table__header"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Operation or claimant name</button></th>
+                        {% else %}
+                            <th scope="col" class="govuk-table__header"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Operation or defendant name</button></th>
+                        {% endif %}
+                        <th scope="col" class="govuk-table__header"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Case status</button></th>
+                        <th scope="col" class="govuk-table__header"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Team</button></th>
+                        <th scope="col" class="govuk-table__header"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">CTL</button></th>
+                        <th scope="col" class="govuk-table__header"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Court location</button></th>
+                        <th scope="col" class="govuk-table__header"><button class="govuk-button" data-module="govuk-button" onClick="return sortTable();">Key dates</button></th>
+                    </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+
+                    {% if data['createCaseStarted'] == 'true' %}
+                        <!-- CASE NEW - START --> 
+                        <tr class="govuk-table__row pre-charge">
+                            <th scope="row" class="govuk-table__header">
+                                <strong class="govuk-tag govuk-tag--green">New</strong> - 
+                                {% if data['caseName_Type'] == 'Defendant name' %}
+                                    <a href="5-case-overview"><span class="uppercase">{{ data['newCase_DefendantName-Surname'] }}, </span>{{ data['newCase_DefendantName-Forename'] }}</a><br>
+                                {% else %}
+                                    <a href="5-case-overview">{{ data['newCase_OperationName'] }}</a><br>
+                                {% endif %}                               
+                                <span class="govuk-caption-m govuk-body-s govuk-!-margin-bottom-0">
+                                    {{ data['newCase_URN-A'] }}
+                                    {{ data['newCase_URN-B'] }}
+                                    {{ data['newCase_URN-C'] }}
+                                    /
+                                    {{ data['newCase_URN-D'] }}
+                                </span>
+                            </th>
+                            <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--blue">Pre-charge</strong></td>
+                            <td class="govuk-table__cell">
+
+                                Paralegal:<br><a href="mailto:{{ data['offCMS_Username'] }}">{{ data['offCMS_Username'] }}</a><br>
+                                Prosecutor:<br>Not yet assigned<br>
+
+                                {% if data['newCase_NEWAccess-Role'] == 'Prosecutor: ' and data['newCase_Access-Email'] %}
+                                    Prosecutor:<br>{{ data['newCase_Access-Email'] }}
+                                {% else %}
+
+                                {% endif %}                    
+                            </td>
+                            <td class="govuk-table__cell">--</td>
+                            <td class="govuk-table__cell">--</td>
+                            <td class="govuk-table__cell">
+                                <strong class="govuk-tag govuk-tag--grey govuk-!-margin-bottom-1">Next review</strong> - 14/11/2025
+                            </td>
+                        </tr>
+                        <!-- CASE NEW - END --> 
+                    {% else %}
+
+                    {% endif %}
+
+                    <!-- CASE 1 - START --> 
+                    <tr class="govuk-table__row pre-charge">
+                        <th scope="row" class="govuk-table__header">
+                            <form method="get" action="5-case-overview" id="">  
+                                <input id="existing_Case" name="existing_Case" type="text" value="true" style="display: none;">
+                                <button type="submit" class="">Groundhog day</button><br>
+                            </form>
+                            <span class="govuk-caption-m govuk-body-s govuk-!-margin-bottom-0">920620952/24</span>
+                        </th>
+                        <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--blue">Pre-charge</strong></td>
+                        <td class="govuk-table__cell">
+                            Paralegal:<br><a href="mailto:{{ data['offCMS_Username'] }}">{{ data['offCMS_Username'] }}</a><br>
+                            Prosecutor:<br><a href="mailto:alex.byrne@cps.gov.uk">alex.byrne@cps.gov.uk</a>
+                        </td>
+                        <td class="govuk-table__cell">--</td>
+                        <td class="govuk-table__cell">--</td>
+                            <td class="govuk-table__cell">
+                                <strong class="govuk-tag govuk-tag--grey govuk-!-margin-bottom-1">Next review</strong> - 14/11/2025
+                            </td>
+                    </tr>
+                    <!-- CASE 1 - END --> 
+
+                    <tr class="govuk-table__row pre-charge">
+                        <th scope="row" class="govuk-table__header">
+                            <a href="" class="govuk-link govuk-link--no-visited-state">Overlord</a><br>
+                            <span class="govuk-caption-m govuk-body-s govuk-!-margin-bottom-0">840320999/24</span>
+                        </th>
+                        <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--blue">Pre-charge</strong></td>
+                        <td class="govuk-table__cell">
+                            Paralegal:<br><a href="mailto:{{ data['offCMS_Username'] }}">{{ data['offCMS_Username'] }}</a><br>
+                            Prosecutor:<br><a href="mailto:archibald.england@cps.gov.uk">archibald.england@cps.gov.uk</a>
+                        </td>
+                        <td class="govuk-table__cell">--</td>
+                        <td class="govuk-table__cell">--</td>
+                            <td class="govuk-table__cell">
+                                <strong class="govuk-tag govuk-tag--grey govuk-!-margin-bottom-1">Next review</strong> - 23/06/2025
+                            </td>
+                    </tr>
+                    <tr class="govuk-table__row charged">
+                        <th scope="row" class="govuk-table__header">
+                            <a href="" class="govuk-link govuk-link--no-visited-state">HARRIS, Chopper (+4)</a><br>
+                            <span class="govuk-caption-m govuk-body-s govuk-!-margin-bottom-0">120120933/23</span>
+                        </th>
+                        <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Charged</strong></td>
+                        <td class="govuk-table__cell">
+                            Paralegal:<br><a href="mailto:{{ data['offCMS_Username'] }}">{{ data['offCMS_Username'] }}</a><br>
+                            Prosecutor:<br><a href="mailto:catrin.guerra@cps.gov.uk">catrin.guerra@cps.gov.uk</a>
+                        </td>
+                        <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--red">20 days to go</strong></td>
+                        <td class="govuk-table__cell">Birmingham</td>
+                        <td class="govuk-table__cell">
+                            <strong class="govuk-tag govuk-tag--red govuk-!-margin-bottom-1">Trial</strong> - <strong>14/11/2025</strong>
+                        </td>
+                    </tr>
+                    <tr class="govuk-table__row charged">
+                        <th scope="row" class="govuk-table__header">
+                            <a href="" class="govuk-link govuk-link--no-visited-state">YATES, Reggie</a><br>
+                            <span class="govuk-caption-m govuk-body-s govuk-!-margin-bottom-0">120520944/24</span>
+                        </th>
+                        <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Charged</strong></td>
+                        <td class="govuk-table__cell">
+                            Paralegal:<br><a href="mailto:{{ data['offCMS_Username'] }}">{{ data['offCMS_Username'] }}</a><br>
+                            Prosecutor:<br><a href="mailto:malachy.fletcher@cps.gov.uk">malachy.fletcher@cps.gov.uk</a>
+                        </td>
+                        <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">75 days to go</strong></td>
+                        <td class="govuk-table__cell">Birmingham</td>
+                        <td class="govuk-table__cell">
+                            <strong class="govuk-tag govuk-tag--green govuk-!-margin-bottom-1">Next hearing</strong> - <strong>12/10/2025</strong>
+                        </td>
+                    </tr>
+                    <tr class="govuk-table__row pre-charge">
+                        <th scope="row" class="govuk-table__header">
+                            <a href="" class="govuk-link govuk-link--no-visited-state">Beastmaster</a><br>
+                            <span class="govuk-caption-m govuk-body-s govuk-!-margin-bottom-0">920620953/21</span>
+                        </th>
+                        <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--blue">Pre-charge</strong></td>
+                        <td class="govuk-table__cell">
+                            Paralegal:<br><a href="mailto:{{ data['offCMS_Username'] }}">{{ data['offCMS_Username'] }}</a><br>
+                            Prosecutor:<br><a href="mailto:maria.burgess@cps.gov.uk">maria.burgess@cps.gov.uk</a>
+                        </td>
+                        <td class="govuk-table__cell">--</td>
+                        <td class="govuk-table__cell">--</td>
+                            <td class="govuk-table__cell">
+                                <strong class="govuk-tag govuk-tag--grey govuk-!-margin-bottom-1">Next review</strong> - 06/04/2025
+                            </td>
+                    </tr>
+                    <tr class="govuk-table__row charged">
+                        <th scope="row" class="govuk-table__header">
+                            <a href="" class="govuk-link govuk-link--no-visited-state">CHAPEL, Steven</a><br>
+                            <span class="govuk-caption-m govuk-body-s govuk-!-margin-bottom-0">880120801/24</span>
+                        </th>
+                        <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Charged</strong></td>
+                        <td class="govuk-table__cell">
+                            Paralegal:<br><a href="mailto:{{ data['offCMS_Username'] }}">{{ data['offCMS_Username'] }}</a><br>
+                            Prosecutor:<br><a href="mailto:bruce.farley@cps.gov.uk">bruce.farley@cps.gov.uk</a>
+                        </td>
+                        <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--red">6 days to go</strong></td>
+                        <td class="govuk-table__cell">Liverpool</td>
+                        <td class="govuk-table__cell">
+                            <strong class="govuk-tag govuk-tag--red govuk-!-margin-bottom-1x">Trial</strong> - <strong>20/12/2025</strong>
+                        </td>
+                    </tr>
+                    <tr class="govuk-table__row pre-charge">
+                        <th scope="row" class="govuk-table__header">
+                            <a href="" class="govuk-link govuk-link--no-visited-state">Game of Thrones</a><br>
+                            <span class="govuk-caption-m govuk-body-s govuk-!-margin-bottom-0">120720952/24</span>
+                        </th>
+                        <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--blue">Pre-charge</strong></td>
+                        <td class="govuk-table__cell">
+                            Paralegal:<br><a href="mailto:{{ data['offCMS_Username'] }}">{{ data['offCMS_Username'] }}</a><br>
+                            Prosecutor:<br><a href="mailto:audrey.erickson@cps.gov.uk">audrey.erickson@cps.gov.uk</a>
+                        </td>
+                        <td class="govuk-table__cell">--</td>
+                        <td class="govuk-table__cell">--</td>
+                            <td class="govuk-table__cell">
+                                <strong class="govuk-tag govuk-tag--grey govuk-!-margin-bottom-1">Next review</strong> - 01/07/2025
+                            </td>
+                    </tr>
+                    {% if data['createCaseStarted'] == 'true' %}
+
+                    {% else %}
+                        <tr class="govuk-table__row pre-charge">
+                            <th scope="row" class="govuk-table__header">
+                                <a href="" class="govuk-link govuk-link--no-visited-state">Top Gun</a><br>
+                                <span class="govuk-caption-m govuk-body-s govuk-!-margin-bottom-0">840120988/24</span>
+                            </th>
+                            <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--blue">Pre-charge</strong></td>
+                            <td class="govuk-table__cell">
+                                Paralegal:<br><a href="mailto:{{ data['offCMS_Username'] }}">{{ data['offCMS_Username'] }}</a><br>
+                                Prosecutor:<br><a href="mailto:talha.cobb@cps.gov.uk">talha.cobb@cps.gov.uk</strong>
+                            </td>
+                            <td class="govuk-table__cell">--</td>
+                            <td class="govuk-table__cell">--</td>
+                            <td class="govuk-table__cell">
+                                <strong class="govuk-tag govuk-tag--grey govuk-!-margin-bottom-1">Next review</strong> - 08/30/2025
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+            <nav class="govuk-pagination" aria-label="Pagination">
+                <ul class="govuk-pagination__list">
+                    <li class="govuk-pagination__item govuk-pagination__item--current">
+                        <a class="govuk-link govuk-pagination__link" href="#" aria-label="Page 1">1</a>
+                    </li>
+                    <li class="govuk-pagination__item">
+                        <a class="govuk-link govuk-pagination__link" href="#" aria-label="Page 2" aria-current="page">2</a>
+                    </li>
+                </ul>
+                <div class="govuk-pagination__next">
+                        <a class="govuk-link govuk-pagination__link" href="#" rel="next">
+                            <span class="govuk-pagination__link-title">Next<span class="govuk-visually-hidden"> page</span></span>
+                            <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                            <path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </nav>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

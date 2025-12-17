@@ -1,0 +1,159 @@
+{# ==============================================
+   GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
+   ============================================== #}
+
+<div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-4">
+    <form action="/version12/clear-search" method="post" novalidate>
+        Showing results for: <strong>{{ data.filtersSearch }}</strong>
+        <button class="govuk-link govuk-link--no-visited-state suspect govuk-!-margin-left-2" type="submit">Clear search</button>
+    </form>
+
+    <!-- <a href="/version12/includes/materials/clear-filter?type=search" 
+       class="govuk-link govuk-link--no-visited-state govuk-!-margin-left-1">
+       Clear search
+    </a> -->
+</div>
+
+{% if not data.groupedSearchResults or (data.groupedSearchResults | length == 0) %}
+    <p class="govuk-body"><strong>No materials found.</strong></p>
+{% endif %}
+
+<table class="govuk-table sortable" id="materials_table">
+    <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">
+                <div class="govuk-checkboxes govuk-checkboxes--small MT-15" data-module="govuk-checkboxes">
+                    <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input" id="materials_documents_ALL"
+                            name="materials_document" type="checkbox" value="Select all">
+                        <label class="govuk-label govuk-checkboxes__label"
+                            for="materials_documents_ALL"></label>
+                    </div>
+                </div>
+            </th>
+            <th class="govuk-table__header"><button class="govuk-button" data-module="govuk-button">File or folder</button></th>
+            <th class="govuk-table__header"><button class="govuk-button" data-module="govuk-button">Last updated</button></th>
+            <th class="govuk-table__header"><button class="govuk-button" data-module="govuk-button">Status</button></th>
+            <th class="govuk-table__header"></th>
+        </tr>
+    </thead>
+
+    <tbody class="govuk-table__body">
+
+    {% for entry in data.groupedSearchResults %}
+        {% set folder = entry.folder %}
+        {% set files = entry.files %}
+        {% set filtersSearch = data.filtersSearch  %}
+
+        {# -------------------------------
+        FOLDER ROW (clickable + checkbox)
+        -------------------------------- #}
+        {% if entry.matchesFolder %}
+
+        <tr class="govuk-table__row folder-row folder-clickable"
+            onclick="document.getElementById('folderForm_{{ folder.id }}').submit();"
+            style="cursor:pointer;">
+
+            <td class="govuk-table__cell">
+                <div class="govuk-checkboxes govuk-checkboxes--small">
+                    <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input"
+                               id="{{ m.id }}"
+                               type="checkbox"
+                               name="materials_document"
+                               value="{{ m.name }}">
+                        <label class="govuk-label govuk-checkboxes__label" for="{{ m.id }}"></label>
+                    </div>
+                </div>
+            </td>
+            <td class="govuk-table__cell title_column">
+                <form action="/version12/case-overview-search-folder" method="post">
+                    <div class="openMe">
+                        <span class="icon-new folder"></span>
+                        <input type="hidden" name="flag" value="1">
+                        <input type="hidden" name="folderName" value="{{ folder.name }}">
+                        <input type="hidden" name="level" value="{{ folder.level + 1 }}">
+                        <button type="submit" name="folderId" value="{{ folder.id }}" class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-regular govuk-button--link">
+                            {{ folder.name | highlight(data['filtersSearch']) | safe }}
+                        </button>
+                        {% if folder.new == true %}
+                            <strong class="govuk-tag govuk-tag--blue">New</strong>
+                        {% endif %}
+                    </div>
+                </form>
+            </td>
+
+            <td class="govuk-table__cell">{{ folder.date }}</td>
+
+            <td class="govuk-table__cell">
+            </td>
+
+            <td class="govuk-table__cell"></td>
+        </tr>
+        {% endif %}
+
+        {# -------------------------------
+           CHILD FILES
+           -------------------------------- #}
+        {% for m in files %}
+        <tr class="govuk-table__row">
+            <td class="govuk-table__cell">
+                <div class="govuk-checkboxes govuk-checkboxes--small">
+                    <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input"
+                               id="{{ m.id }}"
+                               type="checkbox"
+                               name="materials_document"
+                               value="{{ m.name }}">
+                        <label class="govuk-label govuk-checkboxes__label" for="{{ m.id }}"></label>
+                    </div>
+                </div>
+            </td>
+
+            <td class="govuk-table__cell title_column">
+                <span class="material-title">
+                    {{ folder.name | highlight(data.filtersSearch) | safe }} /
+                    {{ m.name | highlight(data.filtersSearch) | safe }}
+                </span>
+                {% if m.new %}
+                    <span class="has-new-tag">
+                        <strong class="govuk-tag govuk-tag--blue">New</strong>
+                    </span>
+                {% endif %}
+            </td>
+            <td class="govuk-table__cell numeric">{{ m.date }}</td>
+
+            <td class="govuk-table__cell">
+                {% if m.status == 'None' %}
+                    <strong class="govuk-tag govuk-tag--grey">{{ m.status }}</strong>
+                {% elseif m.status == 'Used' %}
+                    <strong class="govuk-tag govuk-tag--blue">{{ m.status }}</strong>
+                {% else %}
+                    <strong class="govuk-tag govuk-tag--yellow">{{ m.status }}</strong>
+                {% endif %}
+            </td>
+
+            <td class="govuk-table__cell toggle-panel">
+                <button type="button"
+                    class="govuk-button show_material_actions"
+                    data-id="{{ m.id }}"
+                    data-doc="{{ m.previewLink }}">
+                    Preview <i class="fa-solid fa-chevron-down"></i>
+                </button>
+            </td>
+        </tr>
+
+        <tr class="govuk-table__row hidden_row" data-row_id="{{ m.id }}">
+            <td colspan="7">
+                <div class="document_holder">
+                    <embed src="{{ m.previewLink }}">
+                </div>
+            </td>
+        </tr>
+
+        {% endfor %}
+
+    {% endfor %}
+
+    </tbody>
+</table>

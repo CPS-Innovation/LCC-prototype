@@ -35,7 +35,9 @@ router.use('/version-8', require('./views/version-8/_routes'))
 router.use('/version-9', require('./views/version-9/_routes'))
 router.use('/version-10', require('./views/version-10/_routes'))
 router.use('/version-11', require('./views/version-11/_routes'))
-router.use('/ur-dec-2025', require('./views/ur-dec-2025/_routes'))
+router.use('/ur-dec-2025-closed', require('./views/ur-dec-2025-closed/_routes'))
+router.use('/version-12', require('./views/version-12/_routes'))
+router.use('/version12', require('./views/version12/_routes'))
 // router.use('/ur-december-2025', require('./views/ur-december-2025/_routes'))
 
 
