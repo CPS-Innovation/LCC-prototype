@@ -917,6 +917,10 @@ router.post('/B-off-system-MVP/04A-create-or-link-folders', function(req, res) {
         res.redirect('/version-12/B-off-system-MVP/05A-p-drive-files')
     }
 
+    else if (req.session.data.newDriveFolder === 1) {
+        res.redirect('/version-12/B-off-system-MVP/05A-create-shared-drive-folder')
+    }
+
     else {
         res.redirect('/version-12/B-off-system-MVP/03-case-overview')
     }
@@ -924,43 +928,12 @@ router.post('/B-off-system-MVP/04A-create-or-link-folders', function(req, res) {
 })
 
 
-// router.post('/B-off-system-MVP/04A-create-or-link-folders', function(req, res) {
-//     req.session.data.foldersAction = req.body['folders']
-//     if (req.session.data.foldersAction === 'Create folders') {
-//         req.session.data.newEgressFolder = req.body['new-egress-folder']
-//         req.session.data.newDriveFolder = req.body['new-drive-folder']
-//         if (req.session.data.newEgressFolder === 'Egress folder') {
-//             res.redirect('/version-12/B-off-system-MVP/04A-create-egress-folder')
-//         }
-//         else if (req.session.data.newDriveFolder === 'Shared drive folder') {
-//             res.redirect('/version-12/B-off-system-MVP/03-case-overview') 
-//         }
-//         else {
-//             res.redirect('/version-12/B-off-system-MVP/04A-create-or-link-folders') 
-//         }
-//     }
-//     else {
-//         req.session.data.existingEgressFolder = req.body['linked-egress-folder']
-//         req.session.data.existingDriveFolder = req.body['linked-drive-folder']
-//         if (req.session.data.existingEgressFolder === 'Egress folder') {
-//             res.redirect('/version-12/B-off-system-MVP/04A-egress-files')
-//         }
-//         else if (req.session.data.existingDriveFolder === 'Shared drive folder') {
-//             res.redirect('/version-12/B-off-system-MVP/05A-p-drive-files') 
-//         }    
-//         else {
-//             res.redirect('/version-12/B-off-system-MVP/04A-create-or-link-folders') 
-//         }
-//     }
-// })
-
-
 
 router.post('/B-off-system-MVP/04A-create-egress-folder', function(req, res) {
     req.session.data.egressTemplate = req.body['egress-template']
     
     if (req.session.data.newDriveFolder  === 1) {
-        res.redirect('/version-12/B-off-system-MVP/03-case-overview')
+        res.redirect('/version-12/B-off-system-MVP/05A-create-shared-drive-folder')
     }
     else if (req.session.data.existingDriveFolder === 1) {
         res.redirect('/version-12/B-off-system-MVP/05A-p-drive-files')
