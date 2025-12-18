@@ -14,6 +14,8 @@
 
             {% if data['existingDriveFolder'] === 1 %}
                 <form method="post" action="05A-p-drive-files" id="">  
+            {% elseif data['newDriveFolder'] === 1 %}
+                <form method="post" action="05A-create-shared-drive-folder" id="">  
             {% else %}
                 <form method="post" action="03-case-overview" id="">  
             {% endif %}

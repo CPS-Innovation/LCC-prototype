@@ -410,6 +410,7 @@ module.exports = {
 "wantedEgressFolder": "",
 "wantedDriveFolder": "",
 "egressTemplate": "",
+"sharedDriveTemplate": "",
 "addMaterials": "",
 
 
