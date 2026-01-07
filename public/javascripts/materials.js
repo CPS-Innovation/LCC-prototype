@@ -1335,3 +1335,196 @@ if (moveForm) {
     document.getElementById('move_selected_ids').value = getSelectedMaterialIds();
   });
 }
+
+
+
+// Version-12
+// ===============================
+// Folder tree expand / collapse
+// ===============================
+(function initFolderTreeToggles() {
+  function setToggleState(btn, children, open) {
+    if (open) {
+      children.removeAttribute('hidden');
+      btn.textContent = '−';
+      btn.setAttribute('aria-expanded', 'true');
+    } else {
+      children.setAttribute('hidden', '');
+      btn.textContent = '+';
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  // Initialise symbols on load (so +/− matches hidden state)
+  function syncAllFolderToggles() {
+    document.querySelectorAll('.folder-node').forEach(node => {
+      const btn = node.querySelector(':scope > .folder-row .folder-toggle');
+      const children = node.querySelector(':scope > .folder-children');
+      if (!btn || !children) return;
+
+      // Stop buttons behaving like submit buttons in forms
+      if (!btn.getAttribute('type')) btn.setAttribute('type', 'button');
+
+      const open = !children.hasAttribute('hidden');
+      setToggleState(btn, children, open);
+    });
+  }
+
+  // Click handler (delegated)
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.folder-toggle');
+    if (!btn) return;
+
+    // Prevent form submits, link clicks, or other nonsense
+    e.preventDefault();
+    e.stopPropagation();
+
+    const node = btn.closest('.folder-node');
+    if (!node) return;
+
+    const children = node.querySelector(':scope > .folder-children');
+    if (!children) return; // nothing to expand/collapse
+
+    const currentlyOpen = !children.hasAttribute('hidden');
+    setToggleState(btn, children, !currentlyOpen);
+  });
+
+  // Run once on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncAllFolderToggles);
+  } else {
+    syncAllFolderToggles();
+  }
+
+  // Optional: if your prototype re-renders the tree dynamically,
+  // call window.syncFolderTreeToggles() after render.
+  window.syncFolderTreeToggles = syncAllFolderToggles;
+})();
+
+
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest('.folder-toggle');
+  if (!btn) return;
+
+  e.preventDefault();
+
+  const node = btn.closest('.folder-node');
+  if (!node) return;
+
+  const children = node.querySelector('.folder-children');
+  if (!children) return;
+
+  const opening = children.hasAttribute('hidden');
+
+  if (opening) {
+    children.removeAttribute('hidden');
+    btn.textContent = '−';
+    btn.setAttribute('aria-expanded', 'true');
+  } else {
+    children.setAttribute('hidden', '');
+    btn.textContent = '+';
+    btn.setAttribute('aria-expanded', 'false');
+  }
+});
+
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest('.folder-toggle');
+  if (!btn) return;
+
+  e.preventDefault();
+
+  const node = btn.closest('.folder-node');
+  if (!node) return;
+
+  const children = node.querySelector(':scope > .folder-children');
+  if (!children) return;
+
+  const opening = children.hasAttribute('hidden');
+
+  if (opening) {
+    children.removeAttribute('hidden');
+    btn.textContent = '−';
+    btn.setAttribute('aria-expanded', 'true');
+  } else {
+    children.setAttribute('hidden', '');
+    btn.textContent = '+';
+    btn.setAttribute('aria-expanded', 'false');
+  }
+});
+
+
+(function initCopyButtonLabelFromFolderTree() {
+  const copyBtn = document.getElementById('copyButton');
+  if (!copyBtn) return;
+
+  const defaultCopyText = copyBtn.textContent.trim() || "Copy";
+
+  function setCopyText(names) {
+    if (!names || names.length === 0) {
+      copyBtn.textContent = defaultCopyText;
+      copyBtn.disabled = true; // optional: disable until selection
+      return;
+    }
+
+    copyBtn.disabled = false;
+
+    // Single selection
+    if (names.length === 1) {
+      copyBtn.textContent = `Copy to ${names[0]}`;
+      return;
+    }
+
+    // Multi-selection (if you allow it)
+    copyBtn.textContent = `Copy to ${names.length} folders`;
+  }
+
+  // start disabled until user selects something
+  setCopyText([]);
+
+  // Click a folder-box to select it
+  document.addEventListener('click', (e) => {
+    const box = e.target.closest('.folder-box');
+    if (!box) return;
+
+    const node = box.closest('.folder-node');
+    if (!node) return;
+
+    // Don't allow Thundercat to be selected
+    if (node.classList.contains('folder-node--root')) return;
+
+    const folderName = node.getAttribute('data-folder-name')?.trim();
+    if (!folderName) return;
+
+    const multi = e.ctrlKey || e.metaKey; // Ctrl (Win) / Cmd (Mac)
+
+    // If you do NOT want multi-select, force single
+    if (!multi) {
+      document.querySelectorAll('.folder-node.is-selected').forEach(n => n.classList.remove('is-selected'));
+    }
+
+    node.classList.toggle('is-selected', true);
+
+    const selectedNames = Array.from(document.querySelectorAll('.folder-node.is-selected'))
+      .map(n => n.getAttribute('data-folder-name'))
+      .filter(Boolean);
+
+    setCopyText(selectedNames);
+  });
+
+  // Optional: clicking the same selected folder again clears selection (single-select mode)
+  document.addEventListener('dblclick', (e) => {
+    const box = e.target.closest('.folder-box');
+    if (!box) return;
+
+    const node = box.closest('.folder-node');
+    if (!node || node.classList.contains('folder-node--root')) return;
+
+    node.classList.remove('is-selected');
+
+    const selectedNames = Array.from(document.querySelectorAll('.folder-node.is-selected'))
+      .map(n => n.getAttribute('data-folder-name'))
+      .filter(Boolean);
+
+    setCopyText(selectedNames);
+  });
+})();

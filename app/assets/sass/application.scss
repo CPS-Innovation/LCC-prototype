@@ -5247,3 +5247,205 @@ strong, span {
 // .govuk-table__body tr:hover {
 //   background-color: #f3f2f1;
 // }
+
+
+// Monica – version-12
+
+// Folder tree styles
+// .folder-tree,
+// .folder-children {
+//   list-style: none;
+//   margin: 0;
+//   padding-left: 20px;
+// }
+
+// .folder-node {
+//   margin: 2px 0;
+// }
+
+// .folder-row {
+//   display: flex;
+//   align-items: center;
+//   gap: 6px;
+// }
+
+// .folder-toggle {
+//   width: 16px;
+//   height: 16px;
+//   border: 1px solid #666;
+//   background: #f5f5f5;
+//   font-size: 12px;
+//   line-height: 14px;
+//   padding: 0;
+//   cursor: pointer;
+// }
+
+// .folder-icon {
+//   font-size: 14px;
+// }
+
+// .folder-name {
+//   white-space: nowrap;
+// }
+
+// /* Folder tree: force sensible text colour */
+// .folder-tree,
+// .folder-tree * {
+//   color: #0b0c0c; /* GOV.UK text colour */
+// }
+
+// /* If folder names are links, make them look like GOV.UK links */
+// .folder-tree a.folder-name {
+//   color: #1d70b8; /* GOV.UK link blue */
+//   text-decoration: underline;
+// }
+
+// .folder-tree a.folder-name:visited {
+//   color: #4c2c92; /* GOV.UK visited purple */
+// }
+
+// .folder-tree a.folder-name:hover {
+//   text-decoration-thickness: max(3px, .1875rem);
+// }
+
+
+// .folder-tree { color: #0b0c0c; }
+// .folder-tree .folder-name { color: inherit; }
+
+
+// .folder-tree,
+// .folder-children {
+//   list-style: none;
+//   margin: 0;
+//   padding-left: 0; /* then control indent manually */
+// }
+
+// .folder-children {
+//   padding-left: 24px; /* indent like your screenshot */
+// }
+
+// .folder-row {
+//   display: flex;
+//   align-items: center;
+//   gap: 6px;
+// }
+
+/* =========================
+   Folder tree layout + lines
+   ========================= */
+
+
+
+
+   /* =========================
+   Folder tree (no lines)
+   Boxed folders like screenshot
+   ========================= */
+
+.folder-tree,
+.folder-children {
+  list-style: none;
+  margin: 0;
+  padding-left: 18px;
+}
+
+/* reset inherited colour (fixes "white folder names") */
+.folder-tree {
+  color: #0b0c0c;
+}
+
+.folder-tree * {
+  color: inherit;
+}
+
+.folder-node {
+  margin: 4px 0;
+}
+
+.folder-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Toggle button */
+.folder-toggle {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid #6f777b;
+  background: #fff;
+  color: #0b0c0c;
+  font-size: 12px;
+  line-height: 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.folder-toggle.placeholder {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  border: 1px solid transparent;
+}
+
+/* The "button box" */
+.folder-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid #d8dde0;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(0,0,0,.03);
+}
+
+/* Make sure box text never goes white via inheritance */
+.folder-box,
+.folder-box * {
+  color: #0b0c0c !important;
+}
+
+.folder-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.folder-name {
+  white-space: nowrap;
+}
+
+/* Optional hover */
+.folder-box:hover {
+  border-color: #b1b4b6;
+  background: #f8f8f8;
+}
+
+
+.folder-tree,
+.folder-tree ul {
+  list-style: none !important;
+  margin: 0;
+  padding-left: 0;
+}
+
+.folder-tree ul {
+  padding-left: 28px;
+}
+
+.folder-box--root {
+  font-weight: 700;
+  cursor: default;
+}
+
+.folder-row--root .folder-box--root:hover {
+  background: #fff;
+  border-color: #d8dde0;
+}
+
+.folder-node.is-selected > .folder-row .folder-box {
+  outline: 3px solid #1d70b8;
+  outline-offset: 2px;
+}
