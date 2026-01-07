@@ -1739,4 +1739,61 @@ router.get('/includes/materials/clear-filter', function (req, res) {
 });
 
 
+// New code for version-12
+
+router.get('/B-off-system-MVP/folder-tree', function (req, res) {
+
+    const sessionData = req.session.data || {};
+    const defaultsData = res.locals.data || {};
+
+    console.log("DEFAULT materials:", res.locals.data.materials?.length);
+    console.log("SESSION materials:", req.session.data?.materials?.length);
+
+    // Prefer session, fallback to defaults
+    const materials =
+    sessionData.materials && sessionData.materials.length
+        ? sessionData.materials
+        : defaultsData.materials || [];
+
+    console.log("Materials length:", materials.length);
+
+    // folders only
+    const folders = materials.filter(m => m && m.folder);
+
+    // group by parentId
+    const byParent = new Map();
+    folders.forEach(f => {
+    const key = f.parentId ?? null;
+    if (!byParent.has(key)) byParent.set(key, []);
+    byParent.get(key).push(f);
+    });
+
+    // find real roots
+    const folderIds = new Set(folders.map(f => f.id));
+
+    function isRoot(folder) {
+    return (
+        folder.parentId == null ||
+        folder.parentId === "" ||
+        !folderIds.has(folder.parentId)
+    );
+    }
+
+    const roots = folders.filter(isRoot);
+
+    function buildNode(node) {
+    const children = byParent.get(node.id) || [];
+    return {
+        ...node,
+        children: children.map(buildNode)
+    };
+    }
+
+    const folderTree = roots.map(buildNode);
+
+    res.render('version-12/B-off-system-MVP/folder-tree', {
+    folderTree
+    });
+});
+
 module.exports = router
