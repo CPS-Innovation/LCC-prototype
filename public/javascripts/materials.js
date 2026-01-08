@@ -1264,7 +1264,7 @@ function getSelectedMaterialIds() {
           const selected = getSelectedMaterialIds();
 
           if (selected.length === 0) {
-               alert("Select at least one item first.");
+               // alert("Select at least one item first.");
                return;
           }
 
@@ -1453,78 +1453,240 @@ document.addEventListener('click', function (e) {
 });
 
 
-(function initCopyButtonLabelFromFolderTree() {
+
+// (function initCopyButtonLabelFromFolderTree() {
+//   const copyBtn = document.getElementById('copyFolderButton');
+//   if (!copyBtn) return;
+
+//   const defaultCopyText = copyBtn.textContent.trim() || "Copy";
+
+//   function setCopyText(names) {
+//     if (!names || names.length === 0) {
+//       copyBtn.textContent = defaultCopyText;
+//       copyBtn.disabled = true; // optional: disable until selection
+//       return;
+//     }
+
+//     copyBtn.disabled = false;
+
+//     // Single selection
+//     if (names.length === 1) {
+//       copyBtn.textContent = `Copy to ${names[0]}`;
+//       return;
+//     }
+
+//     // Multi-selection (if you allow it)
+//     copyBtn.textContent = `Copy to ${names.length} folders`;
+//   }
+
+//   // start disabled until user selects something
+//   setCopyText([]);
+
+//   // Click a folder-box to select it
+//   document.addEventListener('click', (e) => {
+//     const box = e.target.closest('.folder-box');
+//     if (!box) return;
+
+//     const node = box.closest('.folder-node');
+//     if (!node) return;
+
+//     // Don't allow Thundercat to be selected
+//     if (node.classList.contains('folder-node--root')) return;
+
+//     const folderName = node.getAttribute('data-folder-name')?.trim();
+//     if (!folderName) return;
+
+//     const multi = e.ctrlKey || e.metaKey; // Ctrl (Win) / Cmd (Mac)
+
+//     // If you do NOT want multi-select, force single
+//     if (!multi) {
+//       document.querySelectorAll('.folder-node.is-selected').forEach(n => n.classList.remove('is-selected'));
+//     }
+
+//     node.classList.toggle('is-selected', true);
+
+//     const selectedNames = Array.from(document.querySelectorAll('.folder-node.is-selected'))
+//       .map(n => n.getAttribute('data-folder-name'))
+//       .filter(Boolean);
+
+//     setCopyText(selectedNames);
+//   });
+
+//   // Optional: clicking the same selected folder again clears selection (single-select mode)
+//   document.addEventListener('dblclick', (e) => {
+//     const box = e.target.closest('.folder-box');
+//     if (!box) return;
+
+//     const node = box.closest('.folder-node');
+//     if (!node || node.classList.contains('folder-node--root')) return;
+
+//     node.classList.remove('is-selected');
+
+//     const selectedNames = Array.from(document.querySelectorAll('.folder-node.is-selected'))
+//       .map(n => n.getAttribute('data-folder-name'))
+//       .filter(Boolean);
+
+//     setCopyText(selectedNames);
+//   });
+// })();
+
+(function initCopyFolderPicker() {
+  const copyBtn = document.getElementById('copyFolderButton');
+  const destInput = document.getElementById('destinationFolder');
+  if (!copyBtn || !destInput) return;
+
+  const defaultCopyText = copyBtn.textContent.trim() || 'Copy';
+
+  function applySelection(folderId, folderName) {
+    destInput.value = folderId || '';
+    copyBtn.textContent = folderName ? `Copy to ${folderName}` : defaultCopyText;
+
+    // optional: disable until selection
+    copyBtn.disabled = !folderId;
+
+    // visual highlight
+    document.querySelectorAll('.folder-node.is-selected').forEach(n => n.classList.remove('is-selected'));
+    if (folderId) {
+      const node = document.querySelector(`.folder-node[data-folder-id="${CSS.escape(folderId)}"]`);
+      if (node) node.classList.add('is-selected');
+    }
+
+    // persist across reloads (optional)
+    if (folderId) {
+      sessionStorage.setItem('copyDestinationFolderId', folderId);
+      sessionStorage.setItem('copyDestinationFolderName', folderName || '');
+    } else {
+      sessionStorage.removeItem('copyDestinationFolderId');
+      sessionStorage.removeItem('copyDestinationFolderName');
+    }
+  }
+
+  // Restore previous selection after reload (optional but fixes your “deselect” complaint)
+  const savedId = sessionStorage.getItem('copyDestinationFolderId');
+  const savedName = sessionStorage.getItem('copyDestinationFolderName');
+  if (savedId) {
+    applySelection(savedId, savedName);
+  } else {
+    // start disabled until selected (if you want that)
+    copyBtn.disabled = true;
+    copyBtn.textContent = defaultCopyText;
+  }
+
+  // Select folder on click
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('button.folder-select');
+    if (!btn) return;
+
+    const node = btn.closest('.folder-node');
+    if (!node || node.classList.contains('folder-node--root')) return;
+
+    const folderId = node.getAttribute('data-folder-id');
+    const folderName = node.getAttribute('data-folder-name');
+
+    if (!folderId) return;
+
+    applySelection(folderId, folderName);
+  });
+
+  // Guard submit if somehow no destination selected
+  copyBtn.closest('form')?.addEventListener('submit', (e) => {
+    if (!destInput.value) {
+      e.preventDefault();
+      // no alert if you hate alerts; just do nothing
+      // or show an inline error later
+    }
+  });
+})();
+
+
+
+// document.addEventListener('DOMContentLoaded', () => {
+//   const copyBtn = document.getElementById('copyButton');
+//   if (!copyBtn) return;
+
+//   // Scope to the materials table if it exists, so we don’t pick up random checkboxes elsewhere
+//   const table = document.getElementById('materials_table');
+
+//   function checkedCount() {
+//     const scope = table || document;
+//     // Common patterns: adjust if yours differs, but this covers most of your prototype
+//     return scope.querySelectorAll(
+//       'input[type="checkbox"]:checked'
+//     ).length;
+//   }
+
+//   function setEnabled(enabled) {
+//     // Works for <button>
+//     if (copyBtn.tagName === 'BUTTON') {
+//       copyBtn.disabled = !enabled;
+//       copyBtn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+//       return;
+//     }
+
+//     // Works for <a> menu item (MOJ button menu often uses <a>)
+//     copyBtn.classList.toggle('is-disabled', !enabled);
+//     copyBtn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+//     copyBtn.dataset.disabled = enabled ? 'false' : 'true';
+//   }
+
+//   // If it’s an <a>, stop it navigating while disabled
+//   copyBtn.addEventListener('click', (e) => {
+//     if (copyBtn.tagName !== 'BUTTON' && copyBtn.dataset.disabled === 'true') {
+//       e.preventDefault();
+//     }
+//   });
+
+//   // Initial state
+//   setEnabled(checkedCount() > 0);
+
+//   // Update whenever any checkbox changes
+//   document.addEventListener('change', (e) => {
+//     if (!e.target || e.target.type !== 'checkbox') return;
+
+//     // If a table exists, ignore checkboxes outside it
+//     if (table && !table.contains(e.target)) return;
+
+//     setEnabled(checkedCount() > 0);
+//   });
+// });
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const table = document.getElementById('materials_table');
+  if (!table) return; // ✅ only run on tab-manage-materials
+
   const copyBtn = document.getElementById('copyButton');
   if (!copyBtn) return;
 
-  const defaultCopyText = copyBtn.textContent.trim() || "Copy";
-
-  function setCopyText(names) {
-    if (!names || names.length === 0) {
-      copyBtn.textContent = defaultCopyText;
-      copyBtn.disabled = true; // optional: disable until selection
-      return;
-    }
-
-    copyBtn.disabled = false;
-
-    // Single selection
-    if (names.length === 1) {
-      copyBtn.textContent = `Copy to ${names[0]}`;
-      return;
-    }
-
-    // Multi-selection (if you allow it)
-    copyBtn.textContent = `Copy to ${names.length} folders`;
+  function checkedCount() {
+    return table.querySelectorAll('input[type="checkbox"]:checked').length;
   }
 
-  // start disabled until user selects something
-  setCopyText([]);
-
-  // Click a folder-box to select it
-  document.addEventListener('click', (e) => {
-    const box = e.target.closest('.folder-box');
-    if (!box) return;
-
-    const node = box.closest('.folder-node');
-    if (!node) return;
-
-    // Don't allow Thundercat to be selected
-    if (node.classList.contains('folder-node--root')) return;
-
-    const folderName = node.getAttribute('data-folder-name')?.trim();
-    if (!folderName) return;
-
-    const multi = e.ctrlKey || e.metaKey; // Ctrl (Win) / Cmd (Mac)
-
-    // If you do NOT want multi-select, force single
-    if (!multi) {
-      document.querySelectorAll('.folder-node.is-selected').forEach(n => n.classList.remove('is-selected'));
+  function setEnabled(enabled) {
+    if (copyBtn.tagName === 'BUTTON') {
+      copyBtn.disabled = !enabled;
+      copyBtn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+      return;
     }
 
-    node.classList.toggle('is-selected', true);
+    copyBtn.classList.toggle('is-disabled', !enabled);
+    copyBtn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+    copyBtn.dataset.disabled = enabled ? 'false' : 'true';
+  }
 
-    const selectedNames = Array.from(document.querySelectorAll('.folder-node.is-selected'))
-      .map(n => n.getAttribute('data-folder-name'))
-      .filter(Boolean);
-
-    setCopyText(selectedNames);
+  copyBtn.addEventListener('click', (e) => {
+    if (copyBtn.tagName !== 'BUTTON' && copyBtn.dataset.disabled === 'true') {
+      e.preventDefault();
+    }
   });
 
-  // Optional: clicking the same selected folder again clears selection (single-select mode)
-  document.addEventListener('dblclick', (e) => {
-    const box = e.target.closest('.folder-box');
-    if (!box) return;
+  setEnabled(checkedCount() > 0);
 
-    const node = box.closest('.folder-node');
-    if (!node || node.classList.contains('folder-node--root')) return;
-
-    node.classList.remove('is-selected');
-
-    const selectedNames = Array.from(document.querySelectorAll('.folder-node.is-selected'))
-      .map(n => n.getAttribute('data-folder-name'))
-      .filter(Boolean);
-
-    setCopyText(selectedNames);
+  table.addEventListener('change', (e) => {
+    if (e.target && e.target.type === 'checkbox') {
+      setEnabled(checkedCount() > 0);
+    }
   });
-})();
+});

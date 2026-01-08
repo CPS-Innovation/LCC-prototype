@@ -1569,7 +1569,7 @@ function buildPreviewTree(materials, rootIds) {
     .map(buildNode);
 }
 
-router.post('/B-off-system-MVP/copy-material', function (req, res) {
+router.post('/B-off-system-MVP/copy-material-old', function (req, res) {
 
   req.session.data.moveSuccess = false;   // Clear move flag
 
@@ -1649,6 +1649,110 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
   res.redirect('/version-12/B-off-system-MVP/03-case-overview');
 });
 
+
+router.post('/B-off-system-MVP/start-copy', function (req, res) {
+    // selected_ids could be "1,2,3" or an array depending on your form
+    const ids = req.body.selected_ids
+        ? String(req.body.selected_ids).split(',').map(x => String(x).trim()).filter(Boolean)
+        : [];
+
+    // Store selection for the next page
+    req.session.data.copySelectedIds = ids;
+    req.session.data.copySelectedCount = ids.length;
+
+    // Optional: store names for a hint banner on folder-tree-copy
+    const materials = (req.session.data.materials || res.locals.data.materials || []);
+    req.session.data.copySelectedNames = ids
+        .map(id => (materials.find(m => String(m.id) === String(id)) || {}).name)
+        .filter(Boolean);
+
+    // Send them to the folder picker page
+    res.redirect('/version-12/B-off-system-MVP/folder-tree-copy');
+});
+
+
+router.post('/B-off-system-MVP/copy-material', function (req, res) {
+
+    req.session.data.moveSuccess = false;
+
+    // Pull selection from session (set by /start-copy)
+    const ids = Array.isArray(req.session.data.copySelectedIds)
+        ? req.session.data.copySelectedIds.map(String)
+        : [];
+
+    const destinationFolderId = req.body.destinationFolder;
+    const materials = (req.session.data.materials || res.locals.data.materials || []);
+
+    console.log("Copying:", ids, "into folder", destinationFolderId);
+
+    if (!ids.length || !destinationFolderId) {
+        // In a prototype, just bounce back with a flag
+        req.session.data.copyError = "Select at least one item and a destination folder";
+        return res.redirect('/version-12/B-off-system-MVP/folder-tree-copy');
+    }
+
+    // Snapshot BEFORE mutation
+    const originalMaterials = [...materials];
+
+    const copiedNames = [];
+
+    let destinationFolderName = null;
+    const destFolder = materials.find(m => String(m.id) === String(destinationFolderId));
+    if (destFolder) destinationFolderName = destFolder.name;
+
+    const copyPreviewTree = buildPreviewTree(originalMaterials, ids);
+
+    ids.forEach(id => {
+        const original = materials.find(m => String(m.id) === id);
+        if (!original) return;
+
+        copiedNames.push(original.name);
+
+        const idMap = {};
+        const newId = Date.now() + Math.random();
+        idMap[id] = newId;
+
+        materials.push({
+        ...original,
+        id: newId,
+        parentId: destinationFolderId
+        });
+
+        const descendants = getAllDescendants(originalMaterials, id);
+
+        descendants.forEach(child => {
+        const newChildId = Date.now() + Math.random();
+        idMap[child.id] = newChildId;
+
+        materials.push({
+            ...child,
+            id: newChildId,
+            parentId: idMap[child.parentId]
+        });
+
+        copiedNames.push(child.name);
+        });
+    });
+
+    // Persist mutated materials back into session so it sticks
+    req.session.data.materials = materials;
+
+    req.session.data.copyList = copiedNames;
+    req.session.data.copyDestinationName = destinationFolderName;
+    req.session.data.copyPreviewTree = copyPreviewTree;
+    req.session.data.copySuccess = true;
+
+    // Clear selection state
+    req.session.data.copySelectedIds = [];
+    req.session.data.copySelectedNames = [];
+    req.session.data.copySelectedCount = 0;
+
+    // Reset selection + mode
+    req.session.data.materialsMode = null;
+    req.session.data.materialsSelected = '';
+
+    res.redirect('/version-12/B-off-system-MVP/03-case-overview');
+});
 
 router.post('/B-off-system-MVP/move-material', function (req, res) {
 
@@ -1741,7 +1845,7 @@ router.get('/includes/materials/clear-filter', function (req, res) {
 
 // New code for version-12
 
-router.get('/B-off-system-MVP/folder-tree', function (req, res) {
+router.get('/B-off-system-MVP/folder-tree-copy', function (req, res) {
 
     const sessionData = req.session.data || {};
     const defaultsData = res.locals.data || {};
@@ -1791,8 +1895,8 @@ router.get('/B-off-system-MVP/folder-tree', function (req, res) {
 
     const folderTree = roots.map(buildNode);
 
-    res.render('version-12/B-off-system-MVP/folder-tree', {
-    folderTree
+    res.render('version-12/B-off-system-MVP/folder-tree-copy', {
+        folderTree
     });
 });
 
