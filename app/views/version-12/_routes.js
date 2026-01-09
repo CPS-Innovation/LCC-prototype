@@ -1864,29 +1864,38 @@ router.get('/B-off-system-MVP/folder-tree-copy', function (req, res) {
     // folders only
     const folders = materials.filter(m => m && m.folder);
 
-    // group by parentId
+    // group by parentId (NORMALISE TO STRING)
     const byParent = new Map();
     folders.forEach(f => {
-    const key = f.parentId ?? null;
-    if (!byParent.has(key)) byParent.set(key, []);
-    byParent.get(key).push(f);
+    const parentKey = (f.parentId === null || f.parentId === undefined || f.parentId === '')
+        ? null
+        : String(f.parentId);
+
+    if (!byParent.has(parentKey)) byParent.set(parentKey, []);
+    byParent.get(parentKey).push(f);
     });
 
-    // find real roots
-    const folderIds = new Set(folders.map(f => f.id));
+    for (const [key, arr] of byParent.entries()) {
+        arr.sort((a, b) => String(a.name).localeCompare(String(b.name)));
+    }
+
+    // folder ids set (NORMALISE TO STRING)
+    const folderIds = new Set(folders.map(f => String(f.id)));
 
     function isRoot(folder) {
-    return (
-        folder.parentId == null ||
-        folder.parentId === "" ||
-        !folderIds.has(folder.parentId)
-    );
+    const parent = folder.parentId;
+
+    // no parent
+    if (parent === null || parent === undefined || parent === '') return true;
+
+    // parent exists?
+    return !folderIds.has(String(parent));
     }
 
     const roots = folders.filter(isRoot);
 
     function buildNode(node) {
-    const children = byParent.get(node.id) || [];
+    const children = byParent.get(String(node.id)) || [];
     return {
         ...node,
         children: children.map(buildNode)
