@@ -34,8 +34,7 @@
       <li class="folder-node" data-folder-id="{{ node.id }}" data-folder-name="{{ node.name }}">
         <div class="folder-row">
           {% if node.children and node.children.length %}
-            <!-- <button type="button" class="folder-toggle" aria-expanded="false">+</button> -->
-             <button type="button" class="folder-toggle" aria-expanded="true">−</button>
+            <button type="button" class="folder-toggle" aria-expanded="false">+</button>
           {% else %}
             <span class="folder-toggle placeholder"></span>
           {% endif %}
@@ -47,7 +46,7 @@
         </div>
 
         {% if node.children and node.children.length %}
-          <div class="folder-children">
+          <div class="folder-children" hidden>
             {{ renderNodes(node.children, false) }}
           </div>
         {% endif %}
@@ -59,7 +58,9 @@
 <ul class="folder-tree">
   <li class="folder-node folder-node--root">
     <div class="folder-row">
-      <button type="button" class="folder-toggle" aria-expanded="true">−</button>
+      <button type="button" class="folder-toggle" aria-expanded="{{ 'true' if isRoot else 'false' }}">
+        {{ '−' if isRoot else '+' }}
+      </button>
 
       <span class="folder-box folder-box--root" aria-label="Case name Thundercat">
         <span class="folder-icon">📁</span>
