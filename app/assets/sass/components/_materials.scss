@@ -1772,14 +1772,15 @@ main.case-files {
 
 .icon-new.folder {
   display: inline-block;
-  width: 1.4em;   // adjust to make icon bigger
-  height: 1.4em;
+  width: 1.2em;   // adjust to make icon bigger
+  height: 1.2em;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   vertical-align: middle;
   margin-top: -0.05em; // small fine-tuning to align perfectly with text baseline
 }
+
 
 .breadcrumb-button {
   background: none;

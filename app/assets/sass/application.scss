@@ -5358,10 +5358,10 @@ strong, span {
   cursor: default;
 }
 
-.folder-row--root .folder-box--root:hover {
-  background: #fff;
-  border-color: #d8dde0;
-}
+// .folder-row--root .folder-box--root:hover {
+//   background: #fff;
+//   border-color: #d8dde0;
+// }
 
 .folder-node.is-selected > .folder-row .folder-box {
   outline: 3px solid #1d70b8;
@@ -5384,12 +5384,6 @@ strong, span {
 .folder-box,
 .folder-box * {
   cursor: pointer !important;
-}
-
-/* But NOT for the fake root */
-.folder-node--root .folder-box,
-.folder-node--root .folder-box * {
-  cursor: default !important;
 }
 
 /* FORCE pointer on folder text itself (beats GOV.UK text cursor) */
