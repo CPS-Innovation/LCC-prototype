@@ -1535,6 +1535,11 @@ document.addEventListener('click', function (e) {
   const destInput = document.getElementById('destinationFolder');
   if (!copyBtn || !destInput) return;
 
+  // 🔴 RESET STATE ON PAGE LOAD
+  copyBtn.textContent = 'Copy';
+  copyBtn.disabled = true;
+  destInput.value = '';
+
   const defaultCopyText = copyBtn.textContent.trim() || 'Copy';
 
   function applySelection(folderId, folderName) {
@@ -1689,4 +1694,55 @@ document.addEventListener('DOMContentLoaded', () => {
       setEnabled(checkedCount() > 0);
     }
   });
+});
+
+
+(function forceCopyButtonDefaultOnFolderTreeCopy() {
+  function reset() {
+    const copyBtn = document.getElementById('copyFolderButton');
+    const destInput = document.getElementById('destinationFolder');
+
+    // Only on folder-tree-copy page
+    if (!copyBtn || !destInput) return;
+
+    // Hard reset UI
+    copyBtn.textContent = 'Copy';
+    copyBtn.disabled = false;
+    destInput.value = '';
+
+    // Clear any selected styling
+    document.querySelectorAll('.folder-node.is-selected')
+      .forEach(n => n.classList.remove('is-selected'));
+
+    // Kill any browser “remembering” you might have added earlier
+    sessionStorage.removeItem('copyDestinationFolderId');
+    sessionStorage.removeItem('copyDestinationFolderName');
+    localStorage.removeItem('copyDestinationFolderId');
+    localStorage.removeItem('copyDestinationFolderName');
+  }
+
+  // Run on normal load AND back/forward cache restores
+  window.addEventListener('pageshow', reset);
+  document.addEventListener('DOMContentLoaded', reset);
+})();
+
+
+
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('button.folder-select');
+  if (!btn) return;
+
+  const node = btn.closest('.folder-node');
+  if (!node || node.classList.contains('folder-node--root')) return;
+
+  const folderId = node.getAttribute('data-folder-id');
+  const folderName = node.getAttribute('data-folder-name');
+
+  const copyBtn = document.getElementById('copyFolderButton');
+  const destInput = document.getElementById('destinationFolder');
+  if (!copyBtn || !destInput || !folderId) return;
+
+  destInput.value = folderId;
+  copyBtn.textContent = folderName ? `Copy to ${folderName}` : 'Copy';
+  copyBtn.disabled = false;
 });
