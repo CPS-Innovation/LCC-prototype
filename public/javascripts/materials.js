@@ -811,7 +811,7 @@ $(document).ready(function() {
           if ($(this).hasClass('hide')) {
                $(this).html('Hide <i class="fa-solid fa-chevron-down"></i>');
           } else {
-               $(this).html('Actions <i class="fa-solid fa-chevron-down"></i>');
+               $(this).html('Preview <i class="fa-solid fa-chevron-down"></i>');
           }
      });
 
