@@ -58,11 +58,11 @@
                 <div class="govuk-checkboxes govuk-checkboxes--small">
                     <div class="govuk-checkboxes__item">
                     <input class="govuk-checkboxes__input"
-                        id="{{ m.id }}"
+                        id="{{ folder.id }}"
                         type="checkbox"
                         name="materials_document"
-                        value="{{ m.name }}">
-                        <label class="govuk-label govuk-checkboxes__label" for="{{ m.id }}"></label>
+                        value="{{ folder.name }}">
+                        <label class="govuk-label govuk-checkboxes__label" for="{{ folder.id }}"></label>
                     </div>
                 </div>
             </td>
@@ -122,10 +122,11 @@
                         <input type="hidden" name="flag" value="1">
                         <input type="hidden" name="folderName" value="{{ folder.name }}">
                         <input type="hidden" name="level" value="{{ folder.level + 1 }}">
-                        <button type="submit" name="folderId" value="{{ folder.id }}" class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-regular govuk-button--link">
+                        <!-- <button type="submit" name="folderId" value="{{ folder.id }}" class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-regular govuk-button--link">
                             {{ folder.name | highlight(data['filtersSearch']) | safe }}
-                        </button>
-                        {% if folder.name %}/ {% endif %} {{ m.name | highlight(data.filtersSearch) | safe }}
+                        </button> -->
+                        <!-- {% if folder.name %}/ {% endif %}  -->
+                        {{ m.name | highlight(data.filtersSearch) | safe }} 
                         {% if m.new %}
                             <span class="has-new-tag">
                                 <strong class="govuk-tag govuk-tag--blue">Unread</strong>
