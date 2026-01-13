@@ -24,8 +24,11 @@
             <th scope="col" class="govuk-table__header">
                 <div class="govuk-checkboxes govuk-checkboxes--small MT-15" data-module="govuk-checkboxes">
                     <div class="govuk-checkboxes__item">
-                        <input class="govuk-checkboxes__input" id="materials_documents_ALL"
-                            name="materials_document" type="checkbox" value="Select all">
+                        <input class="govuk-checkboxes__input js-select-all"
+                            id="materials_documents_ALL"
+                            name="materials_document"
+                            type="checkbox"
+                            value="ALL">
                         <label class="govuk-label govuk-checkboxes__label"
                             for="materials_documents_ALL"></label>
                     </div>
@@ -57,12 +60,14 @@
             <td class="govuk-table__cell">
                 <div class="govuk-checkboxes govuk-checkboxes--small">
                     <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input"
-                        id="{{ folder.id }}"
-                        type="checkbox"
-                        name="materials_document"
-                        value="{{ folder.name }}">
-                        <label class="govuk-label govuk-checkboxes__label" for="{{ folder.id }}"></label>
+                        <input class="govuk-checkboxes__input js-material-checkbox"
+                            id="select_{{ folder.id }}"
+                            type="checkbox"
+                            name="materials_document"
+                            value="{{ folder.id }}"
+                            data-name="{{ folder.name }}"
+                            data-folder="true">
+                        <label class="govuk-label govuk-checkboxes__label" for="select_{{ folder.id }}"></label>
                     </div>
                 </div>
             </td>
@@ -102,12 +107,14 @@
             <td class="govuk-table__cell">
                 <div class="govuk-checkboxes govuk-checkboxes--small">
                     <div class="govuk-checkboxes__item">
-                        <input class="govuk-checkboxes__input"
-                               id="{{ m.id }}"
-                               type="checkbox"
-                               name="materials_document"
-                               value="{{ m.name }}">
-                        <label class="govuk-label govuk-checkboxes__label" for="{{ m.id }}"></label>
+                        <input class="govuk-checkboxes__input js-material-checkbox"
+                            id="select_{{ m.id }}"
+                            type="checkbox"
+                            name="materials_document"
+                            value="{{ m.id }}"
+                            data-name="{{ m.name }}"
+                            data-folder="false">
+                        <label class="govuk-label govuk-checkboxes__label" for="select_{{ m.id }}"></label>
                     </div>
                 </div>
             </td>

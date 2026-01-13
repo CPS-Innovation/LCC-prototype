@@ -282,8 +282,8 @@
                                 </form>
                                 
                                 <form method="post" action="/version-12/B-off-system-MVP/rename-from-list" id="renameForm">
-                                    <input type="hidden" name="material_selected" id="rename_selected">
-                                    <button id="renameButton" class="govuk-button govuk-button--disabled">
+                                    <!-- <input type="hidden" name="material_selected" id="rename_selected"> -->
+                                    <button id="renameButton" class="govuk-button govuk-button--disabled" data-action="rename">
                                         Rename
                                     </button>
                                 </form>
@@ -318,6 +318,12 @@
                     </div>
 
                 </div>
+                <form id="bulkActionForm" method="post" action="/version-12/B-off-system-MVP/materials-action" class="govuk-!-display-none">
+                <input type="hidden" name="action" id="bulkActionType" value="">
+                <input type="hidden" name="selectedId" id="bulkSelectedId" value="">
+                <input type="hidden" name="selectedName" id="bulkSelectedName" value="">
+                <input type="hidden" name="selectedIsFolder" id="bulkSelectedIsFolder" value="">
+            </form>
 
             </div>
         </div>
@@ -454,9 +460,10 @@
                         {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
                             <div class="govuk-checkboxes govuk-checkboxes--small MT-15">
                                 <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input"
-                                           id="materials_documents_ALL"
-                                           type="checkbox" value="Select all">
+                                    <input class="govuk-checkboxes__input js-select-all"
+                                    id="materials_documents_ALL"
+                                    type="checkbox"
+                                    value="ALL">
                                     <input type="hidden" name="destinationFolder" value="{{ item.id }}">
 
                                     <label class="govuk-label govuk-checkboxes__label"
@@ -501,12 +508,14 @@
                             {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
                                 <div class="govuk-checkboxes govuk-checkboxes--small">
                                     <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input"
-                                            id="mat_{{ item.id }}"
-                                            type="checkbox"
-                                            name="materials_document"
-                                            value="{{ item.id }}">                                    
-                                        <label class="govuk-label govuk-checkboxes__label" for="mat_{{ item.id }}"></label>
+                                        <input class="govuk-checkboxes__input js-material-checkbox"
+                                        id="select_{{ item.id }}"
+                                        type="checkbox"
+                                        name="materials_document"
+                                        value="{{ item.id }}"
+                                        data-name="{{ item.name }}"
+                                        data-folder="true">                                    
+                                        <label class="govuk-label govuk-checkboxes__label" for="select_{{ item.id }}"></label>
                                     </div>
                                 </div>
                             {% endif %}
@@ -583,12 +592,14 @@
                             {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
                                 <div class="govuk-checkboxes govuk-checkboxes--small">
                                     <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input"
-                                            id="mat_{{ item.id }}"
+                                        <input class="govuk-checkboxes__input js-material-checkbox"
+                                            id="select_{{ item.id }}"
                                             type="checkbox"
                                             name="materials_document"
-                                            value="{{ item.id }}">                                    
-                                        <label class="govuk-label govuk-checkboxes__label" for="mat_{{ item.id }}"></label>
+                                            value="{{ item.id }}"
+                                            data-name="{{ item.name }}"
+                                            data-folder="false">
+                                        <label class="govuk-label govuk-checkboxes__label" for="select_{{ item.id }}"></label>                                    
                                     </div>
                                 </div>
                             {% endif %}

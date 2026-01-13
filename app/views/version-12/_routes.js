@@ -1386,26 +1386,86 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
 });
 
 
-router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
-    const id = Number(req.body.material_selected);
 
-    console.log('Rename-from-list ID:', id);
+router.post('/B-off-system-MVP/materials-action', function (req, res) {
+  const { action, selectedId } = req.body;
 
-    if (!id) {
-        console.log('❌ Rename-from-list: invalid ID');
-        return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
-    }
+  if (action !== 'rename') return res.redirect('back');
 
-    const materials = req.session.data.materials || [];
-    const item = materials.find(m => m.id === id);
+  const id = (selectedId || "").toString();
+  const materials = req.session.data.materials || [];
+  const item = materials.find(m => m && (m.id?.toString() === id));
 
-    if (!item) {
-        console.log('❌ Rename-from-list: item not found', id);
-        return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
-    }
+  if (!item) return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
 
-    res.render('version-12/B-off-system-MVP/rename', { item });
+  return res.render('version-12/B-off-system-MVP/rename', { item });
 });
+
+// router.post('/B-off-system-MVP/materials-action', function (req, res) {
+//     const { action, selectedId, selectedName, selectedIsFolder } = req.body;
+
+//     if (action === 'rename') {
+//         req.session.data.renameId = selectedId;
+//         req.session.data.renameName = selectedName;
+//         req.session.data.renameIsFolder = (selectedIsFolder === 'true');
+
+//         return res.redirect('/version-12/B-off-system-MVP/rename-from-list'); // <-- use your real rename page
+//     }
+
+//     // handle other actions...
+//     return res.redirect('back');
+// });
+
+router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
+
+  // Support BOTH old + new forms
+  const id =
+    (req.body.selectedId || "") ||
+    (req.body.material_selected || "") ||
+    (Array.isArray(req.body.materials_document) ? req.body.materials_document[0] : req.body.materials_document) ||
+    "";
+
+  const idStr = id.toString();
+
+  console.log('Rename-from-list resolved ID:', idStr);
+  console.log('Rename-from-list body keys:', Object.keys(req.body));
+
+  if (!idStr) {
+    console.log('❌ Rename-from-list: missing ID');
+    return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
+  }
+
+  const materials = req.session.data.materials || [];
+  const item = materials.find(m => m && (m.id?.toString() === idStr));
+
+  if (!item) {
+    console.log('❌ Rename-from-list: item not found', idStr);
+    return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
+  }
+
+  return res.render('version-12/B-off-system-MVP/rename', { item });
+});
+
+// router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
+//     const id = Number(req.body.material_selected);
+
+//     console.log('Rename-from-list ID:', id);
+
+//     if (!id) {
+//         console.log('❌ Rename-from-list: invalid ID');
+//         return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
+//     }
+
+//     const materials = req.session.data.materials || [];
+//     const item = materials.find(m => m.id === id);
+
+//     if (!item) {
+//         console.log('❌ Rename-from-list: item not found', id);
+//         return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
+//     }
+
+//     res.render('version-12/B-off-system-MVP/rename', { item });
+// });
 
 
 router.post('/B-off-system-MVP/rename', function (req, res) {
