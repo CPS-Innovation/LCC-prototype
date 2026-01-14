@@ -1078,9 +1078,21 @@ router.post('/includes/materials/materials-filter', function (req, res) {
 
 const createMaterialsUtils = require('../../helpers/materials.js');
 
+
 router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const data = req.session.data;
     const materials = data.materials || [];
+
+    // 👇 MINIMAL PATCH – add these two lines
+    const flashRenamedId = String(data.flashRenamedId || '');
+    req.session.data.flashRenamedId = '';
+
+    // Clear renamed flags from previous renders
+    materials.forEach(m => {
+        if (m.renamed && m.id !== lastRenamedId) {
+            delete m.renamed;
+        }
+    });
 
     // Extract flags + lists for THIS render only
     const copySuccess = data.copySuccess === true;
@@ -1159,6 +1171,60 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     // Breadcrumbs unaffected
     const breadcrumbs = utils.getBreadcrumbs(folderId);
 
+
+    // ================================
+    // 4. If search term exists, rebuild groupedSearchResults fresh
+    // ================================
+    const search = (data.filtersSearch || "").trim().toLowerCase();
+
+    function buildGroupedSearchResults(materials, search) {
+    if (!search) return [];
+
+    const groups = {};
+
+    materials.forEach(item => {
+        if (!item) return;
+        const itemName = (item.name || "").toString().trim().toLowerCase();
+        const searchMatches = itemName.includes(search);
+
+        // Matched FILE
+        if (!item.folder && searchMatches) {
+        const folderId = item.parentId ?? null;
+
+        if (!groups[folderId]) {
+            groups[folderId] = {
+            folder: materials.find(m => m && m.id === folderId && m.folder) || null,
+            matchesFolder: false,
+            files: []
+            };
+        }
+
+        groups[folderId].files.push(item);
+        }
+
+        // Matched FOLDER NAME
+        if (item.folder && searchMatches) {
+        const folderId = item.id;
+
+        if (!groups[folderId]) {
+            groups[folderId] = {
+            folder: item,
+            matchesFolder: true,
+            files: []
+            };
+        } else {
+            groups[folderId].folder = item;
+            groups[folderId].matchesFolder = true;
+        }
+        }
+    });
+
+    // Convert map to array; remove empty entries
+    return Object.values(groups).filter(g => g.folder || (g.files && g.files.length));
+    }
+
+    const groupedSearchResults = buildGroupedSearchResults(materials, search);
+
     // ================================
     // 3. Render page with filtered children
     // ================================
@@ -1167,6 +1233,8 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         data,
         children,           // now filtered!
         breadcrumbs,
+        groupedSearchResults,
+        flashRenamedId,
         copySuccess,
         moveSuccess,
         copyList,
@@ -1176,6 +1244,8 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         copyPreviewTree,
         movePreviewTree
     });
+
+    req.session.data.lastRenamedId = null;
 });
 
 
@@ -1386,26 +1456,86 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
 });
 
 
-router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
-    const id = Number(req.body.material_selected);
 
-    console.log('Rename-from-list ID:', id);
+router.post('/B-off-system-MVP/materials-action', function (req, res) {
+  const { action, selectedId } = req.body;
 
-    if (!id) {
-        console.log('❌ Rename-from-list: invalid ID');
-        return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
-    }
+  if (action !== 'rename') return res.redirect('back');
 
-    const materials = req.session.data.materials || [];
-    const item = materials.find(m => m.id === id);
+  const id = (selectedId || "").toString();
+  const materials = req.session.data.materials || [];
+  const item = materials.find(m => m && (m.id?.toString() === id));
 
-    if (!item) {
-        console.log('❌ Rename-from-list: item not found', id);
-        return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
-    }
+  if (!item) return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
 
-    res.render('version-12/B-off-system-MVP/rename', { item });
+  return res.render('version-12/B-off-system-MVP/rename', { item });
 });
+
+// router.post('/B-off-system-MVP/materials-action', function (req, res) {
+//     const { action, selectedId, selectedName, selectedIsFolder } = req.body;
+
+//     if (action === 'rename') {
+//         req.session.data.renameId = selectedId;
+//         req.session.data.renameName = selectedName;
+//         req.session.data.renameIsFolder = (selectedIsFolder === 'true');
+
+//         return res.redirect('/version-12/B-off-system-MVP/rename-from-list'); // <-- use your real rename page
+//     }
+
+//     // handle other actions...
+//     return res.redirect('back');
+// });
+
+router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
+
+  // Support BOTH old + new forms
+  const id =
+    (req.body.selectedId || "") ||
+    (req.body.material_selected || "") ||
+    (Array.isArray(req.body.materials_document) ? req.body.materials_document[0] : req.body.materials_document) ||
+    "";
+
+  const idStr = id.toString();
+
+  console.log('Rename-from-list resolved ID:', idStr);
+  console.log('Rename-from-list body keys:', Object.keys(req.body));
+
+  if (!idStr) {
+    console.log('❌ Rename-from-list: missing ID');
+    return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
+  }
+
+  const materials = req.session.data.materials || [];
+  const item = materials.find(m => m && (m.id?.toString() === idStr));
+
+  if (!item) {
+    console.log('❌ Rename-from-list: item not found', idStr);
+    return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
+  }
+
+  return res.render('version-12/B-off-system-MVP/rename', { item });
+});
+
+// router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
+//     const id = Number(req.body.material_selected);
+
+//     console.log('Rename-from-list ID:', id);
+
+//     if (!id) {
+//         console.log('❌ Rename-from-list: invalid ID');
+//         return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
+//     }
+
+//     const materials = req.session.data.materials || [];
+//     const item = materials.find(m => m.id === id);
+
+//     if (!item) {
+//         console.log('❌ Rename-from-list: item not found', id);
+//         return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
+//     }
+
+//     res.render('version-12/B-off-system-MVP/rename', { item });
+// });
 
 
 router.post('/B-off-system-MVP/rename', function (req, res) {
@@ -1431,6 +1561,7 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
     }
 
     item.name = newName;
+    req.session.data.flashRenamedId = item.id;
 
     if (!item.folder) {
         item.date = new Date().toLocaleDateString('en-GB', {
@@ -1441,6 +1572,8 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
     }
 
     data.materials = materials;
+
+    req.session.data.groupedSearchResults = null; // or [] to force rebuild on next render
 
     return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
 });

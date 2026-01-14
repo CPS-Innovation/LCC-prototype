@@ -3,183 +3,157 @@ console.log("materials.js loaded!");
 
 // Make it global so inline onclick can see it
 window.openMaterial = function (event) {
-  const btn = event?.target?.closest('button') || this;
-  if (!btn) return false;
+     const btn = event?.target?.closest('button') || this;
+     if (!btn) return false;
 
-  const isOpen = btn.classList.toggle('is-previewing');
-  btn.innerHTML = isOpen
-    ? 'Hide <i class="fa-solid fa-chevron-up"></i>'
-    : 'Preview <i class="fa-solid fa-chevron-down"></i>';
+     const isOpen = btn.classList.toggle('is-previewing');
+     btn.innerHTML = isOpen
+          ? 'Hide <i class="fa-solid fa-chevron-up"></i>'
+          : 'Preview <i class="fa-solid fa-chevron-down"></i>';
 
-  // Optional: toggle a preview panel for this row
-  const id = btn.getAttribute('data-id');
-  const panel = document.querySelector(`#preview-${id}`);
-  if (panel) panel.classList.toggle('hidden', !isOpen);
+     // Optional: toggle a preview panel for this row
+     const id = btn.getAttribute('data-id');
+     const panel = document.querySelector(`#preview-${id}`);
+     if (panel) panel.classList.toggle('hidden', !isOpen);
 
-  return false;
+     return false;
 };
 
 // Defensive: run after other inits and put our label back
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('button.show_material_actions').forEach(btn => {
-    // If some script replaced the text with "Actions", restore ours:
-    if (/^\s*Actions\s*$/i.test(btn.textContent.trim())) {
-      btn.innerHTML = 'Preview <i class="fa-solid fa-chevron-down"></i>';
-    }
-  });
+     document.querySelectorAll('button.show_material_actions').forEach(btn => {
+          // If some script replaced the text with "Actions", restore ours:
+          if (/^\s*Actions\s*$/i.test(btn.textContent.trim())) {
+               btn.innerHTML = 'Preview <i class="fa-solid fa-chevron-down"></i>';
+          }
+     });
 });
 
 
 
 // Manage materials table sorting
 document.addEventListener("DOMContentLoaded", function () {
-  const table = document.getElementById("materials_table");
-  if (!table) return;
+     const table = document.getElementById("materials_table");
+     if (!table) return;
 
-  const headerButtons = table.querySelectorAll("thead th .govuk-button");
+     const headerButtons = table.querySelectorAll("thead th .govuk-button");
 
-  // Header text → actual column index in your table
-  const COL_INDEX = { "File or folder": 1, "Last updated": 2, "Status": 3 };
+     // Header text → actual column index in your table
+     const COL_INDEX = { "File or folder": 1, "Last updated": 2, "Status": 3 };
 
-  // Attach handlers only to the 3 sortable headers
-  headerButtons.forEach(btn => {
-    const label = btn.textContent.trim();
-    if (!COL_INDEX[label]) return; // skip checkbox/empty columns
+     // Attach handlers only to the 3 sortable headers
+     headerButtons.forEach(btn => {
+          const label = btn.textContent.trim();
+          if (!COL_INDEX[label]) return; // skip checkbox/empty columns
 
-    let dir = 1; // 1 = ASC, -1 = DESC
-    btn.style.cursor = "pointer";
+          let dir = 1; // 1 = ASC, -1 = DESC
+          btn.style.cursor = "pointer";
 
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
+          btn.addEventListener("click", function (e) {
+               e.preventDefault();
 
-      const col = COL_INDEX[label];
-      const tbody = table.querySelector("tbody");
-      const rows = Array.from(tbody.rows);
+               const col = COL_INDEX[label];
+               const tbody = table.querySelector("tbody");
+               const rows = Array.from(tbody.rows);
 
-      // Build row blocks so a main row stays with its following hidden preview row (if any)
-      const blocks = [];
-      for (let i = 0; i < rows.length; i++) {
-        const main = rows[i];
-        const block = [main];
-        const next = rows[i + 1];
-        if (next && next.classList.contains("hidden_row")) {
-          block.push(next);
-          i++;
-        }
-        // guard: skip stray hidden rows that don't follow a main row
-        if (!main.classList.contains("hidden_row")) blocks.push(block);
-      }
+               // Build row blocks so a main row stays with its following hidden preview row (if any)
+               const blocks = [];
+               for (let i = 0; i < rows.length; i++) {
+                    const main = rows[i];
+                    const block = [main];
+                    const next = rows[i + 1];
+                    if (next && next.classList.contains("hidden_row")) {
+                         block.push(next);
+                         i++;
+                    }
+                    // guard: skip stray hidden rows that don't follow a main row
+                    if (!main.classList.contains("hidden_row")) blocks.push(block);
+               }
 
-      const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
+               const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
 
-      const getCellText = (row, index) => {
-        const cell = row.cells[index];
-        if (!cell) return "";
-        // For Material, prefer the visible name inside .openMe
-        if (index === COL_INDEX["Material"]) {
-          const t = cell.querySelector(".openMe")?.innerText || cell.innerText;
-          return t.trim();
-        }
-        // Status cell contains a <strong> tag – innerText is fine
-        return cell.innerText.trim();
-      };
+               const getCellText = (row, index) => {
+                    const cell = row.cells[index];
+                    if (!cell) return "";
+                    // For Material, prefer the visible name inside .openMe
+                    if (index === COL_INDEX["Material"]) {
+                         const t = cell.querySelector(".openMe")?.innerText || cell.innerText;
+                         return t.trim();
+                    }
+                    // Status cell contains a <strong> tag – innerText is fine
+                    return cell.innerText.trim();
+               };
 
-      const parseUKDate = (str) => {
-        // e.g. "12 Nov 2025"
-        // Using Date with "Mon D, YYYY" is reliable
-        const [d, m, y] = str.split(" ");
-        return new Date(`${m} ${d}, ${y}`).getTime() || 0;
-      };
+               const parseUKDate = (str) => {
+                    // e.g. "12 Nov 2025"
+                    // Using Date with "Mon D, YYYY" is reliable
+                    const [d, m, y] = str.split(" ");
+                    return new Date(`${m} ${d}, ${y}`).getTime() || 0;
+               };
 
-      blocks.sort((A, B) => {
-        const aRow = A[0], bRow = B[0];
+               blocks.sort((A, B) => {
+                    const aRow = A[0], bRow = B[0];
 
-        if (col === COL_INDEX["Last updated"]) {
-          return (parseUKDate(getCellText(aRow, col)) - parseUKDate(getCellText(bRow, col))) * dir;
-        } else {
-          return collator.compare(getCellText(aRow, col), getCellText(bRow, col)) * dir;
-        }
-      });
+                    if (col === COL_INDEX["Last updated"]) {
+                         return (parseUKDate(getCellText(aRow, col)) - parseUKDate(getCellText(bRow, col))) * dir;
+                    } else {
+                         return collator.compare(getCellText(aRow, col), getCellText(bRow, col)) * dir;
+                    }
+               });
 
-      // Re-attach in new order (preserving preview rows)
-      blocks.forEach(block => block.forEach(r => tbody.appendChild(r)));
+               // Re-attach in new order (preserving preview rows)
+               blocks.forEach(block => block.forEach(r => tbody.appendChild(r)));
 
-     // Toggle direction
-     dir *= -1;
+               // Toggle direction
+               dir *= -1;
 
-     // Remove any existing arrows from all headers
-     headerButtons.forEach(h => {
-     // Reset to original label only (strip arrows if any)
-     h.textContent = h.textContent.replace(/[▲▼]/g, '').trim();
+               // Remove any existing arrows from all headers
+               headerButtons.forEach(h => {
+                    // Reset to original label only (strip arrows if any)
+                    h.textContent = h.textContent.replace(/[▲▼]/g, '').trim();
+               });
+
+               // Append a single arrow to the active header
+               btn.textContent = btn.textContent.replace(/[▲▼]/g, '').trim() + (dir === -1 ? ' ▼' : ' ▲');
+          });
      });
-
-     // Append a single arrow to the active header
-     btn.textContent = btn.textContent.replace(/[▲▼]/g, '').trim() + (dir === -1 ? ' ▼' : ' ▲');    });
-  });
 });
 
 
 // Discarding materials
+// Discarding materials (works for normal + search)
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('discardForm');
   const hiddenInput = document.getElementById('material_selected');
   const discardButton = document.getElementById('discardButton');
-  const checkboxes = document.querySelectorAll('#materials_table input[name="materials_document"]');
 
-  // Enable/disable Discard based on selection
+  if (!form || !hiddenInput || !discardButton) return;
+
+  function getCheckedIds() {
+    return Array.from(document.querySelectorAll('input.js-material-checkbox:checked'))
+      .filter(cb => cb.value && cb.value !== 'ALL')
+      .map(cb => cb.value.toString());
+  }
+
   function updateButtonState() {
-    const selected = Array.from(checkboxes).filter(cb => cb.checked);
-    if (selected.length > 0) {
-      discardButton.classList.remove('govuk-button--disabled');
-      discardButton.removeAttribute('disabled');
-    } else {
-      discardButton.classList.add('govuk-button--disabled');
-      discardButton.setAttribute('disabled', 'disabled');
-    }
-  }
-  checkboxes.forEach(cb => cb.addEventListener('change', updateButtonState));
-
-  // Before submitting, collect selected materials
-  form.addEventListener('submit', function (e) {
-    const selectedValues = Array.from(checkboxes)
-      .filter(cb => cb.checked)
-      .map(cb => cb.value.trim());
-    hiddenInput.value = selectedValues.join(', ');
-  });
-});
-
-
-// Renaming one material
-document.addEventListener('DOMContentLoaded', function () {
-  const renameForm = document.getElementById('renameForm');
-  const hiddenInput = document.getElementById('rename_selected');
-  const renameButton = document.getElementById('renameButton');
-  const checkboxes = document.querySelectorAll('#materials_table input[name="materials_document"]');
-
-  function updateRenameState() {
-    const selected = Array.from(checkboxes).filter(cb => cb.checked);
-    if (selected.length === 1) {
-      renameButton.classList.remove('govuk-button--disabled');
-      renameButton.removeAttribute('disabled');
-    } else {
-      renameButton.classList.add('govuk-button--disabled');
-      renameButton.setAttribute('disabled', 'disabled');
-    }
+    const selected = getCheckedIds();
+    const enabled = selected.length > 0;
+    discardButton.disabled = !enabled;
+    discardButton.classList.toggle('govuk-button--disabled', !enabled);
   }
 
-  checkboxes.forEach(cb => cb.addEventListener('change', updateRenameState));
-
-  renameForm.addEventListener('submit', function (e) {
-    const selected = Array.from(checkboxes).filter(cb => cb.checked);
-    if (selected.length !== 1) {
-      e.preventDefault();
-      return;
+  document.addEventListener('change', function (e) {
+    if (e.target.matches('input.js-material-checkbox, input.js-select-all')) {
+      updateButtonState();
     }
-    hiddenInput.value = selected[0].value.trim();
   });
+
+  form.addEventListener('submit', function () {
+    hiddenInput.value = getCheckedIds().join(',');
+  });
+
+  updateButtonState();
 });
-
-
 
 
 // ---------------------------
@@ -228,63 +202,8 @@ document.addEventListener('DOMContentLoaded', function () {
 //     }
 //   });
 // });
-document.addEventListener('DOMContentLoaded', function () {
-     console.log('Test to see if we get here');
-     const renameButton = document.getElementById('renameButton');
-     const renameInput = document.getElementById('rename_selected');
 
-     if (!renameButton || !renameInput) return;
 
-     const checkboxes = document.querySelectorAll('#materials_table input[name="materials_document"]');
-
-     function updateRenameState() {
-          const selected = Array.from(checkboxes).filter(cb => cb.checked);
-
-          if (selected.length === 1) {
-               console.log('Rename selected count:', selected.length);
-               renameButton.disabled = false;
-               renameButton.classList.remove('govuk-button--disabled');
-               renameInput.value = selected[0].value;
-          } else {
-               renameButton.disabled = true;
-               renameButton.classList.add('govuk-button--disabled');
-               renameInput.value = '';
-          }
-     }
-
-     checkboxes.forEach(cb =>
-     cb.addEventListener('change', updateRenameState)
-     );
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-     console.log('Test to see if we get here');
-     const renameButton = document.getElementById('renameButton');
-     const renameInput = document.getElementById('rename_selected');
-
-     if (!renameButton || !renameInput) return;
-
-     const checkboxes = document.querySelectorAll('#materials_table input[name="materials_document"]');
-
-     function updateRenameState() {
-          const selected = Array.from(checkboxes).filter(cb => cb.checked);
-
-          if (selected.length === 1) {
-               console.log('Rename selected count:', selected.length);
-               renameButton.disabled = false;
-               renameButton.classList.remove('govuk-button--disabled');
-               renameInput.value = selected[0].value;
-          } else {
-               renameButton.disabled = true;
-               renameButton.classList.add('govuk-button--disabled');
-               renameInput.value = '';
-          }
-     }
-
-     checkboxes.forEach(cb =>
-     cb.addEventListener('change', updateRenameState)
-     );
-});
 
 ///////////////////////////////////////////////////// Monica CODE - END /////////////////////////////////////////////////////
 
@@ -298,63 +217,63 @@ document.addEventListener('DOMContentLoaded', function () {
 ///////////////////////////////////////////////////// CHRIS CODE - START /////////////////////////////////////////////////////
 
 // TABS
-$(document).ready(function() {
-    // Only target elements within version-11
-    var $version11 = $('.version-11');
+$(document).ready(function () {
+     // Only target elements within version-11
+     var $version11 = $('.version-11');
 
-    $version11.find("#new-tabs .tab-link").on("click", function (e) {
-        e.preventDefault();
-        $version11.find('ul#new-tabs li').removeClass('govuk-tabs__list-item--selected');
-        $(this).parent().addClass('govuk-tabs__list-item--selected');
+     $version11.find("#new-tabs .tab-link").on("click", function (e) {
+          e.preventDefault();
+          $version11.find('ul#new-tabs li').removeClass('govuk-tabs__list-item--selected');
+          $(this).parent().addClass('govuk-tabs__list-item--selected');
 
-        $version11.find('.extra-nav').hide();
-        $version11.find('.extended-navigation').removeClass('govuk-tabs__list-item--selected');
-        $version11.find('.show-hide').removeClass('active');
-    });
+          $version11.find('.extra-nav').hide();
+          $version11.find('.extended-navigation').removeClass('govuk-tabs__list-item--selected');
+          $version11.find('.show-hide').removeClass('active');
+     });
 
      $version11.find('.tab-1-content').on("click", function (e) {
-         $version11.find('.panel').hide();
-         $version11.find('#tab-1-content').show();
+          $version11.find('.panel').hide();
+          $version11.find('#tab-1-content').show();
      });
 
      $version11.find('.tab-2-content').on("click", function (e) {
-         $version11.find('.panel').hide();
-         $version11.find('#tab-2-content').show();
+          $version11.find('.panel').hide();
+          $version11.find('#tab-2-content').show();
      });
 
      $version11.find('.tab-3-content').on("click", function (e) {
-         $version11.find('.panel').hide();
-         $version11.find('#tab-3-content').show();
-         $version11.find('#tab-list').show();
-         $version11.find('#docCopy').hide();
+          $version11.find('.panel').hide();
+          $version11.find('#tab-3-content').show();
+          $version11.find('#tab-list').show();
+          $version11.find('#docCopy').hide();
      });
 
      $version11.find('.tab-3-content_link').on("click", function (e) {
-         $version11.find('.panel').hide();
-         $version11.find('#tab-3-content').show();
-         $version11.find('#tab-list').show();
-         $version11.find('#docCopy').hide();
+          $version11.find('.panel').hide();
+          $version11.find('#tab-3-content').show();
+          $version11.find('#tab-list').show();
+          $version11.find('#docCopy').hide();
      });
 
      $version11.find('.tab-4-content').on("click", function (e) {
-         $version11.find('.panel').hide();
-         $version11.find('#tab-4-content').show();
+          $version11.find('.panel').hide();
+          $version11.find('#tab-4-content').show();
      });
-     
+
      $version11.find('.tab-5-content').on("click", function (e) {
-         $version11.find('.panel').hide();
-         $version11.find('#tab-5-content').show();
+          $version11.find('.panel').hide();
+          $version11.find('#tab-5-content').show();
      });
 
      $version11.find('.tab-5-content_link').on("click", function (e) {
-         $version11.find('.panel').hide();
-         $version11.find('#tab-5-content').show();
+          $version11.find('.panel').hide();
+          $version11.find('#tab-5-content').show();
      });
 
 });
 
 // FILTER
-$(document).ready(function() {
+$(document).ready(function () {
      // Only target elements within version-11
      var $version11 = $('.version-11');
 
@@ -367,37 +286,37 @@ $(document).ready(function() {
 
      // Initialise button text based on visibility
      if ($col1.is(":visible")) {
-     $btn.text("<< Hide filters");
+          $btn.text("<< Hide filters");
      } else {
-     $btn.text("Show filters >>");
+          $btn.text("Show filters >>");
      }
 
      // Toggle instantly on click
      $btn.on("click", function () {
-     const isVisible = $col1.is(":visible");
+          const isVisible = $col1.is(":visible");
 
-     if (isVisible) {
-          // Hide filter
-          $col1.hide();
-          $col2.removeClass("govuk-grid-column-three-quarters")
-               .addClass("govuk-grid-column-full");
-          $btn.text("Show filters >>");
-     } else {
-          // Show filter
-          $col1.show();
-          $col2.removeClass("govuk-grid-column-full")
-               .addClass("govuk-grid-column-three-quarters");
-          $btn.text("<< Hide filters");
-     }
+          if (isVisible) {
+               // Hide filter
+               $col1.hide();
+               $col2.removeClass("govuk-grid-column-three-quarters")
+                    .addClass("govuk-grid-column-full");
+               $btn.text("Show filters >>");
+          } else {
+               // Show filter
+               $col1.show();
+               $col2.removeClass("govuk-grid-column-full")
+                    .addClass("govuk-grid-column-three-quarters");
+               $btn.text("<< Hide filters");
+          }
      });
 
      $(function () {
           function syncStatusHeight() {
-          var h = $("#toggle_filter_Materials").outerHeight(); // includes padding
-          $(".materials-status").css({
-               lineHeight: h + "px",
-               margin: 0
-          });
+               var h = $("#toggle_filter_Materials").outerHeight(); // includes padding
+               $(".materials-status").css({
+                    lineHeight: h + "px",
+                    margin: 0
+               });
           }
           syncStatusHeight();
           $(window).on("resize", syncStatusHeight);
@@ -460,20 +379,20 @@ $(document).ready(function() {
                $('.materials_filters_Title_2').show();
           }
 
-          if ($('input[id=filter_materials__Status_1]').is(':checked')) { 
-               $('.materials_filters_clear_Used').show(); 
+          if ($('input[id=filter_materials__Status_1]').is(':checked')) {
+               $('.materials_filters_clear_Used').show();
 
                $('table#materials_table tr').hide();
                $('table#materials_table thead tr, table#materials_table tr.material_Used').show();
           }
-          if ($('input[id=filter_materials__Status_2]').is(':checked')) { 
-               $('.materials_filters_clear_Unused').show(); 
+          if ($('input[id=filter_materials__Status_2]').is(':checked')) {
+               $('.materials_filters_clear_Unused').show();
 
                $('table#materials_table tr').hide();
                $('table#materials_table thead tr, table#materials_table tr.material_Unused').show();
           }
-          if ($('input[id=filter_materials__Status_3]').is(':checked')) { 
-               $('.materials_filters_clear_None').show(); 
+          if ($('input[id=filter_materials__Status_3]').is(':checked')) {
+               $('.materials_filters_clear_None').show();
 
                $('table#materials_table tr').hide();
                $('table#materials_table thead tr, table#materials_table tr.material_Statement').show();
@@ -484,73 +403,73 @@ $(document).ready(function() {
                $('#active_filter').show();
                $('.materials_filters_Title_3').show();
           }
-          if ($('input[id=filter_materials__Category_1]').is(':checked')) { 
+          if ($('input[id=filter_materials__Category_1]').is(':checked')) {
                $('.materials_filters_clear_Review').show();
 
                $('table#materials_table tr').hide();
                $('table#materials_table thead tr, table#materials_table tr.material_Review').show();
           }
-          if ($('input[id=filter_materials__Category_2]').is(':checked')) { 
+          if ($('input[id=filter_materials__Category_2]').is(':checked')) {
                $('.materials_filters_clear_Case_overview').show();
 
                $('table#materials_table tr').hide();
                $('table#materials_table thead tr, table#materials_table tr.material_Case_overview').show();
           }
-          if ($('input[id=filter_materials__Category_3]').is(':checked')) { 
+          if ($('input[id=filter_materials__Category_3]').is(':checked')) {
                $('.materials_filters_clear_Statement').show();
 
                $('table#materials_table tr').hide();
                $('table#materials_table thead tr, table#materials_table tr.material_Statement').show();
           }
-          if ($('input[id=filter_materials__Category_4]').is(':checked')) { 
+          if ($('input[id=filter_materials__Category_4]').is(':checked')) {
                $('.materials_filters_clear_Exhibit').show();
 
                $('table#materials_table tr').hide();
                $('table#materials_table thead tr, table#materials_table tr.material_Exhibit').show();
           }
 
-         if ($('input[id=filter_materials__Category_5]').is(':checked')) {
-             $('.materials_filters_clear_Forensics').show();
+          if ($('input[id=filter_materials__Category_5]').is(':checked')) {
+               $('.materials_filters_clear_Forensics').show();
 
-             $('table#materials_table tr').hide();
-             $('table#materials_table thead tr, table#materials_table tr.material_Forensics').show();
-         }
+               $('table#materials_table tr').hide();
+               $('table#materials_table thead tr, table#materials_table tr.material_Forensics').show();
+          }
 
           if ($('input[id=filter_materials__Category_6]').is(':checked')) {
-               $('.materials_filters_clear_Always_Unused').show(); 
+               $('.materials_filters_clear_Always_Unused').show();
 
                $('table#materials_table tr').hide();
                $('table#materials_table thead tr, table#materials_table tr.material_Always_Unused').show();
                $('.no_results').show();
           }
 
-         if ($('input[id=filter_materials__Category_7]').is(':checked')) {
-             $('.materials_filters_clear_Defendant').show();
+          if ($('input[id=filter_materials__Category_7]').is(':checked')) {
+               $('.materials_filters_clear_Defendant').show();
 
-             $('table#materials_table tr').hide();
-             $('table#materials_table thead tr, table#materials_table tr.material_Defendant').show();
-         }
+               $('table#materials_table tr').hide();
+               $('table#materials_table thead tr, table#materials_table tr.material_Defendant').show();
+          }
 
-         if ($('input[id=filter_materials__Category_8]').is(':checked')) {
-             $('.materials_filters_clear_Court_preparation').show();
+          if ($('input[id=filter_materials__Category_8]').is(':checked')) {
+               $('.materials_filters_clear_Court_preparation').show();
 
-             $('table#materials_table tr').hide();
-             $('table#materials_table thead tr, table#materials_table tr.material_Court_preparation').show();
-         }
+               $('table#materials_table tr').hide();
+               $('table#materials_table thead tr, table#materials_table tr.material_Court_preparation').show();
+          }
 
-         if ($('input[id=filter_materials__Category_9]').is(':checked')) {
-             $('.materials_filters_clear_Communications').show();
+          if ($('input[id=filter_materials__Category_9]').is(':checked')) {
+               $('.materials_filters_clear_Communications').show();
 
-             $('table#materials_table tr').hide();
-             $('table#materials_table thead tr, table#materials_table tr.material_Communications').show();
-         }
+               $('table#materials_table tr').hide();
+               $('table#materials_table thead tr, table#materials_table tr.material_Communications').show();
+          }
 
-         if ($('input[id=filter_materials__Category_10]').is(':checked')) {
-             $('.materials_filters_clear_Uncategorised').show();
+          if ($('input[id=filter_materials__Category_10]').is(':checked')) {
+               $('.materials_filters_clear_Uncategorised').show();
 
-             $('table#materials_table tr').hide();
-             $('table#materials_table thead tr, table#materials_table tr.material_Uncategorised').show();
-         }
+               $('table#materials_table tr').hide();
+               $('table#materials_table thead tr, table#materials_table tr.material_Uncategorised').show();
+          }
      });
 
      $('.selected_filter').on("click", function (e) {
@@ -566,7 +485,7 @@ $(document).ready(function() {
           } else {
                $('#active_filter').show();
           }
-     });  
+     });
 
      // SECTION 2
      $('.materials_filters_clear_Used').on("click", function (e) {
@@ -581,7 +500,7 @@ $(document).ready(function() {
           } else {
                $('#active_filter').show();
           }
-     });  
+     });
 
      $('.materials_filters_clear_Unused').on("click", function (e) {
           $('input[id=filter_materials__Status_2]').prop('checked', false);
@@ -609,7 +528,7 @@ $(document).ready(function() {
           } else {
                $('#active_filter').show();
           }
-     });  
+     });
 
      // SECTION 3
      $('.materials_filters_clear_Statement').on("click", function (e) {
@@ -624,7 +543,7 @@ $(document).ready(function() {
           } else {
                $('#active_filter').show();
           }
-     });  
+     });
 
      $('.materials_filters_clear_Exhibit').on("click", function (e) {
           $('input[id=filter_materials__Category_4]').prop('checked', false);
@@ -638,7 +557,7 @@ $(document).ready(function() {
           } else {
                $('#active_filter').show();
           }
-     });  
+     });
 
      $('.materials_filters_clear_Statement').on("click", function (e) {
           $('input[id=filter_materials__Category_3]').prop('checked', false);
@@ -652,7 +571,7 @@ $(document).ready(function() {
           } else {
                $('#active_filter').show();
           }
-     });  
+     });
 
      $('.materials_filters_clear_Other').on("click", function (e) {
           $('input[id=filter_materials__Category_4]').prop('checked', false);
@@ -666,7 +585,7 @@ $(document).ready(function() {
           } else {
                $('#active_filter').show();
           }
-     });  
+     });
 
      $('.materials_filters_clear_Always_Unused').on("click", function (e) {
           $('input[id=filter_materials__Category_5]').prop('checked', false);
@@ -680,29 +599,29 @@ $(document).ready(function() {
           } else {
                $('#active_filter').show();
           }
-     });  
+     });
 
 
 });
 
 // ACTIONS - MATERIALS & COMMS
-$(document).ready(function() {
+$(document).ready(function () {
      // Only target elements within version-11
      var $version11 = $('.version-11');
 
-     $version11.find("#show_Materials_Actions").click(function(){
+     $version11.find("#show_Materials_Actions").click(function () {
           $(this).toggleClass('active');
           $version11.find('.hidden_buttons').toggle();
      });
 
-     $version11.find("#show_Comms_Actions").click(function(){
+     $version11.find("#show_Comms_Actions").click(function () {
           $(this).toggleClass('active');
           $version11.find('.hidden_buttons').toggle();
      });
 
 });
 
-$(document).mouseup(function(e) {
+$(document).mouseup(function (e) {
      var $version11 = $('.version-11');
      var container = $version11.find("#materials_Actions");
 
@@ -720,33 +639,33 @@ $(document).mouseup(function(e) {
 
 });
 
-$(window).scroll(function() { 
-    var $version11 = $('.version-11');
-    var scroll = $(window).scrollTop();
+$(window).scroll(function () {
+     var $version11 = $('.version-11');
+     var scroll = $(window).scrollTop();
 
-//     if (scroll >= 375) {
-//         $version11.find(".actions_holder").addClass("sticky");
-//     } else {
-//         $version11.find(".actions_holder").removeClass("sticky");
-//     }
+     //     if (scroll >= 375) {
+     //         $version11.find(".actions_holder").addClass("sticky");
+     //     } else {
+     //         $version11.find(".actions_holder").removeClass("sticky");
+     //     }
 
 });
 
 // SELECTING MATERIALS & COMMS
-$(document).ready(function() {
+$(document).ready(function () {
      // Only target elements within version-11
      var $version11 = $('.version-11');
 
      $version11.find('#tab-list, #auto_reclassify').hide();
 
      // RECLASSIFY
-     $version11.find(".auto_reclassify_Documents").click(function(){
+     $version11.find(".auto_reclassify_Documents").click(function () {
           $version11.find('#discard_successful, #rename_COMPLETE, #mark_as').hide();
           $version11.find('#auto_reclassify').show();
      });
 
      // MATERIALS
-     $version11.find("#materials_documents_ALL").click(function(){
+     $version11.find("#materials_documents_ALL").click(function () {
           if ($(this).is(':checked')) {
                $version11.find('input[name=materials_document]').prop('checked', true);
           } else {
@@ -754,16 +673,16 @@ $(document).ready(function() {
           }
      });
 
-     $('input[name=materials_document]').click(function(){
+     $('input[name=materials_document]').click(function () {
           if ($("input[name=materials_document]:checked").length >= 1) {
                $('.reclassify_Document_Multiple_Docs, .redact_Document_Multiple_Docs').removeAttr('disabled').removeClass('govuk-button--disabled');
           } else if ($("input[name=materials_document]:checked").length == 0) {
-               $('.reclassify_Document_Multiple_Docs, .redact_Document_Multiple_Docs').attr('disabled','disabled').addClass('govuk-button--disabled').removeAttr('onClick');
+               $('.reclassify_Document_Multiple_Docs, .redact_Document_Multiple_Docs').attr('disabled', 'disabled').addClass('govuk-button--disabled').removeAttr('onClick');
           }
      });
 
      // COMMS
-     $("#comms_documents_ALL").click(function(){
+     $("#comms_documents_ALL").click(function () {
           if ($(this).is(':checked')) {
                $('input[name=comms_document]').prop('checked', true);
           } else {
@@ -771,17 +690,17 @@ $(document).ready(function() {
           }
      });
 
-     $('input[name=comms_document]').click(function(){
+     $('input[name=comms_document]').click(function () {
           if ($("input[name=comms_document]:checked").length >= 1) {
                $('.reclassify_Comms_Multiple_Docs').removeAttr('disabled').removeClass('govuk-button--disabled');
                $('.redact_Comms_Multiple_Docs').removeAttr('disabled').removeClass('govuk-button--disabled');
-          } else if ($("input[name=comms_document]:checked").length == 0) { 
-               $('.reclassify_Comms_Multiple_Docs').attr('disabled','disabled').addClass('govuk-button--disabled');
-               $('.redact_Comms_Multiple_Docs').attr('disabled','disabled').addClass('govuk-button--disabled');
+          } else if ($("input[name=comms_document]:checked").length == 0) {
+               $('.reclassify_Comms_Multiple_Docs').attr('disabled', 'disabled').addClass('govuk-button--disabled');
+               $('.redact_Comms_Multiple_Docs').attr('disabled', 'disabled').addClass('govuk-button--disabled');
           }
      });
 
-     $('.show_material, .show_material_actions').click(function(){
+     $('.show_material, .show_material_actions').click(function () {
           $('#discard_successful').hide();
 
           var materialsNumber = $(this).data('id');
@@ -807,7 +726,7 @@ $(document).ready(function() {
           if (materialsNumber == 20) { $('table#materials_table tr[data-row_id="20"').toggle(); $('button.show_material_actions[data-id="20"]').toggleClass('hide'); }
      });
 
-     $('.show_material_actions').click(function(){
+     $('.show_material_actions').click(function () {
           if ($(this).hasClass('hide')) {
                $(this).html('Hide <i class="fa-solid fa-chevron-down"></i>');
           } else {
@@ -820,7 +739,7 @@ $(document).ready(function() {
      //      $('table#materials_table tr.hidden_row').hide();     
      // });
 
-     $('.redact_Document_Multiple_Docs').click(function(){
+     $('.redact_Document_Multiple_Docs').click(function () {
           $('ul#tab-list').show();
 
           $('ul#new-tabs li').removeClass('list-item--selected govuk-tabs__list-item--selected');
@@ -834,12 +753,12 @@ $(document).ready(function() {
           var redactedDocuments = parseInt($("input[name=materials_document]:checked").length);
           var existingNUmber = parseInt($('.redacted_documents').text());
           $('.redacted_documents').text(redactedDocuments + existingNUmber);
-          
+
           // Scroll to a position above the tabs
           scrollToTab3Position();
      });
-     
-     $('.redact_Document').click(function(){
+
+     $('.redact_Document').click(function () {
           $('.panel').hide();
           $('#tab_content_2').hide();
           $('#tab_content_3').show();
@@ -852,12 +771,12 @@ $(document).ready(function() {
 
           var redactedDocuments = parseInt($('.redacted_documents').text());
           $('.redacted_documents').text(redactedDocuments + 1);
-          
+
           // Scroll to a position above the tabs
           scrollToTab3Position();
      });
 
-     $('#filter_Redactions table .openMe a').click(function(){
+     $('#filter_Redactions table .openMe a').click(function () {
           $('ul#tab-list').show();
           var redactedDocuments = parseInt($('.redacted_documents').text());
           $('.redacted_documents').text(redactedDocuments + 1);
@@ -869,10 +788,10 @@ $(document).ready(function() {
           // $('#filter_Redactions table tbody tr td strong.govuk-tag').remove();
           $(this).closest('tr').addClass('active_document').removeClass('unread_document');
           $(this).closest('td').prepend(`<strong class="govuk-tag active_document">Active document</strong>`);
-          
+
           // Scroll to a position above the tabs
           scrollToTab3Position();
-     });            
+     });
 
 });
 
@@ -890,20 +809,20 @@ function closeTab() {
      $('.redacted_documents').text(redactedDocuments - 1);
 
      var numberOfLis = parseInt($('ul#tab-list').children().length);
-     if (numberOfLis <= 4) { 
-          $('#tab-list').hide(); 
+     if (numberOfLis <= 4) {
+          $('#tab-list').hide();
      }
-     
+
 }
 
 // MARK AS READ
-$(document).ready(function() {
+$(document).ready(function () {
      // Only target elements within version-11
      var $version11 = $('.version-11');
 
      $version11.find('#mark_as').hide();
 
-     $version11.find('.mark_as_Read').click(function(){
+     $version11.find('.mark_as_Read').click(function () {
           $(this).toggleClass('read');
 
           $version11.find('#discard_successful, #auto_reclassify').hide();
@@ -949,7 +868,7 @@ $(document).ready(function() {
                $('#mark_as .govuk-notification-banner__heading .status').text('unread');
           }
 
-     });   
+     });
 
 });
 
@@ -965,84 +884,84 @@ function mark_as_Read() {
 // =================================== Search button =================================== //
 $(document).ready(function () {
 
-    $(".search-button").on("click", function (e) {
-        e.preventDefault();
-        $('#searchFormTest2 .searchForm-inner').find('input').toggleClass('show');
-        $('#searchFormTest2 .searchForm-inner').find('.bba.v2').toggleClass('show');
-        $(this).toggleClass('open');
-        $('#searchFormTest2 .searchForm-inner').toggle();
-    });
+     $(".search-button").on("click", function (e) {
+          e.preventDefault();
+          $('#searchFormTest2 .searchForm-inner').find('input').toggleClass('show');
+          $('#searchFormTest2 .searchForm-inner').find('.bba.v2').toggleClass('show');
+          $(this).toggleClass('open');
+          $('#searchFormTest2 .searchForm-inner').toggle();
+     });
 
-    $(".search-item a").on("click", function (e) {
-        $('.panel').hide();
-        $('#tab_content_2').hide();
-        $('#tab_content_3').show();
-        $('#docCopy').hide();
-        $('ul#tab-list').show();
-        
-        $('ul#new-tabs li').removeClass('govuk-tabs__list-item--selected');
-        $('ul#new-tabs li.tab-3-content_link').addClass('govuk-tabs__list-item--selected');
+     $(".search-item a").on("click", function (e) {
+          $('.panel').hide();
+          $('#tab_content_2').hide();
+          $('#tab_content_3').show();
+          $('#docCopy').hide();
+          $('ul#tab-list').show();
 
-        var redactedDocuments = parseInt($('.redacted_documents').text());
-        $('.redacted_documents').text(redactedDocuments + 1);
-    });
+          $('ul#new-tabs li').removeClass('govuk-tabs__list-item--selected');
+          $('ul#new-tabs li.tab-3-content_link').addClass('govuk-tabs__list-item--selected');
 
-    $("input[id=searchURNModal]").on("keyup", function (e) {
-        if ($(this).val() == "error") {
-            $('button.search').attr('onClick','openModal(); searchTerm(); searchError();');
-        } else {
-            $('button.search').attr('onClick','openModal(); searchTerm();');
-        }
-    });
+          var redactedDocuments = parseInt($('.redacted_documents').text());
+          $('.redacted_documents').text(redactedDocuments + 1);
+     });
 
-    $("input[id=searchURNModal2]").on("keyup", function (e) {
-        if ($(this).val() == "error") {
-            $('button.search').attr('onClick','openModal(); searchTerm(); searchError();');
-        } else {
-            $('button.search').attr('onClick','openModal(); searchTerm();');
-        }
-    });
+     $("input[id=searchURNModal]").on("keyup", function (e) {
+          if ($(this).val() == "error") {
+               $('button.search').attr('onClick', 'openModal(); searchTerm(); searchError();');
+          } else {
+               $('button.search').attr('onClick', 'openModal(); searchTerm();');
+          }
+     });
 
-    $('#searchErrorPanel').hide();
+     $("input[id=searchURNModal2]").on("keyup", function (e) {
+          if ($(this).val() == "error") {
+               $('button.search').attr('onClick', 'openModal(); searchTerm(); searchError();');
+          } else {
+               $('button.search').attr('onClick', 'openModal(); searchTerm();');
+          }
+     });
 
-    $('#searchLoadingPanel').hide();
+     $('#searchErrorPanel').hide();
+
+     $('#searchLoadingPanel').hide();
 
 
 })
 
 function searchTerm() {
-    var resultValue = $('#searchURNModal').val();
-    $('.searchModalResults').text(resultValue); 
-    $('#searchURNModal-result').val(resultValue).text(resultValue); 
-    $('#searchErrorPanel').hide();
-    $('#searchModal .das-cookie-banner').removeClass('small');
+     var resultValue = $('#searchURNModal').val();
+     $('.searchModalResults').text(resultValue);
+     $('#searchURNModal-result').val(resultValue).text(resultValue);
+     $('#searchErrorPanel').hide();
+     $('#searchModal .das-cookie-banner').removeClass('small');
 }
 
 function searchTerm2() {
-    var resultValue = $('#searchURNModal2').val();
-    $('.searchModalResults').text(resultValue); 
-    $('#searchURNModal-result').val(resultValue).text(resultValue); 
-    $('#searchErrorPanel').hide();
-    $('#searchModal .das-cookie-banner').removeClass('small');
+     var resultValue = $('#searchURNModal2').val();
+     $('.searchModalResults').text(resultValue);
+     $('#searchURNModal-result').val(resultValue).text(resultValue);
+     $('#searchErrorPanel').hide();
+     $('#searchModal .das-cookie-banner').removeClass('small');
 }
 
 function searchError() {
-    $('#searchResultsPanel, #searchLoadingPanel').hide();
-    $('#searchErrorPanel').show();
-    $('#searchModal .das-cookie-banner').addClass('small');
+     $('#searchResultsPanel, #searchLoadingPanel').hide();
+     $('#searchErrorPanel').show();
+     $('#searchModal .das-cookie-banner').addClass('small');
 }
 
 
 // =================================== NOTES =================================== //
 $(document).ready(function () {
 
-    $(".redact_Document").on("click", function (e) {
+     $(".redact_Document").on("click", function (e) {
           // $('div').attr('data-tab-id', 'MCLOVE%20MG3-content').find('.date_details').text('test');
           // $('div').attr('data-tab-id', 'MCLOVE%20MG3-content').find('.time_details').text('test');
 
           // $('div').attr('data-tab-id', 'Case%20overview%20and%20officer%20comments-content').find('.date_details').text('test  r ewfwef');
           // $('div').attr('data-tab-id', 'Case%20overview%20and%20officer%20comments-content').find('.time_details').text('test  r ewfwef');
-    });
+     });
 
 })
 
@@ -1050,7 +969,7 @@ $(document).ready(function () {
 //      if ($('.document-panel').data('tab-id','MCLOVE%20MG3-content')) {
 //           alert('working');
 //      }
-     
+
 // }
 
 function openNewNotesModal() {
@@ -1061,12 +980,12 @@ function closeNewNotesModal() {
 }
 
 function openNotesModal() {
-   $("#openNotesModal").removeClass("rj-dont-display");
-   $('#notes-Comments').val('');
+     $("#openNotesModal").removeClass("rj-dont-display");
+     $('#notes-Comments').val('');
 }
 
 function closeNotesModal() {
-   $("#openNotesModal").addClass("rj-dont-display");
+     $("#openNotesModal").addClass("rj-dont-display");
 }
 
 
@@ -1079,143 +998,185 @@ function closeNotesModal() {
 // ChatGPT fixes [Monica]
 // ====== ACTIONS DROPDOWN: MODAL HELPERS (add at the end of materials.js) ======
 (function () {
-  // Utility: find any of a list of selectors, return the first jQuery element that exists
-  function $firstExisting(selectors) {
-    for (const sel of selectors) {
-      const $el = $(sel);
-      if ($el.length) return $el;
-    }
-    return $(); // empty
-  }
-
-  // Utility: show/hide modal containers that are initially hidden with CSS classes
-  function showModal($container) {
-    if (!$container.length) return false;
-    // Remove any "display: none" / hiding classes you use
-    $container.removeClass('rj-dont-display').show();
-    // Optional a11y attributes
-    $container.attr('aria-hidden', 'false');
-    return false;
-  }
-
-  function hideModal($container) {
-    if (!$container.length) return false;
-    $container.addClass('rj-dont-display').hide();
-    $container.attr('aria-hidden', 'true');
-    return false;
-  }
-
-  // Count selected materials (checkboxes in the table)
-  function selectedMaterials() {
-    return $('input[name="materials_document"]:checked');
-  }
-
-  // ===== Rename modal =====
-  window.openRenameModal = function () {
-    const $sel = selectedMaterials();
-    if ($sel.length !== 1) {
-      // Guard: rename is single-selection only
-      // (You can swap this for a GDS error summary if you prefer)
-      alert('Please select exactly one document to rename.');
-      return false;
-    }
-
-    // Optionally put the current title into the modal
-    const docTitle = $sel.first().val() || 'Document title';
-    $('.document-title-10').text(docTitle);
-    $('#rename-Document').val(docTitle);
-
-    // Reset state banners
-    $('.saving-panel-rename, .success-banner-rename, .secondary-action').hide();
-    $('.initial-action').show();
-
-    // Show the modal container from includes/modals/rename.html
-    const $modal = $('#openRenameModal');
-    return showModal($modal);
-  };
-
-  window.closeRenameModal = function () {
-    const $modal = $('#openRenameModal');
-    return hideModal($modal);
-  };
-
-  window.renameDocument = function () {
-    // Fake a quick save UX: hide initial buttons, show "saving", then "success"
-    $('.initial-action').hide();
-    $('.saving-panel-rename').show();
-
-    setTimeout(function () {
-      $('.saving-panel-rename').hide();
-      $('.success-banner-rename, .secondary-action').show();
-
-      // Reflect new name back into the table UI (optional)
-      const newName = ($('#rename-Document').val() || '').trim();
-      if (newName) {
-        const $sel = selectedMaterials();
-        if ($sel.length === 1) {
-          // Update the visible button text in the Title column that matches this checkbox row
-          const idAttr = $sel.attr('id'); // e.g. materials_document_6
-          if (idAttr) {
-            const $row = $('#' + idAttr).closest('tr');
-            $row.find('.title_column .openMe .govuk-button.show_material').text(newName);
+     // Utility: find any of a list of selectors, return the first jQuery element that exists
+     function $firstExisting(selectors) {
+          for (const sel of selectors) {
+               const $el = $(sel);
+               if ($el.length) return $el;
           }
-        }
-      }
-    }, 400); // tweak the delay if you want
-    return false;
-  };
+          return $(); // empty
+     }
 
-  // ===== Update Statement / Exhibit modals =====
-  // Your HTML uses onclick="return openUpdateStatement()" and "...Exhibit()"
-  // We’ll look for a few likely IDs and open whichever exists.
-  function openGenericModal(possibleSelectors) {
-    const $modal = $firstExisting(possibleSelectors);
-    if (!$modal.length) {
-      console.warn('Update modal not found. Tried:', possibleSelectors.join(', '));
-      // Fall back to a gentle alert so users aren’t stuck
-      alert('This modal is not wired yet in this prototype.');
-      return false;
-    }
-    return showModal($modal);
-  }
+     // Utility: show/hide modal containers that are initially hidden with CSS classes
+     function showModal($container) {
+          if (!$container.length) return false;
+          // Remove any "display: none" / hiding classes you use
+          $container.removeClass('rj-dont-display').show();
+          // Optional a11y attributes
+          $container.attr('aria-hidden', 'false');
+          return false;
+     }
 
-  window.openUpdateStatement = function () {
-    return openGenericModal([
-      '#updateStatementModal',
-      '#openUpdateStatementModal',
-      '#update-statement-modal'
-    ]);
-  };
+     function hideModal($container) {
+          if (!$container.length) return false;
+          $container.addClass('rj-dont-display').hide();
+          $container.attr('aria-hidden', 'true');
+          return false;
+     }
 
-  window.openUpdateExhibit = function () {
-    return openGenericModal([
-      '#updateExhibitModal',
-      '#openUpdateExhibitModal',
-      '#update-exhibit-modal'
-    ]);
-  };
+     // Count selected materials (checkboxes in the table)
+     function selectedMaterials() {
+          return $('input[name="materials_document"]:checked');
+     }
+
+     // ===== Rename modal =====
+     window.openRenameModal = function () {
+          const $sel = selectedMaterials();
+          if ($sel.length !== 1) {
+               // Guard: rename is single-selection only
+               // (You can swap this for a GDS error summary if you prefer)
+               alert('Please select exactly one document to rename.');
+               return false;
+          }
+
+          // Optionally put the current title into the modal
+          const docTitle = $sel.first().val() || 'Document title';
+          $('.document-title-10').text(docTitle);
+          $('#rename-Document').val(docTitle);
+
+          // Reset state banners
+          $('.saving-panel-rename, .success-banner-rename, .secondary-action').hide();
+          $('.initial-action').show();
+
+          // Show the modal container from includes/modals/rename.html
+          const $modal = $('#openRenameModal');
+          return showModal($modal);
+     };
+
+     window.closeRenameModal = function () {
+          const $modal = $('#openRenameModal');
+          return hideModal($modal);
+     };
+
+     window.renameDocument = function () {
+          // Fake a quick save UX: hide initial buttons, show "saving", then "success"
+          $('.initial-action').hide();
+          $('.saving-panel-rename').show();
+
+          setTimeout(function () {
+               $('.saving-panel-rename').hide();
+               $('.success-banner-rename, .secondary-action').show();
+
+               // Reflect new name back into the table UI (optional)
+               const newName = ($('#rename-Document').val() || '').trim();
+               if (newName) {
+                    const $sel = selectedMaterials();
+                    if ($sel.length === 1) {
+                         // Update the visible button text in the Title column that matches this checkbox row
+                         const idAttr = $sel.attr('id'); // e.g. materials_document_6
+                         if (idAttr) {
+                              const $row = $('#' + idAttr).closest('tr');
+                              $row.find('.title_column .openMe .govuk-button.show_material').text(newName);
+                         }
+                    }
+               }
+          }, 400); // tweak the delay if you want
+          return false;
+     };
+
+     // ===== Update Statement / Exhibit modals =====
+     // Your HTML uses onclick="return openUpdateStatement()" and "...Exhibit()"
+     // We’ll look for a few likely IDs and open whichever exists.
+     function openGenericModal(possibleSelectors) {
+          const $modal = $firstExisting(possibleSelectors);
+          if (!$modal.length) {
+               console.warn('Update modal not found. Tried:', possibleSelectors.join(', '));
+               // Fall back to a gentle alert so users aren’t stuck
+               alert('This modal is not wired yet in this prototype.');
+               return false;
+          }
+          return showModal($modal);
+     }
+
+     window.openUpdateStatement = function () {
+          return openGenericModal([
+               '#updateStatementModal',
+               '#openUpdateStatementModal',
+               '#update-statement-modal'
+          ]);
+     };
+
+     window.openUpdateExhibit = function () {
+          return openGenericModal([
+               '#updateExhibitModal',
+               '#openUpdateExhibitModal',
+               '#update-exhibit-modal'
+          ]);
+     };
 })();
 
 
-// Wrong place here, it belongs in routes. Commenting it didn't break anything.
-// const search = (req.session.data.filtersSearch || "").toLowerCase();
 
-// groupedSearchResults = groupedSearchResults.map(entry => {
-//     const folder = entry.folder;
-//     const folderName = folder.name.toLowerCase();
+// *********************************************************************** //
+// Rename from Actions on selection menu
+// *********************************************************************** //
 
-//     return {
-//         ...entry,
-//         folderMatchesSearch: search && folderName.includes(search)
-//     };
-// });
+(function () {
+     function getSelected() {
+          return Array.from(document.querySelectorAll('input.js-material-checkbox:checked'))
+               .filter(cb => cb.value && cb.value !== 'ALL')
+               .map(cb => ({
+                    id: cb.value,
+                    name: cb.dataset.name || '',
+                    isFolder: cb.dataset.folder === 'true'
+               }));
+     }
 
+     function submitBulkAction(action) {
+          const selected = getSelected();
 
-function getSelectedMaterialIds() {
-  return Array.from(
-    document.querySelectorAll('input[name="materials_document"]:checked')
-  ).map(x => x.value);
-}
+          if (selected.length === 0) return; // nothing selected
+          if (action === 'rename' && selected.length !== 1) {
+               // Rename should be single-select. You can fancy this up with an error message later.
+               return;
+          }
+
+          const one = selected[0];
+          document.getElementById('bulkActionType').value = action;
+          document.getElementById('bulkSelectedId').value = one.id;
+          document.getElementById('bulkSelectedName').value = one.name;
+          document.getElementById('bulkSelectedIsFolder').value = one.isFolder ? 'true' : 'false';
+
+          document.getElementById('bulkActionForm').submit();
+     }
+
+     // If your “Actions on selection” menu uses buttons/links, hook them here.
+     // Update the selector to match your Rename menu item.
+     document.addEventListener('click', function (e) {
+          const renameBtn = e.target.closest('[data-action="rename"]');
+          if (!renameBtn) return;
+
+          e.preventDefault();
+          submitBulkAction('rename');
+     });
+
+     // Optional: enable/disable the actions menu based on selection
+     function updateActionsState() {
+          const selected = getSelected();
+          const menuButton = document.querySelector('.moj-button-menu__toggle-button, .actions-on-selection-toggle');
+          if (menuButton) menuButton.disabled = selected.length === 0;
+     }
+
+     document.addEventListener('change', function (e) {
+          if (e.target.matches('input.js-material-checkbox, input.js-select-all')) {
+               updateActionsState();
+          }
+     });
+
+     updateActionsState();
+})();
+
+// *********************************************************************** //
 
 
 // … existing materials.js code …
@@ -1224,7 +1185,7 @@ function getSelectedMaterialIds() {
 // COPY + MOVE MODE (Layer 2)
 // ----------------------------------------
 
-(function() {
+(function () {
      console.log("Copy code is running");
      document.body.dataset.materialsMode = "copy";
 
@@ -1281,7 +1242,7 @@ function getSelectedMaterialIds() {
                link.className = 'govuk-link here-action';
                // link.textContent = (mode === 'copy') ? 'Copy here' : 'Move here';
 
-               link.addEventListener('click', function(ev) {
+               link.addEventListener('click', function (ev) {
                     ev.preventDefault();
                     const dest = row.dataset.id;
                     submitAction(mode, dest);
@@ -1317,23 +1278,23 @@ function getSelectedMaterialIds() {
 
 
 function getSelectedMaterialIds() {
-  return Array.from(document.querySelectorAll('input[name="materials_document"]:checked'))
-    .map(cb => cb.value)
-    .join(',');
+     return Array.from(document.querySelectorAll('input[name="materials_document"]:checked'))
+          .map(cb => cb.value)
+          .join(',');
 }
 
 const copyForm = document.getElementById('copyForm');
 if (copyForm) {
-  copyForm.addEventListener('submit', () => {
-    document.getElementById('copy_selected_ids').value = getSelectedMaterialIds();
-  });
+     copyForm.addEventListener('submit', () => {
+          document.getElementById('copy_selected_ids').value = getSelectedMaterialIds();
+     });
 }
 
 const moveForm = document.getElementById('moveForm');
 if (moveForm) {
-  moveForm.addEventListener('submit', () => {
-    document.getElementById('move_selected_ids').value = getSelectedMaterialIds();
-  });
+     moveForm.addEventListener('submit', () => {
+          document.getElementById('move_selected_ids').value = getSelectedMaterialIds();
+     });
 }
 
 
@@ -1343,113 +1304,113 @@ if (moveForm) {
 // Folder tree expand / collapse
 // ===============================
 (function initFolderTreeToggles() {
-  function setToggleState(btn, children, open) {
-    if (open) {
-      children.removeAttribute('hidden');
-      btn.textContent = '−';
-      btn.setAttribute('aria-expanded', 'true');
-    } else {
-      children.setAttribute('hidden', '');
-      btn.textContent = '+';
-      btn.setAttribute('aria-expanded', 'false');
-    }
-  }
+     function setToggleState(btn, children, open) {
+          if (open) {
+               children.removeAttribute('hidden');
+               btn.textContent = '−';
+               btn.setAttribute('aria-expanded', 'true');
+          } else {
+               children.setAttribute('hidden', '');
+               btn.textContent = '+';
+               btn.setAttribute('aria-expanded', 'false');
+          }
+     }
 
-  // Initialise symbols on load (so +/− matches hidden state)
-  function syncAllFolderToggles() {
-    document.querySelectorAll('.folder-node').forEach(node => {
-      const btn = node.querySelector(':scope > .folder-row .folder-toggle');
-      const children = node.querySelector(':scope > .folder-children');
-      if (!btn || !children) return;
+     // Initialise symbols on load (so +/− matches hidden state)
+     function syncAllFolderToggles() {
+          document.querySelectorAll('.folder-node').forEach(node => {
+               const btn = node.querySelector(':scope > .folder-row .folder-toggle');
+               const children = node.querySelector(':scope > .folder-children');
+               if (!btn || !children) return;
 
-      // Stop buttons behaving like submit buttons in forms
-      if (!btn.getAttribute('type')) btn.setAttribute('type', 'button');
+               // Stop buttons behaving like submit buttons in forms
+               if (!btn.getAttribute('type')) btn.setAttribute('type', 'button');
 
-      const open = !children.hasAttribute('hidden');
-      setToggleState(btn, children, open);
-    });
-  }
+               const open = !children.hasAttribute('hidden');
+               setToggleState(btn, children, open);
+          });
+     }
 
-  // Click handler (delegated)
-  document.addEventListener('click', function (e) {
-    const btn = e.target.closest('.folder-toggle');
-    if (!btn) return;
+     // Click handler (delegated)
+     document.addEventListener('click', function (e) {
+          const btn = e.target.closest('.folder-toggle');
+          if (!btn) return;
 
-    // Prevent form submits, link clicks, or other nonsense
-    e.preventDefault();
-    e.stopPropagation();
+          // Prevent form submits, link clicks, or other nonsense
+          e.preventDefault();
+          e.stopPropagation();
 
-    const node = btn.closest('.folder-node');
-    if (!node) return;
+          const node = btn.closest('.folder-node');
+          if (!node) return;
 
-    const children = node.querySelector(':scope > .folder-children');
-    if (!children) return; // nothing to expand/collapse
+          const children = node.querySelector(':scope > .folder-children');
+          if (!children) return; // nothing to expand/collapse
 
-    const currentlyOpen = !children.hasAttribute('hidden');
-    setToggleState(btn, children, !currentlyOpen);
-  });
+          const currentlyOpen = !children.hasAttribute('hidden');
+          setToggleState(btn, children, !currentlyOpen);
+     });
 
-  // Run once on DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', syncAllFolderToggles);
-  } else {
-    syncAllFolderToggles();
-  }
+     // Run once on DOM ready
+     if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', syncAllFolderToggles);
+     } else {
+          syncAllFolderToggles();
+     }
 
-  // Optional: if your prototype re-renders the tree dynamically,
-  // call window.syncFolderTreeToggles() after render.
-  window.syncFolderTreeToggles = syncAllFolderToggles;
+     // Optional: if your prototype re-renders the tree dynamically,
+     // call window.syncFolderTreeToggles() after render.
+     window.syncFolderTreeToggles = syncAllFolderToggles;
 })();
 
 
 document.addEventListener('click', function (e) {
-  const btn = e.target.closest('.folder-toggle');
-  if (!btn) return;
+     const btn = e.target.closest('.folder-toggle');
+     if (!btn) return;
 
-  e.preventDefault();
+     e.preventDefault();
 
-  const node = btn.closest('.folder-node');
-  if (!node) return;
+     const node = btn.closest('.folder-node');
+     if (!node) return;
 
-  const children = node.querySelector('.folder-children');
-  if (!children) return;
+     const children = node.querySelector('.folder-children');
+     if (!children) return;
 
-  const opening = children.hasAttribute('hidden');
+     const opening = children.hasAttribute('hidden');
 
-  if (opening) {
-    children.removeAttribute('hidden');
-    btn.textContent = '−';
-    btn.setAttribute('aria-expanded', 'true');
-  } else {
-    children.setAttribute('hidden', '');
-    btn.textContent = '+';
-    btn.setAttribute('aria-expanded', 'false');
-  }
+     if (opening) {
+          children.removeAttribute('hidden');
+          btn.textContent = '−';
+          btn.setAttribute('aria-expanded', 'true');
+     } else {
+          children.setAttribute('hidden', '');
+          btn.textContent = '+';
+          btn.setAttribute('aria-expanded', 'false');
+     }
 });
 
 document.addEventListener('click', function (e) {
-  const btn = e.target.closest('.folder-toggle');
-  if (!btn) return;
+     const btn = e.target.closest('.folder-toggle');
+     if (!btn) return;
 
-  e.preventDefault();
+     e.preventDefault();
 
-  const node = btn.closest('.folder-node');
-  if (!node) return;
+     const node = btn.closest('.folder-node');
+     if (!node) return;
 
-  const children = node.querySelector(':scope > .folder-children');
-  if (!children) return;
+     const children = node.querySelector(':scope > .folder-children');
+     if (!children) return;
 
-  const opening = children.hasAttribute('hidden');
+     const opening = children.hasAttribute('hidden');
 
-  if (opening) {
-    children.removeAttribute('hidden');
-    btn.textContent = '−';
-    btn.setAttribute('aria-expanded', 'true');
-  } else {
-    children.setAttribute('hidden', '');
-    btn.textContent = '+';
-    btn.setAttribute('aria-expanded', 'false');
-  }
+     if (opening) {
+          children.removeAttribute('hidden');
+          btn.textContent = '−';
+          btn.setAttribute('aria-expanded', 'true');
+     } else {
+          children.setAttribute('hidden', '');
+          btn.textContent = '+';
+          btn.setAttribute('aria-expanded', 'false');
+     }
 });
 
 
@@ -1531,76 +1492,76 @@ document.addEventListener('click', function (e) {
 // })();
 
 (function initCopyFolderPicker() {
-  const copyBtn = document.getElementById('copyFolderButton');
-  const destInput = document.getElementById('destinationFolder');
-  if (!copyBtn || !destInput) return;
+     const copyBtn = document.getElementById('copyFolderButton');
+     const destInput = document.getElementById('destinationFolder');
+     if (!copyBtn || !destInput) return;
 
-  // 🔴 RESET STATE ON PAGE LOAD
-  copyBtn.textContent = 'Copy';
-  copyBtn.disabled = true;
-  destInput.value = '';
+     // 🔴 RESET STATE ON PAGE LOAD
+     copyBtn.textContent = 'Copy';
+     copyBtn.disabled = true;
+     destInput.value = '';
 
-  const defaultCopyText = copyBtn.textContent.trim() || 'Copy';
+     const defaultCopyText = copyBtn.textContent.trim() || 'Copy';
 
-  function applySelection(folderId, folderName) {
-    destInput.value = folderId || '';
-    copyBtn.textContent = folderName ? `Copy to ${folderName}` : defaultCopyText;
+     function applySelection(folderId, folderName) {
+          destInput.value = folderId || '';
+          copyBtn.textContent = folderName ? `Copy to ${folderName}` : defaultCopyText;
 
-    // optional: disable until selection
-    copyBtn.disabled = !folderId;
+          // optional: disable until selection
+          copyBtn.disabled = !folderId;
 
-    // visual highlight
-    document.querySelectorAll('.folder-node.is-selected').forEach(n => n.classList.remove('is-selected'));
-    if (folderId) {
-      const node = document.querySelector(`.folder-node[data-folder-id="${CSS.escape(folderId)}"]`);
-      if (node) node.classList.add('is-selected');
-    }
+          // visual highlight
+          document.querySelectorAll('.folder-node.is-selected').forEach(n => n.classList.remove('is-selected'));
+          if (folderId) {
+               const node = document.querySelector(`.folder-node[data-folder-id="${CSS.escape(folderId)}"]`);
+               if (node) node.classList.add('is-selected');
+          }
 
-    // persist across reloads (optional)
-    if (folderId) {
-      sessionStorage.setItem('copyDestinationFolderId', folderId);
-      sessionStorage.setItem('copyDestinationFolderName', folderName || '');
-    } else {
-      sessionStorage.removeItem('copyDestinationFolderId');
-      sessionStorage.removeItem('copyDestinationFolderName');
-    }
-  }
+          // persist across reloads (optional)
+          if (folderId) {
+               sessionStorage.setItem('copyDestinationFolderId', folderId);
+               sessionStorage.setItem('copyDestinationFolderName', folderName || '');
+          } else {
+               sessionStorage.removeItem('copyDestinationFolderId');
+               sessionStorage.removeItem('copyDestinationFolderName');
+          }
+     }
 
-  // Restore previous selection after reload (optional but fixes your “deselect” complaint)
-  const savedId = sessionStorage.getItem('copyDestinationFolderId');
-  const savedName = sessionStorage.getItem('copyDestinationFolderName');
-  if (savedId) {
-    applySelection(savedId, savedName);
-  } else {
-    // start disabled until selected (if you want that)
-    copyBtn.disabled = true;
-    copyBtn.textContent = defaultCopyText;
-  }
+     // Restore previous selection after reload (optional but fixes your “deselect” complaint)
+     const savedId = sessionStorage.getItem('copyDestinationFolderId');
+     const savedName = sessionStorage.getItem('copyDestinationFolderName');
+     if (savedId) {
+          applySelection(savedId, savedName);
+     } else {
+          // start disabled until selected (if you want that)
+          copyBtn.disabled = true;
+          copyBtn.textContent = defaultCopyText;
+     }
 
-  // Select folder on click
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('button.folder-select');
-    if (!btn) return;
+     // Select folder on click
+     document.addEventListener('click', (e) => {
+          const btn = e.target.closest('button.folder-select');
+          if (!btn) return;
 
-    const node = btn.closest('.folder-node');
-    if (!node || node.classList.contains('folder-node--root')) return;
+          const node = btn.closest('.folder-node');
+          if (!node || node.classList.contains('folder-node--root')) return;
 
-    const folderId = node.getAttribute('data-folder-id');
-    const folderName = node.getAttribute('data-folder-name');
+          const folderId = node.getAttribute('data-folder-id');
+          const folderName = node.getAttribute('data-folder-name');
 
-    if (!folderId) return;
+          if (!folderId) return;
 
-    applySelection(folderId, folderName);
-  });
+          applySelection(folderId, folderName);
+     });
 
-  // Guard submit if somehow no destination selected
-  copyBtn.closest('form')?.addEventListener('submit', (e) => {
-    if (!destInput.value) {
-      e.preventDefault();
-      // no alert if you hate alerts; just do nothing
-      // or show an inline error later
-    }
-  });
+     // Guard submit if somehow no destination selected
+     copyBtn.closest('form')?.addEventListener('submit', (e) => {
+          if (!destInput.value) {
+               e.preventDefault();
+               // no alert if you hate alerts; just do nothing
+               // or show an inline error later
+          }
+     });
 })();
 
 
@@ -1658,91 +1619,195 @@ document.addEventListener('click', function (e) {
 
 
 
+
+
+// =====================================================
+// MATERIAL SELECTION (single source of truth)
+// =====================================================
+
+function getSelectedItems() {
+     return Array.from(document.querySelectorAll('input.js-material-checkbox:checked'))
+          .filter(cb => cb.value && cb.value !== 'ALL')
+          .map(cb => ({
+               id: cb.value.toString(),
+               name: cb.dataset.name || '',
+               isFolder: cb.dataset.folder === 'true'
+          }));
+}
+
+// =====================================================
+// ENABLE / DISABLE ACTION BUTTONS
+// =====================================================
+
+function updateActionsUI() {
+     const selected = getSelectedItems();
+
+     const renameBtn = document.getElementById('renameButton');
+     const discardBtn = document.getElementById('discardButton');
+     const copyBtn = document.getElementById('copyButton');
+     const moveBtn = document.getElementById('moveButton');
+
+     // Rename: exactly ONE
+     if (renameBtn) {
+          const ok = selected.length === 1;
+          renameBtn.disabled = !ok;
+          renameBtn.classList.toggle('govuk-button--disabled', !ok);
+     }
+
+     // Discard / Copy / Move: ONE OR MORE
+     const multiOK = selected.length > 0;
+
+     [discardBtn, copyBtn, moveBtn].forEach(btn => {
+          if (!btn) return;
+          btn.disabled = !multiOK;
+          btn.classList.toggle('govuk-button--disabled', !multiOK);
+     });
+
+     // Populate hidden fields for Copy / Move
+     const ids = selected.map(x => x.id).join(',');
+     const copyHidden = document.getElementById('copy_selected_ids');
+     const moveHidden = document.getElementById('move_selected_ids');
+     const discardHidden = document.getElementById('material_selected');
+
+     if (copyHidden) copyHidden.value = ids;
+     if (moveHidden) moveHidden.value = ids;
+     if (discardHidden) discardHidden.value = selected[0]?.id || '';
+}
+
+// =====================================================
+// SELECT ALL SUPPORT
+// =====================================================
+
+document.addEventListener('change', function (e) {
+     if (e.target.matches('input.js-select-all')) {
+          const all = document.querySelectorAll('input.js-material-checkbox');
+          all.forEach(cb => (cb.checked = e.target.checked));
+          updateActionsUI();
+          return;
+     }
+
+     if (e.target.matches('input.js-material-checkbox')) {
+          updateActionsUI();
+     }
+});
+
+// =====================================================
+// RENAME (Actions on selection → Rename)
+// =====================================================
+
+document.addEventListener('click', function (e) {
+     const renameBtn = e.target.closest('[data-action="rename"]');
+     if (!renameBtn) return;
+
+     e.preventDefault();
+
+     const selected = getSelectedItems();
+     if (selected.length !== 1) return;
+
+     const item = selected[0];
+
+     document.getElementById('bulkActionType').value = 'rename';
+     document.getElementById('bulkSelectedId').value = item.id;
+     document.getElementById('bulkSelectedName').value = item.name;
+     document.getElementById('bulkSelectedIsFolder').value = item.isFolder ? 'true' : 'false';
+
+     document.getElementById('bulkActionForm').submit();
+});
+
+// Run once on load
+document.addEventListener('DOMContentLoaded', updateActionsUI);
+
+
+
+
+
+// Folder tree for copy/move 
+
 document.addEventListener('DOMContentLoaded', () => {
-  const table = document.getElementById('materials_table');
-  if (!table) return; // ✅ only run on tab-manage-materials
+     const table = document.getElementById('materials_table');
+     if (!table) return; // ✅ only run on tab-manage-materials
 
-  const copyBtn = document.getElementById('copyButton');
-  if (!copyBtn) return;
+     const copyBtn = document.getElementById('copyButton');
+     if (!copyBtn) return;
 
-  function checkedCount() {
-    return table.querySelectorAll('input[type="checkbox"]:checked').length;
-  }
+     function checkedCount() {
+          return table.querySelectorAll('input[type="checkbox"]:checked').length;
+     }
 
-  function setEnabled(enabled) {
-    if (copyBtn.tagName === 'BUTTON') {
-      copyBtn.disabled = !enabled;
-      copyBtn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
-      return;
-    }
+     function setEnabled(enabled) {
+          if (copyBtn.tagName === 'BUTTON') {
+               copyBtn.disabled = !enabled;
+               copyBtn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+               return;
+          }
 
-    copyBtn.classList.toggle('is-disabled', !enabled);
-    copyBtn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
-    copyBtn.dataset.disabled = enabled ? 'false' : 'true';
-  }
+          copyBtn.classList.toggle('is-disabled', !enabled);
+          copyBtn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+          copyBtn.dataset.disabled = enabled ? 'false' : 'true';
+     }
 
-  copyBtn.addEventListener('click', (e) => {
-    if (copyBtn.tagName !== 'BUTTON' && copyBtn.dataset.disabled === 'true') {
-      e.preventDefault();
-    }
-  });
+     copyBtn.addEventListener('click', (e) => {
+          if (copyBtn.tagName !== 'BUTTON' && copyBtn.dataset.disabled === 'true') {
+               e.preventDefault();
+          }
+     });
 
-  setEnabled(checkedCount() > 0);
+     setEnabled(checkedCount() > 0);
 
-  table.addEventListener('change', (e) => {
-    if (e.target && e.target.type === 'checkbox') {
-      setEnabled(checkedCount() > 0);
-    }
-  });
+     table.addEventListener('change', (e) => {
+          if (e.target && e.target.type === 'checkbox') {
+               setEnabled(checkedCount() > 0);
+          }
+     });
 });
 
 
 (function forceCopyButtonDefaultOnFolderTreeCopy() {
-  function reset() {
-    const copyBtn = document.getElementById('copyFolderButton');
-    const destInput = document.getElementById('destinationFolder');
+     function reset() {
+          const copyBtn = document.getElementById('copyFolderButton');
+          const destInput = document.getElementById('destinationFolder');
 
-    // Only on folder-tree-copy page
-    if (!copyBtn || !destInput) return;
+          // Only on folder-tree-copy page
+          if (!copyBtn || !destInput) return;
 
-    // Hard reset UI
-    copyBtn.textContent = 'Copy';
-    copyBtn.disabled = false;
-    destInput.value = '';
+          // Hard reset UI
+          copyBtn.textContent = 'Copy';
+          copyBtn.disabled = false;
+          destInput.value = '';
 
-    // Clear any selected styling
-    document.querySelectorAll('.folder-node.is-selected')
-      .forEach(n => n.classList.remove('is-selected'));
+          // Clear any selected styling
+          document.querySelectorAll('.folder-node.is-selected')
+               .forEach(n => n.classList.remove('is-selected'));
 
-    // Kill any browser “remembering” you might have added earlier
-    sessionStorage.removeItem('copyDestinationFolderId');
-    sessionStorage.removeItem('copyDestinationFolderName');
-    localStorage.removeItem('copyDestinationFolderId');
-    localStorage.removeItem('copyDestinationFolderName');
-  }
+          // Kill any browser “remembering” you might have added earlier
+          sessionStorage.removeItem('copyDestinationFolderId');
+          sessionStorage.removeItem('copyDestinationFolderName');
+          localStorage.removeItem('copyDestinationFolderId');
+          localStorage.removeItem('copyDestinationFolderName');
+     }
 
-  // Run on normal load AND back/forward cache restores
-  window.addEventListener('pageshow', reset);
-  document.addEventListener('DOMContentLoaded', reset);
+     // Run on normal load AND back/forward cache restores
+     window.addEventListener('pageshow', reset);
+     document.addEventListener('DOMContentLoaded', reset);
 })();
 
 
 
 document.addEventListener('click', (e) => {
-  const btn = e.target.closest('button.folder-select');
-  if (!btn) return;
+     const btn = e.target.closest('button.folder-select');
+     if (!btn) return;
 
-  const node = btn.closest('.folder-node');
-  if (!node || node.classList.contains('folder-node--root')) return;
+     const node = btn.closest('.folder-node');
+     if (!node || node.classList.contains('folder-node--root')) return;
 
-  const folderId = node.getAttribute('data-folder-id');
-  const folderName = node.getAttribute('data-folder-name');
+     const folderId = node.getAttribute('data-folder-id');
+     const folderName = node.getAttribute('data-folder-name');
 
-  const copyBtn = document.getElementById('copyFolderButton');
-  const destInput = document.getElementById('destinationFolder');
-  if (!copyBtn || !destInput || !folderId) return;
+     const copyBtn = document.getElementById('copyFolderButton');
+     const destInput = document.getElementById('destinationFolder');
+     if (!copyBtn || !destInput || !folderId) return;
 
-  destInput.value = folderId;
-  copyBtn.textContent = folderName ? `Copy to ${folderName}` : 'Copy';
-  copyBtn.disabled = false;
+     destInput.value = folderId;
+     copyBtn.textContent = folderName ? `Copy to ${folderName}` : 'Copy';
+     copyBtn.disabled = false;
 });
