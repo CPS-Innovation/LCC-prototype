@@ -1,4 +1,5 @@
 ///////////////////////////////////////////////////// Monica CODE - START /////////////////////////////////////////////////////
+(() => {
 console.log('🔥 materials-ur-dec-2025.js LOADED');
 
 // Make it global so inline onclick can see it
@@ -1227,3 +1228,5 @@ document.addEventListener('DOMContentLoaded', function () {
     renameInput.value = selected[0].value;
   });
 });
+
+})();

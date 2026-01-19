@@ -1811,3 +1811,19 @@ document.addEventListener('click', (e) => {
      copyBtn.textContent = folderName ? `Copy to ${folderName}` : 'Copy';
      copyBtn.disabled = false;
 });
+
+
+
+
+
+document.querySelectorAll('.js-material-actions').forEach(menu => {
+  const btn = menu.querySelector('.js-actions-toggle');
+  const panel = menu.querySelector('.js-actions-panel');
+  if (!btn || !panel) return;
+
+  btn.addEventListener('click', () => {
+    const isOpen = !panel.hasAttribute('hidden');
+    if (isOpen) panel.setAttribute('hidden', '');
+    else panel.removeAttribute('hidden');
+  });
+});

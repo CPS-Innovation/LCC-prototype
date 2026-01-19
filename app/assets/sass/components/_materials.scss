@@ -2050,3 +2050,98 @@ table#materials_table td .govuk-tag {
 //     background-color: #00703c !important;
 //     color: #ffffff !important;
 // }
+
+.govuk-input__wrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.govuk-input__wrapper .govuk-input {
+  flex: 1;
+}
+
+
+
+.materials-actions-row {
+  display: flex;
+  align-items: center; /* THIS is the missing piece */
+  gap: 16px;
+  flex-wrap: wrap; /* saves you at 400% zoom */
+}
+
+/* Stop details behaving like a dramatic block element */
+.materials-search-details {
+  margin: 0;
+}
+
+/* Align summary text nicely with buttons */
+.materials-search-details .govuk-details__summary {
+  margin: 0;
+  padding-left: 0;
+}
+
+.materials-search-details .govuk-details__summary-text {
+  display: inline-flex;
+  align-items: center;
+  padding-top: 2px;
+}
+
+
+/* Keep everything aligned nicely */
+.materials-actions-row{
+  align-items: center;
+}
+
+/* details is blocky by default: calm it down */
+.materials-search-details{
+  margin: 0;
+}
+
+/* Make the summary look like a GOV.UK secondary button */
+.materials-search-summary{
+  display: inline-block;
+  margin: 0;
+  padding: 8px 12px;             /* matches govuk button rhythm */
+  border: 2px solid #1d70b8;
+  background: transparent;
+  color: #1d70b8;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Remove the ugly default triangle marker */
+.materials-search-summary::marker{ content: ""; }
+.materials-search-summary::-webkit-details-marker{ display: none; }
+
+/* Optional: when open, keep it looking “pressed” */
+.materials-search-details[open] .materials-search-summary{
+  background: #f3f2f1;
+}
+
+
+
+
+
+
+// Search details CSS
+.search-icon-box {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+
+  background-color: #1d70b8; /* GOV.UK link blue */
+
+  background-image: url("../images/search-white.svg");
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 20px 20px;
+
+  vertical-align: middle;
+}
+
+
+
+

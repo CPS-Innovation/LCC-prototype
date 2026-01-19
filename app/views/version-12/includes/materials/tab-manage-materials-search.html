@@ -1,113 +1,3 @@
-<!-- ///////////////////////////////// TAB 2 - CONTENT - START ///////////////////////////////// -->
-<!-- <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-
-    {% macro renderTree(nodes) %}
-    <ul class="govuk-list govuk-list--bullet">
-        {% for node in nodes %}
-
-        {% if node.isFolder %}
-            <li class="no-bullet" style="list-style-type:none; margin-left:-1em;">
-
-            <span class="icon-new folder"></span>
-            <strong>{{ node.name }}</strong>
-
-            {% if node.children and (node.children | length) > 0 %}
-                {{ renderTree(node.children) }}
-            {% endif %}
-            </li>
-
-        {% else %}
-            <li>
-            {{ node.name }}
-            </li>
-        {% endif %}
-
-        {% endfor %}
-    </ul>
-    {% endmacro %}
-
-    {% if copySuccess %}
-    <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white"
-        role="alert"
-        data-module="govuk-notification-banner">
-        <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title">Success</h2>
-        </div>
-        <div class="govuk-notification-banner__content">
-            <h3 class="govuk-notification-banner__heading">
-                The materials have been copied
-            </h3>
-
-            {% if copyDestinationName %}
-                <p class="govuk-body">
-                    They are in:
-                    <strong>{{ copyDestinationName }}</strong>
-                </p>
-            {% else %}    
-                <p class="govuk-body">
-                    They are in:
-                    <strong>Home: Thundercat</strong>
-                </p>
-            {% endif %}
-
-            {% if copyPreviewTree and (copyPreviewTree | length) > 0 %}
-                <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
-                    <summary class="govuk-details__summary">
-                        <span class="govuk-details__summary-text">
-                            Show copied materials
-                        </span>
-                    </summary>
-                    <div class="govuk-details__text">
-                        {{ renderTree(copyPreviewTree) }}
-                    </div>
-                </details>
-            {% endif %}
-        </div>
-    </div>
-
-    {% elseif moveSuccess %}
-    <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white"
-        role="alert"
-        data-module="govuk-notification-banner">
-        <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title">Success</h2>
-        </div>
-        <div class="govuk-notification-banner__content">
-            <h3 class="govuk-notification-banner__heading">
-                The materials have been moved
-            </h3>
-
-            {% if moveDestinationName %}
-                <p class="govuk-body">
-                    They are in:
-                    <strong>{{ moveDestinationName }}</strong>
-                </p>
-            {% else %}    
-                <p class="govuk-body">
-                    They are in:
-                    <strong>Home: Thundercat</strong>
-                </p>
-            {% endif %}
-
-            {% if movePreviewTree and (movePreviewTree | length) > 0 %}
-                <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
-                    <summary class="govuk-details__summary">
-                        <span class="govuk-details__summary-text">
-                            Show moved materials
-                        </span>
-                    </summary>
-                    <div class="govuk-details__text">
-                        {{ renderTree(movePreviewTree) }}
-                    </div>
-                </details>
-            {% endif %}
-        </div>
-    </div>
-    {% endif %}
-    </div>
-</div> -->
-
 <div class="govuk-grid-row">
 
     <h2 class="govuk-heading-m govuk-!-margin-left-3 govuk-!-margin-top-0 govuk-!-margin-bottom-4">
@@ -118,28 +8,70 @@
         You can add, rename or remove materials and folders. You can also
         <a class="govuk-link">manage materials and folders on Egress</a>.
     </p>
+
 </div>
 
-<div class="govuk-grid-row">
+{# ===========================
+   SEARCH (NEW - UNDER INTRO)
+   =========================== #}
+
+<div class="govuk-grid-row govuk-!-margin-right-3 govuk-!-margin-bottom-4">
+  <div class="
+    govuk-grid-column-one-half
+    govuk-grid-column-one-half-from-tablet
+    govuk-grid-column-full-from-mobile
+  ">
+
+    <form method="post" action="/version-12/B-off-system-MVP/materials-search" class="materials-search-form" novalidate>
+      <div class="govuk-form-group govuk-!-margin-bottom-2">
+        <label class="govuk-label govuk-!-font-weight-bold" for="materialsSearch">
+          Search materials
+        </label>
+
+        <!-- <div class="govuk-hint govuk-!-margin-bottom-2">
+          Search by file or folder name
+        </div> -->
+
+        <div class="govuk-input__wrapper">
+          <input class="govuk-input"
+                 id="materialsSearch"
+                 name="filtersSearch"
+                 type="search"
+                 value="{{ data.filtersSearch | default('') }}"
+                 autocomplete="off">
+
+          <button class="govuk-button govuk-!-margin-bottom-0" type="submit" data-module="govuk-button">
+            Search
+          </button>
+
+          {% if data.filtersSearch and data.filtersSearch | trim | length > 0 %}
+            <a class="govuk-link govuk-!-margin-left-3"
+               href="/version-12/B-off-system-MVP/clear-search">
+              Clear search
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<!-- <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
         <a class="govuk-link govuk-!-margin-bottom-9 govuk-!-margin-top-0" id="toggle_filter_Materials" href="#"
             style="text-align:right;">
             Show filters >>
         </a>
     </div>
-</div>
+</div> -->
 
 <div class="govuk-grid-row govuk-!-margin-top-2">
 
-    <!-- FILTER COLUMN -->
-    <div class="govuk-grid-column-one-quarter" id="materials_column_1">
-        <div class="moj-filter-layout__filter">
-            {% include "../materials/materials-filter.html" %}
-        </div>
-    </div>
 
     <!-- MAIN COLUMN -->
-    <div class="govuk-grid-column-three-quarters" id="materials_column_2">
+    <div class="govuk-!-margin-left-3"id="materials_column_2">
+    <!-- <div class="govuk-grid-column-three-quarters" id="materials_column_2"> -->
 
         <!-- BREADCRUMBS -->
         <div class="govuk-grid-row">

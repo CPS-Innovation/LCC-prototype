@@ -1,112 +1,4 @@
 <!-- ///////////////////////////////// TAB 2 - CONTENT - START ///////////////////////////////// -->
-<!-- <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-
-    {% macro renderTree(nodes) %}
-    <ul class="govuk-list govuk-list--bullet">
-        {% for node in nodes %}
-
-        {% if node.isFolder %}
-            <li class="no-bullet" style="list-style-type:none; margin-left:-1em;">
-
-            <span class="icon-new folder"></span>
-            <strong>{{ node.name }}</strong>
-
-            {% if node.children and (node.children | length) > 0 %}
-                {{ renderTree(node.children) }}
-            {% endif %}
-            </li>
-
-        {% else %}
-            <li>
-            {{ node.name }}
-            </li>
-        {% endif %}
-
-        {% endfor %}
-    </ul>
-    {% endmacro %}
-
-    {% if copySuccess %}
-    <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white"
-        role="alert"
-        data-module="govuk-notification-banner">
-        <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title">Success</h2>
-        </div>
-        <div class="govuk-notification-banner__content">
-            <h3 class="govuk-notification-banner__heading">
-                The materials have been copied
-            </h3>
-
-            {% if copyDestinationName %}
-                <p class="govuk-body">
-                    They are in:
-                    <strong>{{ copyDestinationName }}</strong>
-                </p>
-            {% else %}    
-                <p class="govuk-body">
-                    They are in:
-                    <strong>Home: Thundercat</strong>
-                </p>
-            {% endif %}
-
-            {% if copyPreviewTree and (copyPreviewTree | length) > 0 %}
-                <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
-                    <summary class="govuk-details__summary">
-                        <span class="govuk-details__summary-text">
-                            Show copied materials
-                        </span>
-                    </summary>
-                    <div class="govuk-details__text">
-                        {{ renderTree(copyPreviewTree) }}
-                    </div>
-                </details>
-            {% endif %}
-        </div>
-    </div>
-
-    {% elseif moveSuccess %}
-    <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white"
-        role="alert"
-        data-module="govuk-notification-banner">
-        <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title">Success</h2>
-        </div>
-        <div class="govuk-notification-banner__content">
-            <h3 class="govuk-notification-banner__heading">
-                The materials have been moved
-            </h3>
-
-            {% if moveDestinationName %}
-                <p class="govuk-body">
-                    They are in:
-                    <strong>{{ moveDestinationName }}</strong>
-                </p>
-            {% else %}    
-                <p class="govuk-body">
-                    They are in:
-                    <strong>Home: Thundercat</strong>
-                </p>
-            {% endif %}
-
-            {% if movePreviewTree and (movePreviewTree | length) > 0 %}
-                <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
-                    <summary class="govuk-details__summary">
-                        <span class="govuk-details__summary-text">
-                            Show moved materials
-                        </span>
-                    </summary>
-                    <div class="govuk-details__text">
-                        {{ renderTree(movePreviewTree) }}
-                    </div>
-                </details>
-            {% endif %}
-        </div>
-    </div>
-    {% endif %}
-    </div>
-</div> -->
 
 <div class="govuk-grid-row">
 
@@ -242,6 +134,7 @@
         {% endif %}
 
 
+
         <!-- ACTION BUTTONS -->
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-half">
@@ -249,16 +142,15 @@
                 <div class="info_wrapper govuk-!-margin-top-3 govuk-!-margin-bottom-6">
 
                     <div class="actions_holder">
-                        <div class="moj-button-menu">
-                            <button type="button" id="show_Materials_Actions"
-                                class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                        <div class="moj-button-menu js-material-actions">
+                            <button type="button" class="govuk-button govuk-button--secondary js-actions-toggle">
                                 Actions on selection
                                 <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M5.5 0L11 5L0 5L5.5 0Z" fill="currentColor"></path>
                                 </svg>
                             </button>
 
-                            <div class="hidden_buttons" id="materials_Actions">
+                            <div class="hidden_buttons js-actions-panel" hidden>
 
                                 <form method="post" action="/version-12/B-off-system-MVP/start-copy" id="copyForm">
                                     <input type="hidden" name="mode" value="copy">
@@ -608,7 +500,7 @@
                             {% if flashRenamedId and (item.id | string) == flashRenamedId %}
                             <strong class="govuk-tag govuk-tag--green">Renamed</strong>
                             {% endif %}
-                            
+
                         </div>
                     </td>
 
