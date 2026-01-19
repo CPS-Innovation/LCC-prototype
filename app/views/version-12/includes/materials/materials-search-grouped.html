@@ -82,6 +82,10 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
                             <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">Renamed</strong>
                             {% endif %}
 
+                            {% if flashNewFolderIdSafe and folder.id is defined and (folder.id ~ '') == flashNewFolderIdSafe %}
+                            <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">Renamed</strong>
+                            {% endif %}
+
                         </button>
                         <!-- {% if folder.new == true %}
                             <strong class="govuk-tag govuk-tag--blue">Unread</strong>

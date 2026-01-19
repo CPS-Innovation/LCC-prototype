@@ -1087,6 +1087,9 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const flashRenamedId = String(data.flashRenamedId || '');
     req.session.data.flashRenamedId = '';
 
+    const flashNewFolderId = String(data.flashNewFolderId || '');
+    req.session.data.flashNewFolderId = '';
+
     // Clear renamed flags from previous renders
     materials.forEach(m => {
         if (m.renamed && m.id !== lastRenamedId) {
@@ -1225,6 +1228,12 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
 
     const groupedSearchResults = buildGroupedSearchResults(materials, search);
 
+    // Prevent browser caching (fixes stale search results after rename)
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    res.set('Surrogate-Control', 'no-store');
+
     // ================================
     // 3. Render page with filtered children
     // ================================
@@ -1235,6 +1244,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         breadcrumbs,
         groupedSearchResults,
         flashRenamedId,
+        flashNewFolderId,
         copySuccess,
         moveSuccess,
         copyList,
@@ -1374,6 +1384,7 @@ router.post('/B-off-system-MVP/new-folder', function(req, res) {
     
     const currentFolder = req.session.data.currentFolder || 0;
     const parentFolder = req.session.data.parentFolder || 0;
+    const parentId = Number(req.session.data.folderId || 0);
 
     const newFolderName = req.body.newFolderName?.trim();
 
@@ -1389,6 +1400,8 @@ router.post('/B-off-system-MVP/new-folder', function(req, res) {
     const maxId = materials.length > 0
     ? Math.max(...materials.map(m => Number(m.id)))
     : 0;
+
+    req.session.data.flashNewFolderId = maxId + 1;
 
     // Create new folder object
     const newFolder = {
@@ -2043,3 +2056,23 @@ router.get('/B-off-system-MVP/folder-tree-copy', function (req, res) {
 });
 
 module.exports = router
+
+
+
+//New search at the top of the page
+router.post('/B-off-system-MVP/materials-search', function (req, res) {
+  const term = (req.body.filtersSearch || '').trim();
+
+  // Store in session so 03-case-overview can render search results
+  req.session.data.filtersSearch = term;
+
+  // Optional: when searching, reset folder context if you want
+  // req.session.data.folderId = 0;
+
+  return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
+});
+
+router.get('/B-off-system-MVP/clear-search', function (req, res) {
+  req.session.data.filtersSearch = '';
+  return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
+});
