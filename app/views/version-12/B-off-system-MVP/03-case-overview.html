@@ -89,9 +89,9 @@
 
             <!-- /////////////// TAB CONTENT 2 - START /////////////// -->
             {% if data['shared_drive_NewFolder'] %}
-                <div class="panel" id="tab-2-content" style="display: none;">
+                <div class="panel" id="tab-2-content">
             {% else %}
-                <div class="panel" id="tab-2-content" style="display: none;">
+                <div class="panel" id="tab-2-content">
             {% endif %}
             {% if data['shared_Drive_Indexing'] == 'true' or data['shared_Drive_Transferring'] == 'true' or data['shared_Drive_Copying'] == 'true' %}
                 {% include "../includes/materials/tab-manage-materials-search-top.html" %}
@@ -102,15 +102,15 @@
             <!-- /////////////// TAB CONTENT 2 - END /////////////// -->
 
             <!-- /////////////// TAB CONTENT 3 - START /////////////// -->
-            <div class="panel" id="tab-3-content">
+            <!-- <div class="panel" id="tab-3-content">
                 {% include "../includes/materials/tab-manage-materials-search-top.html" %}
-            </div>
+            </div> -->
             <!-- /////////////// TAB CONTENT 3 - END /////////////// -->
 
             <!-- /////////////// TAB CONTENT 3 - START /////////////// -->
-            <div class="panel" id="tab-3-content" style="display: none;">
+            <!-- <div class="panel" id="tab-3-content" style="display: none;">
                 {% include "../includes/materials/tab-manage-materials.html" %}
-            </div>
+            </div> -->
             <!-- /////////////// TAB CONTENT 3 - END /////////////// -->
 
             <!-- /////////////// TAB CONTENT 4 - START /////////////// -->
