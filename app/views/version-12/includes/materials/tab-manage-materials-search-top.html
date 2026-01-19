@@ -3,7 +3,7 @@
 <div class="govuk-grid-row">
 
     <h2 class="govuk-heading-m govuk-!-margin-left-3 govuk-!-margin-top-0 govuk-!-margin-bottom-4">
-        Manage materials on the shared drive
+        Manage materials on the shared drive - search
     </h2>
 
     <p class="govuk-body govuk-!-margin-left-3 govuk-!-margin-bottom-6">
@@ -13,40 +13,39 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-half-from-desktop">
-            {% set hasSearch = data.filtersSearch and data.filtersSearch | trim | length > 0 %}
-            <details class="govuk-details govuk-!-margin-top-0 govuk-!-margin-bottom-1 govuk-!-margin-left-3" data-module="govuk-details" {% if hasSearch %}open{% endif %}>
-                <summary class="govuk-details__summary">
-                    <span class="search-icon-box" aria-hidden="true"></span>
-                    <span class="govuk-details__summary-text govuk-!-margin-left-2">
-                    Search files and folders 
-                    </span>
-                </summary>
+            <details class="govuk-details govuk-!-margin-top-0 govuk-!-margin-bottom-1 govuk-!-margin-left-3" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="search-icon-box" aria-hidden="true"></span>
+                <span class="govuk-details__summary-text govuk-!-margin-left-2">
+                Search files and folders 
+                </span>
+            </summary>
 
-                <div class="govuk-details__text govuk-!-margin-left-0">
+            <div class="govuk-details__text govuk-!-margin-left-0">
 
-                    <form method="post" action="/version-12/B-off-system-MVP/materials-search" novalidate>
-                    <div class="govuk-form-group govuk-!-margin-bottom-2">
-                        <label class="govuk-label govuk-label--s govuk-!-margin-bottom-3" for="materialsSearch">
+                <form method="post" action="/version-12/B-off-system-MVP/materials-search" novalidate>
+                <div class="govuk-form-group govuk-!-margin-bottom-2">
+                    <label class="govuk-label govuk-label--s govuk-!-margin-bottom-3" for="materialsSearch">
+                    Search
+                    </label>
+
+                    <div class="govuk-input__wrapper">
+                    <input
+                        class="govuk-input"
+                        id="materialsSearch"
+                        name="filtersSearch"
+                        type="search"
+                        value="{{ data.filtersSearch | default('') }}"
+                        autocomplete="off">
+
+                    <button class="govuk-button govuk-!-margin-bottom-0" type="submit" data-module="govuk-button">
                         Search
-                        </label>
-
-                        <div class="govuk-input__wrapper">
-                        <input
-                            class="govuk-input"
-                            id="materialsSearch"
-                            name="filtersSearch"
-                            type="search"
-                            value="{{ data.filtersSearch | default('') }}"
-                            autocomplete="off">
-
-                        <button class="govuk-button govuk-!-margin-bottom-0" type="submit" data-module="govuk-button">
-                            Search
-                        </button>
-                        </div>
+                    </button>
                     </div>
-                    </form>
-
                 </div>
+                </form>
+
+            </div>
             </details>
         </div>
     </div>
@@ -56,7 +55,7 @@
 
 
     <!-- MAIN COLUMN -->
-    <div class="govuk-grid-column-full" id="materials_column_2">
+    <div class="govuk-grid-column-three-quarters" id="materials_column_2">
 
         <!-- BREADCRUMBS -->
         <div class="govuk-grid-row">
@@ -344,6 +343,9 @@
         </div>
         {% endif %}
 
+        <!-- <p style="color:red;">
+            DEBUG: filtersSearch="{{ data.filtersSearch }}", flag="{{ data.flag }}", grouped="{{ data.groupedSearchResults | length }}"
+        </p> -->
 
         <!-- SEARCH MODES -->
         {% set searchTerm = data.filtersSearch %}
