@@ -89,9 +89,9 @@
 
             <!-- /////////////// TAB CONTENT 2 - START /////////////// -->
             {% if data['shared_drive_NewFolder'] %}
-                <div class="panel" id="tab-2-content">
+                <div class="panel" id="tab-2-content" style="display: none;">
             {% else %}
-                <div class="panel" id="tab-2-content">
+                <div class="panel" id="tab-2-content" style="display: none;">
             {% endif %}
             {% if data['shared_Drive_Indexing'] == 'true' or data['shared_Drive_Transferring'] == 'true' or data['shared_Drive_Copying'] == 'true' %}
                 {% include "../includes/materials/tab-manage-materials-search-top.html" %}
