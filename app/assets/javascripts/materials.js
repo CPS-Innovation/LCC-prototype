@@ -19,6 +19,7 @@ window.openMaterial = function (event) {
      return false;
 };
 
+
 // Defensive: run after other inits and put our label back
 document.addEventListener('DOMContentLoaded', () => {
      document.querySelectorAll('button.show_material_actions').forEach(btn => {
@@ -1827,3 +1828,6 @@ document.querySelectorAll('.js-material-actions').forEach(menu => {
     else panel.removeAttribute('hidden');
   });
 });
+
+
+

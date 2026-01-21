@@ -6,12 +6,12 @@
         Manage materials on the shared drive - search
     </h2>
 
-    <p class="govuk-body govuk-!-margin-left-3 govuk-!-margin-bottom-6">
+    <p class="govuk-body govuk-!-margin-left-3 govuk-!-margin-bottom-3">
         You can add, rename or remove materials and folders. You can also
         <a class="govuk-link">manage materials and folders on Egress</a>.
     </p>
 
-    <div class="govuk-grid-row">
+    <!-- <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-half-from-desktop">
             <details class="govuk-details govuk-!-margin-top-0 govuk-!-margin-bottom-1 govuk-!-margin-left-3" data-module="govuk-details">
             <summary class="govuk-details__summary">
@@ -48,7 +48,8 @@
             </div>
             </details>
         </div>
-    </div>
+    </div> -->
+    <hr>
 </div>
 
 <div class="govuk-grid-row govuk-!-margin-top-2">
@@ -84,6 +85,7 @@
                 </ol>
             </nav>
         </div>
+
 
         {% if data.materialsMode %}
         <!-- Copy /Move mode active -->
@@ -237,6 +239,46 @@
                     <input type="hidden" name="selectedIsFolder" id="bulkSelectedIsFolder" value="">
                 </form>
 
+            </div>
+        </div>
+
+        <!-- Search module -->
+        <div class="govuk-grid-row govuk-!-margin-bottom-4 govuk-!-margin-top-2">
+            <div class="govuk-grid-column-one-half-from-desktop">
+                <details class="govuk-details govuk-!-margin-top-0 govuk-!-margin-bottom-1 " data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="search-icon-box" aria-hidden="true"></span>
+                    <span class="govuk-details__summary-text ">
+                    Search files and folders 
+                    </span>
+                </summary>
+
+                <div class="govuk-details__text govuk-!-margin-left-0">
+
+                    <form method="post" action="/version-12/B-off-system-MVP/materials-search" novalidate>
+                    <div class="govuk-form-group govuk-!-margin-bottom-2">
+                        <label class="govuk-label govuk-label--s govuk-!-margin-bottom-3" for="materialsSearch">
+                        Search
+                        </label>
+
+                        <div class="govuk-input__wrapper">
+                        <input
+                            class="govuk-input"
+                            id="materialsSearch"
+                            name="filtersSearch"
+                            type="search"
+                            value="{{ data.filtersSearch | default('') }}"
+                            autocomplete="off">
+
+                        <button class="govuk-button govuk-!-margin-bottom-0" type="submit" data-module="govuk-button">
+                            Search
+                        </button>
+                        </div>
+                    </div>
+                    </form>
+
+                </div>
+                </details>
             </div>
         </div>
 
@@ -543,9 +585,14 @@
                     </td>
 
                     <!-- Preview for files -->
-                    <td class="govuk-table__cell toggle-panel">
+                    <!-- <td class="govuk-table__cell toggle-panel">
                         <button type="button" class="govuk-button show_material_actions show-case"
                             data-id="{{ item.id }}" data-doc="{{ item.previewLink }}">
+                            Preview <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                    </td> -->
+                    <td class="govuk-table__cell toggle-panel">
+                        <button type="button" class="govuk-button show_material_actions show-case" data-id="{{ m.id }}" data-doc="{{ m.previewLink }}">
                             Preview <i class="fa-solid fa-chevron-down"></i>
                         </button>
                     </td>

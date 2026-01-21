@@ -2144,4 +2144,40 @@ table#materials_table td .govuk-tag {
 
 
 
+.materials-actions-bar {
+  display: flex;
+  align-items: center; /* THIS is the fix */
+  gap: 10px;
+}
 
+/* Remove GOVUK details default spacing */
+.materials-search-details {
+  margin: 0;
+}
+
+/* Make the summary behave like a button */
+.materials-search-details .govuk-details__summary {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  margin: 0;
+}
+
+/* Remove the default disclosure triangle */
+.materials-search-details .govuk-details__summary::before {
+  display: none;
+}
+
+/* Keep text aligned with buttons */
+.materials-search-details .govuk-details__summary-text {
+  margin: 0;
+  line-height: 1.25;
+}
+
+.materials-search-details .govuk-details__summary {
+  border-bottom: 2px solid transparent;
+}
+
+.materials-search-details[open] .govuk-details__summary {
+  border-bottom-color: #1d70b8; /* GDS link blue */
+}
