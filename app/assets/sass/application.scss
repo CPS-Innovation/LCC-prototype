@@ -5452,3 +5452,7 @@ button.folder-box .folder-icon {
 .folder-row { position: relative; z-index: 5; }
 
 .folder-tree .folder-row { position: relative; z-index: 5; }
+
+
+.hidden_row { display: none; }
+.hidden_row.open { display: table-row; }

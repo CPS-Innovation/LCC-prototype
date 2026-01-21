@@ -83,7 +83,7 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
                             {% endif %}
 
                             {% if flashNewFolderIdSafe and folder.id is defined and (folder.id ~ '') == flashNewFolderIdSafe %}
-                            <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">Renamed</strong>
+                            <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">New folder</strong>
                             {% endif %}
 
                         </button>
@@ -166,15 +166,14 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
             </td>
 
             <td class="govuk-table__cell toggle-panel">
-                <button type="button" class="govuk-button show_material_actions" data-id="{{ m.id }}"
-                    data-doc="{{ m.previewLink }}">
+                <button type="button" class="govuk-button show_material_actions show-case" data-id="{{ m.id }}" data-doc="{{ m.previewLink }}">
                     Preview <i class="fa-solid fa-chevron-down"></i>
                 </button>
             </td>
         </tr>
 
         <tr class="govuk-table__row hidden_row" data-row_id="{{ m.id }}">
-            <td colspan="7">
+            <td colspan="5">
                 <div class="document_holder">
                     <embed src="{{ m.previewLink }}">
                 </div>
