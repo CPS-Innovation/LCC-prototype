@@ -1833,7 +1833,7 @@ main.case-files {
   padding: 30px;
   max-width: 500px;
   width: 90%;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+//   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
   border-top: 5px solid #1d70b8;
   z-index: 1;
 }
@@ -2113,8 +2113,8 @@ table#materials_table td .govuk-tag {
 }
 
 /* Remove the ugly default triangle marker */
-.materials-search-summary::marker{ content: ""; }
-.materials-search-summary::-webkit-details-marker{ display: none; }
+// .materials-search-summary::marker{ content: ""; }
+// .materials-search-summary::-webkit-details-marker{ display: none; }
 
 /* Optional: when open, keep it looking “pressed” */
 .materials-search-details[open] .materials-search-summary{
@@ -2180,4 +2180,826 @@ table#materials_table td .govuk-tag {
 
 .materials-search-details[open] .govuk-details__summary {
   border-bottom-color: #1d70b8; /* GDS link blue */
+}
+
+
+
+#materials_Actions {
+  left: 0;
+}
+
+#show_Materials_Actions {
+  position: relative;
+}
+
+.moj-button-menu { position: relative; }
+#materials_Actions { position: absolute; top: 100%; }
+
+
+
+.order-cell {
+  position: relative;
+  width: 1px;          /* collapse the column */
+  padding: 0;
+}
+
+.order-gutter {
+  position: absolute;
+  left: -160px;        /* how far outside the table */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 150px;
+}
+
+.order-actions {
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.order-actions a {
+  text-decoration: underline;
+}
+
+.order-actions .divider {
+  margin: 0 6px;
+  color: #b1b4b6;
+}
+
+/* The cell exists so the table aligns, but it's visually "empty" */
+.order-cell {
+  position: relative;
+  width: 1px;
+  padding: 0;
+  overflow: visible;
+}
+
+/* Header needs to exist but not eat space */
+.order-cell-header {
+  width: 1px;
+  padding: 0;
+  white-space: nowrap;
+}
+
+/* The thing that sits outside */
+.order-gutter {
+  position: absolute;
+  left: -220px;           /* tweak this */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 210px;           /* tweak this */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+
+/* Keep Move links on one line */
+// .order-actions {
+//   white-space: nowrap;
+//   display: inline-flex;
+//   align-items: center;
+//   gap: 8px;
+// }
+
+.order-actions {
+  display: grid;
+  grid-template-columns: 4ch auto;
+  align-items: center;
+  column-gap: 8px;
+}
+.order-actions .divider {
+  color: #b1b4b6;
+}
+
+.order-actions a {
+  margin-left: 4px;
+}
+
+.materials-table-wrapper {
+  position: relative;
+  padding-left: 220px; /* width of the gutter */
+}
+
+.order-input{
+  width: 3.5ch;
+  min-width: 3.5ch;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+}
+
+// .order-input{
+//   text-align: right;
+//   width: 3.5ch;      /* ~1–2 digits */
+//   min-width: 3.5ch;      /* allow it to actually shrink */
+//   max-width: 4ch;      /* allow it to actually shrink */
+//   padding: 4px 6px;  /* keep it usable */
+//   height: auto;
+//   line-height: 1.2;
+//   box-sizing: border-box;
+//   flex: 0 0 auto;
+// }
+
+/* the whole gutter (input + links) */
+.order-gutter{
+  display: grid;
+  grid-template-columns: 64px 1fr; /* left = order box, right = links */
+  align-items: center;
+  column-gap: 12px;
+}
+
+
+
+/* stop the links wrapping into two lines */
+.order-links{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+/* optional: make the divider look intentional */
+.order-links .divider{
+  color: #b1b4b6;
+}
+
+/* keep the number aligned right */
+.order-input{
+  text-align: right;
+}
+
+
+
+.materials-table-wrapper.has-order-gutter{
+  position: relative;
+  padding-left: 220px;
+}
+.materials-table-wrapper.has-order-gutter table{
+  width: 100%;
+}
+.order-cell{
+  position: relative;
+  width: 0;
+  padding-left: 0;
+}
+.order-gutter{
+  position: absolute;
+  left: -255px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 200px;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  align-items: center;
+  column-gap: 12px;
+}
+.order-input{ text-align: right; }
+
+
+
+
+
+/* =========================================================
+   MATERIALS TOOLBAR (Search + Actions + New folder)
+   ========================================================= */
+
+// .materials-toolbar {
+//   display: flex;
+//   align-items: flex-start; /* important: details can grow down */
+//   gap: 16px;
+//   flex-wrap: nowrap;
+// }
+
+// /* Search stays left, doesn’t shrink into a sad little blob */
+// .materials-toolbar__search,
+// .materials-search {
+//   flex: 0 0 auto;
+//   margin: 0;
+// }
+
+// /* Actions sits to the right of search */
+// .materials-toolbar__actions {
+//   margin-left: auto;        /* pushes actions group to the right */
+//   display: inline-flex;
+//   align-items: flex-start;  /* match search */
+//   gap: 12px;
+// }
+
+// /* Remove any random wrapper spacing that forces stacking */
+// .materials-toolbar__actions .info_wrapper,
+// .materials-toolbar__actions .actions_holder {
+//   margin: 0 !important;
+//   padding: 0 !important;
+// }
+
+// /* =========================================================
+//    DETAILS SUMMARY (Search files and folders)
+//    ========================================================= */
+
+// .materials-search.govuk-details {
+//   margin: 0;
+// }
+
+// .materials-search .govuk-details__summary {
+//   display: inline-flex;
+//   align-items: center;
+//   gap: 10px;
+//   margin: 0;
+//   white-space: nowrap; /* keep the label on one line */
+// }
+
+// /* keep text inline */
+// .materials-search .govuk-details__summary-text {
+//   display: inline-flex;
+//   align-items: center;
+//   gap: 10px;
+//   white-space: nowrap;
+// }
+
+// /* Blue icon box */
+// .materials-search .search-icon-box {
+//   width: 48px;
+//   height: 48px;
+//   display: inline-flex;
+//   align-items: center;
+//   justify-content: center;
+//   background: #1d70b8;
+//   color: #fff;
+//   flex: 0 0 auto;
+// }
+
+// .materials-search .search-icon-box svg {
+//   width: 28px;
+//   height: 28px;
+// }
+
+// /* IMPORTANT: details body must remain in normal flow (push content down) */
+// .materials-search .govuk-details__text {
+//   position: static !important;
+//   width: auto;
+//   left: auto;
+//   top: auto;
+//   z-index: auto;
+// }
+
+// /* =========================================================
+//    MOJ BUTTON MENU (Actions on selection dropdown)
+//    ========================================================= */
+
+// .materials-toolbar .moj-button-menu {
+//   position: relative;     /* anchor for dropdown */
+//   display: inline-flex;
+//   align-items: flex-start;
+//   gap: 8px;
+// }
+
+// /* The dropdown panel itself */
+// .materials-toolbar #materials_Actions {
+//   position: absolute;
+//   top: calc(100% + 6px);
+//   left: 0;
+//   z-index: 2000;
+//   width: max-content;
+//   display: none;          /* default closed */
+// }
+
+// /* When your JS toggles it open (jQuery .toggle() sets inline display) */
+// .materials-toolbar #materials_Actions[style*="display: block"] {
+//   display: block;
+// }
+
+// /* When hidden, do not intercept clicks (prevents “nothing is clickable”) */
+// .materials-toolbar #materials_Actions:not([style*="display: block"]) {
+//   pointer-events: none;
+// }
+// .materials-toolbar #materials_Actions[style*="display: block"] {
+//   pointer-events: auto;
+// }
+
+// /* Put toolbar above random overlapping layers */
+// .materials-toolbar,
+// .govuk-breadcrumbs {
+//   position: relative;
+//   z-index: 50;
+// }
+
+// /* Toolbar row: keep items pinned to the top */
+// .materials-toolbar{
+//   display: flex;
+//   gap: 16px;
+//   align-items: flex-start; /* <-- KEY: stops buttons moving down */
+// }
+
+// /* Actions area should sit at the top too */
+// .materials-toolbar__actions{
+//   margin-left: auto;
+//   align-self: flex-start;
+//   display: inline-flex;
+//   gap: 12px;
+//   align-items: flex-start;
+// }
+
+// /* Keep details behaving like a normal block that expands downward */
+// .materials-toolbar .materials-search{
+//   margin: 0;
+//   flex: 0 0 auto;
+// }
+
+// .materials-toolbar .info_wrapper,
+// .materials-toolbar .actions_holder{
+//   margin: 0 !important;
+//   padding: 0 !important;
+//   align-self: flex-start;
+// }
+
+
+
+// .materials-toolbar{
+//   display:flex;
+//   gap:16px;
+//   align-items:flex-start; /* key: stop the buttons dropping */
+// }
+
+// .materials-toolbar__search{
+//   flex:0 0 auto;
+// }
+
+// .materials-toolbar__actions{
+//   flex:0 0 auto;
+//   display:flex;
+//   gap:12px;
+//   align-items:flex-start;
+// }
+
+// /* keep summary text on one line */
+// .materials-search .govuk-details__summary-text{
+//   white-space:nowrap;
+// }
+
+// /* keep your icon box behaving */
+// .materials-search .search-icon-box{
+//   display:inline-flex;
+//   align-items:center;
+//   justify-content:center;
+//   width:48px;
+//   height:48px;
+//   background:#1d70b8;
+//   color:#fff;
+//   margin-right:10px;
+// }
+
+
+// /* One toolbar row */
+// .materials-toolbar{
+//   display: flex;
+//   align-items: flex-start;  /* so details can open downward */
+//   gap: 16px;
+//   flex-wrap: nowrap;
+//   justify-content: flex-start; /* IMPORTANT: prevents "run to the right" */
+// }
+
+// /* Search block stays its natural width */
+// .materials-toolbar__search{
+//   flex: 0 0 auto;
+// }
+
+// /* Actions MUST NOT auto-push right */
+// .materials-toolbar__actions{
+//   flex: 0 0 auto;
+//   margin-left: 0 !important;   /* KILLS the push-right behaviour */
+//   display: flex;
+//   align-items: center;
+//   gap: 12px;
+// }
+
+// /* remove weird spacing inside GOVUK details */
+// .materials-toolbar .govuk-details{
+//   margin: 0;
+// }
+
+// /* Keep the summary on one line */
+// .materials-toolbar .govuk-details__summary-text{
+//   white-space: nowrap;
+//   display: inline-flex;
+//   align-items: center;
+//   gap: 10px;
+// }
+
+// /* Icon box */
+// .materials-toolbar .search-icon-box{
+//   width: 48px;
+//   height: 48px;
+//   display: inline-flex;
+//   align-items: center;
+//   justify-content: center;
+//   background: #1d70b8;
+//   color: #fff;
+//   flex: 0 0 auto;
+// }
+
+// .materials-toolbar .search-icon-box svg{
+//   width: 28px;
+//   height: 28px;
+// }
+
+// /* Let details text take full width and push content down */
+// .materials-toolbar__search details{
+//   display: block;
+// }
+// .materials-toolbar__search .govuk-details__text{
+//   position: static !important;
+//   width: auto !important;
+// }
+
+
+// /* Toolbar row */
+// .materials-toolbar{
+//   display:flex;
+//   align-items:flex-start;
+//   gap:16px;
+//   position:relative; /* anchor for the absolute panel */
+// }
+
+// /* Search summary stays compact */
+// .materials-toolbar__search{
+//   flex:0 0 auto;
+// }
+
+// /* Buttons sit next to search and NEVER move */
+// .actions_holder{
+//   flex:0 0 auto;
+//   margin:0;
+// }
+
+// /* Make sure the details itself doesn't grow with the panel */
+// .materials-search{
+//   margin:0;
+//   position:relative;
+// }
+
+// /* Summary: one line */
+// .materials-search .govuk-details__summary-text{
+//   display:inline-flex;
+//   align-items:center;
+//   gap:10px;
+//   white-space:nowrap;
+// }
+
+// /* Your icon box */
+// .materials-search .search-icon-box{
+//   width:44px;
+//   height:44px;
+//   display:inline-flex;
+//   align-items:center;
+//   justify-content:center;
+//   background:#1d70b8;
+//   color:#fff;
+//   flex:0 0 auto;
+// }
+// .materials-search .search-icon-box svg{
+//   width:28px;
+//   height:28px;
+// }
+
+// /* ✅ The expanded panel: wide, and does NOT affect layout width */
+// .materials-search .govuk-details__text{
+//   position:absolute;
+//   top:100%;
+//   left:0;
+//   margin-top:8px;
+
+//   width:min(720px, calc(100vw - 48px)); /* make it wide */
+//   z-index:20;
+//   background:#fff; /* so it doesn’t look like it’s floating over chaos */
+// }
+
+// /* Optional: little shadow so it reads as a panel */
+// .materials-search[open] .govuk-details__text{
+//   box-shadow:0 2px 8px rgba(0,0,0,.15);
+// }
+
+// /* Keep the buttons from being overlapped by anything weird */
+// .materials-toolbar > *{
+//   position:relative;
+//   z-index:10;
+// }
+// .materials-search[open]{
+//   z-index:30; /* open panel sits above the toolbar line */
+// }
+
+
+
+
+/* DEBUG: show anything that could be an overlay */
+// .hidden_buttons,
+// #materials_Actions,
+// .govuk-details__text,
+// .materials-toolbar,
+// .govuk-breadcrumbs,
+// .govuk-grid-row,
+// .govuk-grid-column-full {
+//   outline: 2px solid rgba(255, 0, 0, 0.2);
+// }
+
+
+
+.materials-toolbar{
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+}
+
+/* Keep <details> from becoming a full-width block that shoves everything */
+.materials-toolbar__search .materials-search{
+  display:inline-block;
+  margin:0;
+  position:relative; /* anchor the dropdown panel */
+}
+
+/* Summary on one line */
+.materials-toolbar__search .govuk-details__summary-text{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  white-space:nowrap;
+}
+
+/* Your blue icon box */
+.materials-toolbar__search .search-icon-box{
+  width:44px;
+  height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:#1d70b8;
+  color:#fff;
+  flex:0 0 auto;
+}
+
+.materials-toolbar__search .search-icon-box svg{
+  width:28px;
+  height:28px;
+}
+
+/* Buttons stay next to search (do NOT auto-push to the far right) */
+.materials-toolbar .actions_holder{
+  margin:0;
+  flex:0 0 auto;
+}
+
+/* Expanded panel: wide, not affecting layout */
+.materials-toolbar__search .materials-search .govuk-details__text{
+  position:absolute;
+  top:100%;
+  left:0;
+  margin-top:8px;
+
+  /* Wide panel, independent of summary width */
+  width: clamp(520px, 60vw, 920px);
+
+  z-index:50;
+  background:#fff;
+//   box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+/* Spacer that pushes the table down when open */
+.materials-toolbar__spacer{
+  height:0;
+}
+
+/* Put toolbar above random overlapping layers */
+.materials-toolbar,
+.govuk-breadcrumbs {
+  position: relative;
+  z-index: 50;
+}
+
+.materials-toolbar {
+  display: flex;
+  align-items: center;   /* ← THIS is the key line */
+  gap: 16px;
+}
+
+.materials-toolbar .govuk-details__summary {
+  display: flex;
+  align-items: center;   /* align icon + text vertically */
+  padding: 0;
+}
+
+.materials-toolbar .search-icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.materials-table-wrapper {
+  position: relative;
+  padding-left: 0;
+}
+
+.order-cell {
+  position: relative;
+  width: 220px; /* gutter width */
+}
+
+.order-gutter {
+  position: relative;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Stop the "order gutter" shifting the whole table */
+.materials-table-wrapper.has-order-gutter {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+/* Make sure the table itself isn't being nudged */
+.materials-table-wrapper .govuk-table {
+  margin-left: 0 !important;
+}
+
+/* Keep the gutter content inside the order cell */
+.govuk-table .order-cell .order-gutter {
+  position: static !important;
+  left: auto !important;
+  transform: none !important;
+}
+
+/* Make the details marker behave and NOT sit on top of your icon */
+.materials-search > summary.govuk-details__summary {
+  position: relative;
+  padding-left: 22px;              /* space for the marker */
+}
+
+/* Put the marker in the left padding area */
+.materials-search > summary.govuk-details__summary::marker {
+  font-size: 1.1em;
+}
+
+/* Chrome/Safari: stop the marker drifting into your flex content */
+.materials-search > summary.govuk-details__summary::-webkit-details-marker {
+//   position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.materials-search .search-icon-box{
+  flex: 0 0 auto;
+  margin-left: 0;     /* keep it predictable */
+}
+
+.materials-aligned {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+
+
+/* =========================
+   ORDER GUTTER SPACING FIX
+   ========================= */
+
+/* The whole left "order gutter" block: give it breathing room from the checkbox column */
+.order-cell .order-gutter {
+  padding-right: 16px;          /* pushes checkbox column away */
+  column-gap: 8px;
+}
+
+/* If you're using flex inside .order-gutter, make sure it behaves */
+.order-cell .order-gutter {
+  display: flex;
+  align-items: center;
+}
+
+/* Keep the number input + links nicely grouped */
+.order-cell .order-input {
+  width: 3.5ch;                /* you wanted this back */
+  min-width: 3.5ch;
+}
+
+/* Links: reduce spacing between "Move up" and divider and "Move down" */
+.order-cell .order-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;                    /* tighter links */
+  white-space: nowrap;
+}
+
+/* Divider: don't waste space */
+.order-cell .order-links .divider {
+  margin: 0 2px;               /* tiny breathing room */
+}
+
+/* Optional: stop the checkbox column from shrinking into weirdness */
+#materials_table th:nth-child(2),
+#materials_table td:nth-child(2) {
+  padding-left: 12px;          /* gives checkbox column its own space */
+}
+
+.order-links {
+  display: inline-flex;
+  align-items: center;      /* key line */
+  gap: 6px;
+}
+
+.order-links a,
+.order-links .divider {
+  display: inline-flex;
+  align-items: center;      /* force same vertical centre */
+  height: 1.5em;            /* normalise height */
+  line-height: 1;           /* kill baseline drift */
+}
+
+#materials_table tbody tr:first-child .order-links a:first-child {
+  visibility: hidden;
+}
+
+#materials_table tbody tr.material-row:last-of-type .order-links a:last-child {
+  visibility: hidden;
+}
+
+.materials-table-wrapper {
+  margin-top: 16px; /* or 20px if you want it airier */
+}
+
+/* Add breathing room between toolbar row and table */
+.materials-toolbar {
+  margin-bottom: 35px !important;
+}
+
+
+/* Remove GOV.UK details panel styling */
+.materials-search.govuk-details {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+/* Remove grey inset effect */
+.materials-search .govuk-details__text {
+  background: transparent;
+  border: 0;
+  padding: 12px 0 0 0; /* small gap under summary */
+}
+
+/* Narrow the search input */
+.materials-search .govuk-input {
+  width: 16rem;          /* try 18–22rem */
+}
+
+.materials-search .govuk-input__wrapper {
+  align-items: center;
+}
+
+.materials-search .govuk-button {
+  white-space: nowrap;
+}
+
+.materials-toolbar {
+  align-items: center; /* vertical alignment */
+}
+
+/* Search expands BELOW, not sideways */
+.materials-toolbar__search {
+  align-self: flex-start;
+}
+
+.materials-search summary {
+  cursor: pointer;
+}
+
+.materials-search summary:hover .govuk-details__summary-text {
+  text-decoration: underline;
+}
+
+/* Reset GOVUK details container */
+.materials-search.govuk-details {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Restore the left grey ruler only */
+.materials-search .govuk-details__text {
+  border-left: 5px solid #b1b4b6; /* GOV.UK grey */
+  background: transparent;
+  box-shadow: none;
+  padding: 15px 0 0 15px; /* space from the ruler */
+  margin: 10px 0 0 0;
+}
+
+
+/* Reduce search input width without affecting layout */
+.materials-search .govuk-input {
+  width: 66%;
+  max-width: 30rem; /* safety cap so it never goes huge */
+}
+
+.materials-search .govuk-details__text {
+  padding-bottom: 20px;
 }
