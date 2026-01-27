@@ -451,11 +451,16 @@
                                 <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
                                     inputmode="numeric" value="{{ item.order or '' }}">
 
-                                <div class="order-links">
+                                <div class="order-links" aria-hidden="true">
+                                    <span class="govuk-link move-link is-disabled">Move up</span>
+                                    <span class="divider" aria-hidden="true">|</span>
+                                    <span class="govuk-link move-link is-disabled">Move down</span>
+                                </div>
+                                <!-- <div class="order-links">
                                     <a class="govuk-link" href="#">Move up</a>
                                     <span class="divider" aria-hidden="true">|</span>
                                     <a class="govuk-link" href="#">Move down</a>
-                                </div>
+                                </div> -->
                             </div>
                         </td>
 
