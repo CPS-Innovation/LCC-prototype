@@ -3003,3 +3003,29 @@ table#materials_table td .govuk-tag {
 .materials-search .govuk-details__text {
   padding-bottom: 20px;
 }
+
+
+/* Keep the order gutter content confined to its own cell */
+.order-cell .order-gutter {
+  position: relative;
+  overflow: hidden; /* stops stray overlap */
+}
+
+/* Keep the links tight and NOT full-width */
+.order-cell .order-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  max-width: max-content;
+}
+
+/* Make sure the links aren't turning into a massive invisible click layer */
+.order-cell .order-links a {
+  display: inline;
+}
+
+/* Make Move up/Move down look like links, but do absolutely nothing */
+.order-links a{
+  pointer-events: none;
+}

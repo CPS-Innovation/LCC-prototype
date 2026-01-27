@@ -1930,25 +1930,48 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-function populateOrderInputs() {
-     const rows = document.querySelectorAll(
-          '#materials_table tbody tr.material-row'
-     );
 
+
+
+// ----------------------------------------------------
+// Auto-populate the order inputs (1..n)
+// ----------------------------------------------------
+function populateOrderInputs({ force = false } = {}) {
+     const rows = document.querySelectorAll('#materials_table tbody tr.material-row');
      let order = 1;
 
-     rows.forEach(row => {
+     rows.forEach((row) => {
           const input = row.querySelector('.order-input');
           if (!input) return;
 
-          input.value = order;
+          const current = String(input.value || '').trim();
+
+          // Only fill blanks unless forcing overwrite
+          if (force || current === '') {
+               input.value = order;
+          }
+
           order++;
      });
 }
 
-// Run on page load
-document.addEventListener('DOMContentLoaded', populateOrderInputs);
+const _populateOrderInputs = populateOrderInputs;
+populateOrderInputs = function (...args) {
+     console.trace('populateOrderInputs CALLED with:', args);
+     return _populateOrderInputs.apply(this, args);
+};
 
-document.addEventListener('DOMContentLoaded', function () {
-  populateOrderInputs();
-});
+// ----------------------------------------------------
+// Page init
+// ----------------------------------------------------
+function initMaterialsPage() {
+     // Run ONCE on load.
+     // Use force:true if you want to overwrite whatever's already there.
+     populateOrderInputs();
+
+     // Any other init code you need can go here.
+     // initThing(); // uncomment if/when it becomes real
+}
+
+document.addEventListener('DOMContentLoaded', initMaterialsPage);
+
