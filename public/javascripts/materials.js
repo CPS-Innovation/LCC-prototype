@@ -1977,6 +1977,50 @@ document.addEventListener('DOMContentLoaded', initMaterialsPage);
 
 
 
+// (function () {
+//      const renameForm = document.getElementById('renameForm');
+//      const renameBtn = document.getElementById('renameButton');
+//      const renameIdsInput = document.getElementById('rename_selected_ids');
+
+//      function getSelected() {
+//           return Array.from(document.querySelectorAll('.js-material-checkbox:checked'))
+//                .map(cb => cb.value);
+//      }
+
+//      function setRenameEnabled() {
+//           const selected = getSelected();
+//           const enabled = selected.length > 0;
+
+//           // GOVUK "disabled" styling you already use
+//           renameBtn.classList.toggle('govuk-button--disabled', !enabled);
+
+//           // Also make it actually disabled (stops submits)
+//           renameBtn.disabled = !enabled;
+
+//           renameIdsInput.value = selected.join(',');
+//      }
+
+//      document.addEventListener('change', function (e) {
+//           if (e.target.classList && e.target.classList.contains('js-material-checkbox')) {
+//                setRenameEnabled();
+//           }
+//      });
+
+//      // Ensure it’s set correctly on load (in case of back nav, etc.)
+//      setRenameEnabled();
+
+//      renameForm.addEventListener('submit', function (e) {
+//           const selected = getSelected();
+//           if (selected.length === 0) {
+//                e.preventDefault();
+//                return;
+//           }
+//           renameIdsInput.value = selected.join(',');
+//      });
+// })();
+
+
+// Rename multiple materials from Actions on selection
 (function () {
      const renameForm = document.getElementById('renameForm');
      const renameBtn = document.getElementById('renameButton');
@@ -1991,30 +2035,88 @@ document.addEventListener('DOMContentLoaded', initMaterialsPage);
           const selected = getSelected();
           const enabled = selected.length > 0;
 
-          // GOVUK "disabled" styling you already use
           renameBtn.classList.toggle('govuk-button--disabled', !enabled);
-
-          // Also make it actually disabled (stops submits)
           renameBtn.disabled = !enabled;
 
-          renameIdsInput.value = selected.join(',');
+          if (renameIdsInput) renameIdsInput.value = selected.join(',');
      }
 
+     // When any row checkbox changes
      document.addEventListener('change', function (e) {
           if (e.target.classList && e.target.classList.contains('js-material-checkbox')) {
                setRenameEnabled();
           }
+
+          // When Select all changes, wait a tick for it to toggle the row checkboxes
+          if (e.target.classList && e.target.classList.contains('js-select-all')) {
+               setTimeout(setRenameEnabled, 0);
+          }
      });
 
-     // Ensure it’s set correctly on load (in case of back nav, etc.)
+     // On load
      setRenameEnabled();
 
-     renameForm.addEventListener('submit', function (e) {
-          const selected = getSelected();
-          if (selected.length === 0) {
-               e.preventDefault();
+     // Before submit, ensure IDs are up to date
+     if (renameForm) {
+          renameForm.addEventListener('submit', function (e) {
+               const selected = getSelected();
+               if (!selected.length) {
+                    e.preventDefault();
+                    return;
+               }
+               if (renameIdsInput) renameIdsInput.value = selected.join(',');
+          });
+     }
+})();
+
+
+// Tick the select all checkbox appropriately
+(function () {
+     function syncSelectAll() {
+          const selectAll = document.querySelector('.js-select-all');
+          if (!selectAll) return;
+
+          const boxes = Array.from(document.querySelectorAll('.js-material-checkbox'))
+               .filter(cb => !cb.disabled);
+
+          const total = boxes.length;
+          const checked = boxes.filter(cb => cb.checked).length;
+
+          if (total === 0 || checked === 0) {
+               selectAll.checked = false;
+               selectAll.indeterminate = false;
                return;
           }
-          renameIdsInput.value = selected.join(',');
+
+          if (checked === total) {
+               selectAll.checked = true;
+               selectAll.indeterminate = false;
+               return;
+          }
+
+          selectAll.checked = false;
+          selectAll.indeterminate = true;
+     }
+
+     // Catch-all: after any click in the table, update the header state
+     document.addEventListener('click', function (e) {
+          if (e.target.closest('#materials_table')) {
+               setTimeout(syncSelectAll, 0);
+          }
      });
+
+     // Also handle keyboard toggles (space on checkbox) which may not trigger click consistently
+     document.addEventListener('change', function (e) {
+          if (e.target.classList &&
+               (e.target.classList.contains('js-material-checkbox') || e.target.classList.contains('js-select-all'))) {
+               setTimeout(syncSelectAll, 0);
+          }
+     });
+
+     // Initial sync
+     if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', syncSelectAll);
+     } else {
+          syncSelectAll();
+     }
 })();
