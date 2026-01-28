@@ -130,18 +130,22 @@
                                         </button>
                                     </form>
 
-                                    <form method="post" action="/version-12/B-off-system-MVP/rename-from-list"
+                                    <!-- <form method="post" action="/version-12/B-off-system-MVP/rename-from-list"
                                         id="renameForm">
-                                        <!-- <input type="hidden" name="material_selected" id="rename_selected"> -->
                                         <button id="renameButton" class="govuk-button govuk-button--disabled"
                                             data-action="rename">
                                             Rename
                                         </button>
-                                    </form>
+                                    </form> -->
 
-                                    <!-- <button id="renameButton" class="govuk-button govuk-button--disabled">
+                                    <form method="post" action="/version-12/B-off-system-MVP/rename-from-list"
+                                        id="renameForm">
+                                        <input type="hidden" name="selected_ids" id="rename_selected_ids" value="">
+                                        <button id="renameButton" class="govuk-button govuk-button--disabled"
+                                            type="submit">
                                             Rename
-                                        </button> -->
+                                        </button>
+                                    </form>
 
                                     <button class="govuk-button mark_as_Read" type="button">
                                         Mark as read
@@ -491,10 +495,13 @@
                                         <span class="icon-new folder"></span>
                                         {{ item.name }}
 
-                                        {% if flashRenamedId and (item.id | string) == flashRenamedId %}
+                                        {% if data.flashRenamedIds and (item.id | string) in data.flashRenamedIds %}
+                                        <strong class="govuk-tag govuk-tag--green govuk-!margin-left-1">Renamed</strong>
+                                        {% endif %}
+                                        <!-- {% if flashRenamedId and (item.id | string) == flashRenamedId %}
                                         <strong
                                             class="govuk-tag govuk-tag--green govuk-!-margin-left-1">Renamed</strong>
-                                        {% endif %}
+                                        {% endif %} -->
                                         {% if flashNewFolderId and (item.id | string) == flashNewFolderId %}
                                         <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">New
                                             folder</strong>
@@ -569,8 +576,8 @@
                                 <strong class="govuk-tag govuk-tag--blue">Unread</strong>
                                 {% endif %}
 
-                                {% if flashRenamedId and (item.id | string) == flashRenamedId %}
-                                <strong class="govuk-tag govuk-tag--green">Renamed</strong>
+                                {% if data.flashRenamedIds and (item.id | string) in data.flashRenamedIds %}
+                                <strong class="govuk-tag govuk-tag--green govuk-!margin-left-1">Renamed</strong>
                                 {% endif %}
 
                             </div>
