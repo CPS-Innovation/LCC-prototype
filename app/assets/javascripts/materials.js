@@ -52,179 +52,95 @@ document.addEventListener("DOMContentLoaded", function () {
      const table = document.getElementById("materials_table");
      if (!table) return;
 
-     // ✅ Only buttons that explicitly opt-in to sorting
-     const headerButtons = table.querySelectorAll('thead th [data-sort]');
-
-     // Column indexes in the actual table:
-     // 0 = Order gutter
-     // 1 = Checkbox
-     // 2 = File or folder
-     // 3 = Description
-     // 4 = Category
-     const COL_INDEX = {
-          name: 2,
-          description: 3,
-          category: 4
-     };
+     // Any clickable header with data-sort
+     const headerButtons = table.querySelectorAll("thead [data-sort]");
+     if (!headerButtons.length) return;
 
      const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
 
-     headerButtons.forEach(btn => {
-          const key = btn.getAttribute("data-sort");
-          const col = COL_INDEX[key];
-          if (col === undefined) return;
+     function cleanText(el) {
+          if (!el) return "";
+          const clone = el.cloneNode(true);
 
-          let dir = 1; // 1 asc, -1 desc
-          btn.style.cursor = "pointer";
+          // remove tags/badges etc that mess with sort
+          clone.querySelectorAll(".govuk-tag").forEach(n => n.remove());
+
+          return (clone.innerText || clone.textContent || "").replace(/\s+/g, " ").trim();
+     }
+
+     function getSortableText(row, colIndex, key) {
+          const cell = row.cells[colIndex];
+          if (!cell) return "";
+
+          // If sorting by name, prefer the visible title element you actually show users
+          if (key === "name") {
+               // common patterns in your markup
+               const openMe = cell.querySelector(".openMe");
+               if (openMe) return cleanText(openMe);
+
+               const btnOrLink = cell.querySelector("button.govuk-button--link, button.show-case, a.govuk-link");
+               if (btnOrLink) return cleanText(btnOrLink);
+
+               return cleanText(cell);
+          }
+
+          return cleanText(cell);
+     }
+
+     function buildBlocks(tbody) {
+          const rows = Array.from(tbody.rows);
+          const blocks = [];
+
+          for (let i = 0; i < rows.length; i++) {
+               const main = rows[i];
+
+               // Your preview rows are usually class hidden_row
+               if (main.classList.contains("hidden_row")) continue;
+
+               const block = [main];
+               const next = rows[i + 1];
+
+               if (next && next.classList.contains("hidden_row")) {
+                    block.push(next);
+                    i++;
+               }
+
+               blocks.push(block);
+          }
+
+          return blocks;
+     }
+
+     headerButtons.forEach(btn => {
+          let dir = 1;
 
           btn.addEventListener("click", function (e) {
                e.preventDefault();
+               e.stopPropagation();
 
-               const tbody = table.querySelector("tbody");
-               const rows = Array.from(tbody.rows);
+               const th = btn.closest("th");
+               if (!th) return;
 
-               // Keep preview rows attached to their main row
-               const blocks = [];
-               for (let i = 0; i < rows.length; i++) {
-                    const main = rows[i];
-                    if (main.classList.contains("hidden_row")) continue;
+               const key = btn.getAttribute("data-sort") || ""; // e.g. name/description/category
+               const colIndex = th.cellIndex;
 
-                    const block = [main];
-                    const next = rows[i + 1];
-                    if (next && next.classList.contains("hidden_row")) {
-                         block.push(next);
-                         i++;
-                    }
-                    blocks.push(block);
-               }
+               const tbody = table.tBodies[0];
+               if (!tbody) return;
 
-               const getCellText = (row, index) => {
-                    const cell = row.cells[index];
-                    if (!cell) return "";
-
-                    // For "File or folder", prefer the visible name in your title cell
-                    if (index === COL_INDEX.name) {
-                         const openMe = cell.querySelector(".openMe");
-                         const t = openMe ? openMe.innerText : cell.innerText;
-                         return (t || "").trim();
-                    }
-
-                    return (cell.innerText || "").trim();
-               };
+               const blocks = buildBlocks(tbody);
 
                blocks.sort((A, B) => {
-                    const aRow = A[0], bRow = B[0];
-                    return collator.compare(getCellText(aRow, col), getCellText(bRow, col)) * dir;
+                    const a = getSortableText(A[0], colIndex, key);
+                    const b = getSortableText(B[0], colIndex, key);
+                    return collator.compare(a, b) * dir;
                });
 
                blocks.forEach(block => block.forEach(r => tbody.appendChild(r)));
 
-               // Flip direction after sort
                dir *= -1;
-
-               // Clear arrows
-               headerButtons.forEach(h => {
-                    h.textContent = h.textContent.replace(/[▲▼]/g, '').trim();
-               });
-
-               // Add arrow to active header
-               btn.textContent = btn.textContent.replace(/[▲▼]/g, '').trim() + (dir === -1 ? ' ▼' : ' ▲');
           });
      });
 });
-
-
-
-// document.addEventListener("DOMContentLoaded", function () {
-//      const table = document.getElementById("materials_table");
-//      if (!table) return;
-
-//      const headerButtons = table.querySelectorAll('thead th .govuk-button[data-sort]');
-
-//      // Header text → actual column index in your table
-//      const COL_INDEX = { "File or folder": 1, "Last updated": 2, "Status": 3 };
-
-//      // Attach handlers only to the 3 sortable headers
-//      headerButtons.forEach(btn => {
-//           const label = btn.textContent.trim();
-//           if (!COL_INDEX[label]) return; // skip checkbox/empty columns
-
-//           let dir = 1; // 1 = ASC, -1 = DESC
-//           btn.style.cursor = "pointer";
-
-//           btn.addEventListener('click', function (e) {
-
-//                // Must be the button itself
-//                if (e.currentTarget !== btn) return;
-
-//                e.preventDefault();
-
-//                const col = COL_INDEX[label];
-//                const tbody = table.querySelector("tbody");
-//                const rows = Array.from(tbody.rows);
-
-//                // Build row blocks so a main row stays with its following hidden preview row (if any)
-//                const blocks = [];
-//                for (let i = 0; i < rows.length; i++) {
-//                     const main = rows[i];
-//                     const block = [main];
-//                     const next = rows[i + 1];
-//                     if (next && next.classList.contains("hidden_row")) {
-//                          block.push(next);
-//                          i++;
-//                     }
-//                     // guard: skip stray hidden rows that don't follow a main row
-//                     if (!main.classList.contains("hidden_row")) blocks.push(block);
-//                }
-
-//                const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
-
-//                const getCellText = (row, index) => {
-//                     const cell = row.cells[index];
-//                     if (!cell) return "";
-//                     // For Material, prefer the visible name inside .openMe
-//                     if (index === COL_INDEX["Material"]) {
-//                          const t = cell.querySelector(".openMe")?.innerText || cell.innerText;
-//                          return t.trim();
-//                     }
-//                     // Status cell contains a <strong> tag – innerText is fine
-//                     return cell.innerText.trim();
-//                };
-
-//                const parseUKDate = (str) => {
-//                     // e.g. "12 Nov 2025"
-//                     // Using Date with "Mon D, YYYY" is reliable
-//                     const [d, m, y] = str.split(" ");
-//                     return new Date(`${m} ${d}, ${y}`).getTime() || 0;
-//                };
-
-//                blocks.sort((A, B) => {
-//                     const aRow = A[0], bRow = B[0];
-
-//                     if (col === COL_INDEX["Last updated"]) {
-//                          return (parseUKDate(getCellText(aRow, col)) - parseUKDate(getCellText(bRow, col))) * dir;
-//                     } else {
-//                          return collator.compare(getCellText(aRow, col), getCellText(bRow, col)) * dir;
-//                     }
-//                });
-
-//                // Re-attach in new order (preserving preview rows)
-//                blocks.forEach(block => block.forEach(r => tbody.appendChild(r)));
-
-//                // Toggle direction
-//                dir *= -1;
-
-//                // Remove any existing arrows from all headers
-//                headerButtons.forEach(h => {
-//                     // Reset to original label only (strip arrows if any)
-//                     h.textContent = h.textContent.replace(/[▲▼]/g, '').trim();
-//                });
-
-//                // Append a single arrow to the active header
-//                btn.textContent = btn.textContent.replace(/[▲▼]/g, '').trim() + (dir === -1 ? ' ▼' : ' ▲');
-//           });
-//      });
-// });
 
 
 
@@ -264,52 +180,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-// ---------------------------
-// Rename using selected item
-// ---------------------------
-// document.addEventListener('DOMContentLoaded', function () {
-
-//     const renameBtn = document.getElementById('renameButton');
-//     if (!renameBtn) return;
-
-//     renameBtn.addEventListener('click', function (e) {
-//         e.preventDefault();
-
-//         const selected = document.querySelector('input[name="materials_document"]:checked');
-
-//         if (!selected) {
-//             console.warn("Rename attempted but no material selected");
-//             alert("Select one file or folder to rename.");
-//             return;
-//         }
-
-//         // ID now comes from the checkbox VALUE
-//         const materialId = selected.value;
-
-//         window.location.href = `/version-11/B-off-system-MVP/rename?id=${materialId}`;
-//     });
-
-// });
-
-
-// Preview document from clicking on its name
-// $(document).ready(function () {
-//   $('.toggle-preview').on('click', function (e) {
-//     e.preventDefault();
-//     const id = $(this).data('id');
-//     const $preview = $('#preview_' + id);
-
-//     // close all others first (optional)
-//     $('.material-preview').not($preview).attr('hidden', true);
-
-//     // toggle current one
-//     if ($preview.is('[hidden]')) {
-//       $preview.removeAttr('hidden');
-//     } else {
-//       $preview.attr('hidden', true);
-//     }
-//   });
-// });
 
 
 
@@ -755,44 +625,6 @@ $(document).ready(function () {
 
 });
 
-// $(document).mouseup(function (e) {
-//      var $version11 = $('.version-11');
-//      var container = $version11.find("#materials_Actions");
-
-//      if (!container.is(e.target) && container.has(e.target).length === 0) {
-//           container.hide();
-//           $version11.find('#show_Materials_Actions').removeClass('active');
-//      }
-
-//      var container_V2 = $version11.find("#comms_Actions");
-
-//      if (!container_V2.is(e.target) && container_V2.has(e.target).length === 0) {
-//           container_V2.hide();
-//           $version11.find('#show_Comms_Actions').removeClass('active');
-//      }
-
-// });
-// $(document).on("mouseup", function (e) {
-//      var $version11 = $('.version-11');
-
-//      // MATERIALS
-//      var $btnMat = $version11.find("#show_Materials_Actions");
-//      var $panelMat = $version11.find("#materials_Actions");
-
-//      if (!$panelMat.is(e.target) && $panelMat.has(e.target).length === 0 && !$btnMat.is(e.target) && $btnMat.has(e.target).length === 0) {
-//           $panelMat.hide();
-//           $btnMat.removeClass("active");
-//      }
-
-//      // COMMS
-//      var $btnComms = $version11.find("#show_Comms_Actions");
-//      var $panelComms = $version11.find("#comms_Actions");
-
-//      if (!$panelComms.is(e.target) && $panelComms.has(e.target).length === 0 && !$btnComms.is(e.target) && $btnComms.has(e.target).length === 0 ) {
-//           $panelComms.hide();
-//           $btnComms.removeClass("active");
-//      }
-// });
 
 $(document).on("click", function (e) {
      var $version11 = $('.version-11');
@@ -953,71 +785,6 @@ function closeTab() {
           $('#tab-list').hide();
      }
 
-}
-
-// MARK AS READ
-$(document).ready(function () {
-     // Only target elements within version-11
-     var $version11 = $('.version-11');
-
-     $version11.find('#mark_as').hide();
-
-     $version11.find('.mark_as_Read').click(function () {
-          $(this).toggleClass('read');
-
-          $version11.find('#discard_successful, #auto_reclassify').hide();
-
-          $version11.find('#mark_as').show().toggleClass('read');
-
-          var document_title = $(this).closest('.openMe').find('.redact_Document').text();
-          $version11.find('.document_title').text(document_title);
-
-          var row_ID = parseInt($(this).closest('tr').data('row_id'));
-          if (row_ID == 1) { $('table#materials_table .document_row_1').toggleClass('read'); }
-          if (row_ID == 2) { $('table#materials_table .document_row_2').toggleClass('read'); }
-          if (row_ID == 3) { $('table#materials_table .document_row_3').toggleClass('read'); }
-          if (row_ID == 4) { $('table#materials_table .document_row_4').toggleClass('read'); }
-          if (row_ID == 5) { $('table#materials_table .document_row_5').toggleClass('read'); }
-          if (row_ID == 6) { $('table#materials_table .document_row_6').toggleClass('read'); }
-          if (row_ID == 7) { $('table#materials_table .document_row_7').toggleClass('read'); }
-          if (row_ID == 8) { $('table#materials_table .document_row_8').toggleClass('read'); }
-          if (row_ID == 9) { $('table#materials_table .document_row_9').toggleClass('read'); }
-          if (row_ID == 10) { $('table#materials_table .document_row_10').toggleClass('read'); }
-          if (row_ID == 11) { $('table#materials_table .document_row_11').toggleClass('read'); }
-          if (row_ID == 12) { $('table#materials_table .document_row_12').toggleClass('read'); }
-          if (row_ID == 13) { $('table#materials_table .document_row_13').toggleClass('read'); }
-          if (row_ID == 14) { $('table#materials_table .document_row_14').toggleClass('read'); }
-          if (row_ID == 15) { $('table#materials_table .document_row_15').toggleClass('read'); }
-          if (row_ID == 16) { $('table#materials_table .document_row_16').toggleClass('read'); }
-          if (row_ID == 17) { $('table#materials_table .document_row_17').toggleClass('read'); }
-          if (row_ID == 18) { $('table#materials_table .document_row_18').toggleClass('read'); }
-          if (row_ID == 19) { $('table#materials_table .document_row_19').toggleClass('read'); }
-          if (row_ID == 20) { $('table#materials_table .document_row_20').toggleClass('read'); }
-
-          if ($(this).hasClass('read')) {
-               $(this).html('Mark as unread');
-          } else {
-               $(this).html('Mark as read');
-          }
-
-          if ($('#mark_as').hasClass('read')) {
-               $('#mark_as .govuk-notification-banner__title').text('Mark as read successful');
-               $('#mark_as .govuk-notification-banner__heading .status').text('read');
-          } else {
-               $('#mark_as .govuk-notification-banner__title').text('Mark as unread successful');
-               $('#mark_as .govuk-notification-banner__heading .status').text('unread');
-          }
-
-     });
-
-});
-
-function mark_as_Read() {
-     $('#filter_Redactions table tr.active_document strong').hide();
-     $('#mark_as').show();
-     $('html,body').scrollTop(0);
-     var document_title = $('#filter_Redactions table tr.active_document a.show-case').text();
-     $('.document_title').text(document_title);
 }
 
 

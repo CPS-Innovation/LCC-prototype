@@ -52,96 +52,89 @@ document.addEventListener("DOMContentLoaded", function () {
      const table = document.getElementById("materials_table");
      if (!table) return;
 
-     // Any clickable header with data-sort
-     const headerButtons = table.querySelectorAll("thead [data-sort]");
-     if (!headerButtons.length) return;
+     const headerButtons = table.querySelectorAll('thead [data-sort]');
+
+     // 0 Order | 1 Checkbox | 2 Name | 3 Description | 4 Category | 5 Actions
+     const COL_INDEX = {
+          name: 2,
+          description: 3,
+          category: 4
+     };
 
      const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
 
-     function cleanText(el) {
+     function textWithoutTags(el) {
           if (!el) return "";
           const clone = el.cloneNode(true);
-
-          // remove tags/badges etc that mess with sort
-          clone.querySelectorAll(".govuk-tag").forEach(n => n.remove());
-
-          return (clone.innerText || clone.textContent || "").replace(/\s+/g, " ").trim();
+          clone.querySelectorAll('.govuk-tag').forEach(t => t.remove());
+          return (clone.innerText || "").trim();
      }
 
-     function getSortableText(row, colIndex, key) {
-          const cell = row.cells[colIndex];
+     function getNameText(row) {
+          const cell = row.cells[COL_INDEX.name];
           if (!cell) return "";
 
-          // If sorting by name, prefer the visible title element you actually show users
-          if (key === "name") {
-               // common patterns in your markup
-               const openMe = cell.querySelector(".openMe");
-               if (openMe) return cleanText(openMe);
+          // Files: you wrap the visible name in .openMe
+          const openMe = cell.querySelector(".openMe");
+          if (openMe) return textWithoutTags(openMe);
 
-               const btnOrLink = cell.querySelector("button.govuk-button--link, button.show-case, a.govuk-link");
-               if (btnOrLink) return cleanText(btnOrLink);
+          // Folders: name lives in the link-style button in the form
+          const folderBtn = cell.querySelector('button.govuk-button--link, a.govuk-link');
+          if (folderBtn) return textWithoutTags(folderBtn);
 
-               return cleanText(cell);
-          }
-
-          return cleanText(cell);
+          // Fallback
+          return textWithoutTags(cell);
      }
 
-     function buildBlocks(tbody) {
-          const rows = Array.from(tbody.rows);
-          const blocks = [];
+     function getCellText(row, key) {
+          if (key === "name") return getNameText(row);
 
-          for (let i = 0; i < rows.length; i++) {
-               const main = rows[i];
-
-               // Your preview rows are usually class hidden_row
-               if (main.classList.contains("hidden_row")) continue;
-
-               const block = [main];
-               const next = rows[i + 1];
-
-               if (next && next.classList.contains("hidden_row")) {
-                    block.push(next);
-                    i++;
-               }
-
-               blocks.push(block);
-          }
-
-          return blocks;
+          const col = COL_INDEX[key];
+          const cell = row.cells[col];
+          return cell ? (cell.innerText || "").trim() : "";
      }
 
      headerButtons.forEach(btn => {
+          const key = btn.getAttribute("data-sort");
+          if (!COL_INDEX[key]) return;
+
           let dir = 1;
 
           btn.addEventListener("click", function (e) {
                e.preventDefault();
-               e.stopPropagation();
 
-               const th = btn.closest("th");
-               if (!th) return;
+               const tbody = table.querySelector("tbody");
+               const rows = Array.from(tbody.rows);
 
-               const key = btn.getAttribute("data-sort") || ""; // e.g. name/description/category
-               const colIndex = th.cellIndex;
+               // Build blocks (main row + optional preview row)
+               const blocks = [];
+               for (let i = 0; i < rows.length; i++) {
+                    const main = rows[i];
+                    if (main.classList.contains("hidden_row")) continue;
 
-               const tbody = table.tBodies[0];
-               if (!tbody) return;
-
-               const blocks = buildBlocks(tbody);
+                    const block = [main];
+                    const next = rows[i + 1];
+                    if (next && next.classList.contains("hidden_row")) {
+                         block.push(next);
+                         i++;
+                    }
+                    blocks.push(block);
+               }
 
                blocks.sort((A, B) => {
-                    const a = getSortableText(A[0], colIndex, key);
-                    const b = getSortableText(B[0], colIndex, key);
+                    const a = getCellText(A[0], key);
+                    const b = getCellText(B[0], key);
                     return collator.compare(a, b) * dir;
                });
 
+               // Re-attach in new order
                blocks.forEach(block => block.forEach(r => tbody.appendChild(r)));
 
+               // Flip direction
                dir *= -1;
           });
      });
 });
-
 
 
 // Discarding materials
@@ -625,6 +618,44 @@ $(document).ready(function () {
 
 });
 
+// $(document).mouseup(function (e) {
+//      var $version11 = $('.version-11');
+//      var container = $version11.find("#materials_Actions");
+
+//      if (!container.is(e.target) && container.has(e.target).length === 0) {
+//           container.hide();
+//           $version11.find('#show_Materials_Actions').removeClass('active');
+//      }
+
+//      var container_V2 = $version11.find("#comms_Actions");
+
+//      if (!container_V2.is(e.target) && container_V2.has(e.target).length === 0) {
+//           container_V2.hide();
+//           $version11.find('#show_Comms_Actions').removeClass('active');
+//      }
+
+// });
+// $(document).on("mouseup", function (e) {
+//      var $version11 = $('.version-11');
+
+//      // MATERIALS
+//      var $btnMat = $version11.find("#show_Materials_Actions");
+//      var $panelMat = $version11.find("#materials_Actions");
+
+//      if (!$panelMat.is(e.target) && $panelMat.has(e.target).length === 0 && !$btnMat.is(e.target) && $btnMat.has(e.target).length === 0) {
+//           $panelMat.hide();
+//           $btnMat.removeClass("active");
+//      }
+
+//      // COMMS
+//      var $btnComms = $version11.find("#show_Comms_Actions");
+//      var $panelComms = $version11.find("#comms_Actions");
+
+//      if (!$panelComms.is(e.target) && $panelComms.has(e.target).length === 0 && !$btnComms.is(e.target) && $btnComms.has(e.target).length === 0 ) {
+//           $panelComms.hide();
+//           $btnComms.removeClass("active");
+//      }
+// });
 
 $(document).on("click", function (e) {
      var $version11 = $('.version-11');
@@ -785,6 +816,71 @@ function closeTab() {
           $('#tab-list').hide();
      }
 
+}
+
+// MARK AS READ
+$(document).ready(function () {
+     // Only target elements within version-11
+     var $version11 = $('.version-11');
+
+     $version11.find('#mark_as').hide();
+
+     $version11.find('.mark_as_Read').click(function () {
+          $(this).toggleClass('read');
+
+          $version11.find('#discard_successful, #auto_reclassify').hide();
+
+          $version11.find('#mark_as').show().toggleClass('read');
+
+          var document_title = $(this).closest('.openMe').find('.redact_Document').text();
+          $version11.find('.document_title').text(document_title);
+
+          var row_ID = parseInt($(this).closest('tr').data('row_id'));
+          if (row_ID == 1) { $('table#materials_table .document_row_1').toggleClass('read'); }
+          if (row_ID == 2) { $('table#materials_table .document_row_2').toggleClass('read'); }
+          if (row_ID == 3) { $('table#materials_table .document_row_3').toggleClass('read'); }
+          if (row_ID == 4) { $('table#materials_table .document_row_4').toggleClass('read'); }
+          if (row_ID == 5) { $('table#materials_table .document_row_5').toggleClass('read'); }
+          if (row_ID == 6) { $('table#materials_table .document_row_6').toggleClass('read'); }
+          if (row_ID == 7) { $('table#materials_table .document_row_7').toggleClass('read'); }
+          if (row_ID == 8) { $('table#materials_table .document_row_8').toggleClass('read'); }
+          if (row_ID == 9) { $('table#materials_table .document_row_9').toggleClass('read'); }
+          if (row_ID == 10) { $('table#materials_table .document_row_10').toggleClass('read'); }
+          if (row_ID == 11) { $('table#materials_table .document_row_11').toggleClass('read'); }
+          if (row_ID == 12) { $('table#materials_table .document_row_12').toggleClass('read'); }
+          if (row_ID == 13) { $('table#materials_table .document_row_13').toggleClass('read'); }
+          if (row_ID == 14) { $('table#materials_table .document_row_14').toggleClass('read'); }
+          if (row_ID == 15) { $('table#materials_table .document_row_15').toggleClass('read'); }
+          if (row_ID == 16) { $('table#materials_table .document_row_16').toggleClass('read'); }
+          if (row_ID == 17) { $('table#materials_table .document_row_17').toggleClass('read'); }
+          if (row_ID == 18) { $('table#materials_table .document_row_18').toggleClass('read'); }
+          if (row_ID == 19) { $('table#materials_table .document_row_19').toggleClass('read'); }
+          if (row_ID == 20) { $('table#materials_table .document_row_20').toggleClass('read'); }
+
+          if ($(this).hasClass('read')) {
+               $(this).html('Mark as unread');
+          } else {
+               $(this).html('Mark as read');
+          }
+
+          if ($('#mark_as').hasClass('read')) {
+               $('#mark_as .govuk-notification-banner__title').text('Mark as read successful');
+               $('#mark_as .govuk-notification-banner__heading .status').text('read');
+          } else {
+               $('#mark_as .govuk-notification-banner__title').text('Mark as unread successful');
+               $('#mark_as .govuk-notification-banner__heading .status').text('unread');
+          }
+
+     });
+
+});
+
+function mark_as_Read() {
+     $('#filter_Redactions table tr.active_document strong').hide();
+     $('#mark_as').show();
+     $('html,body').scrollTop(0);
+     var document_title = $('#filter_Redactions table tr.active_document a.show-case').text();
+     $('.document_title').text(document_title);
 }
 
 
