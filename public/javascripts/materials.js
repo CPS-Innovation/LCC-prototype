@@ -2120,3 +2120,49 @@ document.addEventListener('DOMContentLoaded', initMaterialsPage);
           syncSelectAll();
      }
 })();
+
+
+(function () {
+     function updateMoveLinks() {
+          const table = document.getElementById('materials_table');
+          if (!table) return;
+
+          // Only real item rows (your preview rows don’t have .material-row)
+          const rows = Array.from(table.querySelectorAll('tbody tr.material-row'));
+
+          rows.forEach((row, i) => {
+               const isFirst = i === 0;
+               const isLast = i === rows.length - 1;
+
+               const up = row.querySelector('.order-links .move-up');
+               const down = row.querySelector('.order-links .move-down');
+               const divider = row.querySelector('.order-links .divider');
+
+               if (up) up.classList.toggle('is-hidden', isFirst);
+               if (down) down.classList.toggle('is-hidden', isLast);
+
+               // Divider should only show when BOTH links show
+               if (divider) divider.classList.toggle('is-hidden', isFirst || isLast);
+          });
+     }
+
+     // Run once on load
+     if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', updateMoveLinks);
+     } else {
+          updateMoveLinks();
+     }
+
+     // Re-run after any interaction in the table (covers select-all, row ticks, etc.)
+     document.addEventListener('click', function (e) {
+          if (e.target.closest('#materials_table')) {
+               setTimeout(updateMoveLinks, 0);
+          }
+     });
+
+     document.addEventListener('change', function (e) {
+          if (e.target.closest && e.target.closest('#materials_table')) {
+               setTimeout(updateMoveLinks, 0);
+          }
+     });
+})();
