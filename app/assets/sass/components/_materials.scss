@@ -3029,3 +3029,17 @@ table#materials_table td .govuk-tag {
 .order-links a{
   pointer-events: none;
 }
+
+.order-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px; /* or whatever looks right */
+}
+
+.order-links .is-hidden {
+  visibility: hidden;  /* keeps the space */
+}
+
+.order-links .divider.is-hidden {
+  visibility: hidden;
+}
