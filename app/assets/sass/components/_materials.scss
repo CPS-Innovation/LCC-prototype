@@ -3043,3 +3043,33 @@ table#materials_table td .govuk-tag {
 .order-links .divider.is-hidden {
   visibility: hidden;
 }
+
+.order-gutter,
+.order-links,
+.order-links * {
+  pointer-events: none;
+}
+
+
+
+thead th .govuk-checkboxes {
+  position: relative;
+  z-index: 2;
+}
+
+thead th .govuk-button {
+  z-index: 1;
+}
+
+
+.materials-sort {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.materials-sort:focus {
+  outline: 3px solid #ffdd00;
+  outline-offset: 2px;
+}
