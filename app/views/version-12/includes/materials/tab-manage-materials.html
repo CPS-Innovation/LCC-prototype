@@ -187,9 +187,10 @@
 
         </div>
     </div>
+</div>
 
 
-    <!-- <div class="govuk-grid-row">
+<!-- <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
 
                 <div class="info_wrapper govuk-!-margin-top-3 govuk-!-margin-bottom-6">
@@ -271,351 +272,347 @@
         </div> -->
 
 
+<!-- Success banner -->
+{% macro renderTree(nodes) %}
+<ul class="govuk-list govuk-list--bullet">
+    {% for node in nodes %}
 
+    {% if node.isFolder %}
+    <li class="no-bullet" style="list-style-type:none; margin-left:-1em;">
 
-    <!-- Success banner -->
-    {% macro renderTree(nodes) %}
-    <ul class="govuk-list govuk-list--bullet">
-        {% for node in nodes %}
+        <span class="icon-new folder"></span>
+        <strong>{{ node.name }}</strong>
 
-        {% if node.isFolder %}
-        <li class="no-bullet" style="list-style-type:none; margin-left:-1em;">
-
-            <span class="icon-new folder"></span>
-            <strong>{{ node.name }}</strong>
-
-            {% if node.children and (node.children | length) > 0 %}
-            {{ renderTree(node.children) }}
-            {% endif %}
-        </li>
-
-        {% else %}
-        <li>
-            {{ node.name }}
-        </li>
+        {% if node.children and (node.children | length) > 0 %}
+        {{ renderTree(node.children) }}
         {% endif %}
+    </li>
 
-        {% endfor %}
-    </ul>
-    {% endmacro %}
-
-    {% if copySuccess %}
-    <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white" role="alert"
-        data-module="govuk-notification-banner">
-        <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title">Success</h2>
-        </div>
-        <div class="govuk-notification-banner__content">
-            <h3 class="govuk-notification-banner__heading">
-                The materials have been copied
-            </h3>
-
-            {% if copyDestinationName %}
-            <p class="govuk-body">
-                They are in:
-                <strong>{{ copyDestinationName }}</strong>
-            </p>
-            {% else %}
-            <p class="govuk-body">
-                They are in:
-                <strong>Home: Thundercat</strong>
-            </p>
-            {% endif %}
-
-            {% if copyPreviewTree and (copyPreviewTree | length) > 0 %}
-            <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
-                <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text">
-                        Show copied materials
-                    </span>
-                </summary>
-                <div class="govuk-details__text">
-                    {{ renderTree(copyPreviewTree) }}
-                </div>
-            </details>
-            {% endif %}
-        </div>
-    </div>
-
-    {% elseif moveSuccess %}
-    <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white" role="alert"
-        data-module="govuk-notification-banner">
-        <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title">Success</h2>
-        </div>
-        <div class="govuk-notification-banner__content">
-            <h3 class="govuk-notification-banner__heading">
-                The materials have been moved
-            </h3>
-
-            {% if moveDestinationName %}
-            <p class="govuk-body">
-                They are in:
-                <strong>{{ moveDestinationName }}</strong>
-            </p>
-            {% else %}
-            <p class="govuk-body">
-                They are in:
-                <strong>Home: Thundercat</strong>
-            </p>
-            {% endif %}
-
-            {% if movePreviewTree and (movePreviewTree | length) > 0 %}
-            <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
-                <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text">
-                        Show moved materials
-                    </span>
-                </summary>
-                <div class="govuk-details__text">
-                    {{ renderTree(movePreviewTree) }}
-                </div>
-            </details>
-            {% endif %}
-        </div>
-    </div>
+    {% else %}
+    <li>
+        {{ node.name }}
+    </li>
     {% endif %}
 
-    <!-- <p style="color:red;">
+    {% endfor %}
+</ul>
+{% endmacro %}
+
+{% if copySuccess %}
+<div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white" role="alert"
+    data-module="govuk-notification-banner">
+    <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title">Success</h2>
+    </div>
+    <div class="govuk-notification-banner__content">
+        <h3 class="govuk-notification-banner__heading">
+            The materials have been copied
+        </h3>
+
+        {% if copyDestinationName %}
+        <p class="govuk-body">
+            They are in:
+            <strong>{{ copyDestinationName }}</strong>
+        </p>
+        {% else %}
+        <p class="govuk-body">
+            They are in:
+            <strong>Home: Thundercat</strong>
+        </p>
+        {% endif %}
+
+        {% if copyPreviewTree and (copyPreviewTree | length) > 0 %}
+        <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    Show copied materials
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                {{ renderTree(copyPreviewTree) }}
+            </div>
+        </details>
+        {% endif %}
+    </div>
+</div>
+
+{% elseif moveSuccess %}
+<div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white" role="alert"
+    data-module="govuk-notification-banner">
+    <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title">Success</h2>
+    </div>
+    <div class="govuk-notification-banner__content">
+        <h3 class="govuk-notification-banner__heading">
+            The materials have been moved
+        </h3>
+
+        {% if moveDestinationName %}
+        <p class="govuk-body">
+            They are in:
+            <strong>{{ moveDestinationName }}</strong>
+        </p>
+        {% else %}
+        <p class="govuk-body">
+            They are in:
+            <strong>Home: Thundercat</strong>
+        </p>
+        {% endif %}
+
+        {% if movePreviewTree and (movePreviewTree | length) > 0 %}
+        <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    Show moved materials
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                {{ renderTree(movePreviewTree) }}
+            </div>
+        </details>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<!-- <p style="color:red;">
             DEBUG: filtersSearch="{{ data.filtersSearch }}", flag="{{ data.flag }}", grouped="{{ data.groupedSearchResults | length }}"
         </p> -->
 
-    <!-- SEARCH MODES -->
-    {% set searchTerm = data.filtersSearch %}
-    <!-- {{ searchTerm }}
+<!-- SEARCH MODES -->
+{% set searchTerm = data.filtersSearch %}
+<!-- {{ searchTerm }}
         {% set insideFolderSearch = (data.flag == "1") %} -->
 
-    {% if searchTerm and searchTerm | trim | length > 0 %}
-    {% include "../materials/materials-search-grouped.html" %}
+{% if searchTerm and searchTerm | trim | length > 0 %}
+{% include "../materials/materials-search-grouped.html" %}
 
-    {% else %}
+{% else %}
 
 
 
-    <!-- MAIN TABLE -->
-    <div class="materials-aligned">
-        <div class="materials-table-wrapper has-order-gutter">
+<!-- MAIN TABLE -->
+<div class="materials-aligned">
+    <div class="materials-table-wrapper has-order-gutter">
 
-            <table class="govuk-table sortable" id="materials_table">
-                <thead class="govuk-table__head">
-                    <!-- <tr class="govuk-table__row material-row" data-id="{{ item.id }}" {% if item.folder %}data-folder="true"
+        <table class="govuk-table sortable" id="materials_table">
+            <thead class="govuk-table__head">
+                <!-- <tr class="govuk-table__row material-row" data-id="{{ item.id }}" {% if item.folder %}data-folder="true"
                             {% else %}data-folder="false" {% endif %}> -->
-                    <tr class="govuk-table__row">
-                        <th scope="col" class="govuk-visually-hidden">
-                            Order
-                        </th>
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-visually-hidden">
+                        Order
+                    </th>
 
-                        <th scope="col" class="govuk-table__header">
-                            {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
-                            <div class="govuk-checkboxes govuk-checkboxes--small MT-15">
-                                <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input js-select-all" id="materials_documents_ALL"
-                                        type="checkbox" value="ALL">
-                                    <input type="hidden" name="destinationFolder" value="{{ item.id }}">
+                    <th scope="col" class="govuk-table__header">
+                        {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
+                        <div class="govuk-checkboxes govuk-checkboxes--small MT-15">
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input js-select-all" id="materials_documents_ALL"
+                                    type="checkbox" value="ALL">
+                                <!-- <input type="hidden" name="destinationFolder" value="{{ item.id }}"> -->
 
-                                    <label class="govuk-label govuk-checkboxes__label"
-                                        for="materials_documents_ALL"></label>
-                                </div>
+                                <label class="govuk-label govuk-checkboxes__label"
+                                    for="materials_documents_ALL"></label>
                             </div>
-                            {% endif %}
-                        </th>
+                        </div>
+                        {% endif %}
+                    </th>
 
-                        <th scope="col" class="govuk-table__header">
-                            <button class="govuk-button" data-module="govuk-button">
-                                File or folder
-                            </button>
-                        </th>
+                    <th scope="col" class="govuk-table__header">
+                        <button class="govuk-button" data-module="govuk-button">
+                            File or folder
+                        </button>
+                    </th>
 
-                        <th scope="col" class="govuk-table__header">
-                            <button class="govuk-button" data-module="govuk-button">Description</button>
-                        </th>
+                    <th scope="col" class="govuk-table__header">
+                        <button class="govuk-button" data-module="govuk-button">Description</button>
+                    </th>
 
-                        <th scope="col" class="govuk-table__header">
-                            <button class="govuk-button" data-module="govuk-button">Category</button>
-                        </th>
+                    <th scope="col" class="govuk-table__header">
+                        <button class="govuk-button" data-module="govuk-button">Category</button>
+                    </th>
 
-                        <th scope="col" class="govuk-table__header"></th>
+                    <th scope="col" class="govuk-table__header"></th>
 
-                    </tr>
-                </thead>
+                </tr>
+            </thead>
 
-                <!-- Children rendering from helper -->
-                <tbody class="govuk-table__body">
+            <!-- Children rendering from helper -->
+            <tbody class="govuk-table__body">
 
-                    {% for item in children %}
-                    {% if item.folder %}
-                    {# =============== FOLDER ROW =============== #}
+                {% for item in children %}
+                {% if item.folder %}
+                {# =============== FOLDER ROW =============== #}
 
-                    <tr class="govuk-table__row material-row" data-id="{{ item.id }}" {% if item.folder
-                        %}data-folder="true" {% else %}data-folder="false" {% endif %}>
+                <tr class="govuk-table__row material-row" data-id="{{ item.id }}" {% if item.folder %}data-folder="true"
+                    {% else %}data-folder="false" {% endif %}>
 
 
-                        <td class="govuk-table__cell order-cell">
-                            <div class="order-gutter">
-                                <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
-                                    inputmode="numeric" value="{{ item.order or '' }}">
+                    <td class="govuk-table__cell order-cell">
+                        <div class="order-gutter">
+                            <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
+                                inputmode="numeric" value="{{ item.order or '' }}">
 
-                                <div class="order-links" aria-hidden="true">
-                                    <span class="govuk-link move-link is-disabled">Move up</span>
-                                    <span class="divider" aria-hidden="true">|</span>
-                                    <span class="govuk-link move-link is-disabled">Move down</span>
-                                </div>
-                                <!-- <div class="order-links">
+                            <div class="order-links" aria-hidden="true">
+                                <span class="govuk-link move-link is-disabled">Move up</span>
+                                <span class="divider" aria-hidden="true">|</span>
+                                <span class="govuk-link move-link is-disabled">Move down</span>
+                            </div>
+                            <!-- <div class="order-links">
                                     <a class="govuk-link" href="#">Move up</a>
                                     <span class="divider" aria-hidden="true">|</span>
                                     <a class="govuk-link" href="#">Move down</a>
                                 </div> -->
+                        </div>
+                    </td>
+
+                    <!-- Checkbox -->
+                    <td class="govuk-table__cell">
+                        {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
+                        <div class="govuk-checkboxes govuk-checkboxes--small">
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input js-material-checkbox" id="select_{{ item.id }}"
+                                    type="checkbox" name="materials_document" value="{{ item.id }}"
+                                    data-name="{{ item.name }}" data-folder="true">
+                                <label class="govuk-label govuk-checkboxes__label" for="select_{{ item.id }}"></label>
                             </div>
-                        </td>
+                        </div>
+                        {% endif %}
+                    </td>
 
-                        <!-- Checkbox -->
-                        <td class="govuk-table__cell">
-                            {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
-                            <div class="govuk-checkboxes govuk-checkboxes--small">
-                                <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input js-material-checkbox"
-                                        id="select_{{ item.id }}" type="checkbox" name="materials_document"
-                                        value="{{ item.id }}" data-name="{{ item.name }}" data-folder="true">
-                                    <label class="govuk-label govuk-checkboxes__label"
-                                        for="select_{{ item.id }}"></label>
-                                </div>
-                            </div>
-                            {% endif %}
-                        </td>
+                    <!-- Folder title (clickable) -->
+                    <td class="govuk-table__cell title_column">
+                        <div class="folder-inline-wrapper">
 
-                        <!-- Folder title (clickable) -->
-                        <td class="govuk-table__cell title_column">
-                            <div class="folder-inline-wrapper">
+                            <form method="post" action="/version-12/B-off-system-MVP/case-overview-folder">
+                                <input type="hidden" name="folderId" value="{{ item.id }}">
+                                <input type="hidden" name="folderName" value="{{ item.name }}">
+                                <button type="submit"
+                                    class="govuk-link govuk-link--no-visited-state govuk-button--link">
+                                    <span class="icon-new folder"></span>
+                                    {{ item.name }}
 
-                                <form method="post" action="/version-12/B-off-system-MVP/case-overview-folder">
-                                    <input type="hidden" name="folderId" value="{{ item.id }}">
-                                    <input type="hidden" name="folderName" value="{{ item.name }}">
-                                    <button type="submit"
-                                        class="govuk-link govuk-link--no-visited-state govuk-button--link">
-                                        <span class="icon-new folder"></span>
-                                        {{ item.name }}
-
-                                        {% if data.flashRenamedIds and (item.id | string) in data.flashRenamedIds %}
-                                        <strong class="govuk-tag govuk-tag--green govuk-!margin-left-1">Renamed</strong>
-                                        {% endif %}
-                                        <!-- {% if flashRenamedId and (item.id | string) == flashRenamedId %}
+                                    {% if data.flashRenamedIds and (item.id | string) in data.flashRenamedIds %}
+                                    <strong class="govuk-tag govuk-tag--green govuk-!margin-left-1">Renamed</strong>
+                                    {% endif %}
+                                    <!-- {% if flashRenamedId and (item.id | string) == flashRenamedId %}
                                         <strong
                                             class="govuk-tag govuk-tag--green govuk-!-margin-left-1">Renamed</strong>
                                         {% endif %} -->
-                                        {% if flashNewFolderId and (item.id | string) == flashNewFolderId %}
-                                        <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">New
-                                            folder</strong>
-                                        {% endif %}
+                                    {% if flashNewFolderId and (item.id | string) == flashNewFolderId %}
+                                    <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">New
+                                        folder</strong>
+                                    {% endif %}
 
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
 
-                        <!-- Last updated (optional for folders) -->
-                        <td class="govuk-table__cell">
-                            {{ item.description or "" }}
-                        </td>
+                    <!-- Last updated (optional for folders) -->
+                    <td class="govuk-table__cell">
+                        {{ item.description or "" }}
+                    </td>
 
-                        <!-- Status (usually blank or basic tag for folders) -->
-                        <td class="govuk-table__cell">
-                            {{ item.category or "" }}
-                        </td>
+                    <!-- Status (usually blank or basic tag for folders) -->
+                    <td class="govuk-table__cell">
+                        {{ item.category or "" }}
+                    </td>
 
-                        <!-- Copy / Move here action -->
-                        <td class="govuk-table__cell materials-action-cell">
-                        </td>
-                    </tr>
+                    <!-- Copy / Move here action -->
+                    <td class="govuk-table__cell materials-action-cell">
+                    </td>
+                </tr>
 
-                    {% else %}
-                    {# =============== FILE ROW =============== #}
-                    <tr class="govuk-table__row material-row" data-id="{{ item.id }}" {% if item.folder
-                        %}data-folder="true" {% else %}data-folder="false" {% endif %}>
-                        <!-- <tr class="govuk-table__row material-row" data-id="{{ item.id }}" data-folder="false"> -->
-                        <!-- <td class="govuk-table__cell title_column">
+                {% else %}
+                {# =============== FILE ROW =============== #}
+                <tr class="govuk-table__row material-row" data-id="{{ item.id }}" {% if item.folder %}data-folder="true"
+                    {% else %}data-folder="false" {% endif %}>
+                    <!-- <tr class="govuk-table__row material-row" data-id="{{ item.id }}" data-folder="false"> -->
+                    <!-- <td class="govuk-table__cell title_column">
                                 <ul class="govuk-summary-list__actions-list">
                                     <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Move up</span><span class="govuk-visually-hidden"></span></a></li>
                                     <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Move down</span><span class="govuk-visually-hidden"></span></a></li>
                                 </ul>                    
                             </td> -->
 
-                        <td class="govuk-table__cell order-cell">
-                            <div class="order-gutter">
-                                <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
-                                    inputmode="numeric" value="{{ item.order or '' }}">
+                    <td class="govuk-table__cell order-cell">
+                        <div class="order-gutter">
+                            <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
+                                inputmode="numeric" value="{{ item.order or '' }}">
 
-                                <div class="order-links">
-                                    <a class="govuk-link" href="#">Move up</a>
-                                    <span class="divider" aria-hidden="true">|</span>
-                                    <a class="govuk-link" href="#">Move down</a>
-                                </div>
+                            <div class="order-links">
+                                <a class="govuk-link" href="#">Move up</a>
+                                <span class="divider" aria-hidden="true">|</span>
+                                <a class="govuk-link" href="#">Move down</a>
                             </div>
-                        </td>
+                        </div>
+                    </td>
 
 
-                        <!-- Checkbox -->
-                        <td class="govuk-table__cell">
-                            {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
-                            <div class="govuk-checkboxes govuk-checkboxes--small">
-                                <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input js-material-checkbox"
-                                        id="select_{{ item.id }}" type="checkbox" name="materials_document"
-                                        value="{{ item.id }}" data-name="{{ item.name }}" data-folder="false">
-                                    <label class="govuk-label govuk-checkboxes__label"
-                                        for="select_{{ item.id }}"></label>
-                                </div>
+                    <!-- Checkbox -->
+                    <td class="govuk-table__cell">
+                        {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
+                        <div class="govuk-checkboxes govuk-checkboxes--small">
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input js-material-checkbox" id="select_{{ item.id }}"
+                                    type="checkbox" name="materials_document" value="{{ item.id }}"
+                                    data-name="{{ item.name }}" data-folder="false">
+                                <label class="govuk-label govuk-checkboxes__label" for="select_{{ item.id }}"></label>
                             </div>
+                        </div>
+                        {% endif %}
+                    </td>
+
+                    <!-- File title -->
+                    <td class="govuk-table__cell title_column">
+                        <div class="openMe">
+                            {{ item.name }}
+                            {% if item.unread or item.new %}
+                            <strong class="govuk-tag govuk-tag--blue">Unread</strong>
                             {% endif %}
-                        </td>
 
-                        <!-- File title -->
-                        <td class="govuk-table__cell title_column">
-                            <div class="openMe">
-                                {{ item.name }}
-                                {% if item.unread or item.new %}
-                                <strong class="govuk-tag govuk-tag--blue">Unread</strong>
-                                {% endif %}
+                            {% if data.flashRenamedIds and (item.id | string) in data.flashRenamedIds %}
+                            <strong class="govuk-tag govuk-tag--green govuk-!margin-left-1">Renamed</strong>
+                            {% endif %}
 
-                                {% if data.flashRenamedIds and (item.id | string) in data.flashRenamedIds %}
-                                <strong class="govuk-tag govuk-tag--green govuk-!margin-left-1">Renamed</strong>
-                                {% endif %}
+                        </div>
+                    </td>
 
-                            </div>
-                        </td>
+                    <!-- Date -->
+                    <td class="govuk-table__cell">
+                        {{ item.description or "" }}
+                    </td>
 
-                        <!-- Date -->
-                        <td class="govuk-table__cell">
-                            {{ item.description or "" }}
-                        </td>
+                    <!-- Status -->
+                    <td class="govuk-table__cell">
+                        {{ item.category or "" }}
+                    </td>
 
-                        <!-- Status -->
-                        <td class="govuk-table__cell">
-                            {{ item.category or "" }}
-                        </td>
+                    <!-- Preview for files -->
+                    <td class="govuk-table__cell toggle-panel">
+                        <button type="button" class="govuk-button show_material_actions show-case"
+                            data-id="{{ item.id }}" data-doc="{{ item.previewLink }}">
+                            Preview <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                    </td>
+                </tr>
 
-                        <!-- Preview for files -->
-                        <td class="govuk-table__cell toggle-panel">
-                            <button type="button" class="govuk-button show_material_actions show-case"
-                                data-id="{{ item.id }}" data-doc="{{ item.previewLink }}">
-                                Preview <i class="fa-solid fa-chevron-down"></i>
-                            </button>
-                        </td>
-                    </tr>
+                {% endif %}
 
-                    {% endif %}
-
-                    {# --- preview row goes IMMEDIATELY AFTER the file row --- #}
-                    {% if not item.folder %}
-                    <tr class="govuk-table__row hidden_row sortable-ignore" data-row_id="{{ item.id }}"
-                        style="display:none;">
-                        <td colspan="6">
-                            <div class="document_holder">
-                                <embed src="{{ item.previewLink }}">
-                            </div>
-                        </td>
-                    </tr>
-                    {% endif %}
-                    <!-- {# Preview row only for files #}
+                {# --- preview row goes IMMEDIATELY AFTER the file row --- #}
+                {% if not item.folder %}
+                <tr class="govuk-table__row hidden_row sortable-ignore" data-row_id="{{ item.id }}"
+                    style="display:none;">
+                    <td colspan="6">
+                        <div class="document_holder">
+                            <embed src="{{ item.previewLink }}">
+                        </div>
+                    </td>
+                </tr>
+                {% endif %}
+                <!-- {# Preview row only for files #}
                         <tr class="govuk-table__row hidden_row" data-row_id="{{ item.id }}">
                             <td colspan="6">
                                 <div class="document_holder">
@@ -623,17 +620,17 @@
                                 </div>
                             </td>
                         </tr> -->
-                    {% endfor %}
+                {% endfor %}
 
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
-    {% endif %}
+</div>
+{% endif %}
 
-    <p class="no_results">
-        <strong>No results</strong> found in materials
-    </p>
+<p class="no_results">
+    <strong>No results</strong> found in materials
+</p>
 
 </div>
 </div>
