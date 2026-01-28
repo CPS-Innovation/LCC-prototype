@@ -23,14 +23,15 @@ Rename files or folders – {{ serviceName }} – Prototype
         <h1 class="govuk-heading-l">Rename selected items</h1>
 
         <form method="post" action="/version-12/B-off-system-MVP/rename-multiple-save" novalidate>
-            <p class="govuk-body">Update names for the items you selected.</p>
+            <p class="govuk-body govuk-!-margin-bottom-7">You are renaming [x] items. Changes will apply when you save.</p>
 
             {% for item in selectedItems %}
             <div class="govuk-form-group">
-                <label class="govuk-label govuk-label--s" for="new_name_{{ item.id }}">
-                    {{ item.name }}
-                    {% if item.folder %}<span class="govuk-hint">Folder</span>{% else %}<span
-                        class="govuk-hint">File</span>{% endif %}
+                    {% if item.folder %}<span class="govuk-hint govuk-!-margin-bottom-1">Folder name: {{ item.name }}</span>{% else %}<span
+                        class="govuk-hint govuk-!-margin-bottom-1">File name: {{ item.name }}</span> {% endif %}
+
+                <label class="govuk-label govuk-label--s govuk-!-margin-top-0" for="new_name_{{ item.id }}">                    
+                    Updated name
                 </label>
                 <input class="govuk-input govuk-input--width-20" id="new_name_{{ item.id }}"
                     name="new_name_{{ item.id }}" type="text" value="{{ item.name }}">
