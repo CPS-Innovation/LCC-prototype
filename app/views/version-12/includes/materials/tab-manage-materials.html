@@ -400,9 +400,7 @@
                 <!-- <tr class="govuk-table__row material-row" data-id="{{ item.id }}" {% if item.folder %}data-folder="true"
                             {% else %}data-folder="false" {% endif %}> -->
                 <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-visually-hidden">
-                        Order
-                    </th>
+                    <th scope="col" class="govuk-visually-hidden">Order</th>
 
                     <th scope="col" class="govuk-table__header">
                         {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
@@ -410,8 +408,6 @@
                             <div class="govuk-checkboxes__item">
                                 <input class="govuk-checkboxes__input js-select-all" id="materials_documents_ALL"
                                     type="checkbox" value="ALL">
-                                <!-- <input type="hidden" name="destinationFolder" value="{{ item.id }}"> -->
-
                                 <label class="govuk-label govuk-checkboxes__label"
                                     for="materials_documents_ALL"></label>
                             </div>
@@ -420,21 +416,24 @@
                     </th>
 
                     <th scope="col" class="govuk-table__header">
-                        <button class="govuk-button" data-module="govuk-button">
+                        <button type="button" class="govuk-link materials-sort" data-sort="name">
                             File or folder
                         </button>
                     </th>
 
                     <th scope="col" class="govuk-table__header">
-                        <button class="govuk-button" data-module="govuk-button">Description</button>
+                        <button type="button" class="govuk-link materials-sort" data-sort="description">
+                            Description
+                        </button>
                     </th>
 
                     <th scope="col" class="govuk-table__header">
-                        <button class="govuk-button" data-module="govuk-button">Category</button>
+                        <button type="button" class="govuk-link materials-sort" data-sort="category">
+                            Category
+                        </button>
                     </th>
 
                     <th scope="col" class="govuk-table__header"></th>
-
                 </tr>
             </thead>
 
@@ -459,11 +458,6 @@
                                 <span class="divider" aria-hidden="true">|</span>
                                 <span class="govuk-link move-link move-down is-disabled">Move down</span>
                             </div>
-                            <!-- <div class="order-links">
-                                    <a class="govuk-link" href="#">Move up</a>
-                                    <span class="divider" aria-hidden="true">|</span>
-                                    <a class="govuk-link" href="#">Move down</a>
-                                </div> -->
                         </div>
                     </td>
 

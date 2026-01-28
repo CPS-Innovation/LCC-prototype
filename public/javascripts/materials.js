@@ -1,6 +1,13 @@
 ///////////////////////////////////////////////////// Monica CODE - START /////////////////////////////////////////////////////
 console.log("materials.js loaded!");
 
+document.addEventListener('click', function (e) {
+     // ❌ Never allow clicks inside the table body to trigger sorting
+     if (e.target.closest('#materials_table tbody')) {
+          e.stopPropagation();
+     }
+}, true); // capture phase
+
 // Make it global so inline onclick can see it
 // window.openMaterial = function (event) {
 //      const btn = event?.target?.closest('button') || this;
@@ -31,6 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// HARD BLOCK: Select-all should never trigger sorting (or anything else)
+document.addEventListener('click', function (e) {
+     if (e.target.closest('#materials_documents_ALL, label[for="materials_documents_ALL"]')) {
+          e.stopImmediatePropagation();
+     }
+}, true);
 
 
 
@@ -39,88 +52,180 @@ document.addEventListener("DOMContentLoaded", function () {
      const table = document.getElementById("materials_table");
      if (!table) return;
 
-     const headerButtons = table.querySelectorAll("thead th .govuk-button");
+     // ✅ Only buttons that explicitly opt-in to sorting
+     const headerButtons = table.querySelectorAll('thead th [data-sort]');
 
-     // Header text → actual column index in your table
-     const COL_INDEX = { "File or folder": 1, "Last updated": 2, "Status": 3 };
+     // Column indexes in the actual table:
+     // 0 = Order gutter
+     // 1 = Checkbox
+     // 2 = File or folder
+     // 3 = Description
+     // 4 = Category
+     const COL_INDEX = {
+          name: 2,
+          description: 3,
+          category: 4
+     };
 
-     // Attach handlers only to the 3 sortable headers
+     const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
+
      headerButtons.forEach(btn => {
-          const label = btn.textContent.trim();
-          if (!COL_INDEX[label]) return; // skip checkbox/empty columns
+          const key = btn.getAttribute("data-sort");
+          const col = COL_INDEX[key];
+          if (col === undefined) return;
 
-          let dir = 1; // 1 = ASC, -1 = DESC
+          let dir = 1; // 1 asc, -1 desc
           btn.style.cursor = "pointer";
 
           btn.addEventListener("click", function (e) {
                e.preventDefault();
 
-               const col = COL_INDEX[label];
                const tbody = table.querySelector("tbody");
                const rows = Array.from(tbody.rows);
 
-               // Build row blocks so a main row stays with its following hidden preview row (if any)
+               // Keep preview rows attached to their main row
                const blocks = [];
                for (let i = 0; i < rows.length; i++) {
                     const main = rows[i];
+                    if (main.classList.contains("hidden_row")) continue;
+
                     const block = [main];
                     const next = rows[i + 1];
                     if (next && next.classList.contains("hidden_row")) {
                          block.push(next);
                          i++;
                     }
-                    // guard: skip stray hidden rows that don't follow a main row
-                    if (!main.classList.contains("hidden_row")) blocks.push(block);
+                    blocks.push(block);
                }
-
-               const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
 
                const getCellText = (row, index) => {
                     const cell = row.cells[index];
                     if (!cell) return "";
-                    // For Material, prefer the visible name inside .openMe
-                    if (index === COL_INDEX["Material"]) {
-                         const t = cell.querySelector(".openMe")?.innerText || cell.innerText;
-                         return t.trim();
-                    }
-                    // Status cell contains a <strong> tag – innerText is fine
-                    return cell.innerText.trim();
-               };
 
-               const parseUKDate = (str) => {
-                    // e.g. "12 Nov 2025"
-                    // Using Date with "Mon D, YYYY" is reliable
-                    const [d, m, y] = str.split(" ");
-                    return new Date(`${m} ${d}, ${y}`).getTime() || 0;
+                    // For "File or folder", prefer the visible name in your title cell
+                    if (index === COL_INDEX.name) {
+                         const openMe = cell.querySelector(".openMe");
+                         const t = openMe ? openMe.innerText : cell.innerText;
+                         return (t || "").trim();
+                    }
+
+                    return (cell.innerText || "").trim();
                };
 
                blocks.sort((A, B) => {
                     const aRow = A[0], bRow = B[0];
-
-                    if (col === COL_INDEX["Last updated"]) {
-                         return (parseUKDate(getCellText(aRow, col)) - parseUKDate(getCellText(bRow, col))) * dir;
-                    } else {
-                         return collator.compare(getCellText(aRow, col), getCellText(bRow, col)) * dir;
-                    }
+                    return collator.compare(getCellText(aRow, col), getCellText(bRow, col)) * dir;
                });
 
-               // Re-attach in new order (preserving preview rows)
                blocks.forEach(block => block.forEach(r => tbody.appendChild(r)));
 
-               // Toggle direction
+               // Flip direction after sort
                dir *= -1;
 
-               // Remove any existing arrows from all headers
+               // Clear arrows
                headerButtons.forEach(h => {
-                    // Reset to original label only (strip arrows if any)
                     h.textContent = h.textContent.replace(/[▲▼]/g, '').trim();
                });
 
-               // Append a single arrow to the active header
+               // Add arrow to active header
                btn.textContent = btn.textContent.replace(/[▲▼]/g, '').trim() + (dir === -1 ? ' ▼' : ' ▲');
           });
      });
 });
+
+
+
+// document.addEventListener("DOMContentLoaded", function () {
+//      const table = document.getElementById("materials_table");
+//      if (!table) return;
+
+//      const headerButtons = table.querySelectorAll('thead th .govuk-button[data-sort]');
+
+//      // Header text → actual column index in your table
+//      const COL_INDEX = { "File or folder": 1, "Last updated": 2, "Status": 3 };
+
+//      // Attach handlers only to the 3 sortable headers
+//      headerButtons.forEach(btn => {
+//           const label = btn.textContent.trim();
+//           if (!COL_INDEX[label]) return; // skip checkbox/empty columns
+
+//           let dir = 1; // 1 = ASC, -1 = DESC
+//           btn.style.cursor = "pointer";
+
+//           btn.addEventListener('click', function (e) {
+
+//                // Must be the button itself
+//                if (e.currentTarget !== btn) return;
+
+//                e.preventDefault();
+
+//                const col = COL_INDEX[label];
+//                const tbody = table.querySelector("tbody");
+//                const rows = Array.from(tbody.rows);
+
+//                // Build row blocks so a main row stays with its following hidden preview row (if any)
+//                const blocks = [];
+//                for (let i = 0; i < rows.length; i++) {
+//                     const main = rows[i];
+//                     const block = [main];
+//                     const next = rows[i + 1];
+//                     if (next && next.classList.contains("hidden_row")) {
+//                          block.push(next);
+//                          i++;
+//                     }
+//                     // guard: skip stray hidden rows that don't follow a main row
+//                     if (!main.classList.contains("hidden_row")) blocks.push(block);
+//                }
+
+//                const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
+
+//                const getCellText = (row, index) => {
+//                     const cell = row.cells[index];
+//                     if (!cell) return "";
+//                     // For Material, prefer the visible name inside .openMe
+//                     if (index === COL_INDEX["Material"]) {
+//                          const t = cell.querySelector(".openMe")?.innerText || cell.innerText;
+//                          return t.trim();
+//                     }
+//                     // Status cell contains a <strong> tag – innerText is fine
+//                     return cell.innerText.trim();
+//                };
+
+//                const parseUKDate = (str) => {
+//                     // e.g. "12 Nov 2025"
+//                     // Using Date with "Mon D, YYYY" is reliable
+//                     const [d, m, y] = str.split(" ");
+//                     return new Date(`${m} ${d}, ${y}`).getTime() || 0;
+//                };
+
+//                blocks.sort((A, B) => {
+//                     const aRow = A[0], bRow = B[0];
+
+//                     if (col === COL_INDEX["Last updated"]) {
+//                          return (parseUKDate(getCellText(aRow, col)) - parseUKDate(getCellText(bRow, col))) * dir;
+//                     } else {
+//                          return collator.compare(getCellText(aRow, col), getCellText(bRow, col)) * dir;
+//                     }
+//                });
+
+//                // Re-attach in new order (preserving preview rows)
+//                blocks.forEach(block => block.forEach(r => tbody.appendChild(r)));
+
+//                // Toggle direction
+//                dir *= -1;
+
+//                // Remove any existing arrows from all headers
+//                headerButtons.forEach(h => {
+//                     // Reset to original label only (strip arrows if any)
+//                     h.textContent = h.textContent.replace(/[▲▼]/g, '').trim();
+//                });
+
+//                // Append a single arrow to the active header
+//                btn.textContent = btn.textContent.replace(/[▲▼]/g, '').trim() + (dir === -1 ? ' ▼' : ' ▲');
+//           });
+//      });
+// });
+
 
 
 // Discarding materials
