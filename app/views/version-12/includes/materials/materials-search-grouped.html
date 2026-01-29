@@ -33,11 +33,24 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
                     </div>
                 </div>
             </th>
-            <th class="govuk-table__header"><button class="govuk-button" data-module="govuk-button">File or
-                    folder</button></th>
-            <th class="govuk-table__header"><button class="govuk-button" data-module="govuk-button">Last
-                    updated</button></th>
-            <th class="govuk-table__header"><button class="govuk-button" data-module="govuk-button">Status</button></th>
+            <th scope="col" class="govuk-table__header">
+                <button type="button" class="govuk-link govuk-link--no-visited-state table-sort" data-sort="name">
+                    File or folder
+                </button>
+            </th>
+
+            <th scope="col" class="govuk-table__header">
+                <button type="button" class="govuk-link govuk-link--no-visited-state table-sort">
+                    Description
+                </button>
+            </th>
+
+            <th scope="col" class="govuk-table__header">
+                <button type="button" class="govuk-link govuk-link--no-visited-state table-sort" data-sort="category">
+                    Category
+                </button>
+            </th>
+
             <th class="govuk-table__header"></th>
         </tr>
     </thead>
@@ -78,11 +91,13 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
                             class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-regular govuk-button--link">
                             {{ folder.name | highlight(data['filtersSearch']) | safe }}
 
-                            {% if flashRenamedIdSafe and folder.id is defined and (folder.id ~ '') == flashRenamedIdSafe %}
+                            {% if flashRenamedIdSafe and folder.id is defined and (folder.id ~ '') == flashRenamedIdSafe
+                            %}
                             <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">Renamed</strong>
                             {% endif %}
 
-                            {% if flashNewFolderIdSafe and folder.id is defined and (folder.id ~ '') == flashNewFolderIdSafe %}
+                            {% if flashNewFolderIdSafe and folder.id is defined and (folder.id ~ '') ==
+                            flashNewFolderIdSafe %}
                             <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">New folder</strong>
                             {% endif %}
 
@@ -153,20 +168,13 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
                     <!-- {{ m.name | highlight(data.filtersSearch) | safe }} -->
                 </span>
             </td>
-            <td class="govuk-table__cell numeric">{{ m.date }}</td>
+            <td class="govuk-table__cell">{{ m.description }}</td>
+            <td class="govuk-table__cell">{{ m.category }}</td>
 
-            <td class="govuk-table__cell">
-                {% if m.status == 'None' %}
-                <strong class="govuk-tag govuk-tag--grey">{{ m.status }}</strong>
-                {% elseif m.status == 'Used' %}
-                <strong class="govuk-tag govuk-tag--blue">{{ m.status }}</strong>
-                {% else %}
-                <strong class="govuk-tag govuk-tag--yellow">{{ m.status }}</strong>
-                {% endif %}
-            </td>
 
             <td class="govuk-table__cell toggle-panel">
-                <button type="button" class="govuk-button show_material_actions show-case" data-id="{{ m.id }}" data-doc="{{ m.previewLink }}">
+                <button type="button" class="govuk-button show_material_actions show-case" data-id="{{ m.id }}"
+                    data-doc="{{ m.previewLink }}">
                     Preview <i class="fa-solid fa-chevron-down"></i>
                 </button>
             </td>

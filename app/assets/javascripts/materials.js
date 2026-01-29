@@ -2,11 +2,25 @@
 console.log("materials.js loaded!");
 
 document.addEventListener('click', function (e) {
-     // ❌ Never allow clicks inside the table body to trigger sorting
-     if (e.target.closest('#materials_table tbody')) {
-          e.stopPropagation();
-     }
-}, true); // capture phase
+     // Only block clicks that are literally on tbody background or random cells,
+     // but DO NOT block interactive controls.
+     if (!e.target.closest('#materials_table tbody')) return;
+
+     const isInteractive =
+          e.target.closest('button, a, input, label, select, textarea, summary, details');
+
+     if (isInteractive) return;
+
+     // If you still want: stop bubbling to any weird sort delegate elsewhere
+     e.stopPropagation();
+}, true);
+
+// document.addEventListener('click', function (e) {
+//      // ❌ Never allow clicks inside the table body to trigger sorting
+//      if (e.target.closest('#materials_table tbody')) {
+//           e.stopPropagation();
+//      }
+// }, true); // capture phase
 
 // Make it global so inline onclick can see it
 // window.openMaterial = function (event) {
@@ -136,12 +150,266 @@ document.addEventListener("DOMContentLoaded", function () {
                });
 
                blocks.forEach(block => block.forEach(r => tbody.appendChild(r)));
-
                dir *= -1;
+
+               // 🔥 re-apply first/last link rules after sorting
+               if (window.updateMoveLinks) window.updateMoveLinks();
           });
      });
 });
 
+
+
+// Gutter move buttons
+function refreshOrderGutter(tbody) {
+     const rows = Array.from(tbody.querySelectorAll("tr"));
+
+     rows.forEach((row, idx) => {
+          const up = row.querySelector('a.move-link[data-action="up"]');
+          const down = row.querySelector('a.move-link[data-action="down"]');
+          const divider = row.querySelector(".divider");
+
+          const isFirst = idx === 0;
+          const isLast = idx === rows.length - 1;
+
+          // Helpers: you already have .is-hidden CSS that keeps spacing
+          const show = (el) => el && el.classList.remove("is-hidden");
+          const hide = (el) => el && el.classList.add("is-hidden");
+
+          // Enable/disable helper (keeps your is-disabled class)
+          const setEnabled = (link, enabled) => {
+               if (!link) return;
+               link.classList.toggle("is-disabled", !enabled);
+               link.setAttribute("aria-disabled", enabled ? "false" : "true");
+               link.tabIndex = enabled ? 0 : -1;
+          };
+
+          // Rules:
+          // First row: no Move up
+          if (isFirst) {
+               hide(up);
+               setEnabled(up, false);
+
+               show(down);
+               setEnabled(down, true);
+
+               hide(divider); // no point showing "|" with only one link
+               return;
+          }
+
+          // Last row: no Move down
+          if (isLast) {
+               show(up);
+               setEnabled(up, true);
+
+               hide(down);
+               setEnabled(down, false);
+
+               hide(divider);
+               return;
+          }
+
+          // Middle rows: both
+          show(up);
+          setEnabled(up, true);
+
+          show(down);
+          setEnabled(down, true);
+
+          show(divider);
+     });
+}
+
+// document.addEventListener("DOMContentLoaded", () => {
+//      const table = document.getElementById("materials_table");
+//      if (!table) return;
+
+//      function getTbody() {
+//           return table.querySelector("tbody");
+//      }
+
+//      function getRows(tbody) {
+//           return Array.from(tbody.querySelectorAll("tr"));
+//      }
+
+//      function renumberAllRows(tbody) {
+//           getRows(tbody).forEach((row, idx) => {
+//                const input = row.querySelector("input.order-input");
+//                if (input) input.value = idx + 1;
+//                row.dataset.order = String(idx + 1);
+//           });
+//      }
+
+//      // Enable/disable "Move up/down" per row position
+//      function updateMoveLinkStates(tbody) {
+//           const rows = getRows(tbody);
+
+//           rows.forEach((row, idx) => {
+//                const up = row.querySelector('a.move-link[data-action="up"]');
+//                const down = row.querySelector('a.move-link[data-action="down"]');
+
+//                const canUp = idx > 0;
+//                const canDown = idx < rows.length - 1;
+
+//                setLinkEnabled(up, canUp);
+//                setLinkEnabled(down, canDown);
+//           });
+//      }
+
+//      function setLinkEnabled(link, enabled) {
+//           if (!link) return;
+
+//           // "is-disabled" is your visual hook. We'll also add real a11y/behavior.
+//           link.classList.toggle("is-disabled", !enabled);
+//           link.setAttribute("aria-disabled", enabled ? "false" : "true");
+//           link.tabIndex = enabled ? 0 : -1;
+//           // Keep href, but we block clicks in JS when disabled.
+//      }
+
+//      function moveRow(row, direction) {
+//           const tbody = row.closest("tbody");
+//           if (!tbody) return;
+
+//           const prev = row.previousElementSibling;
+//           const next = row.nextElementSibling;
+
+//           if (direction === "up" && prev) {
+//                tbody.insertBefore(row, prev);
+//           } else if (direction === "down" && next) {
+//                // insert next before row = row moves down one
+//                tbody.insertBefore(next, row);
+//           } else {
+//                return; // can't move
+//           }
+
+//           renumberAllRows(tbody);
+//           updateMoveLinkStates(tbody);
+//      }
+
+//      // Initial pass (in case server rendered order values are blank/odd)
+//      const tbody = getTbody();
+//      if (tbody) {
+//           // Optional: If you trust item.order, remove this renumber call.
+//           // renumberAllRows(tbody);
+//           updateMoveLinkStates(tbody);
+//      }
+
+//      // Event delegation: catch clicks on move links only
+//      table.addEventListener("click", (e) => {
+//           const link = e.target.closest('a.move-link[data-action]');
+//           if (!link) return;
+
+//           // absolutely do not let this bubble into sorting / checkbox / row click handlers
+//           e.preventDefault();
+//           e.stopPropagation();
+//           if (typeof e.stopImmediatePropagation === "function") e.stopImmediatePropagation();
+
+//           // Block if "disabled"
+//           if (link.classList.contains("is-disabled") || link.getAttribute("aria-disabled") === "true") {
+//                return;
+//           }
+
+//           const row = link.closest("tr");
+//           if (!row) return;
+
+//           const action = link.getAttribute("data-action"); // "up" | "down"
+//           moveRow(row, action);
+//      }, true); // capture=true helps prevent other handlers firing first
+// });
+
+// (function () {
+//      function updateMoveLinksByVisiblePosition() {
+//           const table = document.getElementById('materials_table');
+//           if (!table) return;
+
+//           // Only real item rows, in their CURRENT order
+//           const rows = Array.from(table.querySelectorAll('tbody tr.material-row'))
+//                .filter(r => !r.classList.contains('hidden_row'));
+
+//           rows.forEach((row, i) => {
+//                const isFirst = i === 0;
+//                const isLast = i === rows.length - 1;
+
+//                const up = row.querySelector('.order-links .move-up');
+//                const down = row.querySelector('.order-links .move-down');
+//                const divider = row.querySelector('.order-links .divider');
+
+//                if (up) up.classList.toggle('is-hidden', isFirst);
+//                if (down) down.classList.toggle('is-hidden', isLast);
+
+//                // only show divider when both links are visible
+//                if (divider) divider.classList.toggle('is-hidden', isFirst || isLast);
+//           });
+//      }
+
+//      // Make callable from your sorter
+//      window.updateMoveLinks = updateMoveLinksByVisiblePosition;
+
+//      // Run on load
+//      if (document.readyState === 'loading') {
+//           document.addEventListener('DOMContentLoaded', updateMoveLinksByVisiblePosition);
+//      } else {
+//           updateMoveLinksByVisiblePosition();
+//      }
+
+//      // Re-run after interactions that might affect rowow order/visibility
+//      document.addEventListener('change', (e) => {
+//           if (e.target.closest && e.target.closest('#materials_table')) {
+//                setTimeout(updateMoveLinksByVisiblePosition, 0);
+//           }
+//      });
+
+//      document.addEventListener('click', (e) => {
+//           if (e.target.closest && e.target.closest('#materials_table')) {
+//                setTimeout(updateMoveLinksByVisiblePosition, 0);
+//           }
+//      });
+// })();
+
+
+document.addEventListener("click", (e) => {
+     const link = e.target.closest('a.move-link[data-action]');
+     if (!link) return;
+
+     e.preventDefault();
+     e.stopPropagation();
+     if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+     if (link.classList.contains("is-disabled") || link.getAttribute("aria-disabled") === "true") return;
+
+     const row = link.closest("tr");
+     const tbody = row && row.closest("tbody");
+     if (!row || !tbody) return;
+
+     const action = link.dataset.action;
+     const prev = row.previousElementSibling;
+     const next = row.nextElementSibling;
+
+     if (action === "up" && prev) {
+          tbody.insertBefore(row, prev);
+     } else if (action === "down" && next) {
+          tbody.insertBefore(next, row);
+     } else {
+          return;
+     }
+
+     // Renumber after moving
+     Array.from(tbody.querySelectorAll("tr")).forEach((tr, i) => {
+          const input = tr.querySelector("input.order-input");
+          if (input) input.value = i + 1;
+     });
+
+     // Recompute which links should show on which rows
+     refreshOrderGutter(tbody);
+
+}, true);
+
+// Initial state
+document.addEventListener("DOMContentLoaded", () => {
+     const table = document.getElementById("materials_table");
+     const tbody = table && table.querySelector("tbody");
+     if (tbody) refreshOrderGutter(tbody);
+});
 
 
 // Discarding materials
@@ -1999,7 +2267,6 @@ document.addEventListener('DOMContentLoaded', initMaterialsPage);
           const table = document.getElementById('materials_table');
           if (!table) return;
 
-          // Only real item rows (your preview rows don’t have .material-row)
           const rows = Array.from(table.querySelectorAll('tbody tr.material-row'));
 
           rows.forEach((row, i) => {
@@ -2013,28 +2280,126 @@ document.addEventListener('DOMContentLoaded', initMaterialsPage);
                if (up) up.classList.toggle('is-hidden', isFirst);
                if (down) down.classList.toggle('is-hidden', isLast);
 
-               // Divider should only show when BOTH links show
+               // Divider shows only when BOTH links are visible
                if (divider) divider.classList.toggle('is-hidden', isFirst || isLast);
           });
      }
 
-     // Run once on load
+     // expose globally so the sort handler can call it
+     window.updateMoveLinks = updateMoveLinks;
+
+     // initial
      if (document.readyState === 'loading') {
           document.addEventListener('DOMContentLoaded', updateMoveLinks);
      } else {
           updateMoveLinks();
      }
-
-     // Re-run after any interaction in the table (covers select-all, row ticks, etc.)
-     document.addEventListener('click', function (e) {
-          if (e.target.closest('#materials_table')) {
-               setTimeout(updateMoveLinks, 0);
-          }
-     });
-
-     document.addEventListener('change', function (e) {
-          if (e.target.closest && e.target.closest('#materials_table')) {
-               setTimeout(updateMoveLinks, 0);
-          }
-     });
 })();
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+     const table = document.getElementById("materials_table");
+     if (!table) return;
+
+     // Finds the "order" input inside a row. Adjust selectors here if yours differ.
+     function findOrderInput(row) {
+          // Prefer a specific class/data attribute if you can add one
+          return (
+               row.querySelector('input.order-input') ||
+               row.querySelector('input[data-order]') ||
+               row.querySelector('input[type="number"][name*="order"]') ||
+               row.querySelector('input[type="number"]')
+          );
+     }
+
+     function renumberAllRows(tbody) {
+          const rows = Array.from(tbody.querySelectorAll("tr"));
+          rows.forEach((row, idx) => {
+               const input = findOrderInput(row);
+               if (!input) return;
+               const newVal = idx + 1;
+               input.value = newVal;
+
+               // If you keep the value elsewhere (hidden field, dataset), update it too.
+               row.dataset.order = String(newVal);
+          });
+     }
+
+     function moveRow(row, direction) {
+          const tbody = row.closest("tbody");
+          if (!tbody) return;
+
+          const prev = row.previousElementSibling;
+          const next = row.nextElementSibling;
+
+          if (direction === "up" && prev) {
+               // Move current row before previous
+               tbody.insertBefore(row, prev);
+               renumberAllRows(tbody);
+          }
+
+          if (direction === "down" && next) {
+               // Move next row before current (equivalent to moving current down)
+               tbody.insertBefore(next, row);
+               renumberAllRows(tbody);
+          }
+     }
+
+     // Delegate clicks so we don't bind handlers to every link (and risk side-effects)
+     table.addEventListener("click", (e) => {
+          const link = e.target.closest('a.order-link[data-action]');
+          if (!link) return;
+
+          // Critical: stop this click from triggering anything else (sorting, row toggles, etc.)
+          e.preventDefault();
+          e.stopPropagation();
+
+          // If anything else is listening higher up in capture phase, this helps too:
+          if (typeof e.stopImmediatePropagation === "function") e.stopImmediatePropagation();
+
+          const row = link.closest("tr");
+          if (!row) return;
+
+          const action = link.getAttribute("data-action");
+          moveRow(row, action);
+     });
+});
+
+
+
+
+document.addEventListener("click", (e) => {
+     // Only react to the move links, nothing else
+     const moveLink = e.target.closest('a.move-link[data-action="up"], a.move-link[data-action="down"]');
+     if (!moveLink) return; // IMPORTANT: don't block other clicks
+
+     // Now and only now: block default/bubbling
+     e.preventDefault();
+     e.stopPropagation();
+     if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+     // Respect disabled state
+     if (moveLink.classList.contains("is-disabled") || moveLink.getAttribute("aria-disabled") === "true") return;
+
+     const row = moveLink.closest("tr");
+     const tbody = row && row.closest("tbody");
+     if (!row || !tbody) return;
+
+     const action = moveLink.dataset.action;
+     const prev = row.previousElementSibling;
+     const next = row.nextElementSibling;
+
+     if (action === "up" && prev) tbody.insertBefore(row, prev);
+     if (action === "down" && next) tbody.insertBefore(next, row);
+
+     // Renumber visible "main" rows (simple version)
+     Array.from(tbody.querySelectorAll("tr")).forEach((tr, i) => {
+          const input = tr.querySelector("input.order-input");
+          if (input) input.value = i + 1;
+     });
+
+     // Re-run your show/hide logic if you have it
+     // refreshOrderGutter(tbody);
+}, false);
+

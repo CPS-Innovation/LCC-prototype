@@ -147,14 +147,14 @@
                                         </button>
                                     </form>
 
-                                    <button class="govuk-button mark_as_Read" type="button">
+                                    <!-- <button class="govuk-button mark_as_Read" type="button">
                                         Mark as read
                                     </button>
 
                                     <button class="govuk-button" type="button">
                                         Mark as unused
                                     </button>
-
+ -->
                                     <form id="discardForm" method="post"
                                         action="../../../version-12/B-off-system-MVP/B-discard_material">
                                         <input id="material_selected" name="material_selected" type="hidden" value="">
@@ -400,7 +400,12 @@
                 <!-- <tr class="govuk-table__row material-row" data-id="{{ item.id }}" {% if item.folder %}data-folder="true"
                             {% else %}data-folder="false" {% endif %}> -->
                 <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-visually-hidden">Order</th>
+                    <th scope="col" class="govuk-table__header">
+                        <button type="button" class="govuk-link govuk-link--no-visited-state table-sort"
+                            data-sort="order">
+                            Order
+                        </button>
+                    </th>
 
                     <th scope="col" class="govuk-table__header">
                         {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
@@ -415,13 +420,32 @@
                         {% endif %}
                     </th>
 
-                    <th scope="col" class="govuk-table__header">
+                    <!-- <th scope="col" class="govuk-table__header">
                         <button type="button" class="govuk-link materials-sort" data-sort="name">
+                            File or folder
+                        </button>
+                    </th> -->
+                    <th scope="col" class="govuk-table__header">
+                        <button type="button" class="govuk-link govuk-link--no-visited-state table-sort"
+                            data-sort="name">
                             File or folder
                         </button>
                     </th>
 
                     <th scope="col" class="govuk-table__header">
+                        <button type="button" class="govuk-link govuk-link--no-visited-state table-sort">
+                            Description
+                        </button>
+                    </th>
+
+                    <th scope="col" class="govuk-table__header">
+                        <button type="button" class="govuk-link govuk-link--no-visited-state table-sort"
+                            data-sort="category">
+                            Category
+                        </button>
+                    </th>
+
+                    <!-- <th scope="col" class="govuk-table__header">
                         <button type="button" class="govuk-link materials-sort" data-sort="description">
                             Description
                         </button>
@@ -431,7 +455,7 @@
                         <button type="button" class="govuk-link materials-sort" data-sort="category">
                             Category
                         </button>
-                    </th>
+                    </th> -->
 
                     <th scope="col" class="govuk-table__header"></th>
                 </tr>
@@ -453,10 +477,12 @@
                             <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
                                 inputmode="numeric" value="{{ item.order or '' }}">
 
-                            <div class="order-links" aria-hidden="true">
-                                <span class="govuk-link move-link move-up is-disabled">Move up</span>
-                                <span class="divider" aria-hidden="true">|</span>
-                                <span class="govuk-link move-link move-down is-disabled">Move down</span>
+                            <div class="order-links">
+                                <!-- <span class="govuk-link move-link move-up is-disabled">Move up</span> -->
+                                <a href="#" class="govuk-link move-link move-up is-disabled" data-action="up">Move up</a>
+                                <span class="divider">|</span>
+                                <!-- <span class="govuk-link move-link move-down is-disabled">Move down</span> -->
+                                <a href="#" class="govuk-link move-link move-down is-disabled" data-action="down">Move down</a>
                             </div>
                         </div>
                     </td>
