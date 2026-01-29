@@ -1,19 +1,32 @@
 ///////////////////////////////////////////////////// Monica CODE - START /////////////////////////////////////////////////////
 console.log("materials.js loaded!");
 
-document.addEventListener('click', function (e) {
-     // Only block clicks that are literally on tbody background or random cells,
-     // but DO NOT block interactive controls.
-     if (!e.target.closest('#materials_table tbody')) return;
 
-     const isInteractive =
-          e.target.closest('button, a, input, label, select, textarea, summary, details');
+// PREVIEW: intercept at WINDOW capture so no other capture listeners can sort the table
+window.addEventListener('click', function (e) {
+     const btn = e.target.closest && e.target.closest('button.show-case');
+     if (!btn) return;
 
-     if (isInteractive) return;
-
-     // If you still want: stop bubbling to any weird sort delegate elsewhere
+     e.preventDefault();
      e.stopPropagation();
+     if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+     togglePreview(btn);
 }, true);
+
+// document.addEventListener('click', function (e) {
+//      // Only block clicks that are literally on tbody background or random cells,
+//      // but DO NOT block interactive controls.
+//      if (!e.target.closest('#materials_table tbody')) return;
+
+//      const isInteractive =
+//           e.target.closest('button, a, input, label, select, textarea, summary, details');
+
+//      if (isInteractive) return;
+
+//      // If you still want: stop bubbling to any weird sort delegate elsewhere
+//      e.stopPropagation();
+// }, true);
 
 // document.addEventListener('click', function (e) {
 //      // ❌ Never allow clicks inside the table body to trigger sorting
@@ -2006,38 +2019,38 @@ document.querySelectorAll('.js-material-actions').forEach(menu => {
 
 
 // Code 23 January 2026 - Mónica
-document.addEventListener('click', (e) => {
-     const btn = e.target.closest('button.show-case');
-     if (!btn) return;
+// document.addEventListener('click', (e) => {
+//      const btn = e.target.closest('button.show-case');
+//      if (!btn) return;
 
-     e.preventDefault();
-     e.stopPropagation();
+//      e.preventDefault();
+//      e.stopPropagation();
 
-     const id = btn.getAttribute('data-id');
-     const row = btn.closest('tr');
-     const previewRow = document.querySelector(`tr.hidden_row[data-row_id="${id}"]`);
-     if (!row || !previewRow) return;
+//      const id = btn.getAttribute('data-id');
+//      const row = btn.closest('tr');
+//      const previewRow = document.querySelector(`tr.hidden_row[data-row_id="${id}"]`);
+//      if (!row || !previewRow) return;
 
-     // close all other previews
-     document.querySelectorAll('tr.hidden_row').forEach(r => {
-          if (r !== previewRow) r.style.display = 'none';
-     });
+//      // close all other previews
+//      document.querySelectorAll('tr.hidden_row').forEach(r => {
+//           if (r !== previewRow) r.style.display = 'none';
+//      });
 
-     // reset all other buttons
-     document.querySelectorAll('button.show-case').forEach(b => {
-          if (b !== btn) b.innerHTML = 'Preview <i class="fa-solid fa-chevron-down"></i>';
-     });
+//      // reset all other buttons
+//      document.querySelectorAll('button.show-case').forEach(b => {
+//           if (b !== btn) b.innerHTML = 'Preview <i class="fa-solid fa-chevron-down"></i>';
+//      });
 
-     // keep preview row right after its main row
-     row.insertAdjacentElement('afterend', previewRow);
+//      // keep preview row right after its main row
+//      row.insertAdjacentElement('afterend', previewRow);
 
-     const opening = previewRow.style.display !== 'table-row';
-     previewRow.style.display = opening ? 'table-row' : 'none';
+//      const opening = previewRow.style.display !== 'table-row';
+//      previewRow.style.display = opening ? 'table-row' : 'none';
 
-     btn.innerHTML = opening
-          ? 'Hide <i class="fa-solid fa-chevron-up"></i>'
-          : 'Preview <i class="fa-solid fa-chevron-down"></i>';
-});
+//      btn.innerHTML = opening
+//           ? 'Hide <i class="fa-solid fa-chevron-up"></i>'
+//           : 'Preview <i class="fa-solid fa-chevron-down"></i>';
+// });
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -2070,6 +2083,34 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+
+function togglePreview(btn) {
+     const id = btn.getAttribute('data-id');
+     const row = btn.closest('tr');
+     const previewRow = document.querySelector(`tr.hidden_row[data-row_id="${id}"]`);
+     if (!row || !previewRow) return;
+
+     // close all other previews
+     document.querySelectorAll('tr.hidden_row').forEach(r => {
+          if (r !== previewRow) r.style.display = 'none';
+     });
+
+     // reset all other buttons
+     document.querySelectorAll('button.show-case').forEach(b => {
+          if (b !== btn) b.innerHTML = 'Preview <i class="fa-solid fa-chevron-down"></i>';
+     });
+
+     // keep preview row right after its main row
+     row.insertAdjacentElement('afterend', previewRow);
+
+     const opening = previewRow.style.display !== 'table-row';
+     previewRow.style.display = opening ? 'table-row' : 'none';
+
+     btn.innerHTML = opening
+          ? 'Hide <i class="fa-solid fa-chevron-up"></i>'
+          : 'Preview <i class="fa-solid fa-chevron-down"></i>';
+}
 
 
 
