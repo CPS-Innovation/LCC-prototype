@@ -3521,18 +3521,71 @@ thead th .govuk-button {
 /* These two lines undo any earlier "disable everything" rules */
 .order-cell .order-links,
 .order-cell .order-links * {
-  pointer-events: auto;
+     pointer-events: auto;
 }
 
 /* Links should behave like links */
 .order-cell .order-links a.move-link {
-  pointer-events: auto;
-  cursor: pointer;
+     pointer-events: auto;
+     cursor: pointer;
 }
 
 /* Disabled links stay unclickable */
 .order-cell .order-links a.move-link.is-disabled,
 .order-cell .order-links a.move-link[aria-disabled="true"] {
-  pointer-events: none;
-  cursor: default;
+     pointer-events: none;
+     cursor: default;
 }
+
+
+
+
+
+// At the very end of the CSS file, to disable clicks on rows, except certain elements
+
+/* 1) Disable clicks anywhere in the table body rows by default */
+#materials_table tbody tr,
+#materials_table tbody tr td {
+     pointer-events: none;
+     cursor: default;
+}
+
+/* 2) Re-enable ONLY the things that are allowed to be clickable */
+#materials_table tbody .order-cell,
+#materials_table tbody .order-cell * {
+     pointer-events: auto;
+     /* gutter (order input + move links) */
+}
+
+#materials_table tbody input[type="checkbox"],
+#materials_table tbody label,
+#materials_table tbody .govuk-checkboxes__input,
+#materials_table tbody .govuk-checkboxes__label {
+     pointer-events: auto;
+     /* checkboxes */
+}
+
+/* Preview control for files */
+#materials_table tbody button.show-case,
+#materials_table tbody a.show-case,
+#materials_table tbody .preview-link,
+#materials_table tbody .preview-toggle {
+     pointer-events: auto;
+     cursor: pointer;
+}
+
+/* Folder name link for folders */
+#materials_table tbody a.folder-link,
+#materials_table tbody a.folder-name,
+#materials_table tbody .folder-name a {
+     pointer-events: auto;
+     cursor: pointer;
+}
+
+
+#materials_table tbody button.folder-open {
+     pointer-events: auto;
+     cursor: pointer;
+}
+
+

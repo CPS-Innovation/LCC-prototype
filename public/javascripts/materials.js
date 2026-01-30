@@ -2,6 +2,83 @@
 console.log("materials.js loaded!");
 
 
+// ************ Random clicks guards ************ //
+// Folder open: allow form submit, but stop any other click handlers (like sorting) reacting to it
+document.addEventListener('click', function (e) {
+     const folderBtn = e.target.closest(
+          '#materials_table tbody td.title_column form button[type="submit"]'
+     );
+     if (!folderBtn) return;
+
+     // IMPORTANT: do NOT preventDefault (we want the form to submit)
+     e.stopPropagation();
+     if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+}, true); // capture phase so we beat other listeners
+
+
+
+// Checkbox clicks: allow toggle, but stop any other click handlers (like sorting) reacting to it
+document.addEventListener('click', function (e) {
+     const cb = e.target.closest('#materials_table tbody .govuk-checkboxes__input, #materials_table tbody .govuk-checkboxes__label');
+     if (!cb) return;
+
+     // IMPORTANT: do NOT preventDefault (we want the checkbox to toggle)
+     e.stopPropagation();
+     if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+}, true); // capture phase
+
+
+// Row dead-space clicks: stop them doing anything (prevents random sorts)
+document.addEventListener('click', function (e) {
+     const tbody = e.target.closest('#materials_table tbody');
+     if (!tbody) return;
+
+     // Allow legitimate interactive controls
+     const allowed =
+          e.target.closest('button.show-case') || // preview (files)
+          e.target.closest('td.title_column form button[type="submit"]') || // folder open (folders)
+          e.target.closest('.order-cell') || // gutter cell (order input + move links)
+          e.target.closest('a.move-link[data-action]') || // move links explicitly
+          e.target.closest('input[type="checkbox"], label'); // checkboxes
+
+     if (allowed) return;
+
+     // Anything else inside tbody is "no man's land" and should not trigger sorting
+     e.stopPropagation();
+     if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+}, true);
+// ************ End of random clicks guards ************ //
+
+
+// function isAllowedTableTarget(target) {
+//      return !!(
+//           target.closest('button.show-case') ||                                // preview (files)
+//           target.closest('#materials_table tbody td.title_column form button[type="submit"]') || // folder open (folders)
+//           target.closest('.order-cell') ||                                     // gutter
+//           target.closest('a.move-link[data-action]') ||                        // move links
+//           target.closest('#materials_table tbody input[type="checkbox"], #materials_table tbody label') // checkboxes
+//      );
+// }
+
+// // Kill dead-space interactions BEFORE other scripts see them
+// ['pointerdown', 'mousedown', 'click'].forEach(evt => {
+//      window.addEventListener(evt, function (e) {
+//           const tbody = e.target.closest && e.target.closest('#materials_table tbody');
+//           if (!tbody) return;
+
+//           if (isAllowedTableTarget(e.target)) return;
+
+//           // Dead space: do nothing, and don't let any "sort on click" gremlins see it
+//           e.stopPropagation();
+//           if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+//           // Only prevent default on pointerdown/mousedown to avoid weird text selection / drag triggers
+//           if (evt !== 'click') e.preventDefault();
+//      }, true);
+// });
+
+
+
 // PREVIEW: intercept at WINDOW capture so no other capture listeners can sort the table
 window.addEventListener('click', function (e) {
      const btn = e.target.closest && e.target.closest('button.show-case');
@@ -13,6 +90,29 @@ window.addEventListener('click', function (e) {
 
      togglePreview(btn);
 }, true);
+
+
+document.addEventListener('click', function (e) {
+     const row = e.target.closest('#materials_table tbody tr');
+     if (!row) return;
+
+     // Allow ONLY these interactions:
+     const allowed =
+          e.target.closest('.order-cell') ||                                // gutter
+          e.target.closest('a.move-link[data-action]') ||                   // move links
+          e.target.closest('button.show-case') ||                           // preview button for files
+          e.target.closest('td.title_column form button[type="submit"]') || // folder name submit button
+          e.target.closest('input[type="checkbox"], label');                // checkboxes
+
+     if (allowed) return;
+
+     // Otherwise, kill the click so the row is not "clickable"
+     e.preventDefault();
+     e.stopPropagation();
+     if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+}, true);
+
+
 
 // document.addEventListener('click', function (e) {
 //      // Only block clicks that are literally on tbody background or random cells,
@@ -80,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
      if (!table) return;
 
      // Any clickable header with data-sort
-     const headerButtons = table.querySelectorAll("thead [data-sort]");
+     const headerButtons = table.querySelectorAll("thead button[data-sort], thead a[data-sort]");
      if (!headerButtons.length) return;
 
      const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
