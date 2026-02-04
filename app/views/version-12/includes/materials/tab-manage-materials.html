@@ -161,14 +161,16 @@
 
                                     <form method="post" action="/version-12/B-off-system-MVP/mark-as-read">
                                         <input type="hidden" name="selected_ids" id="mark_read_selected_ids" value="">
-                                        <button type="submit" id="markReadButton" class="govuk-button govuk-button--secondary" disabled>
+                                        <button type="submit" id="markReadButton"
+                                            class="govuk-button govuk-button--secondary" disabled>
                                             Mark as read
                                         </button>
                                     </form>
 
                                     <form method="post" action="/version-12/B-off-system-MVP/mark-as-unread">
                                         <input type="hidden" name="selected_ids" id="mark_unread_selected_ids" value="">
-                                        <button type="submit" id="markUnreadButton" class="govuk-button govuk-button--secondary" disabled>
+                                        <button type="submit" id="markUnreadButton"
+                                            class="govuk-button govuk-button--secondary" disabled>
                                             Mark as unread
                                         </button>
                                     </form>
@@ -582,10 +584,17 @@
                             <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
                                 inputmode="numeric" value="{{ item.order or '' }}">
 
-                            <div class="order-links" aria-hidden="true">
+                            <!-- <div class="order-links" aria-hidden="true">
                                 <span class="govuk-link move-link move-up is-disabled">Move up</span>
                                 <span class="divider" aria-hidden="true">|</span>
                                 <span class="govuk-link move-link move-down is-disabled">Move down</span>
+                            </div> -->
+                            <div class="order-links" aria-hidden="true">
+                                <a href="#" class="govuk-link move-link move-up is-disabled" data-action="up">Move
+                                    up</a>
+                                <span class="divider" aria-hidden="true">|</span>
+                                <a href="#" class="govuk-link move-link move-down is-disabled" data-action="down">Move
+                                    down</a>
                             </div>
                         </div>
                     </td>

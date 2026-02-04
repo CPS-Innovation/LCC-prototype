@@ -209,22 +209,159 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // Gutter move buttons
-function refreshOrderGutter(tbody) {
-     const rows = Array.from(tbody.querySelectorAll("tr"));
+// function refreshOrderGutter(tbody) {
+//      const rows = Array.from(tbody.querySelectorAll("tr"));
 
-     rows.forEach((row, idx) => {
+//      rows.forEach((row, idx) => {
+//           const up = row.querySelector('a.move-link[data-action="up"]');
+//           const down = row.querySelector('a.move-link[data-action="down"]');
+//           const divider = row.querySelector(".divider");
+
+//           const isFirst = idx === 0;
+//           const isLast = idx === rows.length - 1;
+
+//           // Helpers: you already have .is-hidden CSS that keeps spacing
+//           const show = (el) => el && el.classList.remove("is-hidden");
+//           const hide = (el) => el && el.classList.add("is-hidden");
+
+//           // Enable/disable helper (keeps your is-disabled class)
+//           const setEnabled = (link, enabled) => {
+//                if (!link) return;
+//                link.classList.toggle("is-disabled", !enabled);
+//                link.setAttribute("aria-disabled", enabled ? "false" : "true");
+//                link.tabIndex = enabled ? 0 : -1;
+//           };
+
+//           // Rules:
+//           // First row: no Move up
+//           if (isFirst) {
+//                hide(up);
+//                setEnabled(up, false);
+
+//                show(down);
+//                setEnabled(down, true);
+
+//                hide(divider); // no point showing "|" with only one link
+//                return;
+//           }
+
+//           // Last row: no Move down
+//           if (isLast) {
+//                show(up);
+//                setEnabled(up, true);
+
+//                hide(down);
+//                setEnabled(down, false);
+
+//                hide(divider);
+//                return;
+//           }
+
+//           // Middle rows: both
+//           show(up);
+//           setEnabled(up, true);
+
+//           show(down);
+//           setEnabled(down, true);
+
+//           show(divider);
+//      });
+// }
+
+
+
+// document.addEventListener("click", (e) => {
+//      const link = e.target.closest('a.move-link[data-action]');
+//      if (!link) return;
+
+//      e.preventDefault();
+//      e.stopPropagation();
+//      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+//      if (link.classList.contains("is-disabled") || link.getAttribute("aria-disabled") === "true") return;
+
+//      const row = link.closest("tr");
+//      const tbody = row && row.closest("tbody");
+//      if (!row || !tbody) return;
+
+//      const action = link.dataset.action;
+//      const prev = row.previousElementSibling;
+//      const next = row.nextElementSibling;
+
+//      if (action === "up" && prev) {
+//           tbody.insertBefore(row, prev);
+//      } else if (action === "down" && next) {
+//           tbody.insertBefore(next, row);
+//      } else {
+//           return;
+//      }
+
+//      // Renumber after moving
+//      Array.from(tbody.querySelectorAll("tr")).forEach((tr, i) => {
+//           const input = tr.querySelector("input.order-input");
+//           if (input) input.value = i + 1;
+//      });
+
+//      // Recompute which links should show on which rows
+//      refreshOrderGutter(tbody);
+
+// }, true);
+
+
+
+
+
+
+
+
+// ===============================
+// MOVE UP / DOWN (block-aware)
+// ===============================
+function getMainRows(tbody) {
+     return Array.from(tbody.querySelectorAll('tr.material-row'));
+}
+
+function getPreviewRowFor(mainRow) {
+     const id = mainRow?.dataset?.id;
+     if (!id) return null;
+
+     const next = mainRow.nextElementSibling;
+     if (
+          next &&
+          next.classList.contains('hidden_row') &&
+          String(next.dataset.row_id) === String(id)
+     ) {
+          return next;
+     }
+     return null;
+}
+
+function getBlock(mainRow) {
+     const preview = getPreviewRowFor(mainRow);
+     return preview ? [mainRow, preview] : [mainRow];
+}
+
+function renumberMainRows(tbody) {
+     getMainRows(tbody).forEach((row, i) => {
+          const input = row.querySelector('input.order-input');
+          if (input) input.value = i + 1;
+     });
+}
+
+function refreshOrderGutter(tbody) {
+     const mainRows = getMainRows(tbody);
+
+     mainRows.forEach((row, idx) => {
           const up = row.querySelector('a.move-link[data-action="up"]');
           const down = row.querySelector('a.move-link[data-action="down"]');
           const divider = row.querySelector(".divider");
 
           const isFirst = idx === 0;
-          const isLast = idx === rows.length - 1;
+          const isLast = idx === mainRows.length - 1;
 
-          // Helpers: you already have .is-hidden CSS that keeps spacing
           const show = (el) => el && el.classList.remove("is-hidden");
           const hide = (el) => el && el.classList.add("is-hidden");
 
-          // Enable/disable helper (keeps your is-disabled class)
           const setEnabled = (link, enabled) => {
                if (!link) return;
                link.classList.toggle("is-disabled", !enabled);
@@ -232,42 +369,25 @@ function refreshOrderGutter(tbody) {
                link.tabIndex = enabled ? 0 : -1;
           };
 
-          // Rules:
-          // First row: no Move up
           if (isFirst) {
-               hide(up);
-               setEnabled(up, false);
-
-               show(down);
-               setEnabled(down, true);
-
-               hide(divider); // no point showing "|" with only one link
-               return;
-          }
-
-          // Last row: no Move down
-          if (isLast) {
-               show(up);
-               setEnabled(up, true);
-
-               hide(down);
-               setEnabled(down, false);
-
+               hide(up); setEnabled(up, false);
+               show(down); setEnabled(down, true);
                hide(divider);
                return;
           }
 
-          // Middle rows: both
-          show(up);
-          setEnabled(up, true);
+          if (isLast) {
+               show(up); setEnabled(up, true);
+               hide(down); setEnabled(down, false);
+               hide(divider);
+               return;
+          }
 
-          show(down);
-          setEnabled(down, true);
-
+          show(up); setEnabled(up, true);
+          show(down); setEnabled(down, true);
           show(divider);
      });
 }
-
 
 
 document.addEventListener("click", (e) => {
@@ -280,32 +400,43 @@ document.addEventListener("click", (e) => {
 
      if (link.classList.contains("is-disabled") || link.getAttribute("aria-disabled") === "true") return;
 
-     const row = link.closest("tr");
-     const tbody = row && row.closest("tbody");
-     if (!row || !tbody) return;
+     const mainRow = link.closest("tr.material-row");
+     const tbody = mainRow && mainRow.closest("tbody");
+     if (!mainRow || !tbody) return;
 
      const action = link.dataset.action;
-     const prev = row.previousElementSibling;
-     const next = row.nextElementSibling;
+     const mainRows = getMainRows(tbody);
+     const idx = mainRows.indexOf(mainRow);
 
-     if (action === "up" && prev) {
-          tbody.insertBefore(row, prev);
-     } else if (action === "down" && next) {
-          tbody.insertBefore(next, row);
-     } else {
-          return;
+     if (idx === -1) return;
+
+     const thisBlock = getBlock(mainRow);
+
+     if (action === "up" && idx > 0) {
+          const targetRow = mainRows[idx - 1];
+          tbody.insertBefore(thisBlock[0], targetRow);
+          if (thisBlock[1]) tbody.insertBefore(thisBlock[1], targetRow);
      }
 
-     // Renumber after moving
-     Array.from(tbody.querySelectorAll("tr")).forEach((tr, i) => {
-          const input = tr.querySelector("input.order-input");
-          if (input) input.value = i + 1;
-     });
+     if (action === "down" && idx < mainRows.length - 1) {
+          const targetRow = mainRows[idx + 1];
+          const targetBlock = getBlock(targetRow);
+          const afterNode = targetBlock[targetBlock.length - 1].nextElementSibling;
+          // Insert this block after the target block
+          thisBlock.forEach(node => tbody.insertBefore(node, afterNode));
+     }
 
-     // Recompute which links should show on which rows
+     renumberMainRows(tbody);
      refreshOrderGutter(tbody);
-
 }, true);
+
+document.addEventListener("DOMContentLoaded", () => {
+     const table = document.getElementById("materials_table");
+     const tbody = table && table.querySelector("tbody");
+     if (!tbody) return;
+     refreshOrderGutter(tbody);
+});
+
 
 // Initial state
 document.addEventListener("DOMContentLoaded", () => {
@@ -313,6 +444,8 @@ document.addEventListener("DOMContentLoaded", () => {
      const tbody = table && table.querySelector("tbody");
      if (tbody) refreshOrderGutter(tbody);
 });
+
+
 
 
 // Discarding materials
