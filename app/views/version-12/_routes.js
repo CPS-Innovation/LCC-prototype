@@ -1552,6 +1552,7 @@ router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
     const ids = raw ? raw.split(',').map(s => s.trim()).filter(Boolean) : [];
 
     const selectedItems = materials.filter(m => ids.includes(String(m.id)));
+    req.session.data.renameCount = selectedItems.length; 
 
     if (!selectedItems.length) {
         return res.redirect('/B-off-system-MVP/case-overview-folder');
