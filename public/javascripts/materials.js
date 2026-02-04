@@ -2013,6 +2013,21 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// 4 February 2026 - creating a path on search results
+function buildFolderPath(materials, item) {
+     const path = [];
+     let current = item;
+
+     while (current && current.parentId) {
+          const parent = materials.find(m => String(m.id) === String(current.parentId));
+          if (!parent) break;
+
+          path.unshift(parent.name);
+          current = parent;
+     }
+
+     return path.join(' / ');
+}
 
 
 function togglePreview(btn) {

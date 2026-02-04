@@ -83,6 +83,9 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
             <td class="govuk-table__cell title_column">
                 <form action="/version-12/B-off-system-MVP/case-overview-folder" method="post">
                     <div class="openMe">
+                        {% if folder.folderPath %}
+                            <span class="govuk-hint folder-path">({{ folder.folderPath }})</span>
+                        {% endif %}
                         <span class="icon-new folder"></span>
                         <input type="hidden" name="flag" value="1">
                         <input type="hidden" name="folderName" value="{{ folder.name }}">
@@ -148,6 +151,7 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
                             {{ folder.name | highlight(data['filtersSearch']) | safe }}
                         </button> -->
                             <!-- {% if folder.name %}/ {% endif %}  -->
+                            {% if m.folderPath %}<span class="govuk-hint">({{ m.folderPath }})</span> {% endif %}
                             {{ m.name | highlight(data.filtersSearch) | safe }}
                             {% if m.new %}
                             <span class="has-new-tag">
