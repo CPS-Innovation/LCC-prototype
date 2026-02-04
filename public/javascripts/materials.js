@@ -50,32 +50,6 @@ document.addEventListener('click', function (e) {
 // ************ End of random clicks guards ************ //
 
 
-// function isAllowedTableTarget(target) {
-//      return !!(
-//           target.closest('button.show-case') ||                                // preview (files)
-//           target.closest('#materials_table tbody td.title_column form button[type="submit"]') || // folder open (folders)
-//           target.closest('.order-cell') ||                                     // gutter
-//           target.closest('a.move-link[data-action]') ||                        // move links
-//           target.closest('#materials_table tbody input[type="checkbox"], #materials_table tbody label') // checkboxes
-//      );
-// }
-
-// // Kill dead-space interactions BEFORE other scripts see them
-// ['pointerdown', 'mousedown', 'click'].forEach(evt => {
-//      window.addEventListener(evt, function (e) {
-//           const tbody = e.target.closest && e.target.closest('#materials_table tbody');
-//           if (!tbody) return;
-
-//           if (isAllowedTableTarget(e.target)) return;
-
-//           // Dead space: do nothing, and don't let any "sort on click" gremlins see it
-//           e.stopPropagation();
-//           if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-
-//           // Only prevent default on pointerdown/mousedown to avoid weird text selection / drag triggers
-//           if (evt !== 'click') e.preventDefault();
-//      }, true);
-// });
 
 
 
@@ -113,45 +87,6 @@ document.addEventListener('click', function (e) {
 }, true);
 
 
-
-// document.addEventListener('click', function (e) {
-//      // Only block clicks that are literally on tbody background or random cells,
-//      // but DO NOT block interactive controls.
-//      if (!e.target.closest('#materials_table tbody')) return;
-
-//      const isInteractive =
-//           e.target.closest('button, a, input, label, select, textarea, summary, details');
-
-//      if (isInteractive) return;
-
-//      // If you still want: stop bubbling to any weird sort delegate elsewhere
-//      e.stopPropagation();
-// }, true);
-
-// document.addEventListener('click', function (e) {
-//      // ❌ Never allow clicks inside the table body to trigger sorting
-//      if (e.target.closest('#materials_table tbody')) {
-//           e.stopPropagation();
-//      }
-// }, true); // capture phase
-
-// Make it global so inline onclick can see it
-// window.openMaterial = function (event) {
-//      const btn = event?.target?.closest('button') || this;
-//      if (!btn) return false;
-
-//      const isOpen = btn.classList.toggle('is-previewing');
-//      btn.innerHTML = isOpen
-//           ? 'Hide <i class="fa-solid fa-chevron-up"></i>'
-//           : 'Preview <i class="fa-solid fa-chevron-down"></i>';
-
-//      // Optional: toggle a preview panel for this row
-//      const id = btn.getAttribute('data-id');
-//      const panel = document.querySelector(`#preview-${id}`);
-//      if (panel) panel.classList.toggle('hidden', !isOpen);
-
-//      return false;
-// };
 
 
 // Defensive: run after other inits and put our label back
@@ -333,151 +268,6 @@ function refreshOrderGutter(tbody) {
      });
 }
 
-// document.addEventListener("DOMContentLoaded", () => {
-//      const table = document.getElementById("materials_table");
-//      if (!table) return;
-
-//      function getTbody() {
-//           return table.querySelector("tbody");
-//      }
-
-//      function getRows(tbody) {
-//           return Array.from(tbody.querySelectorAll("tr"));
-//      }
-
-//      function renumberAllRows(tbody) {
-//           getRows(tbody).forEach((row, idx) => {
-//                const input = row.querySelector("input.order-input");
-//                if (input) input.value = idx + 1;
-//                row.dataset.order = String(idx + 1);
-//           });
-//      }
-
-//      // Enable/disable "Move up/down" per row position
-//      function updateMoveLinkStates(tbody) {
-//           const rows = getRows(tbody);
-
-//           rows.forEach((row, idx) => {
-//                const up = row.querySelector('a.move-link[data-action="up"]');
-//                const down = row.querySelector('a.move-link[data-action="down"]');
-
-//                const canUp = idx > 0;
-//                const canDown = idx < rows.length - 1;
-
-//                setLinkEnabled(up, canUp);
-//                setLinkEnabled(down, canDown);
-//           });
-//      }
-
-//      function setLinkEnabled(link, enabled) {
-//           if (!link) return;
-
-//           // "is-disabled" is your visual hook. We'll also add real a11y/behavior.
-//           link.classList.toggle("is-disabled", !enabled);
-//           link.setAttribute("aria-disabled", enabled ? "false" : "true");
-//           link.tabIndex = enabled ? 0 : -1;
-//           // Keep href, but we block clicks in JS when disabled.
-//      }
-
-//      function moveRow(row, direction) {
-//           const tbody = row.closest("tbody");
-//           if (!tbody) return;
-
-//           const prev = row.previousElementSibling;
-//           const next = row.nextElementSibling;
-
-//           if (direction === "up" && prev) {
-//                tbody.insertBefore(row, prev);
-//           } else if (direction === "down" && next) {
-//                // insert next before row = row moves down one
-//                tbody.insertBefore(next, row);
-//           } else {
-//                return; // can't move
-//           }
-
-//           renumberAllRows(tbody);
-//           updateMoveLinkStates(tbody);
-//      }
-
-//      // Initial pass (in case server rendered order values are blank/odd)
-//      const tbody = getTbody();
-//      if (tbody) {
-//           // Optional: If you trust item.order, remove this renumber call.
-//           // renumberAllRows(tbody);
-//           updateMoveLinkStates(tbody);
-//      }
-
-//      // Event delegation: catch clicks on move links only
-//      table.addEventListener("click", (e) => {
-//           const link = e.target.closest('a.move-link[data-action]');
-//           if (!link) return;
-
-//           // absolutely do not let this bubble into sorting / checkbox / row click handlers
-//           e.preventDefault();
-//           e.stopPropagation();
-//           if (typeof e.stopImmediatePropagation === "function") e.stopImmediatePropagation();
-
-//           // Block if "disabled"
-//           if (link.classList.contains("is-disabled") || link.getAttribute("aria-disabled") === "true") {
-//                return;
-//           }
-
-//           const row = link.closest("tr");
-//           if (!row) return;
-
-//           const action = link.getAttribute("data-action"); // "up" | "down"
-//           moveRow(row, action);
-//      }, true); // capture=true helps prevent other handlers firing first
-// });
-
-// (function () {
-//      function updateMoveLinksByVisiblePosition() {
-//           const table = document.getElementById('materials_table');
-//           if (!table) return;
-
-//           // Only real item rows, in their CURRENT order
-//           const rows = Array.from(table.querySelectorAll('tbody tr.material-row'))
-//                .filter(r => !r.classList.contains('hidden_row'));
-
-//           rows.forEach((row, i) => {
-//                const isFirst = i === 0;
-//                const isLast = i === rows.length - 1;
-
-//                const up = row.querySelector('.order-links .move-up');
-//                const down = row.querySelector('.order-links .move-down');
-//                const divider = row.querySelector('.order-links .divider');
-
-//                if (up) up.classList.toggle('is-hidden', isFirst);
-//                if (down) down.classList.toggle('is-hidden', isLast);
-
-//                // only show divider when both links are visible
-//                if (divider) divider.classList.toggle('is-hidden', isFirst || isLast);
-//           });
-//      }
-
-//      // Make callable from your sorter
-//      window.updateMoveLinks = updateMoveLinksByVisiblePosition;
-
-//      // Run on load
-//      if (document.readyState === 'loading') {
-//           document.addEventListener('DOMContentLoaded', updateMoveLinksByVisiblePosition);
-//      } else {
-//           updateMoveLinksByVisiblePosition();
-//      }
-
-//      // Re-run after interactions that might affect rowow order/visibility
-//      document.addEventListener('change', (e) => {
-//           if (e.target.closest && e.target.closest('#materials_table')) {
-//                setTimeout(updateMoveLinksByVisiblePosition, 0);
-//           }
-//      });
-
-//      document.addEventListener('click', (e) => {
-//           if (e.target.closest && e.target.closest('#materials_table')) {
-//                setTimeout(updateMoveLinksByVisiblePosition, 0);
-//           }
-//      });
-// })();
 
 
 document.addEventListener("click", (e) => {
@@ -968,15 +758,6 @@ $(document).ready(function () {
      // Only target elements within version-11
      var $version11 = $('.version-11');
 
-     // $version11.find("#show_Materials_Actions").click(function () {
-     //      $(this).toggleClass('active');
-     //      $version11.find('.hidden_buttons').toggle();
-     // });
-
-     // $version11.find("#show_Comms_Actions").click(function () {
-     //      $(this).toggleClass('active');
-     //      $version11.find('.hidden_buttons').toggle();
-     // });
 
      $version11.find("#show_Materials_Actions").on("click", function (e) {
           e.preventDefault();
@@ -1244,21 +1025,10 @@ function searchError() {
 $(document).ready(function () {
 
      $(".redact_Document").on("click", function (e) {
-          // $('div').attr('data-tab-id', 'MCLOVE%20MG3-content').find('.date_details').text('test');
-          // $('div').attr('data-tab-id', 'MCLOVE%20MG3-content').find('.time_details').text('test');
-
-          // $('div').attr('data-tab-id', 'Case%20overview%20and%20officer%20comments-content').find('.date_details').text('test  r ewfwef');
-          // $('div').attr('data-tab-id', 'Case%20overview%20and%20officer%20comments-content').find('.time_details').text('test  r ewfwef');
      });
 
 })
 
-// function documentDetails() {
-//      if ($('.document-panel').data('tab-id','MCLOVE%20MG3-content')) {
-//           alert('working');
-//      }
-
-// }
 
 function openNewNotesModal() {
      $("#openNewNotesModal").removeClass("rj-dont-display");
@@ -1481,23 +1251,6 @@ function closeNotesModal() {
      const moveBtn = document.getElementById('moveButton');
      const toggleBtn = document.getElementById('show_Materials_Actions');
 
-     // function updateButtonState() {
-     //      const selected = Array.from(checkboxes).filter(cb => cb.checked);
-     //      if (selected.length > 0) {
-     //           copyButton.classList.remove('govuk-button--disabled');
-     //           copyButton.removeAttribute('disabled');
-     //           moveButton.classList.remove('govuk-button--disabled');
-     //           moveButton.removeAttribute('disabled');
-     //      } else {
-     //           copyButton.classList.add('govuk-button--disabled');
-     //           copyButton.setAttribute('disabled', 'disabled');
-     //           moveButton.classList.add('govuk-button--disabled');
-     //           moveButton.setAttribute('disabled', 'disabled');
-     //      }
-     // }
-
-     // checkboxes.forEach(cb => cb.addEventListener('change', updateButtonState));
-
 
      function getSelectedMaterialIds() {
           return Array.from(
@@ -1703,81 +1456,7 @@ document.addEventListener('click', function (e) {
 
 
 
-// (function initCopyButtonLabelFromFolderTree() {
-//   const copyBtn = document.getElementById('copyFolderButton');
-//   if (!copyBtn) return;
 
-//   const defaultCopyText = copyBtn.textContent.trim() || "Copy";
-
-//   function setCopyText(names) {
-//     if (!names || names.length === 0) {
-//       copyBtn.textContent = defaultCopyText;
-//       copyBtn.disabled = true; // optional: disable until selection
-//       return;
-//     }
-
-//     copyBtn.disabled = false;
-
-//     // Single selection
-//     if (names.length === 1) {
-//       copyBtn.textContent = `Copy to ${names[0]}`;
-//       return;
-//     }
-
-//     // Multi-selection (if you allow it)
-//     copyBtn.textContent = `Copy to ${names.length} folders`;
-//   }
-
-//   // start disabled until user selects something
-//   setCopyText([]);
-
-//   // Click a folder-box to select it
-//   document.addEventListener('click', (e) => {
-//     const box = e.target.closest('.folder-box');
-//     if (!box) return;
-
-//     const node = box.closest('.folder-node');
-//     if (!node) return;
-
-//     // Don't allow Thundercat to be selected
-//     if (node.classList.contains('folder-node--root')) return;
-
-//     const folderName = node.getAttribute('data-folder-name')?.trim();
-//     if (!folderName) return;
-
-//     const multi = e.ctrlKey || e.metaKey; // Ctrl (Win) / Cmd (Mac)
-
-//     // If you do NOT want multi-select, force single
-//     if (!multi) {
-//       document.querySelectorAll('.folder-node.is-selected').forEach(n => n.classList.remove('is-selected'));
-//     }
-
-//     node.classList.toggle('is-selected', true);
-
-//     const selectedNames = Array.from(document.querySelectorAll('.folder-node.is-selected'))
-//       .map(n => n.getAttribute('data-folder-name'))
-//       .filter(Boolean);
-
-//     setCopyText(selectedNames);
-//   });
-
-//   // Optional: clicking the same selected folder again clears selection (single-select mode)
-//   document.addEventListener('dblclick', (e) => {
-//     const box = e.target.closest('.folder-box');
-//     if (!box) return;
-
-//     const node = box.closest('.folder-node');
-//     if (!node || node.classList.contains('folder-node--root')) return;
-
-//     node.classList.remove('is-selected');
-
-//     const selectedNames = Array.from(document.querySelectorAll('.folder-node.is-selected'))
-//       .map(n => n.getAttribute('data-folder-name'))
-//       .filter(Boolean);
-
-//     setCopyText(selectedNames);
-//   });
-// })();
 
 (function initCopyFolderPicker() {
      const copyBtn = document.getElementById('copyFolderButton');
@@ -1853,58 +1532,78 @@ document.addEventListener('click', function (e) {
 })();
 
 
+// initMoveFolderPicker – 4 February 2024
+(function initMoveFolderPicker() {
+     const moveBtn = document.getElementById('moveFolderButton');
+     const destInput = document.getElementById('destinationFolder');
+     if (!moveBtn || !destInput) return;
 
-// document.addEventListener('DOMContentLoaded', () => {
-//   const copyBtn = document.getElementById('copyButton');
-//   if (!copyBtn) return;
+     // 🔴 RESET STATE ON PAGE LOAD
+     moveBtn.textContent = 'Move';
+     moveBtn.disabled = true;
+     destInput.value = '';
 
-//   // Scope to the materials table if it exists, so we don’t pick up random checkboxes elsewhere
-//   const table = document.getElementById('materials_table');
+     const defaultMoveText = moveBtn.textContent.trim() || 'Move';
+     function applySelection(folderId, folderName) {
+          destInput.value = folderId || '';
+          moveBtn.textContent = folderName ? `Move to ${folderName}` : defaultMoveText;
 
-//   function checkedCount() {
-//     const scope = table || document;
-//     // Common patterns: adjust if yours differs, but this covers most of your prototype
-//     return scope.querySelectorAll(
-//       'input[type="checkbox"]:checked'
-//     ).length;
-//   }
+          // optional: disable until selection
+          moveBtn.disabled = !folderId;
 
-//   function setEnabled(enabled) {
-//     // Works for <button>
-//     if (copyBtn.tagName === 'BUTTON') {
-//       copyBtn.disabled = !enabled;
-//       copyBtn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
-//       return;
-//     }
+          // visual highlight
+          document.querySelectorAll('.folder-node.is-selected').forEach(n => n.classList.remove('is-selected'));
+          if (folderId) {
+               const node = document.querySelector(`.folder-node[data-folder-id="${CSS.escape(folderId)}"]`);
+               if (node) node.classList.add('is-selected');
+          }
 
-//     // Works for <a> menu item (MOJ button menu often uses <a>)
-//     copyBtn.classList.toggle('is-disabled', !enabled);
-//     copyBtn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
-//     copyBtn.dataset.disabled = enabled ? 'false' : 'true';
-//   }
+          // persist across reloads (optional)
+          if (folderId) {
+               sessionStorage.setItem('moveDestinationFolderId', folderId);
+               sessionStorage.setItem('moveDestinationFolderName', folderName || '');
+          } else {
+               sessionStorage.removeItem('moveDestinationFolderId');
+               sessionStorage.removeItem('moveDestinationFolderName');
+          }
+     }
 
-//   // If it’s an <a>, stop it navigating while disabled
-//   copyBtn.addEventListener('click', (e) => {
-//     if (copyBtn.tagName !== 'BUTTON' && copyBtn.dataset.disabled === 'true') {
-//       e.preventDefault();
-//     }
-//   });
+     // Restore previous selection after reload (optional but fixes your “deselect” complaint)
+     const savedId = sessionStorage.getItem('moveDestinationFolderId');
+     const savedName = sessionStorage.getItem('moveDestinationFolderName');
+     if (savedId) {
+          applySelection(savedId, savedName);
+     } else {
+          // start disabled until selected (if you want that)
+          moveBtn.disabled = true;
+          moveBtn.textContent = defaultMoveText;
+     }
 
-//   // Initial state
-//   setEnabled(checkedCount() > 0);
+     // Select folder on click
+     document.addEventListener('click', (e) => {
+          const btn = e.target.closest('button.folder-select');
+          if (!btn) return;
 
-//   // Update whenever any checkbox changes
-//   document.addEventListener('change', (e) => {
-//     if (!e.target || e.target.type !== 'checkbox') return;
+          const node = btn.closest('.folder-node');
+          if (!node || node.classList.contains('folder-node--root')) return;
 
-//     // If a table exists, ignore checkboxes outside it
-//     if (table && !table.contains(e.target)) return;
+          const folderId = node.getAttribute('data-folder-id');
+          const folderName = node.getAttribute('data-folder-name');
 
-//     setEnabled(checkedCount() > 0);
-//   });
-// });
+          if (!folderId) return;
 
+          applySelection(folderId, folderName);
+     });
 
+     // Guard submit if somehow no destination selected
+     moveBtn.closest('form')?.addEventListener('submit', (e) => {
+          if (!destInput.value) {
+               e.preventDefault();
+               // no alert if you hate alerts; just do nothing
+               // or show an inline error later
+          }
+     });
+})();
 
 
 
@@ -2101,6 +1800,27 @@ document.addEventListener('click', (e) => {
 });
 
 
+// Move button text – 4 February 2026
+document.addEventListener('click', (e) => {
+     const btn = e.target.closest('button.folder-select');
+     if (!btn) return;
+
+     const node = btn.closest('.folder-node');
+     if (!node || node.classList.contains('folder-node--root')) return;
+
+     const folderId = node.getAttribute('data-folder-id');
+     const folderName = node.getAttribute('data-folder-name');
+
+     const moveBtn = document.getElementById('moveFolderButton');
+     const destInput = document.getElementById('destinationFolder');
+     if (!moveBtn || !destInput || !folderId) return;
+
+     destInput.value = folderId;
+     moveBtn.textContent = folderName ? `Move to ${folderName}` : 'Move';
+     moveBtn.disabled = false;
+});
+
+
 
 
 
@@ -2119,38 +1839,7 @@ document.querySelectorAll('.js-material-actions').forEach(menu => {
 
 
 // Code 23 January 2026 - Mónica
-// document.addEventListener('click', (e) => {
-//      const btn = e.target.closest('button.show-case');
-//      if (!btn) return;
 
-//      e.preventDefault();
-//      e.stopPropagation();
-
-//      const id = btn.getAttribute('data-id');
-//      const row = btn.closest('tr');
-//      const previewRow = document.querySelector(`tr.hidden_row[data-row_id="${id}"]`);
-//      if (!row || !previewRow) return;
-
-//      // close all other previews
-//      document.querySelectorAll('tr.hidden_row').forEach(r => {
-//           if (r !== previewRow) r.style.display = 'none';
-//      });
-
-//      // reset all other buttons
-//      document.querySelectorAll('button.show-case').forEach(b => {
-//           if (b !== btn) b.innerHTML = 'Preview <i class="fa-solid fa-chevron-down"></i>';
-//      });
-
-//      // keep preview row right after its main row
-//      row.insertAdjacentElement('afterend', previewRow);
-
-//      const opening = previewRow.style.display !== 'table-row';
-//      previewRow.style.display = opening ? 'table-row' : 'none';
-
-//      btn.innerHTML = opening
-//           ? 'Hide <i class="fa-solid fa-chevron-up"></i>'
-//           : 'Preview <i class="fa-solid fa-chevron-down"></i>';
-// });
 
 
 document.addEventListener('DOMContentLoaded', () => {
