@@ -11,6 +11,19 @@ router.use((req, res, next) => {
 });
 
 
+router.use((req, res, next) => {
+    // If the session doesn't have v12 materials yet, seed it from defaults
+    if (!Array.isArray(req.session.data.materialsVersion12)) {
+        const defaults = res.locals.data.materialsVersion12 || [];
+        req.session.data.materialsVersion12 = JSON.parse(JSON.stringify(defaults));
+    }
+
+    // Alias: inside version-12, "materials" means "materialsVersion12"
+    res.locals.data.materials = req.session.data.materialsVersion12;
+
+    next();
+});
+
 
 // Add your routes here - above the module.exports line
 
