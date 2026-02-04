@@ -1033,6 +1033,28 @@ router.post('/includes/materials/materials-filter', function (req, res) {
 
         const groups = {};
 
+        function getFolderPath(materials, folderId) {
+            // Build "Home: Thundercat > Case management > Police" etc
+            const parts = [];
+            let currentId = folderId;
+
+            // prevent infinite loops if data gets weird
+            const seen = new Set();
+
+            while (currentId && !seen.has(String(currentId))) {
+                seen.add(String(currentId));
+
+                const folder = materials.find(m => String(m.id) === String(currentId) && m.folder);
+                if (!folder) break;
+
+                parts.unshift(folder.name);
+                currentId = folder.parentId;
+            }
+
+            // Choose your preferred "root" label
+            return parts.length ? `Home: Thundercat > ${parts.join(' > ')}` : 'Home: Thundercat';
+        }
+
         materials.forEach(item => {
             const itemName = (item.name || "").toString().trim().toLowerCase();
             const searchMatches = itemName.includes(search);
@@ -1049,7 +1071,10 @@ router.post('/includes/materials/materials-filter', function (req, res) {
                     };
                 }
 
-                groups[folderId].files.push(item);
+                groups[folderId].files.push({
+                    ...item,
+                    folderPath: getFolderPath(materials, folderId)
+                });
             }
 
             // ----------- MATCHED FOLDER NAME -----------
@@ -1193,6 +1218,70 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     // ================================
     const search = (data.filtersSearch || "").trim().toLowerCase();
 
+    // function buildGroupedSearchResults(materials, search) {
+    //     if (!search) return [];
+
+    //     const groups = {};
+
+    //     materials.forEach(item => {
+    //         if (!item) return;
+    //         const itemName = (item.name || "").toString().trim().toLowerCase();
+    //         const searchMatches = itemName.includes(search);
+
+    //         // Matched FILE
+    //         if (!item.folder && searchMatches) {
+    //             const folderId = item.parentId ?? null;
+
+    //             if (!groups[folderId]) {
+    //                 groups[folderId] = {
+    //                     folder: materials.find(m => m && m.id === folderId && m.folder) || null,
+    //                     matchesFolder: false,
+    //                     files: []
+    //                 };
+    //             }
+
+    //             groups[folderId].files.push(item);
+    //         }
+
+    //         // Matched FOLDER NAME
+    //         if (item.folder && searchMatches) {
+    //             const folderId = item.id;
+
+    //             if (!groups[folderId]) {
+    //                 groups[folderId] = {
+    //                     folder: item,
+    //                     matchesFolder: true,
+    //                     files: []
+    //                 };
+    //             } else {
+    //                 groups[folderId].folder = item;
+    //                 groups[folderId].matchesFolder = true;
+    //             }
+    //         }
+    //     });
+
+    //     // Convert map to array; remove empty entries
+    //     return Object.values(groups).filter(g => g.folder || (g.files && g.files.length));
+    // }
+
+    function getFolderPath(materials, folderId) {
+        const parts = [];
+        let currentId = folderId;
+        const seen = new Set();
+
+        while (currentId !== null && currentId !== undefined && !seen.has(String(currentId))) {
+            seen.add(String(currentId));
+
+            const folder = materials.find(m => m && m.folder && String(m.id) === String(currentId));
+            if (!folder) break;
+
+            parts.unshift(folder.name);
+            currentId = folder.parentId;
+        }
+
+        return parts.length ? `Home: Thundercat > ${parts.join(' > ')}` : 'Home: Thundercat';
+    }
+
     function buildGroupedSearchResults(materials, search) {
         if (!search) return [];
 
@@ -1200,6 +1289,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
 
         materials.forEach(item => {
             if (!item) return;
+
             const itemName = (item.name || "").toString().trim().toLowerCase();
             const searchMatches = itemName.includes(search);
 
@@ -1209,33 +1299,40 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
 
                 if (!groups[folderId]) {
                     groups[folderId] = {
-                        folder: materials.find(m => m && m.id === folderId && m.folder) || null,
+                        folder: materials.find(m => m && m.folder && String(m.id) === String(folderId)) || null,
                         matchesFolder: false,
                         files: []
                     };
                 }
 
-                groups[folderId].files.push(item);
+                groups[folderId].files.push({
+                    ...item,
+                    folderPath: getFolderPath(materials, folderId)
+                });
             }
 
             // Matched FOLDER NAME
             if (item.folder && searchMatches) {
                 const folderId = item.id;
 
+                const enrichedFolder = {
+                    ...item,
+                    folderPath: getFolderPath(materials, item.parentId)
+                };
+
                 if (!groups[folderId]) {
                     groups[folderId] = {
-                        folder: item,
+                        folder: enrichedFolder,
                         matchesFolder: true,
                         files: []
                     };
                 } else {
-                    groups[folderId].folder = item;
+                    groups[folderId].folder = enrichedFolder;
                     groups[folderId].matchesFolder = true;
                 }
             }
         });
 
-        // Convert map to array; remove empty entries
         return Object.values(groups).filter(g => g.folder || (g.files && g.files.length));
     }
 
@@ -1552,7 +1649,7 @@ router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
     const ids = raw ? raw.split(',').map(s => s.trim()).filter(Boolean) : [];
 
     const selectedItems = materials.filter(m => ids.includes(String(m.id)));
-    req.session.data.renameCount = selectedItems.length; 
+    req.session.data.renameCount = selectedItems.length;
 
     if (!selectedItems.length) {
         return res.redirect('/B-off-system-MVP/case-overview-folder');
