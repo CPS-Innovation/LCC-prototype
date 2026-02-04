@@ -1633,18 +1633,21 @@ function updateActionsUI() {
      const discardBtn = document.getElementById('discardButton');
      const copyBtn = document.getElementById('copyButton');
      const moveBtn = document.getElementById('moveButton');
+     const updateBtn = document.getElementById('updateButton');
+     const markReadBtn = document.getElementById('markReadButton');
+     const markUnreadBtn = document.getElementById('markUnreadButton');
 
      // Rename: exactly ONE
-     if (renameBtn) {
+     if (updateBtn) {
           const ok = selected.length === 1;
-          renameBtn.disabled = !ok;
-          renameBtn.classList.toggle('govuk-button--disabled', !ok);
+          updateBtn.disabled = !ok;
+          updateBtn.classList.toggle('govuk-button--disabled', !ok);
      }
 
      // Discard / Copy / Move: ONE OR MORE
      const multiOK = selected.length > 0;
 
-     [discardBtn, copyBtn, moveBtn].forEach(btn => {
+     [discardBtn, copyBtn, moveBtn, markReadBtn, markUnreadBtn].forEach(btn => {
           if (!btn) return;
           btn.disabled = !multiOK;
           btn.classList.toggle('govuk-button--disabled', !multiOK);
@@ -1654,10 +1657,15 @@ function updateActionsUI() {
      const ids = selected.map(x => x.id).join(',');
      const copyHidden = document.getElementById('copy_selected_ids');
      const moveHidden = document.getElementById('move_selected_ids');
+     const markReadHidden = document.getElementById('mark_read_selected_ids');
+     const markUnreadHidden = document.getElementById('mark_unread_selected_ids');
      const discardHidden = document.getElementById('material_selected');
+
 
      if (copyHidden) copyHidden.value = ids;
      if (moveHidden) moveHidden.value = ids;
+     if (markReadHidden) markReadHidden.value = ids;
+     if (markUnreadHidden) markUnreadHidden.value = ids;
      if (discardHidden) discardHidden.value = selected[0]?.id || '';
 }
 
