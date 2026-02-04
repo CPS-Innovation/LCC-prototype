@@ -2378,4 +2378,51 @@ router.post('/B-off-system-MVP/materials-search', function (req, res) {
 });
 
 
+
+// 4 February 2026
+router.post('/B-off-system-MVP/mark-as-read', function (req, res) {
+    const ids = String(req.body.selected_ids || '')
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+
+    const materials = (req.session.data.materials || res.locals.data.materials || []);
+
+    materials.forEach(m => {
+        if (!m || m.folder) return; // only files
+        if (ids.includes(String(m.id))) {
+            m.new = false; // ✅ Mark as read
+        }
+    });
+
+    req.session.data.materials = materials;
+    req.session.data.markReadSuccess = true; // optional banner flag
+    res.redirect('/version-12/B-off-system-MVP/03-case-overview');
+});
+
+
+router.post('/B-off-system-MVP/mark-as-unread', function (req, res) {
+    const ids = String(req.body.selected_ids || '')
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+
+    const materials = (req.session.data.materials || res.locals.data.materials || []);
+
+    materials.forEach(m => {
+        if (!m || m.folder) return; // only files
+        if (ids.includes(String(m.id))) {
+            m.new = true; // ✅ Mark as unread
+        }
+    });
+
+    req.session.data.materials = materials;
+    req.session.data.markUnreadSuccess = true; // optional banner flag
+    res.redirect('/version-12/B-off-system-MVP/03-case-overview');
+});
+
+
+
+
+
 module.exports = router
