@@ -23,7 +23,7 @@ Rename files or folders – {{ serviceName }} – Prototype
         <h1 class="govuk-heading-l">Rename selected items</h1>
 
         <form method="post" action="/version-12/B-off-system-MVP/rename-multiple-save" novalidate>
-            <p class="govuk-body govuk-!-margin-bottom-7">You are renaming [x] items. Changes will apply when you save.</p>
+            <p class="govuk-body govuk-!-margin-bottom-7">You are renaming {{ data.renameCount }} {% if data.renameCount == 1 %}item{% else %}items{% endif %}. Changes will apply when you save.</p>
 
             {% for item in selectedItems %}
             <div class="govuk-form-group">
