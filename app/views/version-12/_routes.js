@@ -1864,6 +1864,28 @@ router.post('/B-off-system-MVP/start-copy', function (req, res) {
 });
 
 
+// start-move 3 February 2026
+router.post('/B-off-system-MVP/start-move', function (req, res) {
+    // selected_ids could be "1,2,3" or an array depending on your form
+    const ids = req.body.selected_ids
+        ? String(req.body.selected_ids).split(',').map(x => String(x).trim()).filter(Boolean)
+        : [];
+
+    // Store selection for the next page
+    req.session.data.moveSelectedIds = ids;
+    req.session.data.moveSelectedCount = ids.length;
+
+    // Optional: store names for a hint banner on folder-tree-copy
+    const materials = (req.session.data.materials || res.locals.data.materials || []);
+    req.session.data.moveSelectedNames = ids
+        .map(id => (materials.find(m => String(m.id) === String(id)) || {}).name)
+        .filter(Boolean);
+
+    // Send them to the folder picker page
+    res.redirect('/version-12/B-off-system-MVP/folder-tree-move');
+});
+
+
 router.post('/B-off-system-MVP/copy-material', function (req, res) {
 
     req.session.data.moveSuccess = false;
@@ -1947,53 +1969,70 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
     res.redirect('/version-12/B-off-system-MVP/03-case-overview');
 });
 
+
+// move-material 3 February 2026
 router.post('/B-off-system-MVP/move-material', function (req, res) {
 
-    req.session.data.copySuccess = false;  // Clear copy flag
+    req.session.data.moveSuccess = false;
 
-    const ids = req.body.selected_ids
-        ? req.body.selected_ids.split(',').map(x => String(x).trim())
+    // Pull selection from session (set by /start-copy)
+    const ids = Array.isArray(req.session.data.moveSelectedIds)
+        ? req.session.data.moveSelectedIds.map(String)
         : [];
 
     const destinationFolderId = req.body.destinationFolder;
-    const materials = req.session.data.materials || [];
+    const materials = (req.session.data.materials || res.locals.data.materials || []);
 
     console.log("Moving:", ids, "into folder", destinationFolderId);
 
-    // Snapshot BEFORE we move items (for preview)
-    const originalMaterials = [...materials];
-
-    // List for flat banner summary
-    const movedNames = [];
-
-    ids.forEach(id => {
-        const original = originalMaterials.find(m => String(m.id) === String(id));
-        if (original) movedNames.push(original.name);
-    });
-
-    // Destination folder name for banner
-    let destinationFolderName = null;
-    const destFolder = originalMaterials.find(m => String(m.id) === String(destinationFolderId));
-    if (destFolder) {
-        destinationFolderName = destFolder.name;
+    if (!ids.length || !destinationFolderId) {
+        // In a prototype, just bounce back with a flag
+        req.session.data.moveError = "Select at least one item and a destination folder";
+        return res.redirect('/version-12/B-off-system-MVP/folder-tree-move');
     }
 
-    // Build nested preview tree (based on original structure)
+    // Snapshot BEFORE mutation
+    const originalMaterials = [...materials];
+
+    // ✅ Build preview tree BEFORE moving anything (for the success banner)
     const movePreviewTree = buildPreviewTree(originalMaterials, ids);
 
-    // Perform the move
-    req.session.data.materials = materials.map(m => {
-        if (ids.includes(String(m.id))) {
-            return { ...m, parentId: destinationFolderId };
+    const movedNames = [];
+
+    const destFolder = materials.find(m => String(m.id) === String(destinationFolderId));
+    const destinationFolderName = destFolder ? destFolder.name : null;
+
+    ids.forEach(id => {
+        const original = materials.find(m => String(m.id) === String(id));
+        if (!original) return;
+
+        // Don’t allow moving an item into itself
+        if (String(original.id) === String(destinationFolderId)) return;
+
+        // Don’t allow moving a folder into one of its descendants
+        if (original.folder) {
+            const descendantIds = getAllDescendants(originalMaterials, original.id).map(d => String(d.id));
+            if (descendantIds.includes(String(destinationFolderId))) return;
         }
-        return m;
+
+        movedNames.push(original.name);
+
+        // ✅ MOVE (no cloning)
+        original.parentId = destinationFolderId;
     });
 
-    // Banner data
+    // Persist mutated materials back into session so it sticks
+    req.session.data.materials = materials;
+
     req.session.data.moveList = movedNames;
     req.session.data.moveDestinationName = destinationFolderName;
     req.session.data.movePreviewTree = movePreviewTree;
     req.session.data.moveSuccess = true;
+
+    // Clear selection state
+    req.session.data.moveSelectedIds = [];
+    req.session.data.moveSelectedNames = [];
+    req.session.data.moveSelectedCount = 0;
 
     // Reset selection + mode
     req.session.data.materialsMode = null;
@@ -2003,7 +2042,151 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
 });
 
 
+// Move – 3 February 2026
+// router.post('/B-off-system-MVP/move-material', function (req, res) {
+
+//     req.session.data.copySuccess = false;
+
+//     // Pull selection from session (set by /start-copy)
+//     const ids = Array.isArray(req.session.data.moveSelectedIds)
+//         ? req.session.data.moveSelectedIds.map(String)
+//         : [];
+
+//     const destinationFolderId = req.body.destinationFolder;
+//     const materials = (req.session.data.materials || res.locals.data.materials || []);
+
+//     console.log("Moving:", ids, "into folder", destinationFolderId);
+
+//     if (!ids.length || !destinationFolderId) {
+//         // In a prototype, just bounce back with a flag
+//         req.session.data.moveError = "Select at least one item and a destination folder";
+//         return res.redirect('/version-12/B-off-system-MVP/folder-tree-move');
+//     }
+
+//     // Snapshot BEFORE mutation
+//     const originalMaterials = [...materials];
+
+//     const movedNames = [];
+
+//     let destinationFolderName = null;
+//     const destFolder = materials.find(m => String(m.id) === String(destinationFolderId));
+//     if (destFolder) destinationFolderName = destFolder.name;
+
+//     const movePreviewTree = buildPreviewTree(originalMaterials, ids);
+
+//     ids.forEach(id => {
+//         const original = materials.find(m => String(m.id) === id);
+//         if (!original) return;
+
+//         movedNames.push(original.name);
+
+//         const idMap = {};
+//         const newId = Date.now() + Math.random();
+//         idMap[id] = newId;
+
+//         materials.push({
+//             ...original,
+//             id: newId,
+//             parentId: destinationFolderId
+//         });
+
+//         const descendants = getAllDescendants(originalMaterials, id);
+
+//         descendants.forEach(child => {
+//             const newChildId = Date.now() + Math.random();
+//             idMap[child.id] = newChildId;
+
+//             materials.push({
+//                 ...child,
+//                 id: newChildId,
+//                 parentId: idMap[child.parentId]
+//             });
+
+//             movedNames.push(child.name);
+//         });
+//     });
+
+//     // Persist mutated materials back into session so it sticks
+//     req.session.data.materials = materials;
+
+//     req.session.data.moveList = movedNames;
+//     req.session.data.moveDestinationName = destinationFolderName;
+//     req.session.data.movePreviewTree = movePreviewTree;
+//     req.session.data.moveSuccess = true;
+
+//     // Clear selection state
+//     req.session.data.moveSelectedIds = [];
+//     req.session.data.moveSelectedNames = [];
+//     req.session.data.moveSelectedCount = 0;
+
+//     // Reset selection + mode
+//     req.session.data.materialsMode = null;
+//     req.session.data.materialsSelected = '';
+
+//     res.redirect('/version-12/B-off-system-MVP/03-case-overview');
+// });
+
+
+
+// router.post('/B-off-system-MVP/move-material-old', function (req, res) {
+
+//     req.session.data.copySuccess = false;  // Clear copy flag
+
+//     const ids = req.body.selected_ids
+//         ? req.body.selected_ids.split(',').map(x => String(x).trim())
+//         : [];
+
+//     const destinationFolderId = req.body.destinationFolder;
+//     const materials = req.session.data.materials || [];
+
+//     console.log("Moving:", ids, "into folder", destinationFolderId);
+
+//     // Snapshot BEFORE we move items (for preview)
+//     const originalMaterials = [...materials];
+
+//     // List for flat banner summary
+//     const movedNames = [];
+
+//     ids.forEach(id => {
+//         const original = originalMaterials.find(m => String(m.id) === String(id));
+//         if (original) movedNames.push(original.name);
+//     });
+
+//     // Destination folder name for banner
+//     let destinationFolderName = null;
+//     const destFolder = originalMaterials.find(m => String(m.id) === String(destinationFolderId));
+//     if (destFolder) {
+//         destinationFolderName = destFolder.name;
+//     }
+
+//     // Build nested preview tree (based on original structure)
+//     const movePreviewTree = buildPreviewTree(originalMaterials, ids);
+
+//     // Perform the move
+//     req.session.data.materials = materials.map(m => {
+//         if (ids.includes(String(m.id))) {
+//             return { ...m, parentId: destinationFolderId };
+//         }
+//         return m;
+//     });
+
+//     // Banner data
+//     req.session.data.moveList = movedNames;
+//     req.session.data.moveDestinationName = destinationFolderName;
+//     req.session.data.movePreviewTree = movePreviewTree;
+//     req.session.data.moveSuccess = true;
+
+//     // Reset selection + mode
+//     req.session.data.materialsMode = null;
+//     req.session.data.materialsSelected = '';
+
+//     res.redirect('/version-12/B-off-system-MVP/03-case-overview');
+// });
+
+
 // CLEAR ALL FILTERS
+
+
 router.get('/includes/materials/clear-filters', function (req, res) {
 
     // Wipe all filter fields you use
@@ -2037,7 +2220,6 @@ router.get('/includes/materials/clear-filter', function (req, res) {
 
 
 // New code for version-12
-
 router.get('/B-off-system-MVP/folder-tree-copy', function (req, res) {
 
     const sessionData = req.session.data || {};
@@ -2102,7 +2284,70 @@ router.get('/B-off-system-MVP/folder-tree-copy', function (req, res) {
     });
 });
 
-module.exports = router
+// Move – 3 February 2026
+router.get('/B-off-system-MVP/folder-tree-move', function (req, res) {
+
+    const sessionData = req.session.data || {};
+    const defaultsData = res.locals.data || {};
+
+    console.log("DEFAULT materials:", res.locals.data.materials?.length);
+    console.log("SESSION materials:", req.session.data?.materials?.length);
+
+    // Prefer session, fallback to defaults
+    const materials =
+        sessionData.materials && sessionData.materials.length
+            ? sessionData.materials
+            : defaultsData.materials || [];
+
+    console.log("Materials length:", materials.length);
+
+    // folders only
+    const folders = materials.filter(m => m && m.folder);
+
+    // group by parentId (NORMALISE TO STRING)
+    const byParent = new Map();
+    folders.forEach(f => {
+        const parentKey = (f.parentId === null || f.parentId === undefined || f.parentId === '')
+            ? null
+            : String(f.parentId);
+
+        if (!byParent.has(parentKey)) byParent.set(parentKey, []);
+        byParent.get(parentKey).push(f);
+    });
+
+    for (const [key, arr] of byParent.entries()) {
+        arr.sort((a, b) => String(a.name).localeCompare(String(b.name)));
+    }
+
+    // folder ids set (NORMALISE TO STRING)
+    const folderIds = new Set(folders.map(f => String(f.id)));
+
+    function isRoot(folder) {
+        const parent = folder.parentId;
+
+        // no parent
+        if (parent === null || parent === undefined || parent === '') return true;
+
+        // parent exists?
+        return !folderIds.has(String(parent));
+    }
+
+    const roots = folders.filter(isRoot);
+
+    function buildNode(node) {
+        const children = byParent.get(String(node.id)) || [];
+        return {
+            ...node,
+            children: children.map(buildNode)
+        };
+    }
+
+    const folderTree = roots.map(buildNode);
+
+    res.render('version-12/B-off-system-MVP/folder-tree-move', {
+        folderTree
+    });
+});
 
 
 
@@ -2118,3 +2363,6 @@ router.post('/B-off-system-MVP/materials-search', function (req, res) {
 
     return res.redirect('/version-12/B-off-system-MVP/03-case-overview');
 });
+
+
+module.exports = router
