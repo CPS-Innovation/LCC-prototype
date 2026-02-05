@@ -1,7 +1,12 @@
 const express = require('express');
 const { editSuspect, chargeDescription, materials, victims } = require('../../data/session-data-defaults');
 const router = express.Router();
-const version = 'version-12'
+//const version = 'version-12'
+
+router.use((req, res, next) => {
+    res.locals.version = 'version-12';
+    next();
+});
 
 
 // Make session data available in all Nunjucks templates as "data"
