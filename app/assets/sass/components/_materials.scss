@@ -3590,12 +3590,44 @@ thead th .govuk-button {
 
 
 .material-title .govuk-hint {
-  font-size: 14px;
+     font-size: 14px;
 }
 
 .govuk-hint.folder-path {
-  font-size: 14px;
-  line-height: 1.2;
-  margin-bottom: 2px;
-  display: block; /* keeps it neatly above the icon */
+     font-size: 14px;
+     line-height: 1.2;
+     margin-bottom: 2px;
+     display: block;
+     /* keeps it neatly above the icon */
+}
+
+
+
+// 5 February 2026
+#materials_table thead {
+     position: relative;
+     z-index: 2;
+     overflow: hidden;
+}
+
+#materials_table tbody {
+     position: relative;
+     z-index: 1;
+}
+
+#materials_table thead * {
+     pointer-events: auto;
+}
+
+
+#materials_table tbody {
+     pointer-events: auto;
+}
+
+#materials_table thead {
+     pointer-events: auto;
+}
+
+.govuk-table__header {
+     background: white;
 }
