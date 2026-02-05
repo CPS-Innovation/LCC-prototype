@@ -2,6 +2,128 @@
 console.log("materials.js loaded!");
 
 
+// 5 February 2026
+
+(function lockDownMaterialsTableClicks() {
+     const TABLE_SEL = '#materials_table';
+
+     function isInteractiveTarget(t) {
+          return !!t.closest(
+               [
+                    `${TABLE_SEL} thead`, // allow header sorting clicks
+                    `${TABLE_SEL} a`,
+                    `${TABLE_SEL} button`,
+                    `${TABLE_SEL} input`,
+                    `${TABLE_SEL} label`,
+                    `${TABLE_SEL} select`,
+                    `${TABLE_SEL} textarea`,
+                    `${TABLE_SEL} summary`,
+                    `${TABLE_SEL} details`
+               ].join(',')
+          );
+     }
+
+     function isGutterDeadSpace(t) {
+          // In the gutter cell, ONLY allow actual controls (move links + order input).
+          const inOrderCell = t.closest(`${TABLE_SEL} tbody .order-cell, ${TABLE_SEL} tbody .order-links`);
+          if (!inOrderCell) return false;
+
+          const onAllowed = t.closest(
+               `${TABLE_SEL} a.move-link[data-action], ${TABLE_SEL} input.order-input`
+          );
+          return !onAllowed; // dead space = true
+     }
+
+     ['pointerdown', 'click'].forEach(type => {
+          window.addEventListener(type, (e) => {
+               const table = e.target.closest?.(TABLE_SEL);
+               if (!table) return;
+
+               // Never block header (sorting lives there)
+               if (e.target.closest('thead')) return;
+
+               // If user clicked gutter dead space, do NOTHING (and stop sort)
+               if (isGutterDeadSpace(e.target)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+                    return;
+               }
+
+               // If it's not an actual control in tbody, kill it
+               // This specifically covers your case where target becomes the <table>
+               if (!isInteractiveTarget(e.target)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+               }
+          }, true); // CAPTURE: beats most nonsense
+     });
+})();
+
+// HARD BLOCK: if a click happens inside the table but NOT in the header,
+// kill it before any "sortable table" plugin can treat it as a sort trigger.
+window.addEventListener('click', function (e) {
+     const table = e.target.closest && e.target.closest('#materials_table');
+     if (!table) return;
+
+
+     // Allow legitimate interactive things anywhere in the table
+     const allowed =
+          e.target.closest('button.show-case') ||
+          e.target.closest('td.title_column form button[type="submit"]') ||
+          e.target.closest('.order-cell') ||
+          e.target.closest('a.move-link[data-action]') ||
+          e.target.closest('input[type="checkbox"], label');
+
+     // If it’s not a header click and not an allowed control, nuke it.
+     if (!inThead && !allowed) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+     }
+}, true);
+
+// =====================================================
+// HARD GUARD: stop "phantom header clicks" (sticky/overlay THEAD)
+// =====================================================
+window.addEventListener('click', function (e) {
+     const table = document.getElementById('materials_table');
+     if (!table) return;
+
+     const thead = table.querySelector('thead');
+     if (!thead) return;
+
+     // Only care if the click is *reported* as inside THEAD
+     if (!e.target.closest('thead')) return;
+
+     // If the pointer is actually BELOW the visible THEAD,
+     // this is almost certainly a header overlay stealing clicks.
+     const r = thead.getBoundingClientRect();
+     const clickedOutsideVisibleHead = e.clientY > r.bottom || e.clientY < r.top || e.clientX < r.left || e.clientX > r.right;
+
+     if (clickedOutsideVisibleHead) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+     }
+}, true);
+
+// Nuclear option: tbody clicks can NEVER sort
+document.addEventListener('click', function (e) {
+     if (e.target.closest('#materials_table tbody')) {
+          const th = e.target.closest('th');
+          if (th) {
+               e.preventDefault();
+               e.stopPropagation();
+               if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+          }
+     }
+}, true);
+
+
+// End of 5 February 2026
+
 // ************ Random clicks guards ************ //
 // Folder open: allow form submit, but stop any other click handlers (like sorting) reacting to it
 document.addEventListener('click', function (e) {
@@ -177,13 +299,17 @@ document.addEventListener("DOMContentLoaded", function () {
           let dir = 1;
 
           btn.addEventListener("click", function (e) {
-               e.preventDefault();
-               e.stopPropagation();
+               // ABSOLUTE HARD STOP
+               if (!e.target.closest('thead')) return;
 
                const th = btn.closest("th");
-               if (!th) return;
+               if (!th || !th.closest('thead')) return;
 
-               const key = btn.getAttribute("data-sort") || ""; // e.g. name/description/category
+               e.preventDefault();
+               e.stopPropagation();
+               if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+               const key = btn.getAttribute("data-sort") || "";
                const colIndex = th.cellIndex;
 
                const tbody = table.tBodies[0];
@@ -200,7 +326,6 @@ document.addEventListener("DOMContentLoaded", function () {
                blocks.forEach(block => block.forEach(r => tbody.appendChild(r)));
                dir *= -1;
 
-               // 🔥 re-apply first/last link rules after sorting
                if (window.updateMoveLinks) window.updateMoveLinks();
           });
      });
