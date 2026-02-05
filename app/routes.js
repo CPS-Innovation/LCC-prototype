@@ -2,6 +2,22 @@ const express = require('express')
 const router = new express.Router()
 
 // Add your routes here - above the module.exports line
+
+router.use((req, res, next) => {
+  // e.g. "/ur-feb-2026/B-off-system-MVP/..." → "ur-feb-2026"
+  const first = (req.path.split('/')[1] || '').trim();
+
+  // Basic allow-list pattern: "version-12" or "ur-feb-2026"
+  const looksLikeVersion = /^(version-\d+|ur-[a-z]{3}-\d{4})$/i.test(first);
+
+  res.locals.VERSION = looksLikeVersion ? first : 'version-12'; // fallback if needed
+  console.log('before current version is: ' + res.locals.VERSION);
+  next();
+  console.log('after current version is: ' + res.locals.VERSION);
+});
+
+
+
 // ✅ Make session data available to all Nunjucks templates
 router.use((req, res, next) => {
   res.locals.data = req.session.data || {};
@@ -12,10 +28,10 @@ router.use((req, res, next) => {
 
 // route middleware that will happen on every request
 router.use('/', (req, res, next) => {
-     res.locals.currentURL = req.originalUrl; //current screen
-     res.locals.prevURL = req.get('Referrer'); // previous screen
-    //  console.log('previous page is: ' + res.locals.prevURL + " and current page is " + req.url + " " + res.locals.currentURL );
-     next();
+  res.locals.currentURL = req.originalUrl; //current screen
+  res.locals.prevURL = req.get('Referrer'); // previous screen
+  //  console.log('previous page is: ' + res.locals.prevURL + " and current page is " + req.url + " " + res.locals.currentURL );
+  next();
 });
 
 
