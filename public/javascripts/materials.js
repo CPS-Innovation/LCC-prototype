@@ -1,6 +1,19 @@
 ///////////////////////////////////////////////////// Monica CODE - START /////////////////////////////////////////////////////
 console.log("materials.js loaded!");
 
+// 6 February 2026 
+
+// HARD STOP: clicking the order input must NEVER trigger sorting
+window.addEventListener('click', function (e) {
+     const orderInput = e.target.closest('input.order-input');
+     if (!orderInput) return;
+
+     // Allow editing the value
+     // But kill every other listener (especially sort)
+     e.stopPropagation();
+     if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+}, true); // capture
+
 // 5 February 2026
 
 (function lockDownMaterialsTableClicks() {
