@@ -11,9 +11,7 @@ router.use((req, res, next) => {
   const looksLikeVersion = /^(version-\d+|ur-[a-z]{3}-\d{4})$/i.test(first);
 
   res.locals.VERSION = looksLikeVersion ? first : 'version-12'; // fallback if needed
-  console.log('before current version is: ' + res.locals.VERSION);
   next();
-  console.log('after current version is: ' + res.locals.VERSION);
 });
 
 
