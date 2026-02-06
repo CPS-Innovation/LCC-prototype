@@ -649,6 +649,55 @@ function refreshOrderGutter(tbody) {
 }
 
 
+// 6 February 2026
+document.addEventListener('change', handleOrderInput, true);
+document.addEventListener('blur', handleOrderInput, true);
+
+function handleOrderInput(e) {
+     const input = e.target.closest('input.order-input');
+     if (!input) return;
+
+     const row = input.closest('tr.material-row');
+     const tbody = row?.closest('tbody');
+     if (!row || !tbody) return;
+
+     let desired = parseInt(input.value, 10);
+     if (Number.isNaN(desired)) return;
+
+     const rows = getMainRows(tbody);
+     const max = rows.length;
+
+     // Clamp value (1..n)
+     desired = Math.max(1, Math.min(desired, max));
+
+     const currentIndex = rows.indexOf(row);
+     const targetIndex = desired - 1;
+
+     if (currentIndex === targetIndex) {
+          input.value = desired;
+          return;
+     }
+
+     const block = getBlock(row);
+
+     if (targetIndex < currentIndex) {
+          // Move UP
+          const targetRow = rows[targetIndex];
+          block.forEach(node => tbody.insertBefore(node, targetRow));
+     } else {
+          // Move DOWN
+          const targetRow = rows[targetIndex];
+          const targetBlock = getBlock(targetRow);
+          const afterNode = targetBlock[targetBlock.length - 1].nextElementSibling;
+          block.forEach(node => tbody.insertBefore(node, afterNode));
+     }
+
+     renumberMainRows(tbody);
+     refreshOrderGutter(tbody);
+}
+// End of 6 February 2026
+
+
 document.addEventListener("click", (e) => {
      const link = e.target.closest('a.move-link[data-action]');
      if (!link) return;
