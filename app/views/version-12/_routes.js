@@ -1,12 +1,7 @@
 const express = require('express');
 const { editSuspect, chargeDescription, materials, victims } = require('../../data/session-data-defaults');
 const router = express.Router();
-//const version = 'version-12'
-
-router.use((req, res, next) => {
-    res.locals.version = 'version-12';
-    next();
-});
+const version = 'version-12'
 
 
 // Make session data available in all Nunjucks templates as "data"
@@ -17,13 +12,12 @@ router.use((req, res, next) => {
 
 
 router.use((req, res, next) => {
-    // If the session doesn't have v12 materials yet, seed it from defaults
     if (!Array.isArray(req.session.data.materialsVersion12)) {
         const defaults = res.locals.data.materialsVersion12 || [];
         req.session.data.materialsVersion12 = JSON.parse(JSON.stringify(defaults));
     }
 
-    // Alias: inside version-12, "materials" means "materialsVersion12"
+    // In v12, materials === materialsVersion12 (rendering alias)
     res.locals.data.materials = req.session.data.materialsVersion12;
 
     next();
@@ -95,17 +89,7 @@ router.post('/B-off-system-MVP/create-case/02-case-details', function (req, res)
         res.redirect('/version-12/B-off-system-MVP/create-case/03-add-suspect')
     }
     else {
-        const valueToRemove = 'Pre-Charge Decision'
-
-        req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
-
-        const suspects = [].concat(req.session.data.suspectId).map(String)
-        const charged = [].concat(req.session.data.chargeSuspectId).map(String)
-
-        const hasUncharged = suspects.some(id => !charged.includes(id))
-        req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
-
-        res.redirect('/version-12/B-off-system-MVP/create-case/06-monitoring-codes')
+        res.redirect('/version-12/B-off-system-MVP/create-case/05-complexity')
     }
 })
 
@@ -119,17 +103,7 @@ router.post('/B-off-system-MVP/create-case/02-first-hearing-details', function (
         req.session.data.firstHearingDate = req.body['newCase_FirstHearing_Date']
     }
 
-    const valueToRemove = 'Pre-Charge Decision'
-
-    req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
-
-    const suspects = [].concat(req.session.data.suspectId).map(String)
-    const charged = [].concat(req.session.data.chargeSuspectId).map(String)
-
-    const hasUncharged = suspects.some(id => !charged.includes(id))
-    req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
-
-    res.redirect('/version-12/B-off-system-MVP/create-case/06-monitoring-codes')
+    res.redirect('/version-12/B-off-system-MVP/create-case/05-complexity')
 
 })
 
@@ -478,7 +452,7 @@ router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function (req, 
     }
     else {
         res.redirect('/version-12/B-off-system-MVP/create-case/04-want-to-add-charges')
-        // res.redirect('/version-12/B-off-system-MVP/create-case/06-monitoring-codes') 
+        // res.redirect('/version-12/B-off-system-MVP/create-case/05-complexity') 
     }
 })
 
@@ -583,17 +557,7 @@ router.post('/B-off-system-MVP/create-case/04-want-to-add-charges', function (re
         }
     }
     else {
-        const valueToRemove = 'Pre-Charge Decision'
-
-        req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
-
-        const suspects = [].concat(req.session.data.suspectId).map(String)
-        const charged = [].concat(req.session.data.chargeSuspectId).map(String)
-
-        const hasUncharged = suspects.some(id => !charged.includes(id))
-        req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
-
-        res.redirect('/version-12/B-off-system-MVP/create-case/06-monitoring-codes')
+        res.redirect('/version-12/B-off-system-MVP/create-case/05-complexity')
     }
 })
 
@@ -850,26 +814,38 @@ router.post('/B-off-system-MVP/create-case/05-complexity', function (req, res) {
     req.session.data.caseComplexity = req.body['newCase_Complexity']
     // req.session.data.caseWeight = req.body['newCase_CaseWeight']
 
-    // console.log("Charge suspect IDs:", req.session.data.currentSuspectId)
-    // //    let codes = req.session.data.newCase_MonitoringCodes || []
+    console.log("Charge suspect IDs:", req.session.data.currentSuspectId)
+    //    let codes = req.session.data.newCase_MonitoringCodes || []
 
 
-    // req.session.data.preCharge = 'No'
+    req.session.data.preCharge = 'No'
 
-    // const valueToRemove = 'Pre-Charge Decision'
+    const valueToRemove = 'Pre-Charge Decision'
+    //    req.session.data.newCase_MonitoringCodes[0] = "999"
 
-    // req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
+    req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
 
-    // const suspects = [].concat(req.session.data.suspectId).map(String)
-    // const charged = [].concat(req.session.data.chargeSuspectId).map(String)
+    // if (req.session.data.chargeSuspectId.length > 0) {
+    //     const hasUncharged = req.session.data.suspectId.some(
+    //         id => !req.session.data.chargeSuspectId.includes(id)
+    //     )
+    //     req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
+    // }
 
-    // const hasUncharged = suspects.some(id => !charged.includes(id))
-    // req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
-    // console.log("hasUncharged:", hasUncharged)
-    // //    }
 
-    // console.log("Pre-charge set to (complexity page):", req.session.data.preCharge)
-    res.redirect('/version-12/B-off-system-MVP/create-case/08-check-answers')
+    //    if (req.session.data.chargeSuspectId.length > 0 || req.session.da) {
+    // const suspects = req.session.data.suspectId.map(String)
+    // const charged = req.session.data.chargeSuspectId.map(String)
+    const suspects = [].concat(req.session.data.suspectId).map(String)
+    const charged = [].concat(req.session.data.chargeSuspectId).map(String)
+
+    const hasUncharged = suspects.some(id => !charged.includes(id))
+    req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
+    console.log("hasUncharged:", hasUncharged)
+    //    }
+
+    console.log("Pre-charge set to (complexity page):", req.session.data.preCharge)
+    res.redirect('/version-12/B-off-system-MVP/create-case/06-monitoring-codes')
 })
 
 
@@ -1576,31 +1552,48 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
     const selected = req.body.material_selected
         ? req.body.material_selected.split(',').map(s => s.trim())
         : [];
+
     const reason = req.body.discarding_material;
 
-    console.log('Discarding materials:', selected);
-    console.log('Reason:', reason);
+    // SOURCE OF TRUTH (v12)
+    const materials = req.session.data.materialsVersion12 || [];
 
-    // Remove selected materials entirely
-    req.session.data.materials = req.session.data.materials.filter(
-        m => !selected.includes(String(m.id))
+    // If folders should remove descendants too, expand IDs:
+    const toRemove = new Set(selected.map(String));
+
+    // Build parent -> children map
+    const byParent = new Map();
+    materials.forEach(m => {
+        const p = m.parentId ?? null;
+        if (!byParent.has(String(p))) byParent.set(String(p), []);
+        byParent.get(String(p)).push(String(m.id));
+    });
+
+    // BFS/DFS down the tree
+    const stack = [...toRemove];
+    while (stack.length) {
+        const id = stack.pop();
+        const kids = byParent.get(String(id)) || [];
+        kids.forEach(kid => {
+            if (!toRemove.has(kid)) {
+                toRemove.add(kid);
+                stack.push(kid);
+            }
+        });
+    }
+
+    req.session.data.materialsVersion12 = materials.filter(
+        m => !toRemove.has(String(m.id))
     );
 
-    //  (Optional) You could store the discard reason somewhere for audit, e.g.:
-    req.session.data.lastDiscard = { reason, items: selected, date: new Date().toISOString() };
-    console.log('Last discard action stored:', req.session.data.lastDiscard);
-
-    //  Mark or remove discarded materials
-    // req.session.data.materials = req.session.data.materials.map(m => {
-    // if (selected.includes(m.name)) {
-    //     m.status = 'Discarded (' + reason + ')';
-    // }
-    // return m;
-    // });
+    req.session.data.lastDiscard = {
+        reason,
+        items: Array.from(toRemove),
+        date: new Date().toISOString()
+    };
 
     res.redirect('/version-12/B-off-system-MVP/03-case-overview');
 });
-
 
 
 router.post('/B-off-system-MVP/materials-action', function (req, res) {

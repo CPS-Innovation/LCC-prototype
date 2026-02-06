@@ -3,7 +3,6 @@ console.log("materials.js loaded!");
 
 // 6 February 2026 
 
-
 // HARD STOP: clicking the order input must NEVER trigger sorting
 window.addEventListener('click', function (e) {
      const orderInput = e.target.closest('input.order-input');
@@ -692,7 +691,7 @@ function handleOrderInput(e) {
           const afterNode = targetBlock[targetBlock.length - 1].nextElementSibling;
           block.forEach(node => tbody.insertBefore(node, afterNode));
      }
-     
+
 
      renumberMainRows(tbody);
      refreshOrderGutter(tbody);
