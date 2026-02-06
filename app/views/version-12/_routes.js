@@ -95,7 +95,17 @@ router.post('/B-off-system-MVP/create-case/02-case-details', function (req, res)
         res.redirect('/version-12/B-off-system-MVP/create-case/03-add-suspect')
     }
     else {
-        res.redirect('/version-12/B-off-system-MVP/create-case/05-complexity')
+        const valueToRemove = 'Pre-Charge Decision'
+
+        req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
+
+        const suspects = [].concat(req.session.data.suspectId).map(String)
+        const charged = [].concat(req.session.data.chargeSuspectId).map(String)
+
+        const hasUncharged = suspects.some(id => !charged.includes(id))
+        req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
+
+        res.redirect('/version-12/B-off-system-MVP/create-case/06-monitoring-codes')
     }
 })
 
@@ -109,7 +119,17 @@ router.post('/B-off-system-MVP/create-case/02-first-hearing-details', function (
         req.session.data.firstHearingDate = req.body['newCase_FirstHearing_Date']
     }
 
-    res.redirect('/version-12/B-off-system-MVP/create-case/05-complexity')
+    const valueToRemove = 'Pre-Charge Decision'
+
+    req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
+
+    const suspects = [].concat(req.session.data.suspectId).map(String)
+    const charged = [].concat(req.session.data.chargeSuspectId).map(String)
+
+    const hasUncharged = suspects.some(id => !charged.includes(id))
+    req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
+
+    res.redirect('/version-12/B-off-system-MVP/create-case/06-monitoring-codes')
 
 })
 
@@ -458,7 +478,7 @@ router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function (req, 
     }
     else {
         res.redirect('/version-12/B-off-system-MVP/create-case/04-want-to-add-charges')
-        // res.redirect('/version-12/B-off-system-MVP/create-case/05-complexity') 
+        // res.redirect('/version-12/B-off-system-MVP/create-case/06-monitoring-codes') 
     }
 })
 
@@ -563,7 +583,17 @@ router.post('/B-off-system-MVP/create-case/04-want-to-add-charges', function (re
         }
     }
     else {
-        res.redirect('/version-12/B-off-system-MVP/create-case/05-complexity')
+        const valueToRemove = 'Pre-Charge Decision'
+
+        req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
+
+        const suspects = [].concat(req.session.data.suspectId).map(String)
+        const charged = [].concat(req.session.data.chargeSuspectId).map(String)
+
+        const hasUncharged = suspects.some(id => !charged.includes(id))
+        req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
+
+        res.redirect('/version-12/B-off-system-MVP/create-case/06-monitoring-codes')
     }
 })
 
@@ -820,38 +850,26 @@ router.post('/B-off-system-MVP/create-case/05-complexity', function (req, res) {
     req.session.data.caseComplexity = req.body['newCase_Complexity']
     // req.session.data.caseWeight = req.body['newCase_CaseWeight']
 
-    console.log("Charge suspect IDs:", req.session.data.currentSuspectId)
-    //    let codes = req.session.data.newCase_MonitoringCodes || []
+    // console.log("Charge suspect IDs:", req.session.data.currentSuspectId)
+    // //    let codes = req.session.data.newCase_MonitoringCodes || []
 
 
-    req.session.data.preCharge = 'No'
+    // req.session.data.preCharge = 'No'
 
-    const valueToRemove = 'Pre-Charge Decision'
-    //    req.session.data.newCase_MonitoringCodes[0] = "999"
+    // const valueToRemove = 'Pre-Charge Decision'
 
-    req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
+    // req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
 
-    // if (req.session.data.chargeSuspectId.length > 0) {
-    //     const hasUncharged = req.session.data.suspectId.some(
-    //         id => !req.session.data.chargeSuspectId.includes(id)
-    //     )
-    //     req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
-    // }
+    // const suspects = [].concat(req.session.data.suspectId).map(String)
+    // const charged = [].concat(req.session.data.chargeSuspectId).map(String)
 
+    // const hasUncharged = suspects.some(id => !charged.includes(id))
+    // req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
+    // console.log("hasUncharged:", hasUncharged)
+    // //    }
 
-    //    if (req.session.data.chargeSuspectId.length > 0 || req.session.da) {
-    // const suspects = req.session.data.suspectId.map(String)
-    // const charged = req.session.data.chargeSuspectId.map(String)
-    const suspects = [].concat(req.session.data.suspectId).map(String)
-    const charged = [].concat(req.session.data.chargeSuspectId).map(String)
-
-    const hasUncharged = suspects.some(id => !charged.includes(id))
-    req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
-    console.log("hasUncharged:", hasUncharged)
-    //    }
-
-    console.log("Pre-charge set to (complexity page):", req.session.data.preCharge)
-    res.redirect('/version-12/B-off-system-MVP/create-case/06-monitoring-codes')
+    // console.log("Pre-charge set to (complexity page):", req.session.data.preCharge)
+    res.redirect('/version-12/B-off-system-MVP/create-case/08-check-answers')
 })
 
 

@@ -3628,3 +3628,20 @@ thead th .govuk-button {
 .govuk-table__header {
      background: white;
 }
+
+
+
+// 6 February 2026: Flash the row when it’s reordered, to give a visual cue of what changed
+@keyframes rowFlash {
+     0% {
+          background-color: #fff2cc;
+     }
+
+     100% {
+          background-color: transparent;
+     }
+}
+
+.material-row.is-reordered td {
+     animation: rowFlash 900ms ease-out;
+}
