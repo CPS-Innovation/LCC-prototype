@@ -391,6 +391,15 @@ document.addEventListener("DOMContentLoaded", function () {
           const cell = row.cells[colIndex];
           if (!cell) return "";
 
+          // 🔑 SPECIAL CASE: Order column
+          if (key === "order") {
+               const input = cell.querySelector("input.order-input");
+               if (!input) return Number.MAX_SAFE_INTEGER;
+
+               const value = parseInt(input.value, 10);
+               return isNaN(value) ? Number.MAX_SAFE_INTEGER : value;
+          }
+
           // If sorting by name, prefer the visible title element you actually show users
           if (key === "name") {
                // common patterns in your markup
@@ -693,6 +702,7 @@ function handleOrderInput(e) {
           block.forEach(node => tbody.insertBefore(node, afterNode));
      }
      
+
 
 
 
