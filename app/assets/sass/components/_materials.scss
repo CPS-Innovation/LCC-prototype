@@ -3645,3 +3645,25 @@ thead th .govuk-button {
 .material-row.is-reordered td {
      animation: rowFlash 900ms ease-out;
 }
+
+
+#materials_table {
+  // Checkbox column (2nd col) should be tight
+  th:nth-child(2),
+  td:nth-child(2) {
+    width: 52px;          // tweak 44–60px to taste
+    padding-right: 0;     // removes the “air gap”
+    white-space: nowrap;
+  }
+
+  // Bring the title column closer to the checkbox column
+  th:nth-child(3),
+  td:nth-child(3) {
+    padding-left: 8px;    // tweak 0–12px to taste
+  }
+
+  // Optional: make the checkbox itself not add weird spacing
+  td:nth-child(2) .govuk-checkboxes__item {
+    margin: 0;
+  }
+}
