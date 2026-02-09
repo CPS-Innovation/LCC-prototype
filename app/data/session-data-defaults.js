@@ -3925,7 +3925,7 @@ module.exports = {
 
   {
     id: 1000,
-    name: '1. Case management',
+    name: 'Case management',
     order: 1,
     description: '',
     category: '',
@@ -3940,7 +3940,7 @@ module.exports = {
   },
   {
     id: 1001,
-    name: '2. Conference hearing notes',
+    name: 'Conference hearing notes',
     order: 2,
     description: '',
     category: '',
@@ -3955,7 +3955,7 @@ module.exports = {
   },
   {
     id: 1002,
-    name: '3. Experts',
+    name: 'Experts',
     order: 3,
     description: '',
     category: '',
@@ -3970,7 +3970,7 @@ module.exports = {
   },
   {
     id: 1003,
-    name: '4. Counsel',
+    name: 'Counsel',
     order: 4,
     description: '',
     category: '',
@@ -3985,7 +3985,7 @@ module.exports = {
   },
   {
     id: 1004,
-    name: '5. Correspondence',
+    name: 'Correspondence',
     order: 5,
     description: '',
     category: '',
@@ -4000,7 +4000,7 @@ module.exports = {
   },
   {
     id: 1005,
-    name: '6. Disclosure',
+    name: 'Disclosure',
     order: 6,
     description: '',
     category: '',
@@ -4015,7 +4015,7 @@ module.exports = {
   },
   {
     id: 1006,
-    name: '7. Finance',
+    name: 'Finance',
     order: 7,
     description: '',
     category: '',
@@ -4030,7 +4030,7 @@ module.exports = {
   },
   {
     id: 1007,
-    name: '8. Lawyer working copies',
+    name: 'Lawyer working copies',
     order: 8,
     description: '',
     category: '',
@@ -4045,7 +4045,7 @@ module.exports = {
   },
   {
     id: 1008,
-    name: '9. PO working copies',
+    name: 'PO working copies',
     order: 9,
     description: '',
     category: '',
@@ -4060,7 +4060,7 @@ module.exports = {
   },
   {
     id: 1009,
-    name: '10. Police',
+    name: 'Police',
     order: 10,
     description: '',
     category: '',
@@ -4075,7 +4075,7 @@ module.exports = {
   },
   {
     id: 1010,
-    name: '11. Media',
+    name: 'Media',
     order: 11,
     description: '',
     category: '',
@@ -4090,7 +4090,7 @@ module.exports = {
   },
   {
     id: 1011,
-    name: '12. Victims and Witnesses',
+    name: 'Victims and Witnesses',
     order: 12,
     description: '',
     category: '',
@@ -4105,7 +4105,7 @@ module.exports = {
   },
   {
     id: 1012,
-    name: '13. DCS',
+    name: 'DCS',
     order: 13,
     description: '',
     category: '',
@@ -4120,7 +4120,7 @@ module.exports = {
   },
   {
     id: 1013,
-    name: '14. Magistrates Court',
+    name: 'Magistrates Court',
     order: 14,
     description: '',
     category: '',
@@ -4135,7 +4135,7 @@ module.exports = {
   },
   {
     id: 1014,
-    name: '15. IDPC',
+    name: 'IDPC',
     order: 15,
     description: '',
     category: '',

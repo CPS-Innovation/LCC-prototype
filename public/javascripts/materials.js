@@ -695,6 +695,7 @@ function handleOrderInput(e) {
      
 
 
+
      renumberMainRows(tbody);
      refreshOrderGutter(tbody);
 }
