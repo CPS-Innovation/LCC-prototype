@@ -4300,7 +4300,7 @@ module.exports = {
   },
   {
     id: 1026,
-    name: 'Submission 1 – 13 December 2025',
+    name: 'Submission 1 – 13 Dec 2025',
     order: '',
     description: '',
     category: '',

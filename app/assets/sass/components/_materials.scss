@@ -3716,19 +3716,42 @@ thead th .govuk-button {
 #materials_table th.order-cell,
 #materials_table td.order-links,
 #materials_table th.order-links {
-  padding-right: 24px !important; /* increase if needed: 28/32 */
+     padding-right: 24px !important;
+     /* increase if needed: 28/32 */
 }
 
 /* Nudge the checkbox itself away from the gutter (towards the file/folder name). */
 #materials_table td .govuk-checkboxes--small,
 #materials_table th .govuk-checkboxes--small {
-  padding-left: 18px !important; /* increase: 16/18 if needed */
-  margin-left: 0 !important;
+     padding-left: 18px !important;
+     /* increase: 16/18 if needed */
+     margin-left: 0 !important;
 }
 
 /* If the checkbox wrapper is not govuk-checkboxes--small, catch it anyway */
 #materials_table td .govuk-checkboxes,
 #materials_table th .govuk-checkboxes {
-  padding-left: 18px !important;
+     padding-left: 18px !important;
 }
 
+/* Folder/file cell: make icon + link a proper left-aligned row */
+#materials_table td.title_column .openMe,
+#materials_table td.title_column .material-title {
+     display: flex;
+     align-items: flex-start;
+     gap: 8px;
+}
+
+/* Ensure the link itself wraps normally and stays left-aligned */
+#materials_table td.title_column .openMe a,
+#materials_table td.title_column .material-title a {
+     display: inline-block;
+     text-align: left;
+}
+
+/* Keep the icon from affecting wrap alignment */
+#materials_table td.title_column .openMe .fa-folder,
+#materials_table td.title_column .material-title .fa-folder {
+     flex: 0 0 auto;
+     margin-top: 2px;
+}
