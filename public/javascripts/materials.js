@@ -701,7 +701,7 @@ function handleOrderInput(e) {
           const afterNode = targetBlock[targetBlock.length - 1].nextElementSibling;
           block.forEach(node => tbody.insertBefore(node, afterNode));
      }
-     
+
 
 
 
@@ -2712,3 +2712,37 @@ document.addEventListener("click", (e) => {
      // refreshOrderGutter(tbody);
 }, false);
 
+
+
+document.addEventListener('DOMContentLoaded', () => {
+     // Only run on folder-tree copy / move pages
+     const folderTree = document.querySelector('.folder-tree');
+     if (!folderTree) return;
+
+     // 1. Remove any visual selection
+     document.querySelectorAll('.folder-node.is-selected').forEach(node => {
+          node.classList.remove('is-selected');
+     });
+
+     // 2. Clear stored destination
+     sessionStorage.removeItem('copyDestinationFolderId');
+     sessionStorage.removeItem('copyDestinationFolderName');
+     sessionStorage.removeItem('moveDestinationFolderId');
+     sessionStorage.removeItem('moveDestinationFolderName');
+
+     // 3. Reset buttons + hidden input
+     const destInput = document.getElementById('destinationFolder');
+     if (destInput) destInput.value = '';
+
+     const copyBtn = document.getElementById('copyFolderButton');
+     if (copyBtn) {
+          copyBtn.textContent = 'Copy';
+          copyBtn.disabled = true;
+     }
+
+     const moveBtn = document.getElementById('moveFolderButton');
+     if (moveBtn) {
+          moveBtn.textContent = 'Move';
+          moveBtn.disabled = true;
+     }
+});
