@@ -3648,22 +3648,87 @@ thead th .govuk-button {
 
 
 #materials_table {
-  // Checkbox column (2nd col) should be tight
-  th:nth-child(2),
-  td:nth-child(2) {
-    width: 52px;          // tweak 44–60px to taste
-    padding-right: 0;     // removes the “air gap”
-    white-space: nowrap;
-  }
 
-  // Bring the title column closer to the checkbox column
-  th:nth-child(3),
-  td:nth-child(3) {
-    padding-left: 8px;    // tweak 0–12px to taste
-  }
+     // Checkbox column (2nd col) should be tight
+     th:nth-child(2),
+     td:nth-child(2) {
+          width: 52px; // tweak 44–60px to taste
+          padding-right: 0; // removes the “air gap”
+          white-space: nowrap;
+     }
 
-  // Optional: make the checkbox itself not add weird spacing
-  td:nth-child(2) .govuk-checkboxes__item {
-    margin: 0;
-  }
+     // Bring the title column closer to the checkbox column
+     th:nth-child(3),
+     td:nth-child(3) {
+          padding-left: 8px; // tweak 0–12px to taste
+     }
+
+     // Optional: make the checkbox itself not add weird spacing
+     td:nth-child(2) .govuk-checkboxes__item {
+          margin: 0;
+     }
 }
+
+
+
+#materials_table {
+
+     // 1️⃣ GUTTER (Order column)
+     th:nth-child(1),
+     td:nth-child(1) {
+          padding-right: 20px; // 👈 THIS is the key change
+          white-space: nowrap;
+     }
+
+     // 2️⃣ CHECKBOX column (keep it tight)
+     th:nth-child(2),
+     td:nth-child(2) {
+          width: 48px;
+          padding-right: 0;
+          padding-left: 0;
+     }
+
+     // 3️⃣ FILE / FOLDER column (pull closer to checkbox)
+     th:nth-child(3),
+     td:nth-child(3) {
+          padding-left: 8px;
+     }
+
+     // Optional: make checkbox itself not add phantom spacing
+     td:nth-child(2) .govuk-checkboxes__item {
+          margin: 0;
+     }
+}
+
+.order-cell {
+     min-width: 64px;
+}
+
+.order-links {
+     margin-left: 4px;
+}
+
+
+/* LAST-MINUTE SAFE FIX: create space between gutter and checkbox column,
+   without changing table layout (no flex/grid). */
+
+#materials_table td.order-cell,
+#materials_table th.order-cell,
+#materials_table td.order-links,
+#materials_table th.order-links {
+  padding-right: 24px !important; /* increase if needed: 28/32 */
+}
+
+/* Nudge the checkbox itself away from the gutter (towards the file/folder name). */
+#materials_table td .govuk-checkboxes--small,
+#materials_table th .govuk-checkboxes--small {
+  padding-left: 18px !important; /* increase: 16/18 if needed */
+  margin-left: 0 !important;
+}
+
+/* If the checkbox wrapper is not govuk-checkboxes--small, catch it anyway */
+#materials_table td .govuk-checkboxes,
+#materials_table th .govuk-checkboxes {
+  padding-left: 18px !important;
+}
+
