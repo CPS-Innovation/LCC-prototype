@@ -3755,3 +3755,39 @@ thead th .govuk-button {
      flex: 0 0 auto;
      margin-top: 2px;
 }
+
+
+/* Search results: force path + name onto separate lines */
+#materials_table .title_column .folder-path {
+     display: block;
+     margin-bottom: 2px;
+}
+
+#materials_table .title_column .material-name {
+     display: block;
+}
+
+/* If your .openMe got turned into flex somewhere, stop it here */
+#materials_table .title_column .openMe {
+     display: block;
+}
+
+/* SEARCH RESULTS: force folder path above the file/folder name */
+#materials_table .title_column .openMe {
+     display: flex !important;
+     flex-direction: column !important;
+     align-items: flex-start;
+}
+
+#materials_table .title_column .openMe .folder-path,
+#materials_table .title_column .openMe .govuk-hint.folder-path {
+     display: block !important;
+     width: 100%;
+     margin: 0 0 2px 0;
+}
+
+#materials_table .title_column .openMe .material-name {
+     display: block !important;
+     width: 100%;
+     white-space: normal;
+}
