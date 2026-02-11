@@ -1,0 +1,210 @@
+{# ==============================================
+GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
+============================================== #}
+
+{% set flashRenamedIdSafe = flashRenamedId | default('') %}
+
+<div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-4">
+    <form action="/ur-feb-2026-closed/B-off-system-MVP/clear-search" method="post" novalidate>
+        Showing results for: <strong>{{ data.filtersSearch }}</strong>
+        <button class="govuk-link govuk-link--no-visited-state suspect govuk-!-margin-left-2" type="submit">Clear
+            search</button>
+    </form>
+
+    <!-- <a href="/ur-feb-2026-closed/includes/materials/clear-filter?type=search" 
+       class="govuk-link govuk-link--no-visited-state govuk-!-margin-left-1">
+       Clear search
+    </a> -->
+</div>
+
+{% if not groupedSearchResults or (groupedSearchResults | length == 0) %}
+<p class="govuk-body"><strong>No materials found.</strong></p>
+{% endif %}
+
+<table class="govuk-table sortable" id="materials_table">
+    <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">
+                <div class="govuk-checkboxes govuk-checkboxes--small MT-15" data-module="govuk-checkboxes">
+                    <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input js-select-all" id="materials_documents_ALL"
+                            name="materials_document" type="checkbox" value="ALL">
+                        <label class="govuk-label govuk-checkboxes__label" for="materials_documents_ALL"></label>
+                    </div>
+                </div>
+            </th>
+            <th scope="col" class="govuk-table__header">
+                <button type="button" class="govuk-link govuk-link--no-visited-state table-sort" data-sort="name">
+                    File or folder
+                </button>
+            </th>
+
+            <th scope="col" class="govuk-table__header">
+                <button type="button" class="govuk-link govuk-link--no-visited-state table-sort">
+                    Description
+                </button>
+            </th>
+
+            <th scope="col" class="govuk-table__header">
+                <button type="button" class="govuk-link govuk-link--no-visited-state table-sort" data-sort="category">
+                    Category
+                </button>
+            </th>
+
+            <th class="govuk-table__header"></th>
+        </tr>
+    </thead>
+
+    <tbody class="govuk-table__body">
+
+        {% for entry in groupedSearchResults %}
+        {% set folder = entry.folder %}
+        {% set files = entry.files %}
+        {% set filtersSearch = data.filtersSearch %}
+
+        {# -------------------------------
+        FOLDER ROW (clickable + checkbox)
+        -------------------------------- #}
+        {% if entry.matchesFolder %}
+
+        <tr class="govuk-table__row folder-row folder-clickable material-row" data-id="{{ folder.id }}"
+            data-folder="true">
+
+            <td class="govuk-table__cell">
+                <div class="govuk-checkboxes govuk-checkboxes--small">
+                    <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input js-material-checkbox" id="select_{{ folder.id }}"
+                            type="checkbox" name="materials_document" value="{{ folder.id }}"
+                            data-name="{{ folder.name }}" data-folder="true">
+                        <label class="govuk-label govuk-checkboxes__label" for="select_{{ folder.id }}"></label>
+                    </div>
+                </div>
+            </td>
+            <td class="govuk-table__cell title_column">
+                <form action="/ur-feb-2026-closed/B-off-system-MVP/case-overview-folder" method="post">
+                    <div class="openMe">
+                        {% if folder.folderPath %}
+                        <div class="govuk-hint folder-path">({{ folder.folderPath }})</div>
+                        {% endif %}
+
+                        <div class="material-name">
+                            <span class="icon-new folder"></span>
+                            <input type="hidden" name="flag" value="1">
+                            <input type="hidden" name="folderName" value="{{ folder.name }}">
+                            <input type="hidden" name="level" value="{{ folder.level + 1 }}">
+                            <button type="submit" name="folderId" value="{{ folder.id }}"
+                                class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-regular govuk-button--link">
+                                {{ folder.name | highlight(data['filtersSearch']) | safe }}
+                                {# tags stay here as you already have #}
+                            </button>
+                        </div>
+
+                            {% if flashRenamedIdSafe and folder.id is defined and (folder.id ~ '') == flashRenamedIdSafe
+                            %}
+                            <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">Renamed</strong>
+                            {% endif %}
+
+                            {% if flashNewFolderIdSafe and folder.id is defined and (folder.id ~ '') ==
+                            flashNewFolderIdSafe %}
+                            <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">New folder</strong>
+                            {% endif %}
+
+                        </button>
+                        <!-- {% if folder.new == true %}
+                            <strong class="govuk-tag govuk-tag--blue">Unread</strong>
+                        {% endif %} -->
+                    </div>
+                </form>
+            </td>
+
+            <td class="govuk-table__cell"></td>
+
+            <td class="govuk-table__cell">
+            </td>
+
+            <td class="govuk-table__cell"></td>
+        </tr>
+        {% endif %}
+
+        {# -------------------------------
+        CHILD FILES
+        -------------------------------- #}
+        {% for m in files %}
+        <tr class="govuk-table__row material-row" data-id="{{ m.id }}" data-folder="false">
+            <td class="govuk-table__cell">
+                <div class="govuk-checkboxes govuk-checkboxes--small">
+                    <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input js-material-checkbox" id="select_{{ m.id }}"
+                            type="checkbox" name="materials_document" value="{{ m.id }}" data-name="{{ m.name }}"
+                            data-folder="false">
+                        <label class="govuk-label govuk-checkboxes__label" for="select_{{ m.id }}"></label>
+                    </div>
+                </div>
+            </td>
+
+            <td class="govuk-table__cell title_column">
+                <span class="material-title">
+                    <form action="/ur-feb-2026-closed/B-off-system-MVP/case-overview-folder" method="post">
+                        <div class="openMe">
+                            <!-- {% if folder.name %}
+                        <span class="icon-new folder"></span>
+                        {% endif %} -->
+                            <input type="hidden" name="flag" value="1">
+                            <input type="hidden" name="folderName" value="{{ folder.name }}">
+                            <input type="hidden" name="level" value="{{ folder.level + 1 }}">
+                            <!-- <button type="submit" name="folderId" value="{{ folder.id }}" class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-regular govuk-button--link">
+                            {{ folder.name | highlight(data['filtersSearch']) | safe }}
+                        </button> -->
+                            <!-- {% if folder.name %}/ {% endif %}  -->
+                            {% if m.folderPath %}
+                            <div class="govuk-hint folder-path">({{ m.folderPath }})</div>
+                            {% endif %}
+
+                            <div class="material-name">
+                                {{ m.name | highlight(data.filtersSearch) | safe }}
+                            </div>
+                            {% if m.new %}
+                            <span class="has-new-tag">
+                                <strong class="govuk-tag govuk-tag--blue">Unread</strong>
+                            </span>
+                            {% endif %}
+
+                            {% if flashRenamedIdSafe and m.id is defined and (m.id ~ '') == flashRenamedIdSafe %}
+                            <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">Renamed</strong>
+                            {% endif %}
+                            <!-- {% if folder.new == true %}
+                            <strong class="govuk-tag govuk-tag--blue">Unread</strong>
+                        {% endif %} -->
+                        </div>
+                    </form>
+
+                    <!-- {{ folder.name | highlight(data.filtersSearch) | safe }} / -->
+                    <!-- {{ m.name | highlight(data.filtersSearch) | safe }} -->
+                </span>
+            </td>
+            <td class="govuk-table__cell">{{ m.description }}</td>
+            <td class="govuk-table__cell">{{ m.category }}</td>
+
+
+            <td class="govuk-table__cell toggle-panel">
+                <button type="button" class="govuk-button show_material_actions show-case" data-id="{{ m.id }}"
+                    data-doc="{{ m.previewLink }}">
+                    Preview <i class="fa-solid fa-chevron-down"></i>
+                </button>
+            </td>
+        </tr>
+
+        <tr class="govuk-table__row hidden_row" data-row_id="{{ m.id }}">
+            <td colspan="5">
+                <div class="document_holder">
+                    <embed src="{{ m.previewLink }}">
+                </div>
+            </td>
+        </tr>
+
+        {% endfor %}
+
+        {% endfor %}
+
+    </tbody>
+</table>
