@@ -3791,3 +3791,25 @@ thead th .govuk-button {
      width: 100%;
      white-space: normal;
 }
+
+
+/* Make sure the button-menu can sit above nearby UI */
+.moj-button-menu {
+     position: relative;
+     z-index: 50;
+}
+
+/* Make the panel itself definitely on top */
+#materials_Actions,
+.moj-button-menu__menu {
+     position: absolute;
+     /* or whatever it already is */
+     z-index: 1000;
+}
+
+/* Put the search area *below* */
+.materials-search,
+.materials-search .govuk-details__text {
+     position: relative;
+     z-index: 1;
+}
