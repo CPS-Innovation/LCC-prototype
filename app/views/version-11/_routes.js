@@ -6,8 +6,8 @@ const version = 'version-11'
 
 // Make session data available in all Nunjucks templates as "data"
 router.use((req, res, next) => {
-  res.locals.data = req.session.data || {};
-  next();
+    res.locals.data = req.session.data || {};
+    next();
 });
 
 
@@ -16,7 +16,7 @@ router.use((req, res, next) => {
 
 
 // Register a case - start of journey
-router.post('/B-off-system-MVP/create-case/01-register-case', function(req, res) {
+router.post('/B-off-system-MVP/create-case/01-register-case', function (req, res) {
     // var errors = []
     // if (req.body['operation-name-yes-no'] === 'undefined') {
     //   errors.push({
@@ -33,20 +33,20 @@ router.post('/B-off-system-MVP/create-case/01-register-case', function(req, res)
 
 
     // if (errors.length === 0) {
-        req.session.data.operationNameYesNo = req.body['operation-name-yes-no']
-        req.session.data.suspectDetailsYesNo = req.body['suspect-details-yes-no']
-        req.session.data.firstHearingDetailsYesNo = req.body['first-hearing-details']
+    req.session.data.operationNameYesNo = req.body['operation-name-yes-no']
+    req.session.data.suspectDetailsYesNo = req.body['suspect-details-yes-no']
+    req.session.data.firstHearingDetailsYesNo = req.body['first-hearing-details']
 
-        if (req.session.data.operationNameYesNo === 'Yes') {
-            req.session.data.operationName = req.body['operation-name']
-        }
+    if (req.session.data.operationNameYesNo === 'Yes') {
+        req.session.data.operationName = req.body['operation-name']
+    }
 
-        if (req.session.data.firstHearingDetailsYesNo === 'Yes') {
-            req.session.data.courtLocation = req.body['court-location']
-            req.session.data.firstHearingDate = req.body['newCase_FirstHearing_Date']
-        }
+    if (req.session.data.firstHearingDetailsYesNo === 'Yes') {
+        req.session.data.courtLocation = req.body['court-location']
+        req.session.data.firstHearingDate = req.body['newCase_FirstHearing_Date']
+    }
 
-        res.redirect('/version-11/B-off-system-MVP/create-case/02-area')
+    res.redirect('/version-11/B-off-system-MVP/create-case/02-area')
     // }
     // else {
     //     res.render('version-11/B-off-system-MVP/create-case/01-register-case', { 
@@ -56,34 +56,34 @@ router.post('/B-off-system-MVP/create-case/01-register-case', function(req, res)
 })
 
 // Area page
-router.post('/B-off-system-MVP/create-case/02-area', function(req, res) {
+router.post('/B-off-system-MVP/create-case/02-area', function (req, res) {
     req.session.data.area = req.body['docType-Area']
     res.redirect('/version-11/B-off-system-MVP/create-case/02-case-details')
 })
 
 // Case details page
-router.post('/B-off-system-MVP/create-case/02-case-details', function(req, res) {
+router.post('/B-off-system-MVP/create-case/02-case-details', function (req, res) {
     console.log("Case details page submitted")
 
-//    req.session.data.area = req.body['docType-Area']
+    //    req.session.data.area = req.body['docType-Area']
     req.session.data.URN1 = req.body['newCase_URN-A']
     req.session.data.URN2 = req.body['newCase_URN-B']
     req.session.data.URN3 = req.body['newCase_URN-C']
     req.session.data.URN4 = req.body['newCase_URN-D']
     req.session.data.registeringUnit = req.body['newCase_RegisteringUnit']
-    req.session.data.WCU =  req.body['newCase_WCU']
+    req.session.data.WCU = req.body['newCase_WCU']
 
     if (req.session.data.suspectDetailsYesNo === 'Yes') {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-add-suspect')
     }
     else {
-        res.redirect('/version-11/B-off-system-MVP/create-case/05-complexity') 
-    }    
+        res.redirect('/version-11/B-off-system-MVP/create-case/05-complexity')
+    }
 })
 
 
 // First hearing details
-router.post('/B-off-system-MVP/create-case/02-first-hearing-details', function(req, res) {
+router.post('/B-off-system-MVP/create-case/02-first-hearing-details', function (req, res) {
     req.session.data.firstHearingDetailsYesNo = req.body['first-hearing-details']
 
     if (req.session.data.firstHearingDetailsYesNo === 'Yes') {
@@ -91,7 +91,7 @@ router.post('/B-off-system-MVP/create-case/02-first-hearing-details', function(r
         req.session.data.firstHearingDate = req.body['newCase_FirstHearing_Date']
     }
 
-    res.redirect('/version-11/B-off-system-MVP/create-case/05-complexity') 
+    res.redirect('/version-11/B-off-system-MVP/create-case/05-complexity')
 
 })
 
@@ -99,9 +99,9 @@ router.post('/B-off-system-MVP/create-case/02-first-hearing-details', function(r
 
 // ************************************************** Suspects **************************************************
 // Add suspects
-router.post('/B-off-system-MVP/create-case/03-add-suspect', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) {
     count = req.session.data.suspectCount
-    
+
     req.session.data.suspectType[count] = req.body['suspect-type']
     req.session.data.suspectId[count] = count
     req.session.data.aliasTempSuspectId = count
@@ -118,14 +118,14 @@ router.post('/B-off-system-MVP/create-case/03-add-suspect', function(req, res) {
         req.session.data.suspectArrestSummons[count] = req.body['suspect-person-arrest-summons']
         req.session.data.suspectOffenderType[count] = req.body['suspect-person-offender-type']
         req.session.data.suspectAlias[count] = req.body['suspect-person-alias']
-        console.log("Arrest summons:",req.session.data.suspectArrestSummons[count])
-        console.log("Alias:",req.session.data.suspectAlias[count])
-        console.log("SDO:",req.session.data.suspectSDO[count])
-    }           
+        console.log("Arrest summons:", req.session.data.suspectArrestSummons[count])
+        console.log("Alias:", req.session.data.suspectAlias[count])
+        console.log("SDO:", req.session.data.suspectSDO[count])
+    }
     else {
         req.session.data.suspectCompanyName[count] = req.body['suspect-company-name']
     }
-    
+
     req.session.data.suspectDetailsCount = count
     req.session.data.suspectCount = count + 1
 
@@ -138,279 +138,279 @@ router.post('/B-off-system-MVP/create-case/03-add-suspect', function(req, res) {
     if (req.session.data.suspectDOB[id] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-dob')
     }
-    else if (req.session.data.suspectGender[id] != undefined ) {
+    else if (req.session.data.suspectGender[id] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-gender')
     }
-    else if (req.session.data.suspectDisability[id] != undefined ) {
+    else if (req.session.data.suspectDisability[id] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-disability')
     }
-    else if (req.session.data.suspectReligion[id] != undefined ) {
+    else if (req.session.data.suspectReligion[id] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-religion')
     }
-    else if (req.session.data.suspectEthnicity[id] != undefined ) {
+    else if (req.session.data.suspectEthnicity[id] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-ethnicity')
     }
-    else if (req.session.data.suspectAlias[id] != undefined ) {
+    else if (req.session.data.suspectAlias[id] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[id] != undefined ) {
+    else if (req.session.data.suspectSDO[id] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[id] != undefined ) {
+    else if (req.session.data.suspectArrestSummons[id] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
     }
-    else if (req.session.data.suspectOffenderType[id] != undefined ) {
+    else if (req.session.data.suspectOffenderType[id] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
         res.redirect('/version-11/B-off-system-MVP/create-case/03B-suspect-summary')
     }
-    
+
     // res.redirect('/version-11/B-off-system-MVP/create-case/03B-suspect-summary')
 })
 
 
 // Suspect details – date of birth
-router.post('/B-off-system-MVP/create-case/03-suspect-details-dob', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03-suspect-details-dob', function (req, res) {
     count = req.session.data.suspectDetailsCount
-    
+
     req.session.data.suspectDayBirth[count] = req.body['date-of-birth-day']
     req.session.data.suspectMonthBirth[count] = Number(req.body['date-of-birth-month'])
-    req.session.data.suspectYearBirth[count] = req.body['date-of-birth-year'] 
+    req.session.data.suspectYearBirth[count] = req.body['date-of-birth-year']
 
     if (req.session.data.suspectGender[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-gender')
     }
-    else if (req.session.data.suspectDisability[count] != undefined ) {
+    else if (req.session.data.suspectDisability[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-disability')
     }
-    else if (req.session.data.suspectReligion[count] != undefined ) {
+    else if (req.session.data.suspectReligion[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-religion')
     }
-    else if (req.session.data.suspectEthnicity[count] != undefined ) {
+    else if (req.session.data.suspectEthnicity[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-ethnicity')
     }
-    else if (req.session.data.suspectAlias[count] != undefined ) {
+    else if (req.session.data.suspectAlias[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[count] != undefined ) {
+    else if (req.session.data.suspectSDO[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[count] != undefined ) {
+    else if (req.session.data.suspectArrestSummons[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
     }
-    else if (req.session.data.suspectOffenderType[count] != undefined ) {
+    else if (req.session.data.suspectOffenderType[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
         res.redirect('/version-11/B-off-system-MVP/create-case/03B-suspect-summary')
-    }    
+    }
 })
 
 
 // Suspect details – gender
-router.post('/B-off-system-MVP/create-case/03-suspect-details-gender', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03-suspect-details-gender', function (req, res) {
     count = req.session.data.suspectDetailsCount
-    
+
     req.session.data.suspectGender[count] = req.body['gender']
 
-    if (req.session.data.suspectDisability[count] != undefined ) {
+    if (req.session.data.suspectDisability[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-disability')
     }
-    else if (req.session.data.suspectReligion[count] != undefined ) {
+    else if (req.session.data.suspectReligion[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-religion')
     }
-    else if (req.session.data.suspectEthnicity[count] != undefined ) {
+    else if (req.session.data.suspectEthnicity[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-ethnicity')
     }
-    else if (req.session.data.suspectAlias[count] != undefined ) {
+    else if (req.session.data.suspectAlias[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[count] != undefined ) {
+    else if (req.session.data.suspectSDO[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[count] != undefined ) {
+    else if (req.session.data.suspectArrestSummons[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
     }
-    else if (req.session.data.suspectOffenderType[count] != undefined ) {
+    else if (req.session.data.suspectOffenderType[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
         res.redirect('/version-11/B-off-system-MVP/create-case/03B-suspect-summary')
-    }    
+    }
 })
 
 
 // Suspect details – disability
-router.post('/B-off-system-MVP/create-case/03-suspect-details-disability', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03-suspect-details-disability', function (req, res) {
     count = req.session.data.suspectDetailsCount
-    
+
     req.session.data.suspectDisability[count] = req.body['disability']
 
-    if (req.session.data.suspectReligion[count] != undefined ) {
+    if (req.session.data.suspectReligion[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-religion')
     }
-    else if (req.session.data.suspectEthnicity[count] != undefined ) {
+    else if (req.session.data.suspectEthnicity[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-ethnicity')
     }
-    else if (req.session.data.suspectAlias[count] != undefined ) {
+    else if (req.session.data.suspectAlias[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[count] != undefined ) {
+    else if (req.session.data.suspectSDO[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[count] != undefined ) {
+    else if (req.session.data.suspectArrestSummons[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
     }
-    else if (req.session.data.suspectOffenderType[count] != undefined ) {
+    else if (req.session.data.suspectOffenderType[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
         res.redirect('/version-11/B-off-system-MVP/create-case/03B-suspect-summary')
-    }    
+    }
 })
 
 
 // Suspect details – religion
-router.post('/B-off-system-MVP/create-case/03-suspect-details-religion', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03-suspect-details-religion', function (req, res) {
     count = req.session.data.suspectDetailsCount
-    
+
     req.session.data.suspectReligion[count] = req.body['religion']
 
-    if (req.session.data.suspectEthnicity[count] != undefined ) {
+    if (req.session.data.suspectEthnicity[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-ethnicity')
     }
-    else if (req.session.data.suspectAlias[count] != undefined ) {
+    else if (req.session.data.suspectAlias[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[count] != undefined ) {
+    else if (req.session.data.suspectSDO[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[count] != undefined ) {
+    else if (req.session.data.suspectArrestSummons[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
     }
-    else if (req.session.data.suspectOffenderType[count] != undefined ) {
+    else if (req.session.data.suspectOffenderType[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
         res.redirect('/version-11/B-off-system-MVP/create-case/03B-suspect-summary')
-    }    
+    }
 })
 
 
 // Suspect details – ethnicity
-router.post('/B-off-system-MVP/create-case/03-suspect-details-ethnicity', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03-suspect-details-ethnicity', function (req, res) {
     count = req.session.data.suspectDetailsCount
-    
+
     req.session.data.suspectEthnicity[count] = req.body['ethnicity']
 
-    if (req.session.data.suspectAlias[count] != undefined ) {
+    if (req.session.data.suspectAlias[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[count] != undefined ) {
+    else if (req.session.data.suspectSDO[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[count] != undefined ) {
+    else if (req.session.data.suspectArrestSummons[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
     }
-    else if (req.session.data.suspectOffenderType[count] != undefined ) {
+    else if (req.session.data.suspectOffenderType[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
         res.redirect('/version-11/B-off-system-MVP/create-case/03B-suspect-summary')
-    }    
+    }
 })
 
 
 // Alias section
 // Suspect details – add alias
-router.post('/B-off-system-MVP/create-case/03-suspect-details-add-alias', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03-suspect-details-add-alias', function (req, res) {
     aliasCount = req.session.data.aliasCount
-    
+
     req.session.data.aliasId[aliasCount] = aliasCount
-    
-    req.session.data.aliasFirstName[aliasCount] = req.body['alias-first-name']   
+
+    req.session.data.aliasFirstName[aliasCount] = req.body['alias-first-name']
     req.session.data.aliasLastName[aliasCount] = req.body['alias-last-name']
     req.session.data.aliasSuspectID[aliasCount] = req.session.data.suspectDetailsCount
 
-    console.log("Alias first name:",req.session.data.aliasFirstName[aliasCount])
-    console.log("Alias last name:",req.session.data.aliasLastName[aliasCount])
-    console.log("Alias count:",req.session.data.aliasCount)
-    console.log("Alias suspect:",req.session.data.aliasSuspectID[aliasCount])
-    console.log("Details count:",req.session.data.suspectDetailsCount)
-    console.log("Test:",req.session.data.suspectDetailsCount)
+    console.log("Alias first name:", req.session.data.aliasFirstName[aliasCount])
+    console.log("Alias last name:", req.session.data.aliasLastName[aliasCount])
+    console.log("Alias count:", req.session.data.aliasCount)
+    console.log("Alias suspect:", req.session.data.aliasSuspectID[aliasCount])
+    console.log("Details count:", req.session.data.suspectDetailsCount)
+    console.log("Test:", req.session.data.suspectDetailsCount)
 
     req.session.data.aliasCount = aliasCount + 1
-//    req.session.data.suspectDetailsCount = aliasCount
+    //    req.session.data.suspectDetailsCount = aliasCount
 
 
     res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-alias-summary')
 })
 
 // Alias summary
-router.post('/B-off-system-MVP/create-case/03-suspect-details-alias-summary', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03-suspect-details-alias-summary', function (req, res) {
     count = req.session.data.suspectDetailsCount
-    console.log("Alias summary - suspect count:",count)
-    console.log("Arrest summons:",req.session.data.suspectArrestSummons[count])
-    
+    console.log("Alias summary - suspect count:", count)
+    console.log("Arrest summons:", req.session.data.suspectArrestSummons[count])
+
     if (req.body['add-another'] === 'Yes') {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-add-alias')
     }
     else {
-        if (req.session.data.suspectSDO[count] != undefined ) {
+        if (req.session.data.suspectSDO[count] != undefined) {
             res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-sdo')
-        }        
-        else if (req.session.data.suspectArrestSummons[count] != undefined ) {
+        }
+        else if (req.session.data.suspectArrestSummons[count] != undefined) {
             res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
         }
-        else if (req.session.data.suspectOffenderType[count] != undefined ) {
+        else if (req.session.data.suspectOffenderType[count] != undefined) {
             res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-offender-type')
         }
         else {
             res.redirect('/version-11/B-off-system-MVP/create-case/03B-suspect-summary')
-        }            
-    }    
+        }
+    }
 })
 // End of alias section
 
 
 // Suspect details – SDO
-router.post('/B-off-system-MVP/create-case/03-suspect-details-sdo', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03-suspect-details-sdo', function (req, res) {
     count = req.session.data.suspectDetailsCount
-    
+
     req.session.data.suspectSDO[count] = req.body['sdo']
 
-    if (req.session.data.suspectArrestSummons[count] != undefined ) {
+    if (req.session.data.suspectArrestSummons[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
     }
-    else if (req.session.data.suspectOffenderType[count] != undefined ) {
+    else if (req.session.data.suspectOffenderType[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
         res.redirect('/version-11/B-off-system-MVP/create-case/03B-suspect-summary')
-    }    
+    }
 })
 
 
 // Suspect details – arrest summons
-router.post('/B-off-system-MVP/create-case/03-suspect-details-arrest-summons', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03-suspect-details-arrest-summons', function (req, res) {
     count = req.session.data.suspectDetailsCount
-    
+
     req.session.data.suspectArrestSummons[count] = req.body['arrest-summons']
 
-    if (req.session.data.suspectOffenderType[count] != undefined ) {
+    if (req.session.data.suspectOffenderType[count] != undefined) {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
         res.redirect('/version-11/B-off-system-MVP/create-case/03B-suspect-summary')
-    }    
+    }
 })
 
 
 // Suspect details – type of offender
-router.post('/B-off-system-MVP/create-case/03-suspect-details-offender-type', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03-suspect-details-offender-type', function (req, res) {
     count = (req.session.data.suspectDetailsCount)
-    
+
     req.session.data.suspectOffenderType[count] = req.body['offender-type']
     console.log("Offender type:", req.session.data.suspectOffenderType[count])
 
@@ -425,7 +425,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-offender-type', fu
     }
 
 
-    
+
     res.redirect('/version-11/B-off-system-MVP/create-case/03B-suspect-summary')
 })
 
@@ -434,24 +434,24 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-offender-type', fu
 
 
 // Suspect summary
-router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function (req, res) {
     if (req.body['add-another'] === 'Yes') {
         res.redirect('/version-11/B-off-system-MVP/create-case/03-add-suspect')
     }
     else {
-        res.redirect('/version-11/B-off-system-MVP/create-case/04-want-to-add-charges') 
+        res.redirect('/version-11/B-off-system-MVP/create-case/04-want-to-add-charges')
         // res.redirect('/version-11/B-off-system-MVP/create-case/05-complexity') 
-    }    
+    }
 })
 
 
-router.post('/B-off-system-MVP/create-case/remove-suspect', function(req, res) {
+router.post('/B-off-system-MVP/create-case/remove-suspect', function (req, res) {
     req.session.data.removeSuspectId = Number(req.body['remove-suspect-id'])
-    res.redirect('/version-11/B-off-system-MVP/create-case/03-remove-suspect') 
+    res.redirect('/version-11/B-off-system-MVP/create-case/03-remove-suspect')
 })
 
 
-router.post('/B-off-system-MVP/create-case/03-remove-suspect', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03-remove-suspect', function (req, res) {
     if (req.body['submit-button'] == 'remove') {
         req.session.data.suspectId.splice(req.session.data.removeSuspectId, 1)
         req.session.data.suspectType.splice(req.session.data.removeSuspectId, 1)
@@ -481,16 +481,16 @@ router.post('/B-off-system-MVP/create-case/03-remove-suspect', function(req, res
         }
     }
 
-    res.redirect('/version-11/B-off-system-MVP/create-case/03B-suspect-summary') 
+    res.redirect('/version-11/B-off-system-MVP/create-case/03B-suspect-summary')
 })
 
 
 
 
 // Edit suspect
-router.post('/B-off-system-MVP/create-case/03-edit-suspect', function(req, res) {
-    console.log("Edit suspect ID:",req.session.data.editSuspect)
-    console.log("Display suspect ID:",req.session.data.displaySuspect)
+router.post('/B-off-system-MVP/create-case/03-edit-suspect', function (req, res) {
+    console.log("Edit suspect ID:", req.session.data.editSuspect)
+    console.log("Display suspect ID:", req.session.data.displaySuspect)
 
     var x = Number(req.session.data.editSuspect)
 
@@ -500,7 +500,7 @@ router.post('/B-off-system-MVP/create-case/03-edit-suspect', function(req, res) 
         // req.session.data.suspectDOB[x] = req.body['suspect-date-of-birth']
         req.session.data.suspectDayBirth[x] = req.body['date-of-birth-day']
         req.session.data.suspectMonthBirth[x] = Number(req.body['date-of-birth-month'])
-        req.session.data.suspectYearBirth[x] = req.body['date-of-birth-year'] 
+        req.session.data.suspectYearBirth[x] = req.body['date-of-birth-year']
     }
     else {
         req.session.data.suspectCompanyName[x] = req.body['suspect-company-name']
@@ -514,11 +514,11 @@ router.post('/B-off-system-MVP/create-case/03-edit-suspect', function(req, res) 
 // End of suspect summary
 
 
-router.post('/B-off-system-MVP/create-case/03-edit-suspect-router', function(req, res) {
+router.post('/B-off-system-MVP/create-case/03-edit-suspect-router', function (req, res) {
     req.session.data.editSuspect = Number(req.body['edit-suspect'])
     req.session.data.displaySuspect = Number(req.body['edit-suspect']) + 1
-    console.log("Edit suspect ID:",req.session.data.editSuspect)
-    console.log("Display suspect ID:",req.session.data.displaySuspect)
+    console.log("Edit suspect ID:", req.session.data.editSuspect)
+    console.log("Display suspect ID:", req.session.data.displaySuspect)
     res.redirect('/version-11/B-off-system-MVP/create-case/03-add-suspect')
 })
 // End of edit suspect
@@ -530,31 +530,31 @@ router.post('/B-off-system-MVP/create-case/03-edit-suspect-router', function(req
 // ************************************************** Start of charges **************************************************
 
 // Want to add charges
-router.post('/B-off-system-MVP/create-case/04-want-to-add-charges', function(req, res) {
+router.post('/B-off-system-MVP/create-case/04-want-to-add-charges', function (req, res) {
     req.session.data.wantToAddCharges = req.body['add-charges']
-    console.log("Want to add charges:",req.session.data.wantToAddCharges)
-    console.log("Suspect count:",req.session.data.suspectCount)
+    console.log("Want to add charges:", req.session.data.wantToAddCharges)
+    console.log("Suspect count:", req.session.data.suspectCount)
     if (req.session.data.wantToAddCharges === 'Yes') {
         if (req.session.data.suspectCount === 1) {
             req.session.data.chargeSuspectId[0] = 0
-            console.log("Charge suspect id:",req.session.data.chargeSuspectId[0])
-            res.redirect('/version-11/B-off-system-MVP/create-case/04-charges-offence-search') 
+            console.log("Charge suspect id:", req.session.data.chargeSuspectId[0])
+            res.redirect('/version-11/B-off-system-MVP/create-case/04-charges-offence-search')
         }
         else {
             res.redirect('/version-11/B-off-system-MVP/create-case/04-add-charges-suspect')
         }
     }
     else {
-        res.redirect('/version-11/B-off-system-MVP/create-case/05-complexity') 
-    }    
+        res.redirect('/version-11/B-off-system-MVP/create-case/05-complexity')
+    }
 })
 
 
 // Add charges - select suspect
-router.post('/B-off-system-MVP/create-case/04-add-charges-suspect', function(req, res) {
+router.post('/B-off-system-MVP/create-case/04-add-charges-suspect', function (req, res) {
     count = req.session.data.chargeCount
 
-    req.session.data.chargeSuspectId[count] = req.body['suspect-charges'] 
+    req.session.data.chargeSuspectId[count] = req.body['suspect-charges']
     if (req.body['suspect-charges'] == 'Suspect not listed') {
         req.session.data.chargeSuspectId[count] = 'Suspect not listed'
     }
@@ -571,23 +571,23 @@ router.post('/B-off-system-MVP/create-case/04-add-charges-suspect', function(req
     }
 })
 
-router.post('/B-off-system-MVP/create-case/add-another-charge', function(req, res) {
+router.post('/B-off-system-MVP/create-case/add-another-charge', function (req, res) {
     // Preset or reset pre-charge info
     req.session.data.preCharge = 'No'
-    console.log("Pre-charge set to:",req.session.data.preCharge)
+    console.log("Pre-charge set to:", req.session.data.preCharge)
 
     count = req.session.data.chargeCount
     req.session.data.chargeSuspectId[count] = req.body['add-charge-suspect-id']
     req.session.data.currentSuspectId = req.body['add-charge-suspect-id']
-    console.log("Charge suspect id:",req.session.data.chargeSuspectId[count])
-    res.redirect('/version-11/B-off-system-MVP/create-case/04-charges-offence-search') 
+    console.log("Charge suspect id:", req.session.data.chargeSuspectId[count])
+    res.redirect('/version-11/B-off-system-MVP/create-case/04-charges-offence-search')
 })
 
 
 
 
 // Add charges - offence search
-router.post('/B-off-system-MVP/create-case/04-charges-offence-search', function(req, res) {
+router.post('/B-off-system-MVP/create-case/04-charges-offence-search', function (req, res) {
     count = req.session.data.chargeCount
     req.session.data.chargeSearch = req.body['charge-search']
 
@@ -627,19 +627,19 @@ router.post('/B-off-system-MVP/create-case/04-charges-offence-search', function(
         req.session.data.currentResultsFromDate = req.session.data.resultsFromDateFraud
         req.session.data.currentResultsToDate = req.session.data.resultsToDateFraud
     }
-  
+
 
     res.redirect('/version-11/B-off-system-MVP/create-case/04-charges-offence-search-results')
 })
 
 // Add charges - offence search results
-router.post('/B-off-system-MVP/create-case/04-charges-offence-search-results', function(req, res) {
+router.post('/B-off-system-MVP/create-case/04-charges-offence-search-results', function (req, res) {
     count = req.session.data.chargeCount
     req.session.data.chargeCode[count] = req.session.data.currentResultsChargeCode[req.body['add-charge']]
     console.log("req.session.data.chargeCode[count]:", req.session.data.chargeCode[count])
     console.log("Count:", count)
     console.log("req.body['add-charge']:", req.body['add-charge'])
-    
+
     req.session.data.currentChargeId = req.body['add-charge']
 
     req.session.data.chargeDescription[count] = req.session.data.currentResultsChargeDescription[req.session.data.currentChargeId]
@@ -650,22 +650,22 @@ router.post('/B-off-system-MVP/create-case/04-charges-offence-search-results', f
 
 
 // Add charges 
-router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
+router.post('/B-off-system-MVP/create-case/04-add-charges', function (req, res) {
     count = req.session.data.chargeCount
-    console.log("Charge count:",count)
-    
+    console.log("Charge count:", count)
+
     req.session.data.chargeId[count] = count
     // console.log("Charge id:",req.session.data.chargeId[count])
 
     count = Number(req.session.data.chargeCount)
 
     console.log("Charge count:", count)
-    console.log("Current suspect id:",req.session.data.currentSuspectId)
+    console.log("Current suspect id:", req.session.data.currentSuspectId)
 
     // If only 1 suspect and first charge
     if (req.session.data.suspectCount === 1) {
         console.log("Only 1 suspect")
-        req.session.data.currentSuspectId = 0 
+        req.session.data.currentSuspectId = 0
         req.session.data.chargeSuspectId[count] = 0
     }
 
@@ -678,7 +678,7 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
     req.session.data.chargeToDay[count] = req.body['addCharge_Form_Date-Day_2']
     req.session.data.chargeToMonth[count] = req.body['addCharge_Form_Date-Month_2']
     req.session.data.chargeToYear[count] = req.body['addCharge_Form_Date-Year_2']
-//    req.session.data.chargeComments[count] = req.body['newCharge_Comment']
+    //    req.session.data.chargeComments[count] = req.body['newCharge_Comment']
     // req.session.data.chargeVictimYesNo[count] = req.body['newCharge_Victim_YesNo']
 
     // Victim
@@ -698,11 +698,11 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
 
     req.session.data.chargedWithAdult[count] = req.body['charged-with-adult']
 
-    console.log("Charge id:",req.session.data.chargeId[count])
+    console.log("Charge id:", req.session.data.chargeId[count])
 
 
     req.session.data.chargeCount = count + 1
-    console.log("Charge count 2:",req.session.data.chargeCount)
+    console.log("Charge count 2:", req.session.data.chargeCount)
     // console.log("Grouped:",req.session.data.grouped)
 
     if (req.body['newCharge_Victim_YesNo'] === 'Yes') {
@@ -715,7 +715,7 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function(req, res) {
 })
 
 // Charges victim
-router.post('/B-off-system-MVP/create-case/04-add-charges-victim', function(req, res) {
+router.post('/B-off-system-MVP/create-case/04-add-charges-victim', function (req, res) {
     var count = req.session.data.chargeCount - 1
 
     if (req.session.data.victims.length == 1 || req.body['existing-victim'] == 'new-victim') {
@@ -735,7 +735,7 @@ router.post('/B-off-system-MVP/create-case/04-add-charges-victim', function(req,
     }
 
     console.log("Victims:", req.session.data.victims)
-    console.log("Charge victim id:",req.session.data.chargeVictimId[count])
+    console.log("Charge victim id:", req.session.data.chargeVictimId[count])
 
     res.redirect('/version-11/B-off-system-MVP/create-case/04-charges-summary')
 })
@@ -744,34 +744,34 @@ router.post('/B-off-system-MVP/create-case/04-add-charges-victim', function(req,
 
 
 // Charges summary
-router.post('/B-off-system-MVP/create-case/04-charges-summary', function(req, res) {
+router.post('/B-off-system-MVP/create-case/04-charges-summary', function (req, res) {
     if (req.body['add-another'] === 'Yes') {
         res.redirect('/version-11/B-off-system-MVP/create-case/04-add-charges-suspect')
     }
     else {
-        res.redirect('/version-11/B-off-system-MVP/create-case/02-first-hearing-details') 
-    }    
+        res.redirect('/version-11/B-off-system-MVP/create-case/02-first-hearing-details')
+    }
 
 })
 
-router.get('/B-off-system-MVP/create-case/04-charges-summary', function(req, res) {
+router.get('/B-off-system-MVP/create-case/04-charges-summary', function (req, res) {
     res.render('version-11/B-off-system-MVP/create-case/04-charges-summary', {
         grouped: req.session.data.grouped
     });
 })
 
 
-router.post('/B-off-system-MVP/create-case/remove-charge', function(req, res) {
+router.post('/B-off-system-MVP/create-case/remove-charge', function (req, res) {
     req.session.data.removeChargeId = Number(req.body['remove-charge-id'])
-    console.log("Remove charge ID:",req.session.data.removeChargeId)
-    res.redirect('/version-11/B-off-system-MVP/create-case/04-remove-charge') 
+    console.log("Remove charge ID:", req.session.data.removeChargeId)
+    res.redirect('/version-11/B-off-system-MVP/create-case/04-remove-charge')
 })
 
 
-router.post('/B-off-system-MVP/create-case/04-remove-charge', function(req, res) {
+router.post('/B-off-system-MVP/create-case/04-remove-charge', function (req, res) {
     if (req.body['submit-button'] == 'remove') {
         req.session.data.chargeId.splice(req.session.data.removeChargeId, 1)
-        console.log("Charge IDs after removal:",req.session.data.chargeId)
+        console.log("Charge IDs after removal:", req.session.data.chargeId)
         // req.session.data.chargeSuspectId.splice(req.session.data.removeChargeId, 1)
         // req.session.data.chargeCode.splice(req.session.data.removeChargeId, 1)
         // req.session.data.chargeDescription.splice(req.session.data.removeChargeId, 1)
@@ -786,10 +786,10 @@ router.post('/B-off-system-MVP/create-case/04-remove-charge', function(req, res)
         // req.session.data.chargeVictimId.splice(req.session.data.removeChargeId, 1)
 
         req.session.data.chargeCount = req.session.data.chargeCount - 1
-                
+
     }
 
-    res.redirect('/version-11/B-off-system-MVP/create-case/04-charges-summary') 
+    res.redirect('/version-11/B-off-system-MVP/create-case/04-charges-summary')
 })
 
 
@@ -798,18 +798,18 @@ router.post('/B-off-system-MVP/create-case/04-remove-charge', function(req, res)
 
 
 // Complexity 
-router.post('/B-off-system-MVP/create-case/05-complexity', function(req, res) {
+router.post('/B-off-system-MVP/create-case/05-complexity', function (req, res) {
     req.session.data.caseComplexity = req.body['newCase_Complexity']
     // req.session.data.caseWeight = req.body['newCase_CaseWeight']
 
-    console.log("Charge suspect IDs:",req.session.data.currentSuspectId)
-//    let codes = req.session.data.newCase_MonitoringCodes || []
+    console.log("Charge suspect IDs:", req.session.data.currentSuspectId)
+    //    let codes = req.session.data.newCase_MonitoringCodes || []
 
 
     req.session.data.preCharge = 'No'
 
     const valueToRemove = 'Pre-Charge Decision'
-//    req.session.data.newCase_MonitoringCodes[0] = "999"
+    //    req.session.data.newCase_MonitoringCodes[0] = "999"
 
     req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
 
@@ -820,32 +820,32 @@ router.post('/B-off-system-MVP/create-case/05-complexity', function(req, res) {
     //     req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
     // }
 
-    
-//    if (req.session.data.chargeSuspectId.length > 0 || req.session.da) {
-        // const suspects = req.session.data.suspectId.map(String)
-        // const charged = req.session.data.chargeSuspectId.map(String)
-        const suspects = [].concat(req.session.data.suspectId).map(String)
-        const charged = [].concat(req.session.data.chargeSuspectId).map(String)
 
-        const hasUncharged = suspects.some(id => !charged.includes(id))
-        req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
-        console.log("hasUncharged:", hasUncharged)
-//    }
+    //    if (req.session.data.chargeSuspectId.length > 0 || req.session.da) {
+    // const suspects = req.session.data.suspectId.map(String)
+    // const charged = req.session.data.chargeSuspectId.map(String)
+    const suspects = [].concat(req.session.data.suspectId).map(String)
+    const charged = [].concat(req.session.data.chargeSuspectId).map(String)
 
-    console.log("Pre-charge set to (complexity page):",req.session.data.preCharge)
-    res.redirect('/version-11/B-off-system-MVP/create-case/06-monitoring-codes') 
+    const hasUncharged = suspects.some(id => !charged.includes(id))
+    req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
+    console.log("hasUncharged:", hasUncharged)
+    //    }
+
+    console.log("Pre-charge set to (complexity page):", req.session.data.preCharge)
+    res.redirect('/version-11/B-off-system-MVP/create-case/06-monitoring-codes')
 })
 
 
 // Monitoring codes
-router.post('/B-off-system-MVP/create-case/06-monitoring-codes', function(req, res) {
-    res.redirect('/version-11/B-off-system-MVP/create-case/07-cps-staff') 
+router.post('/B-off-system-MVP/create-case/06-monitoring-codes', function (req, res) {
+    res.redirect('/version-11/B-off-system-MVP/create-case/07-cps-staff')
 })
 
 
 // CPS and police staff
-router.post('/B-off-system-MVP/create-case/07-cps-staff', function(req, res) {
-    console.log("User type:",req.session.data.userType)
+router.post('/B-off-system-MVP/create-case/07-cps-staff', function (req, res) {
+    console.log("User type:", req.session.data.userType)
     req.session.data.prosecutorCaseworkerYesNo = req.body['prosecutor-caseworker-yes-no']
     req.session.data.prosecutor = req.body['newCase_Prosecutor']
     req.session.data.caseworker = req.body['newCase_Caseworker']
@@ -854,7 +854,7 @@ router.post('/B-off-system-MVP/create-case/07-cps-staff', function(req, res) {
     req.session.data.policeFirstName = req.body['newCase_Police_FirstName']
     req.session.data.policeLastName = req.body['newCase_Police_LastName']
     req.session.data.policeShoulderNumber = req.body['newCase_Police_Number']
-    req.session.data.policeUnit = req.body['newCase_Police_Unit']       
+    req.session.data.policeUnit = req.body['newCase_Police_Unit']
 
 
     res.redirect('/version-11/B-off-system-MVP/create-case/08-check-answers')
@@ -871,18 +871,18 @@ router.post('/B-off-system-MVP/create-case/07-cps-staff', function(req, res) {
 
 
 // Materials
-router.post('/B-off-system-MVP/create-case/09-confirmation', function(req, res) {
+router.post('/B-off-system-MVP/create-case/09-confirmation', function (req, res) {
     req.session.data.addMaterials = req.body['add-materials']
     if (req.session.data.addMaterials === 'Yes') {
         res.redirect('/version-11/B-off-system-MVP/04A-create-or-link-folders')
     }
     else {
-        res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
-    }    
+        res.redirect('/version-11/B-off-system-MVP/03-case-overview')
+    }
 })
 
 
-router.post('/B-off-system-MVP/04A-create-or-link-folders', function(req, res) {
+router.post('/B-off-system-MVP/04A-create-or-link-folders', function (req, res) {
     if (req.body['egress-folders'] != undefined) {
         if (req.body['egress-folder-options'] === 'Create new Egress folders') {
             req.session.data.newEgressFolder = 1
@@ -920,7 +920,7 @@ router.post('/B-off-system-MVP/04A-create-or-link-folders', function(req, res) {
     else {
         res.redirect('/version-11/B-off-system-MVP/03-case-overview')
     }
-    
+
 })
 
 
@@ -956,10 +956,10 @@ router.post('/B-off-system-MVP/04A-create-or-link-folders', function(req, res) {
 
 
 
-router.post('/B-off-system-MVP/04A-create-egress-folder', function(req, res) {
+router.post('/B-off-system-MVP/04A-create-egress-folder', function (req, res) {
     req.session.data.egressTemplate = req.body['egress-template']
-    
-    if (req.session.data.newDriveFolder  === 1) {
+
+    if (req.session.data.newDriveFolder === 1) {
         res.redirect('/version-11/B-off-system-MVP/03-case-overview')
     }
     else if (req.session.data.existingDriveFolder === 1) {
@@ -968,7 +968,7 @@ router.post('/B-off-system-MVP/04A-create-egress-folder', function(req, res) {
     else {
         res.redirect('/version-11/B-off-system-MVP/03-case-overview')
     }
- 
+
 })
 // End of materials
 
@@ -1007,97 +1007,97 @@ router.post('/B-off-system-MVP/04A-create-egress-folder', function(req, res) {
 // Handle materials filter POST
 router.post('/includes/materials/materials-filter', function (req, res) {
 
-  const data = req.session.data;
-  const body = req.body;
+    const data = req.session.data;
+    const body = req.body;
 
-  // ----------------------------
-  // READ / UNREAD CHECKBOXES
-  // (new pattern: filterUnread + filterRead)
-  // ----------------------------
-  data.filterUnread = body.filterUnread ? 'Unread' : '';
-  data.filterRead   = body.filterRead   ? 'Read'   : '';
+    // ----------------------------
+    // READ / UNREAD CHECKBOXES
+    // (new pattern: filterUnread + filterRead)
+    // ----------------------------
+    data.filterUnread = body.filterUnread ? 'Unread' : '';
+    data.filterRead = body.filterRead ? 'Read' : '';
 
-  // ----------------------------
-  // STATUS CHECKBOXES (multi-select)
-  // ----------------------------
-  data.filterStatusUsed   = body.filterStatusUsed   ? 'Used'   : '';
-  data.filterStatusUnused = body.filterStatusUnused ? 'Unused' : '';
-  data.filterStatusNone   = body.filterStatusNone   ? 'None'   : '';
+    // ----------------------------
+    // STATUS CHECKBOXES (multi-select)
+    // ----------------------------
+    data.filterStatusUsed = body.filterStatusUsed ? 'Used' : '';
+    data.filterStatusUnused = body.filterStatusUnused ? 'Unused' : '';
+    data.filterStatusNone = body.filterStatusNone ? 'None' : '';
 
-  // ----------------------------
-  // SEARCH TERM + CLEAR SEARCH
-  // ----------------------------
-  if (body.clearSearch === 'x') {
-    // user clicked the × button
-    data.filtersSearch = '';
-  } else if (typeof body.filtersSearch === 'string') {
-    data.filtersSearch = body.filtersSearch.trim();
-  }
+    // ----------------------------
+    // SEARCH TERM + CLEAR SEARCH
+    // ----------------------------
+    if (body.clearSearch === 'x') {
+        // user clicked the × button
+        data.filtersSearch = '';
+    } else if (typeof body.filtersSearch === 'string') {
+        data.filtersSearch = body.filtersSearch.trim();
+    }
 
-  const materials = data.materials || [];
-  const search = (data.filtersSearch || "").trim().toLowerCase();
+    const materials = data.materials || [];
+    const search = (data.filtersSearch || "").trim().toLowerCase();
 
-  // -------------------------------------------------------------------
-  // Build grouped search results (MATCHES BOTH FOLDERS AND FILES)
-  // (unchanged logic, just moved into a helper function here)
-  // -------------------------------------------------------------------
-  function buildGroupedSearchResults(materials, search) {
+    // -------------------------------------------------------------------
+    // Build grouped search results (MATCHES BOTH FOLDERS AND FILES)
+    // (unchanged logic, just moved into a helper function here)
+    // -------------------------------------------------------------------
+    function buildGroupedSearchResults(materials, search) {
 
-    if (!search) return [];
+        if (!search) return [];
 
-    const groups = {};
+        const groups = {};
 
-    materials.forEach(item => {
-      const itemName = (item.name || "").toString().trim().toLowerCase();
-      const searchMatches = itemName.includes(search);
+        materials.forEach(item => {
+            const itemName = (item.name || "").toString().trim().toLowerCase();
+            const searchMatches = itemName.includes(search);
 
-      // ----------- MATCHED FILE -----------
-      if (!item.folder && searchMatches) {
-        const folderId = item.parentId;
+            // ----------- MATCHED FILE -----------
+            if (!item.folder && searchMatches) {
+                const folderId = item.parentId;
 
-        if (!groups[folderId]) {
-          groups[folderId] = {
-            folder: materials.find(m => m.id === folderId && m.folder) || null,
-            matchesFolder: false,
-            files: []
-          };
-        }
+                if (!groups[folderId]) {
+                    groups[folderId] = {
+                        folder: materials.find(m => m.id === folderId && m.folder) || null,
+                        matchesFolder: false,
+                        files: []
+                    };
+                }
 
-        groups[folderId].files.push(item);
-      }
+                groups[folderId].files.push(item);
+            }
 
-      // ----------- MATCHED FOLDER NAME -----------
-      if (item.folder && searchMatches) {
-        const folderId = item.id;
+            // ----------- MATCHED FOLDER NAME -----------
+            if (item.folder && searchMatches) {
+                const folderId = item.id;
 
-        if (!groups[folderId]) {
-          groups[folderId] = {
-            folder: item,
-            matchesFolder: true,
-            files: []
-          };
-        } else {
-          groups[folderId].matchesFolder = true;
-        }
-      }
-    });
+                if (!groups[folderId]) {
+                    groups[folderId] = {
+                        folder: item,
+                        matchesFolder: true,
+                        files: []
+                    };
+                } else {
+                    groups[folderId].matchesFolder = true;
+                }
+            }
+        });
 
-    // CLEAN-UP RULE:
-    // If a folder has NO matching files and matchesFolder=false,
-    // do not include it.
-    return Object.values(groups).filter(g =>
-      g.matchesFolder || g.files.length > 0
-    );
-  }
+        // CLEAN-UP RULE:
+        // If a folder has NO matching files and matchesFolder=false,
+        // do not include it.
+        return Object.values(groups).filter(g =>
+            g.matchesFolder || g.files.length > 0
+        );
+    }
 
-  // Store results in session (used by materials-search-grouped.html)
-  data.groupedSearchResults = buildGroupedSearchResults(materials, search);
+    // Store results in session (used by materials-search-grouped.html)
+    data.groupedSearchResults = buildGroupedSearchResults(materials, search);
 
-  console.log("Grouped search results:");
-  console.dir(data.groupedSearchResults, { depth: null });
+    console.log("Grouped search results:");
+    console.dir(data.groupedSearchResults, { depth: null });
 
-  // Back to case overview, where GET will apply filters + search
-  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+    // Back to case overview, where GET will apply filters + search
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
 
 
@@ -1147,24 +1147,24 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     // 2. Apply filters
     // ================================
     const filters = {
-    unread: data.filterUnread ? true : false,
-    read: data.filterRead ? true : false,
-    used: data.filterStatusUsed ? true : false,
-    unused: data.filterStatusUnused ? true : false,
-    none: data.filterStatusNone ? true : false
+        unread: data.filterUnread ? true : false,
+        read: data.filterRead ? true : false,
+        used: data.filterStatusUsed ? true : false,
+        unused: data.filterStatusUnused ? true : false,
+        none: data.filterStatusNone ? true : false
     };
 
     // -------------------------
     // READ / UNREAD FILTERING
     // -------------------------
     if (filters.unread && !filters.read) {
-    // unread only
-    children = children.filter(m => m.new === true);
+        // unread only
+        children = children.filter(m => m.new === true);
     }
 
     if (!filters.unread && filters.read) {
-    // read only
-    children = children.filter(m => m.new === false);
+        // read only
+        children = children.filter(m => m.new === false);
     }
 
     // if both checked → no filter
@@ -1181,7 +1181,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     if (filters.none) statusFilters.push("None");
 
     if (statusFilters.length > 0) {
-    children = children.filter(m => statusFilters.includes(m.status));
+        children = children.filter(m => statusFilters.includes(m.status));
     }
     // Breadcrumbs unaffected
     const breadcrumbs = utils.getBreadcrumbs(folderId);
@@ -1215,9 +1215,9 @@ router.get('/version-11/manage-materials', function (req, res) {
         const term = search.toLowerCase();
 
         results = materialsData.filter(m =>
-        m.name.toLowerCase().includes(term) ||
-        m.type.toLowerCase().includes(term) ||
-        m.category.toLowerCase().includes(term)
+            m.name.toLowerCase().includes(term) ||
+            m.type.toLowerCase().includes(term) ||
+            m.category.toLowerCase().includes(term)
         );
     }
 
@@ -1227,13 +1227,24 @@ router.get('/version-11/manage-materials', function (req, res) {
 });
 
 
-router.post('/B-off-system-MVP/case-overview-folder', function(req, res) {
+router.get('/B-off-system-MVP/case-overview-folder', function (req, res) {
+    const folderId = Number(req.query.folderId);
+    if (!Number.isFinite(folderId)) {
+        return res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+    }
+
+    req.session.data.folderId = folderId;
+    return res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+});
+
+
+router.post('/B-off-system-MVP/case-overview-folder', function (req, res) {
     // req.session.data.currentLevel = req.body['currentLevel']
     // req.session.data.selectedFolder = req.body['selectedFolder']
     req.session.data.searchLabel = req.body['searchLabel']
     req.session.data.folderId = req.body['folderId']
     req.session.data.folderName = req.body['folderName']
-//    req.session.data.breadcrumbs.push(req.session.data.folderName)
+    //    req.session.data.breadcrumbs.push(req.session.data.folderName)
     console.log("Selected folder id:", req.session.data.folderId)
     console.log("Selected folder name:", req.session.data.folderName)
     req.session.data.level = req.body['level']
@@ -1241,18 +1252,18 @@ router.post('/B-off-system-MVP/case-overview-folder', function(req, res) {
     if (req.session.data.folderName) {
         parentFolder = materials.find(m => m.name === req.session.data.folderName && m.folder);
     }
-    const parentId = parentFolder ? parentFolder.id : 0; 
+    const parentId = parentFolder ? parentFolder.id : 0;
     req.session.data.parentId = parentId
-    
+
 
     console.log("Selected folder ID:", parentId)
     req.session.data.filtersSearch = ""
     console.log("Cleared search term", req.session.data.filtersSearch)
-    res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview')
 })
 
 
-router.post('/B-off-system-MVP/case-overview-search-folder', function(req, res) {
+router.post('/B-off-system-MVP/case-overview-search-folder', function (req, res) {
 
     // Incoming from form/button
     const folderId = req.body.folderId;
@@ -1302,33 +1313,33 @@ router.post('/B-off-system-MVP/case-overview-search-folder', function(req, res) 
 });
 
 
-router.post('/B-off-system-MVP/shared-drive', function(req, res) {
+router.post('/B-off-system-MVP/shared-drive', function (req, res) {
     req.session.data.level = req.body['level']
     req.session.data.parentId = req.body['parentId']
     console.log("Selected level (shared drive):", req.session.data.level)
     console.log("Selected parent ID (shared drive):", req.session.data.parentId)
-    res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview')
 })
 
 
 
-router.post('/B-off-system-MVP/clear-search', function(req, res) {
+router.post('/B-off-system-MVP/clear-search', function (req, res) {
     req.session.data.filtersSearch = ""
-    res.redirect('/version-11/B-off-system-MVP/03-case-overview') 
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview')
 })
 
 
-router.get('/B-off-system-MVP/new-folder', function(req, res) {
+router.get('/B-off-system-MVP/new-folder', function (req, res) {
     console.log("parentId in session:", req.session.data.currentFolder);
     res.render('version-11/B-off-system-MVP/new-folder');
 });
 
-router.post('/B-off-system-MVP/new-folder', function(req, res) {
+router.post('/B-off-system-MVP/new-folder', function (req, res) {
     console.log("parentId in session post:", Number(req.session.data.currentFolder));
     console.log("folderId:", req.body.parentFolder);
     let data = req.session.data;
     let materials = data.materials || [];
-    
+
     const currentFolder = req.session.data.currentFolder || 0;
     const parentFolder = req.session.data.parentFolder || 0;
 
@@ -1344,8 +1355,8 @@ router.post('/B-off-system-MVP/new-folder', function(req, res) {
 
     // Get highest existing ID in materials
     const maxId = materials.length > 0
-    ? Math.max(...materials.map(m => Number(m.id)))
-    : 0;
+        ? Math.max(...materials.map(m => Number(m.id)))
+        : 0;
 
     // Create new folder object
     const newFolder = {
@@ -1376,8 +1387,8 @@ router.post('/B-off-system-MVP/new-folder', function(req, res) {
 
 
 router.post('/version-11/B-off-system-MVP/case-overview', function (req, res) {
-  const data = req.session.data;
-  res.render('version-11/B-off-system-MVP/03-case-overview', { materials: data.materials || [], data });
+    const data = req.session.data;
+    res.render('version-11/B-off-system-MVP/03-case-overview', { materials: data.materials || [], data });
 });
 
 
@@ -1397,11 +1408,11 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
         m => !selected.includes(String(m.id))
     );
 
-//  (Optional) You could store the discard reason somewhere for audit, e.g.:
+    //  (Optional) You could store the discard reason somewhere for audit, e.g.:
     req.session.data.lastDiscard = { reason, items: selected, date: new Date().toISOString() };
     console.log('Last discard action stored:', req.session.data.lastDiscard);
 
-//  Mark or remove discarded materials
+    //  Mark or remove discarded materials
     // req.session.data.materials = req.session.data.materials.map(m => {
     // if (selected.includes(m.name)) {
     //     m.status = 'Discarded (' + reason + ')';
@@ -1437,7 +1448,7 @@ router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
 
 router.post('/B-off-system-MVP/rename', function (req, res) {
     console.log('Rename POST body:', req.body);
-    
+
     const data = req.session.data;
     const materials = data.materials || [];
 
@@ -1452,8 +1463,8 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
 
     if (!newName) {
         return res.render('version-11/B-off-system-MVP/rename', {
-        item,
-        error: 'Enter a name'
+            item,
+            error: 'Enter a name'
         });
     }
 
@@ -1461,9 +1472,9 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
 
     if (!item.folder) {
         item.date = new Date().toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric'
         });
     }
 
@@ -1522,7 +1533,7 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
 //             year: 'numeric'
 //         });
 //     }
-    
+
 //     console.log(`✏️ Renamed material ID ${id} to "${newName}" and last update "${item.date}"`);
 
 //     // Save back to session
@@ -1542,227 +1553,227 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
 
 
 router.post('/B-off-system-MVP/set-materials-mode', function (req, res) {
-  const mode = req.body.mode;
-  const selectedIds = req.body.selected_ids || '';
+    const mode = req.body.mode;
+    const selectedIds = req.body.selected_ids || '';
 
-  req.session.data.materialsMode = mode || null;
-  req.session.data.materialsSelected = selectedIds;   // <-- THIS LINE IS THE KEY
+    req.session.data.materialsMode = mode || null;
+    req.session.data.materialsSelected = selectedIds;   // <-- THIS LINE IS THE KEY
 
-  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
 
 // Helper: recursively collect ALL descendants of a folder (flat list)
 function getAllDescendants(materials, parentId) {
-  const results = [];
-  const stack = [parentId];
+    const results = [];
+    const stack = [parentId];
 
-  while (stack.length > 0) {
-    const currentId = stack.pop();
+    while (stack.length > 0) {
+        const currentId = stack.pop();
 
-    const children = materials.filter(m => String(m.parentId) === String(currentId));
+        const children = materials.filter(m => String(m.parentId) === String(currentId));
 
-    children.forEach(child => {
-      results.push(child);
-      stack.push(child.id);
-    });
-  }
+        children.forEach(child => {
+            results.push(child);
+            stack.push(child.id);
+        });
+    }
 
-  return results;
+    return results;
 }
 
 // Helper: build a nested tree for preview in the banner
 function buildPreviewTree(materials, rootIds) {
-  const byId = {};
-  materials.forEach(m => {
-    byId[String(m.id)] = m;
-  });
+    const byId = {};
+    materials.forEach(m => {
+        byId[String(m.id)] = m;
+    });
 
-  function buildNode(item) {
-    const children = materials
-      .filter(m => String(m.parentId) === String(item.id))
-      .map(buildNode);
+    function buildNode(item) {
+        const children = materials
+            .filter(m => String(m.parentId) === String(item.id))
+            .map(buildNode);
 
-    return {
-      id: item.id,
-      name: item.name,
-      isFolder: !!item.folder,
-      children
-    };
-  }
+        return {
+            id: item.id,
+            name: item.name,
+            isFolder: !!item.folder,
+            children
+        };
+    }
 
-  return rootIds
-    .map(id => byId[String(id)])
-    .filter(Boolean)
-    .map(buildNode);
+    return rootIds
+        .map(id => byId[String(id)])
+        .filter(Boolean)
+        .map(buildNode);
 }
 
 router.post('/B-off-system-MVP/copy-material', function (req, res) {
 
-  req.session.data.moveSuccess = false;   // Clear move flag
+    req.session.data.moveSuccess = false;   // Clear move flag
 
-  const ids = req.body.selected_ids
-    ? req.body.selected_ids.split(',').map(x => String(x).trim())
-    : [];
+    const ids = req.body.selected_ids
+        ? req.body.selected_ids.split(',').map(x => String(x).trim())
+        : [];
 
-  const destinationFolderId = req.body.destinationFolder;
-  const materials = req.session.data.materials || [];
+    const destinationFolderId = req.body.destinationFolder;
+    const materials = req.session.data.materials || [];
 
-  console.log("Copying:", ids, "into folder", destinationFolderId);
+    console.log("Copying:", ids, "into folder", destinationFolderId);
 
-  // Take a snapshot BEFORE we mutate materials, for preview tree
-  const originalMaterials = [...materials];
+    // Take a snapshot BEFORE we mutate materials, for preview tree
+    const originalMaterials = [...materials];
 
-  // For banner
-  const copiedNames = [];
+    // For banner
+    const copiedNames = [];
 
-  // Destination folder name for the banner
-  let destinationFolderName = null;
-  const destFolder = materials.find(m => String(m.id) === String(destinationFolderId));
-  if (destFolder) {
-    destinationFolderName = destFolder.name;
-  }
+    // Destination folder name for the banner
+    let destinationFolderName = null;
+    const destFolder = materials.find(m => String(m.id) === String(destinationFolderId));
+    if (destFolder) {
+        destinationFolderName = destFolder.name;
+    }
 
-  // Build tree preview from the original structure (before copying)
-  const copyPreviewTree = buildPreviewTree(originalMaterials, ids);
+    // Build tree preview from the original structure (before copying)
+    const copyPreviewTree = buildPreviewTree(originalMaterials, ids);
 
-  // Actually perform the copy (with full structure)
-  ids.forEach(id => {
-    const original = materials.find(m => String(m.id) === id);
-    if (!original) return;
+    // Actually perform the copy (with full structure)
+    ids.forEach(id => {
+        const original = materials.find(m => String(m.id) === id);
+        if (!original) return;
 
-    // Record for banner
-    copiedNames.push(original.name);
+        // Record for banner
+        copiedNames.push(original.name);
 
-    // Map old→new IDs so structure stays intact
-    const idMap = {};
-    const newId = Date.now() + Math.random();
-    idMap[id] = newId;
+        // Map old→new IDs so structure stays intact
+        const idMap = {};
+        const newId = Date.now() + Math.random();
+        idMap[id] = newId;
 
-    // Clone the folder/file itself
-    const topClone = {
-      ...original,
-      id: newId,
-      parentId: destinationFolderId
-    };
-    materials.push(topClone);
+        // Clone the folder/file itself
+        const topClone = {
+            ...original,
+            id: newId,
+            parentId: destinationFolderId
+        };
+        materials.push(topClone);
 
-    // Get all nested descendants
-    const descendants = getAllDescendants(originalMaterials, id);
+        // Get all nested descendants
+        const descendants = getAllDescendants(originalMaterials, id);
 
-    descendants.forEach(child => {
-      const newChildId = Date.now() + Math.random();
-      idMap[child.id] = newChildId;
+        descendants.forEach(child => {
+            const newChildId = Date.now() + Math.random();
+            idMap[child.id] = newChildId;
 
-      materials.push({
-        ...child,
-        id: newChildId,
-        parentId: idMap[child.parentId]   // reconnect the tree
-      });
+            materials.push({
+                ...child,
+                id: newChildId,
+                parentId: idMap[child.parentId]   // reconnect the tree
+            });
 
-      copiedNames.push(child.name); // Add to banner list
+            copiedNames.push(child.name); // Add to banner list
+        });
     });
-  });
 
-  // Store results for banner
-  req.session.data.copyList = copiedNames;
-  req.session.data.copyDestinationName = destinationFolderName;
-  req.session.data.copyPreviewTree = copyPreviewTree;
-  req.session.data.copySuccess = true;
+    // Store results for banner
+    req.session.data.copyList = copiedNames;
+    req.session.data.copyDestinationName = destinationFolderName;
+    req.session.data.copyPreviewTree = copyPreviewTree;
+    req.session.data.copySuccess = true;
 
-  // Reset selection + mode
-  req.session.data.materialsMode = null;
-  req.session.data.materialsSelected = '';
+    // Reset selection + mode
+    req.session.data.materialsMode = null;
+    req.session.data.materialsSelected = '';
 
-  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
 
 
 router.post('/B-off-system-MVP/move-material', function (req, res) {
 
-  req.session.data.copySuccess = false;  // Clear copy flag
+    req.session.data.copySuccess = false;  // Clear copy flag
 
-  const ids = req.body.selected_ids
-    ? req.body.selected_ids.split(',').map(x => String(x).trim())
-    : [];
+    const ids = req.body.selected_ids
+        ? req.body.selected_ids.split(',').map(x => String(x).trim())
+        : [];
 
-  const destinationFolderId = req.body.destinationFolder;
-  const materials = req.session.data.materials || [];
+    const destinationFolderId = req.body.destinationFolder;
+    const materials = req.session.data.materials || [];
 
-  console.log("Moving:", ids, "into folder", destinationFolderId);
+    console.log("Moving:", ids, "into folder", destinationFolderId);
 
-  // Snapshot BEFORE we move items (for preview)
-  const originalMaterials = [...materials];
+    // Snapshot BEFORE we move items (for preview)
+    const originalMaterials = [...materials];
 
-  // List for flat banner summary
-  const movedNames = [];
+    // List for flat banner summary
+    const movedNames = [];
 
-  ids.forEach(id => {
-    const original = originalMaterials.find(m => String(m.id) === String(id));
-    if (original) movedNames.push(original.name);
-  });
+    ids.forEach(id => {
+        const original = originalMaterials.find(m => String(m.id) === String(id));
+        if (original) movedNames.push(original.name);
+    });
 
-  // Destination folder name for banner
-  let destinationFolderName = null;
-  const destFolder = originalMaterials.find(m => String(m.id) === String(destinationFolderId));
-  if (destFolder) {
-    destinationFolderName = destFolder.name;
-  }
-
-  // Build nested preview tree (based on original structure)
-  const movePreviewTree = buildPreviewTree(originalMaterials, ids);
-
-  // Perform the move
-  req.session.data.materials = materials.map(m => {
-    if (ids.includes(String(m.id))) {
-      return { ...m, parentId: destinationFolderId };
+    // Destination folder name for banner
+    let destinationFolderName = null;
+    const destFolder = originalMaterials.find(m => String(m.id) === String(destinationFolderId));
+    if (destFolder) {
+        destinationFolderName = destFolder.name;
     }
-    return m;
-  });
 
-  // Banner data
-  req.session.data.moveList = movedNames;
-  req.session.data.moveDestinationName = destinationFolderName;
-  req.session.data.movePreviewTree = movePreviewTree;
-  req.session.data.moveSuccess = true;
+    // Build nested preview tree (based on original structure)
+    const movePreviewTree = buildPreviewTree(originalMaterials, ids);
 
-  // Reset selection + mode
-  req.session.data.materialsMode = null;
-  req.session.data.materialsSelected = '';
+    // Perform the move
+    req.session.data.materials = materials.map(m => {
+        if (ids.includes(String(m.id))) {
+            return { ...m, parentId: destinationFolderId };
+        }
+        return m;
+    });
 
-  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+    // Banner data
+    req.session.data.moveList = movedNames;
+    req.session.data.moveDestinationName = destinationFolderName;
+    req.session.data.movePreviewTree = movePreviewTree;
+    req.session.data.moveSuccess = true;
+
+    // Reset selection + mode
+    req.session.data.materialsMode = null;
+    req.session.data.materialsSelected = '';
+
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview');
 });
 
 
 // CLEAR ALL FILTERS
 router.get('/includes/materials/clear-filters', function (req, res) {
 
-  // Wipe all filter fields you use
-  req.session.data.filterUnread = null;
-  req.session.data.filterRead = null;
+    // Wipe all filter fields you use
+    req.session.data.filterUnread = null;
+    req.session.data.filterRead = null;
 
-  req.session.data.filterStatusUsed = null;
-  req.session.data.filterStatusUnused = null;
-  req.session.data.filterStatusNone = null;
+    req.session.data.filterStatusUsed = null;
+    req.session.data.filterStatusUnused = null;
+    req.session.data.filterStatusNone = null;
 
-  req.session.data.filtersSearch = null;
+    req.session.data.filtersSearch = null;
 
-  // Redirect back to the materials page
-  res.redirect('/version-11/B-off-system-MVP/03-case-overview'); 
-  // change this to whatever your main materials URL is
+    // Redirect back to the materials page
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+    // change this to whatever your main materials URL is
 });
 
 // CLEAR A SPECIFIC FILTER
 router.get('/includes/materials/clear-filter', function (req, res) {
 
-  const type = req.query.type;
+    const type = req.query.type;
 
-  // Safely delete it from session
-  if (type && req.session.data.hasOwnProperty(type)) {
-    req.session.data[type] = null;
-  }
+    // Safely delete it from session
+    if (type && req.session.data.hasOwnProperty(type)) {
+        req.session.data[type] = null;
+    }
 
-  res.redirect('/version-11/B-off-system-MVP/03-case-overview');
-  // again: use your actual materials page URL
+    res.redirect('/version-11/B-off-system-MVP/03-case-overview');
+    // again: use your actual materials page URL
 });
 
 
