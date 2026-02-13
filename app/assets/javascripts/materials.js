@@ -1,7 +1,28 @@
 ///////////////////////////////////////////////////// Monica CODE - START /////////////////////////////////////////////////////
 console.log("materials.js loaded!");
 
+// 13 February 2026
 
+// =====================================================
+// HARD STOP: Order input must NEVER trigger sorting
+// Put this at the TOP of materials.js (before other listeners)
+// =====================================================
+(function hardStopOrderInputSorting() {
+     function isOrderInputEvent(e) {
+          return !!(e.target && e.target.closest && e.target.closest('input.order-input'));
+     }
+
+     // Use the earliest events possible
+     ['pointerdown', 'mousedown', 'touchstart', 'click', 'focusin'].forEach(type => {
+          window.addEventListener(type, function (e) {
+               if (!isOrderInputEvent(e)) return;
+
+               // DO NOT preventDefault: we still want focus + typing to work
+               e.stopPropagation();
+               if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+          }, true); // capture
+     });
+})();
 
 // 5 February 2026
 
