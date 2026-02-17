@@ -3813,3 +3813,37 @@ thead th .govuk-button {
      position: relative;
      z-index: 1;
 }
+
+
+// 17 February 2026: Order gutter toggle (show/hide the whole column, including header)
+
+/* Opt-in only */
+.has-order-toggle thead th:first-child {
+     display: none;
+}
+
+.has-order-toggle.is-order-mode thead th:first-child {
+     display: table-cell;
+}
+
+.has-order-toggle tbody td:first-child {
+     display: none;
+}
+
+.has-order-toggle.is-order-mode tbody td:first-child {
+     display: table-cell;
+}
+
+/* Opt-in only: nothing happens unless .has-order-toggle exists */
+// .has-order-toggle .order-cell,
+// .has-order-toggle .order-links,
+// .has-order-toggle th.order-cell {
+//      display: none;
+// }
+
+// /* When user turns Order mode on, show the gutter */
+// .has-order-toggle.is-order-mode .order-cell,
+// .has-order-toggle.is-order-mode .order-links,
+// .has-order-toggle.is-order-mode th.order-cell {
+//      display: table-cell;
+// }
