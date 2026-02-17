@@ -190,6 +190,11 @@
                                         </button>
                                     </form>
 
+                                    <button type="button" class="govuk-button govuk-button--secondary"
+                                        id="toggleOrderMode">
+                                        Order materials
+                                    </button>
+
                                     <button id="updateButton" class="govuk-button govuk-button--disabled" type="submit">
                                         Update
                                     </button>
@@ -450,13 +455,14 @@
 <div class="materials-aligned">
     <div class="materials-table-wrapper has-order-gutter">
 
-        <table class="govuk-table sortable" id="materials_table">
+        <table class="govuk-table sortable has-order-toggle" id="materials_table">
             <thead class="govuk-table__head">
                 <!-- <tr class="govuk-table__row material-row" data-id="{{ item.id }}" {% if item.folder %}data-folder="true"
                             {% else %}data-folder="false" {% endif %}> -->
                 <tr class="govuk-table__row">
                     <th scope="col" class="govuk-table__header">
-                        <button type="button" data-sort="order" class="govuk-link govuk-link--no-visited-state table-sort">
+                        <button type="button" data-sort="order"
+                            class="govuk-link govuk-link--no-visited-state table-sort">
                             Order
                         </button>
                     </th>

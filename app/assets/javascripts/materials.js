@@ -2685,3 +2685,28 @@ document.addEventListener('click', function (e) {
 
      // don't preventDefault: we WANT the submit
 }, true);
+
+
+// 17 February 2026 – toggle order mode (example of a non-link button that should not trigger row toggles, etc.)
+(function initOrderModeToggle() {
+     const table = document.getElementById('materials_table');
+     const toggle = document.getElementById('toggleOrderMode');
+     if (!table || !toggle) return; // ✅ older prototypes: do nothing
+
+     // Only activate if the table opted in
+     if (!table.classList.contains('has-order-toggle')) return;
+
+     // Start hidden (no order mode)
+     table.classList.remove('is-order-mode');
+
+     toggle.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          table.classList.toggle('is-order-mode');
+
+          // Optional: update label so users know what state they're in
+          const on = table.classList.contains('is-order-mode');
+          toggle.textContent = on ? 'Hide order materials' : 'Order materials';
+     });
+})();
