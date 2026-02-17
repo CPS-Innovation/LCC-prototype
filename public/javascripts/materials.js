@@ -1,6 +1,21 @@
 ///////////////////////////////////////////////////// Monica CODE - START /////////////////////////////////////////////////////
 console.log("materials.js loaded!");
 
+
+// 17 February 2026
+
+// FOLDER OPEN — allow submit but kill table sort
+window.addEventListener('click', function (e) {
+     const btn = e.target.closest(
+          '#materials_table tbody td.title_column form button[type="submit"]'
+     );
+     if (!btn) return;
+
+     // DO NOT preventDefault → we want the form to submit
+     e.stopPropagation();
+     if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+}, true); // ← capture phase is critical
+
 // 13 February 2026
 
 // =====================================================
