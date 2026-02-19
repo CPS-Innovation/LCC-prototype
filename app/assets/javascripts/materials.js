@@ -2,6 +2,7 @@
 console.log("materials.js loaded!");
 
 
+
 // 17 February 2026
 
 // FOLDER OPEN — allow submit but kill table sort
@@ -60,16 +61,17 @@ window.addEventListener('click', function (e) {
           );
      }
 
+     // 19 February 2026: new helper to allow "gutter" clicks (order input + move links) but block the dead space in that column
      function isGutterDeadSpace(t) {
-          // In the gutter cell, ONLY allow actual controls (move links + order input).
-          const inOrderCell = t.closest(`${TABLE_SEL} tbody .order-cell, ${TABLE_SEL} tbody .order-links`);
+          const inOrderCell = t.closest(`${TABLE_SEL} tbody .order-cell, ${TABLE_SEL} tbody .order-links, ${TABLE_SEL} tbody .order-links-cell, ${TABLE_SEL} tbody .order-input-cell`);
           if (!inOrderCell) return false;
 
           const onAllowed = t.closest(
                `${TABLE_SEL} a.move-link[data-action], ${TABLE_SEL} input.order-input`
           );
-          return !onAllowed; // dead space = true
+          return !onAllowed;
      }
+     // End of 19 February 2026 
 
      ['pointerdown', 'click'].forEach(type => {
           window.addEventListener(type, (e) => {
@@ -111,7 +113,7 @@ window.addEventListener('click', function (e) {
           e.target.closest('#materials_table tbody form') ||
           e.target.closest('#materials_table tbody button') ||
           e.target.closest('#materials_table tbody a') ||
-          e.target.closest('.order-cell') ||
+          e.target.closest('.order-cell, .order-links-cell, .order-input-cell') ||
           e.target.closest('a.move-link[data-action]') ||
           e.target.closest('input[type="checkbox"], label');
 
@@ -198,7 +200,7 @@ window.addEventListener('click', function (e) {
           e.target.closest('#materials_table tbody input') ||
           e.target.closest('#materials_table tbody label') ||
           // plus your gutter stuff if it exists
-          e.target.closest('.order-cell') ||
+          e.target.closest('.order-cell, .order-links-cell, .order-input-cell') ||
           e.target.closest('a.move-link[data-action]');
 
      if (allowed) return;
@@ -456,49 +458,6 @@ document.addEventListener("DOMContentLoaded", function () {
 //           show(divider);
 //      });
 // }
-
-
-
-// document.addEventListener("click", (e) => {
-//      const link = e.target.closest('a.move-link[data-action]');
-//      if (!link) return;
-
-//      e.preventDefault();
-//      e.stopPropagation();
-//      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-
-//      if (link.classList.contains("is-disabled") || link.getAttribute("aria-disabled") === "true") return;
-
-//      const row = link.closest("tr");
-//      const tbody = row && row.closest("tbody");
-//      if (!row || !tbody) return;
-
-//      const action = link.dataset.action;
-//      const prev = row.previousElementSibling;
-//      const next = row.nextElementSibling;
-
-//      if (action === "up" && prev) {
-//           tbody.insertBefore(row, prev);
-//      } else if (action === "down" && next) {
-//           tbody.insertBefore(next, row);
-//      } else {
-//           return;
-//      }
-
-//      // Renumber after moving
-//      Array.from(tbody.querySelectorAll("tr")).forEach((tr, i) => {
-//           const input = tr.querySelector("input.order-input");
-//           if (input) input.value = i + 1;
-//      });
-
-//      // Recompute which links should show on which rows
-//      refreshOrderGutter(tbody);
-
-// }, true);
-
-
-
-
 
 
 
@@ -1131,8 +1090,10 @@ $(document).ready(function () {
 
 // ACTIONS - MATERIALS & COMMS
 $(document).ready(function () {
+
      // Only target elements within version-11
      var $version11 = $('.version-11');
+     var $version13 = $('.version-13');
 
 
      $version11.find("#show_Materials_Actions").on("click", function (e) {
@@ -1150,6 +1111,23 @@ $(document).ready(function () {
           $panel.toggle();
      });
 
+     $version13.find("#show_General_Actions").on("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const $btn = $(this);
+          const $menu = $btn.closest(".moj-button-menu");
+          const $panel = $menu.find("#general_Actions");
+
+          const left = $btn.offset().left - $menu.offset().left;
+          $panel.css({ left });
+
+          const isOpen = !$panel.is(":hidden");
+          $btn.attr("aria-expanded", isOpen ? "false" : "true");
+
+          $panel.toggle();
+     });
+
      $version11.find("#show_Comms_Actions").on("click", function (e) {
           e.preventDefault();
           e.stopPropagation();
@@ -1161,6 +1139,59 @@ $(document).ready(function () {
           $panel.toggle(); // ONLY comms
      });
 
+     $version13.find("#show_General_Actions").on("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const $btn = $(this);
+          const $menu = $btn.closest(".moj-button-menu"); // anchor container
+          const $panel = $menu.find("#general_Actions");
+
+          const left = $btn.offset().left - $menu.offset().left;
+          $panel.css({ left });
+
+          $btn.toggleClass("active");
+          $panel.toggle();
+     });
+
+});
+
+// ACTIONS - GENERAL (Version-13 only)
+$(document).ready(function () {
+     if (!location.pathname.includes('/version-13/')) return;
+
+     const $btn = $("#show_General_Actions");
+     const $menu = $btn.closest(".moj-button-menu");
+     const $panel = $("#general_Actions");
+
+     if (!$btn.length || !$panel.length) return;
+
+     // Start closed
+     $panel.hide();
+     $btn.attr("aria-expanded", "false");
+
+     $btn.on("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          // align panel under the button like the other menu
+          const left = $btn.offset().left - $menu.offset().left;
+          $panel.css({ left });
+
+          $btn.toggleClass("active");
+          $panel.toggle();
+
+          $btn.attr("aria-expanded", $panel.is(":visible") ? "true" : "false");
+     });
+
+     // Click outside closes it
+     $(document).on("click", function (e) {
+          if ($panel.is(e.target) || $panel.has(e.target).length) return;
+          if ($btn.is(e.target) || $btn.has(e.target).length) return;
+
+          $panel.hide();
+          $btn.removeClass("active").attr("aria-expanded", "false");
+     });
 });
 
 
@@ -1183,6 +1214,15 @@ $(document).on("click", function (e) {
           !$btnComms.is(e.target) && $btnComms.has(e.target).length === 0) {
           $panelComms.hide();
           $btnComms.removeClass("active");
+     }
+
+     var $btnGen = $version1.find("#show_General_Actions");
+     var $panelGen = $version11.find("#general_Actions");
+
+     if (!$panelGen.is(e.target) && $panelGen.has(e.target).length === 0 &&
+          !$btnGen.is(e.target) && $btnGen.has(e.target).length === 0) {
+          $panelGen.hide();
+          $btnGen.attr("aria-expanded", "false");
      }
 });
 
@@ -1711,6 +1751,19 @@ const moveForm = document.getElementById('moveForm');
 if (moveForm) {
      moveForm.addEventListener('submit', () => {
           document.getElementById('move_selected_ids').value = getSelectedMaterialIds();
+     });
+}
+
+
+const newFolderForm = document.getElementById('newFolderForm');
+if (newFolderForm) {
+     newFolderForm.addEventListener('submit', () => {
+          const ids = Array.from(document.querySelectorAll('input.js-material-checkbox:checked'))
+               .filter(cb => cb.value && cb.value !== 'ALL')
+               .map(cb => cb.value)
+               .join(',');
+          const input = document.getElementById('new_folder_selected_ids');
+          if (input) input.value = ids;
      });
 }
 
@@ -2301,6 +2354,21 @@ function togglePreview(btn) {
 }
 
 
+// Stop Enter in order input from submitting the row/page form
+window.addEventListener('keydown', function (e) {
+     const input = e.target.closest && e.target.closest('input.order-input');
+     if (!input) return;
+
+     if (e.key === 'Enter') {
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+          // Optional: force blur so your blur/change handler runs cleanly
+          input.blur();
+     }
+}, true);
+
 
 // ----------------------------------------------------
 // Auto-populate the order inputs (1..n)
@@ -2598,39 +2666,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-document.addEventListener("click", (e) => {
-     // Only react to the move links, nothing else
-     const moveLink = e.target.closest('a.move-link[data-action="up"], a.move-link[data-action="down"]');
-     if (!moveLink) return; // IMPORTANT: don't block other clicks
-
-     // Now and only now: block default/bubbling
-     e.preventDefault();
-     e.stopPropagation();
-     if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-
-     // Respect disabled state
-     if (moveLink.classList.contains("is-disabled") || moveLink.getAttribute("aria-disabled") === "true") return;
-
-     const row = moveLink.closest("tr");
-     const tbody = row && row.closest("tbody");
-     if (!row || !tbody) return;
-
-     const action = moveLink.dataset.action;
-     const prev = row.previousElementSibling;
-     const next = row.nextElementSibling;
-
-     if (action === "up" && prev) tbody.insertBefore(row, prev);
-     if (action === "down" && next) tbody.insertBefore(next, row);
-
-     // Renumber visible "main" rows (simple version)
-     Array.from(tbody.querySelectorAll("tr")).forEach((tr, i) => {
-          const input = tr.querySelector("input.order-input");
-          if (input) input.value = i + 1;
-     });
-
-     // Re-run your show/hide logic if you have it
-     // refreshOrderGutter(tbody);
-}, false);
 
 
 
@@ -2708,5 +2743,52 @@ document.addEventListener('click', function (e) {
           // Optional: update label so users know what state they're in
           const on = table.classList.contains('is-order-mode');
           toggle.textContent = on ? 'Hide order materials' : 'Order materials';
+     });
+})();
+
+
+
+
+/// 18 February 2026
+
+// ===============================
+// Version-13: General Actions dropdown
+// ===============================
+(function initGeneralActionsDropdownV13() {
+     document.addEventListener('DOMContentLoaded', () => {
+          const root = document.querySelector('.version-13');
+          if (!root) return;
+
+          const btn = root.querySelector('#show_General_Actions');
+          const panel = root.querySelector('#general_Actions');
+          if (!btn || !panel) return;
+
+          panel.setAttribute('hidden', '');
+          btn.setAttribute('aria-expanded', 'false');
+
+          btn.addEventListener('click', (e) => {
+               e.preventDefault();
+               e.stopPropagation();
+
+               const open = !panel.hasAttribute('hidden');
+               if (open) {
+                    panel.setAttribute('hidden', '');
+                    btn.setAttribute('aria-expanded', 'false');
+                    btn.classList.remove('active');
+               } else {
+                    panel.removeAttribute('hidden');
+                    btn.setAttribute('aria-expanded', 'true');
+                    btn.classList.add('active');
+               }
+          });
+
+          // click outside closes
+          document.addEventListener('click', (e) => {
+               if (e.target.closest('#show_General_Actions')) return;
+               if (e.target.closest('#general_Actions')) return;
+               panel.setAttribute('hidden', '');
+               btn.setAttribute('aria-expanded', 'false');
+               btn.classList.remove('active');
+          }, true);
      });
 })();

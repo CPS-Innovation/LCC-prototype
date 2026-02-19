@@ -2556,5 +2556,23 @@ router.post('/B-off-system-MVP/mark-as-unread', function (req, res) {
 
 
 
+// 19 February 2026 – version 13
+
+router.get('/B-off-system-MVP/order-materials', (req, res) => {
+    const materials = (req.session.data.materials && req.session.data.materials.length)
+        ? req.session.data.materials
+        : (res.locals.data.materials || []);
+
+    const currentFolderId = req.session.data.currentFolderId ?? 1000; // whatever your root is
+    const children = materials.filter(m => String(m.parentId ?? '') === String(currentFolderId));
+
+    res.render('version-13/B-off-system-MVP/order-materials', {
+        children,
+        materials
+    });
+});
+
+
+
 
 module.exports = router

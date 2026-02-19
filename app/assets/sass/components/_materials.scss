@@ -3834,16 +3834,691 @@ thead th .govuk-button {
      display: table-cell;
 }
 
-/* Opt-in only: nothing happens unless .has-order-toggle exists */
-// .has-order-toggle .order-cell,
-// .has-order-toggle .order-links,
-// .has-order-toggle th.order-cell {
-//      display: none;
-// }
 
-// /* When user turns Order mode on, show the gutter */
-// .has-order-toggle.is-order-mode .order-cell,
-// .has-order-toggle.is-order-mode .order-links,
-// .has-order-toggle.is-order-mode th.order-cell {
-//      display: table-cell;
-// }
+// 18 February 2026
+/* Keep panel anchored to the button area */
+#general_Actions {
+     position: absolute;
+     z-index: 1000;
+     margin-top: 5px;
+}
+
+/* Optional: tidy spacing for stacked buttons */
+#general_Actions .govuk-button {
+     display: block;
+     width: 100%;
+     margin-bottom: 10px;
+}
+
+
+
+/* Version-13: make General Actions menu behave like the moj menu panel */
+.version-13 .moj-button-menu {
+     position: relative;
+}
+
+.version-13 #general_Actions.hidden_buttons {
+     position: absolute;
+     top: 100%;
+     right: 0;
+     /* align to the right of the toolbar */
+     z-index: 50;
+     margin-top: 5px;
+}
+
+/* Version-13 only: make buttons inside Actions dropdown look like menu items */
+.version-13 #general_Actions .govuk-button {
+     display: block;
+     width: 100%;
+     margin: 0;
+     text-align: left;
+     border: 0;
+     box-shadow: none;
+     background: transparent;
+     padding: 12px 16px;
+}
+
+.version-13 #general_Actions .govuk-button:hover {
+     background: rgba(0, 0, 0, 0.04);
+}
+
+
+
+/* v13 only: style ONLY the General Actions dropdown */
+.version-13 #general_Actions.hidden_buttons--general {
+     position: absolute;
+     top: calc(100% + 2px);
+     z-index: 1000;
+     background: #f3f2f1;
+     border: 1px solid #b1b4b6;
+     min-width: 260px;
+}
+
+/* kill default form spacing that causes weird gaps */
+.version-13 #general_Actions.hidden_buttons--general form {
+     margin: 0;
+}
+
+/* Make the inside items look like menu rows (not chunky buttons) */
+.version-13 #general_Actions.hidden_buttons--general .govuk-button {
+     margin: 0;
+     width: 100%;
+     text-align: left;
+
+     background: transparent;
+     color: #0b0c0c;
+
+     box-shadow: none;
+     border: 0;
+     padding: 14px 16px;
+}
+
+/* Divider lines between items */
+.version-13 #general_Actions.hidden_buttons--general>*+* {
+     border-top: 1px solid #b1b4b6;
+}
+
+/* Hover */
+.version-13 #general_Actions.hidden_buttons--general .govuk-button:hover {
+     background: #e5e5e5;
+}
+
+
+
+
+
+/* v13: Actions dropdown panel should look like the Manage selection panel */
+.version-13 #general_Actions {
+     position: absolute;
+     top: calc(100% + 2px);
+     z-index: 1000;
+
+     background: #f3f2f1;
+     border: 1px solid #b1b4b6;
+
+     /* match “menu” width vibe */
+     min-width: 360px;
+     padding: 0;
+}
+
+/* remove default form spacing that creates odd gaps */
+.version-13 #general_Actions form {
+     margin: 0;
+}
+
+/* Make the two items behave like menu rows */
+.version-13 #general_Actions .govuk-button {
+     display: block;
+     width: 100%;
+     margin: 0;
+
+     /* menu-row look */
+     background: transparent;
+     border: 0;
+     box-shadow: none;
+
+     color: #0b0c0c;
+     text-align: left;
+     padding: 14px 18px;
+
+     /* make it feel like a clickable row */
+     font-weight: 400;
+}
+
+/* row separators */
+.version-13 #general_Actions>*+* {
+     border-top: 1px solid #b1b4b6;
+}
+
+/* hover like the left menu */
+.version-13 #general_Actions .govuk-button:hover {
+     background: #e5e5e5;
+}
+
+
+
+/* =========================================================
+   Version 13 – General “Actions” dropdown
+   Makes it visually identical to Manage selection menu
+   ========================================================= */
+
+.version-13 {
+
+     .moj-button-menu {
+          position: relative; // anchor for absolute panel
+     }
+
+     #general_Actions {
+          position: absolute;
+          top: 100%;
+          right: 0; // sits under the Actions button
+          z-index: 200;
+
+          min-width: 360px;
+          background: govuk-colour("light-grey");
+          border: 1px solid govuk-colour("mid-grey");
+          box-shadow: 0 2px 0 govuk-colour("mid-grey");
+
+          padding: 0;
+          margin-top: 0;
+
+          // remove the inline display:none once JS opens it
+          &[hidden] {
+               display: none;
+          }
+
+          // make items look like proper menu rows
+          .govuk-button {
+               display: block;
+               width: 100%;
+               margin: 0;
+
+               background: transparent;
+               box-shadow: none;
+               border: 0;
+
+               text-align: left;
+               padding: 15px govuk-spacing(3);
+
+               color: $govuk-text-colour;
+
+               &:hover {
+                    background: govuk-colour("mid-grey");
+               }
+          }
+
+          form {
+               margin: 0;
+          }
+     }
+}
+
+
+
+/* ===========================
+   v13: Actions dropdown menu
+   (make it match Manage selection)
+   =========================== */
+
+/* anchor for positioning */
+.version-13 .moj-button-menu {
+     position: relative;
+}
+
+/* the panel */
+.version-13 #general_Actions.hidden_buttons {
+     position: absolute;
+     top: calc(100% + 6px);
+     left: 0;
+     z-index: 2000;
+
+     width: 420px;
+     /* adjust if you want */
+     background: #fff;
+     border: 2px solid #b1b4b6;
+     box-shadow: 0 2px 0 #b1b4b6;
+
+     padding: 0;
+     margin: 0;
+}
+
+/* make the items look like menu rows (not buttons) */
+.version-13 #general_Actions .govuk-button,
+.version-13 #general_Actions button,
+.version-13 #general_Actions a {
+     display: block;
+     width: 100%;
+     text-align: left;
+
+     background: transparent !important;
+     border: 0 !important;
+     box-shadow: none !important;
+
+     padding: 14px 18px;
+     margin: 0 !important;
+
+     font-size: 24px;
+     /* match your screenshot look */
+     line-height: 1.25;
+     font-weight: 400;
+     color: #0b0c0c;
+
+     cursor: pointer;
+}
+
+/* separators between items */
+.version-13 #general_Actions>*+* {
+     border-top: 2px solid #b1b4b6;
+}
+
+/* forms shouldn’t add spacing */
+.version-13 #general_Actions form {
+     margin: 0;
+}
+
+/* hover/focus like a menu */
+.version-13 #general_Actions .govuk-button:hover,
+.version-13 #general_Actions button:hover,
+.version-13 #general_Actions a:hover {
+     background: #f3f2f1 !important;
+}
+
+.version-13 #general_Actions .govuk-button:focus,
+.version-13 #general_Actions button:focus,
+.version-13 #general_Actions a:focus {
+     outline: 3px solid #ffdd00;
+     outline-offset: 0;
+     background: #ffdd00 !important;
+}
+
+
+
+
+/* =====================================================
+   v13 – Actions dropdown should look like Manage selection
+   ===================================================== */
+
+.version-13 .moj-button-menu {
+     position: relative;
+}
+
+/* Make Actions panel look like the other dropdown panel */
+.version-13 #general_Actions.hidden_buttons {
+     position: absolute;
+     top: 100%;
+     z-index: 3000;
+
+     background: #f3f2f1;
+     border: 2px solid #b1b4b6;
+     padding: 0;
+     margin: 0;
+     min-width: 360px;
+     /* tweak if you want it narrower */
+}
+
+/* Force the items to look like menu rows (not GOVUK buttons) */
+.version-13 #general_Actions.hidden_buttons button,
+.version-13 #general_Actions.hidden_buttons .govuk-button {
+     display: block;
+     width: 100%;
+     text-align: left;
+
+     background: transparent !important;
+     border: 0 !important;
+     box-shadow: none !important;
+
+     margin: 0 !important;
+     padding: 14px 18px !important;
+
+     font-size: 19px !important;
+     /* match your Manage selection list */
+     line-height: 1.25 !important;
+     font-weight: 400 !important;
+     color: #0b0c0c !important;
+}
+
+/* Remove form spacing so "New folder" behaves like a menu row */
+.version-13 #general_Actions.hidden_buttons form {
+     margin: 0 !important;
+}
+
+/* Row dividers like the other menu */
+.version-13 #general_Actions.hidden_buttons>*+* {
+     border-top: 2px solid #b1b4b6;
+}
+
+/* Hover/focus like a menu */
+.version-13 #general_Actions.hidden_buttons button:hover {
+     background: #e8e8e8 !important;
+}
+
+.version-13 #general_Actions.hidden_buttons button:focus {
+     outline: 3px solid #ffdd00;
+     outline-offset: 0;
+     background: #ffdd00 !important;
+}
+
+
+// 19 February 2026: Final version, with some tweaks to match the exact look of the Manage selection menu
+/* =========================================================
+   ACTIONS DROPDOWN – make items look like Manage selection
+   ========================================================= */
+
+.version-13 #general_Actions {
+     position: absolute;
+     top: 100%;
+     z-index: 3000;
+
+     background: #f3f2f1;
+     border: 2px solid #b1b4b6;
+     padding: 0;
+     margin: 0;
+     min-width: 420px;
+     /* adjust if needed */
+}
+
+/* Remove form spacing so rows join seamlessly */
+.version-13 #general_Actions form {
+     margin: 0;
+}
+
+/* TURN BUTTONS INTO MENU ROWS */
+.version-13 #general_Actions .govuk-button {
+     display: block;
+     width: 100%;
+     text-align: left;
+
+     background: transparent;
+     border: 0;
+     box-shadow: none;
+
+     margin: 0;
+     padding: 16px 20px;
+
+     font-size: 24px;
+     /* ← this is what gives you the big menu text */
+     line-height: 1.2;
+     font-weight: 400;
+     color: #0b0c0c;
+
+     cursor: pointer;
+}
+
+/* Divider lines between rows */
+.version-13 #general_Actions>*+* {
+     border-top: 2px solid #b1b4b6;
+}
+
+/* Hover state like the real menu */
+.version-13 #general_Actions .govuk-button:hover {
+     background: #e8e8e8;
+}
+
+/* Focus state (GOV.UK yellow) */
+.version-13 #general_Actions .govuk-button:focus {
+     outline: 3px solid #ffdd00;
+     outline-offset: 0;
+     background: #ffdd00;
+}
+
+
+
+
+
+
+/* =========================================================
+   Version-13: make #general_Actions dropdown look like the
+   Manage selection dropdown list items (flat rows + dividers)
+   ========================================================= */
+
+.version-13 .moj-button-menu {
+     position: relative;
+     /* anchor absolute dropdowns */
+}
+
+.version-13 #general_Actions {
+     /* match the dropdown panel feel */
+     position: absolute;
+     top: 100%;
+     left: 0;
+     z-index: 9999;
+
+     min-width: 360px;
+     /* tweak if you want */
+     background: #f3f2f1;
+     border: 2px solid #b1b4b6;
+     box-sizing: border-box;
+
+     padding: 0;
+     margin: 0;
+}
+
+/* If your HTML uses hidden + display:none at times, keep it consistent */
+.version-13 #general_Actions[hidden] {
+     display: none !important;
+}
+
+/* The items inside are buttons (govuk-button). Turn them into menu rows. */
+.version-13 #general_Actions .govuk-button,
+.version-13 #general_Actions form .govuk-button {
+     /* kill GOV.UK button look */
+     background: transparent !important;
+     box-shadow: none !important;
+     border: 0 !important;
+
+     /* behave like a list row */
+     display: block;
+     width: 100%;
+     text-align: left;
+
+     /* spacing + typography */
+     padding: 18px 20px;
+     margin: 0;
+
+     color: #0b0c0c !important;
+     font-weight: 400;
+     font-size: 28px;
+     /* this is what your screenshot looks like */
+     line-height: 1.2;
+
+     /* divider lines */
+     border-top: 2px solid #b1b4b6 !important;
+     border-radius: 0 !important;
+}
+
+/* Remove the first divider line so the panel top is clean */
+.version-13 #general_Actions>.govuk-button:first-child,
+.version-13 #general_Actions>form:first-child .govuk-button {
+     border-top: 0 !important;
+}
+
+/* Nice hover/focus like a menu item */
+.version-13 #general_Actions .govuk-button:hover,
+.version-13 #general_Actions .govuk-button:focus {
+     background: #e8e8e8 !important;
+     outline: 3px solid #ffdd00;
+     outline-offset: 0;
+}
+
+
+
+
+
+/* Make the GENERAL Actions menu match the existing Manage selection dropdown */
+
+.moj-button-menu {
+     position: relative;
+}
+
+/* The dropdown panel */
+.moj-button-menu #general_Actions.hidden_buttons {
+     position: absolute;
+     top: 100%;
+     left: 0;
+     z-index: 9999;
+
+     background: #f3f2f1;
+     border: 2px solid #b1b4b6;
+     box-sizing: border-box;
+
+     padding: 0;
+     margin: 0;
+
+     /* optional: match width feel */
+     min-width: 360px;
+}
+
+/* Each menu "row" (your items are govuk-buttons) */
+.moj-button-menu #general_Actions.hidden_buttons .govuk-button {
+     background: transparent !important;
+     box-shadow: none !important;
+     border: 0 !important;
+
+     display: block;
+     width: 100%;
+     text-align: left;
+
+     padding: 14px 18px;
+     margin: 0;
+
+     color: #0b0c0c !important;
+     font-weight: 400;
+
+     /* Match the list look */
+     border-top: 2px solid #b1b4b6 !important;
+     border-radius: 0 !important;
+}
+
+/* Remove top divider on first visible item */
+.moj-button-menu #general_Actions.hidden_buttons> :first-child .govuk-button,
+.moj-button-menu #general_Actions.hidden_buttons>.govuk-button:first-child {
+     border-top: 0 !important;
+}
+
+/* Hover/focus */
+.moj-button-menu #general_Actions.hidden_buttons .govuk-button:hover {
+     background: #e8e8e8 !important;
+}
+
+.moj-button-menu #general_Actions.hidden_buttons .govuk-button:focus {
+     outline: 3px solid #ffdd00;
+     outline-offset: 0;
+}
+
+
+/* v13: tighten Actions dropdown (width + row height) */
+.version-13 .moj-button-menu #general_Actions.hidden_buttons {
+     min-width: 260px;
+     /* was huge */
+     width: 260px;
+     /* make it consistent */
+}
+
+.version-13 .moj-button-menu #general_Actions.hidden_buttons .govuk-button {
+     padding: 10px 14px;
+     /* reduce height */
+     font-size: 19px;
+     /* default GOVUK-ish size */
+     line-height: 1.2;
+}
+
+
+
+.order-links-cell {
+     white-space: nowrap;
+}
+
+.order-input-cell {
+     width: 70px;
+}
+
+.order-input {
+     width: 56px;
+     text-align: center;
+}
+
+
+
+/* ================================
+   Order gutter (links + input inline)
+   ================================ */
+
+/* Only apply on tables that have the order gutter enabled */
+#materials_table.has-order-toggle .order-cell .order-links {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+     flex-wrap: nowrap;
+}
+
+/* Keep links together on the left */
+#materials_table.has-order-toggle .order-cell .order-links a.move-link,
+#materials_table.has-order-toggle .order-cell .order-links .divider {
+     white-space: nowrap;
+}
+
+/* Divider spacing */
+#materials_table.has-order-toggle .order-cell .order-links .divider {
+     margin: 0 4px;
+}
+
+/* Push the input to the right */
+#materials_table.has-order-toggle .order-cell .order-links .order-input {
+     margin-left: auto;
+     width: 3.2rem;
+     /* tweak: 3rem–4rem usually right */
+     min-width: 3.2rem;
+     padding: 6px;
+     height: auto;
+     /* stop it becoming a massive box */
+}
+
+/* Optional: keep the whole gutter from being too wide */
+#materials_table.has-order-toggle .order-cell .order-gutter {
+     width: 100%;
+}
+
+
+/* ================================
+   v13 Order materials gutter (ONLY)
+   ================================ */
+
+.version-13 #materials_table th.order-header {
+     /* Put "Order" above the number input (right side of the cell) */
+     text-align: right;
+     white-space: nowrap;
+}
+
+.version-13 #materials_table td.order-cell {
+     /* Keep the cell compact */
+     white-space: nowrap;
+     width: 1%;
+     vertical-align: middle;
+}
+
+.version-13 #materials_table td.order-cell .order-gutter {
+     /* You can keep this wrapper, but don't let it force big widths */
+     width: auto;
+}
+
+.version-13 #materials_table td.order-cell .order-links {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+     flex-wrap: nowrap;
+}
+
+.version-13 #materials_table td.order-cell .order-links .divider {
+     opacity: 0.7;
+}
+
+.version-13 #materials_table td.order-cell .order-links .order-input {
+     /* The real culprit: govuk-input defaults to width: 100% */
+     width: 3.5rem;
+     min-width: 3.5rem;
+     padding: 4px 6px;
+     margin-left: auto;
+     /* pushes input to the right */
+     height: auto;
+     line-height: 1.2;
+}
+
+
+
+
+
+.version-13 {
+
+     #materials_table td.order-cell,
+     #materials_table td.order-links-cell,
+     #materials_table td.order-input-cell {
+          position: relative;
+          z-index: 1;
+     }
+
+     #materials_table td.order-cell *,
+     #materials_table td.order-links-cell *,
+     #materials_table td.order-input-cell * {
+          pointer-events: auto !important;
+     }
+}
