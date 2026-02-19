@@ -10,6 +10,7 @@
         You can add, rename or remove materials and folders. You can also
         <a class="govuk-link">manage materials and folders on Egress</a>.
     </p>
+    <!-- <p class="govuk-!-margin-left-3">To rename multiple items, select them and choose 'Rename selected items' from Actions on selection.</p> -->
     <div class="materials-aligned">
         <hr>
     </div>
@@ -140,7 +141,7 @@
                             <div class="moj-button-menu">
                                 <button type="button" id="show_Materials_Actions"
                                     class="govuk-button govuk-button--secondary" data-module="govuk-button">
-                                    Actions
+                                    Manage selection
                                     <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M5.5 0L11 5L0 5L5.5 0Z" fill="currentColor"></path>
                                     </svg>
@@ -164,36 +165,14 @@
                                         </button>
                                     </form>
 
-                                    <!-- <form method="post" action="/version-13/B-off-system-MVP/set-materials-mode"
-                                        id="moveForm">
-                                        <input type="hidden" name="mode" value="move">
-                                        <input type="hidden" name="selected_ids" id="move_selected_ids">
-                                        <button id="moveButton" class="govuk-button" type="submit">
-                                            Move
-                                        </button>
-                                    </form> -->
-
-                                    <!-- <form method="post" action="/version-13/B-off-system-MVP/rename-from-list"
-                                        id="renameForm">
-                                        <button id="renameButton" class="govuk-button govuk-button--disabled"
-                                            data-action="rename">
-                                            Rename
-                                        </button>
-                                    </form> -->
-
                                     <form method="post" action="/version-13/B-off-system-MVP/rename-from-list"
                                         id="renameForm">
                                         <input type="hidden" name="selected_ids" id="rename_selected_ids" value="">
                                         <button id="renameButton" class="govuk-button govuk-button--disabled"
                                             type="submit">
-                                            Rename
+                                            Rename selected items
                                         </button>
                                     </form>
-
-                                    <button type="button" class="govuk-button govuk-button--secondary"
-                                        id="toggleOrderMode">
-                                        Order materials
-                                    </button>
 
                                     <button id="updateButton" class="govuk-button govuk-button--disabled" type="submit">
                                         Update
@@ -226,10 +205,35 @@
 
                                 </div>
 
-                                <button type="button" class="govuk-button govuk-button--secondary"
-                                    onclick="window.location.href='/version-13/B-off-system-MVP/new-folder';">
-                                    New folder
+                                <button type="button" id="show_General_Actions"
+                                    class="govuk-button govuk-button--secondary" aria-expanded="false"
+                                    aria-controls="general_Actions" data-module="govuk-button">
+                                    Actions
+                                    <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5.5 0L11 5L0 5L5.5 0Z" fill="currentColor"></path>
+                                    </svg>
                                 </button>
+
+                                <div class="hidden_buttons hidden_buttons--general" id="general_Actions" hidden>
+                                    <!-- <button type="button" class="govuk-button govuk-button--secondary"
+                                        id="toggleOrderMode">
+                                        Order materials
+                                    </button> -->
+                                    
+                                    <form method="get" action="/version-13/B-off-system-MVP/order-materials"
+                                        id="newFolderForm">
+                                        <button id="newFolderButton" class="govuk-button" type="submit">
+                                            Order materials
+                                        </button>
+                                    </form>
+
+                                    <form method="get" action="/version-13/B-off-system-MVP/new-folder"
+                                        id="newFolderForm">
+                                        <button id="newFolderButton" class="govuk-button" type="submit">
+                                            Create new folder
+                                        </button>
+                                    </form>
+                                </div>
 
                             </div>
                         </div>
