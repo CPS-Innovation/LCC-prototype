@@ -23,8 +23,16 @@ Rename files or folders – {{ serviceName }} – Prototype
 
         <h1 class="govuk-heading-l">Order materials</h1>
 
+        {% if data.folderId == 0 %}
+        <p class="govuk-body">This folder has not been ordered yet.</p>
+        {% elseif data.folderId == 1000 %}
+        <p class="govuk-body">This folder has been ordered by Roxanne Rowe.</p>
+        {% else %}
+        <p class="govuk-body">This folder has not been ordered yet.</p>
+        {% endif %}
+
         <!-- BREADCRUMBS -->
-        <div class="govuk-grid-row">
+        <div class="govuk-grid-row govuk-!-margin-top-6 govuk-!-margin-left-3">
             <nav class="govuk-breadcrumbs govuk-!-margin-left-3" aria-label="Breadcrumb">
                 <ol class="govuk-breadcrumbs__list">
 
@@ -49,15 +57,12 @@ Rename files or folders – {{ serviceName }} – Prototype
                         {{ crumb.name }}
 
                         {# Otherwise: clickable crumb goes to that folder #}
+                        {# Otherwise: clickable crumb stays on order-materials #}
                         {% else %}
-                        <form method="post" action="/version-13/B-off-system-MVP/case-overview-folder"
-                            style="display:inline;">
-                            <input type="hidden" name="folderId" value="{{ crumb.id }}">
-                            <input type="hidden" name="folderName" value="{{ crumb.name }}">
-                            <button type="submit" class="govuk-breadcrumbs__link breadcrumb-button">
-                                {{ crumb.name }}
-                            </button>
-                        </form>
+                        <a class="govuk-breadcrumbs__link"
+                            href="/version-13/B-off-system-MVP/order-materials?folderId={{ crumb.id }}&folderName={{ crumb.name | urlencode }}">
+                            {{ crumb.name }}
+                        </a>
                         {% endif %}
 
                     </li>
@@ -137,10 +142,10 @@ Rename files or folders – {{ serviceName }} – Prototype
                                             down</a>
                                     </div>
                                 </td>
-
+                                
                                 <td class="govuk-table__cell order-input-cell">
                                     <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
-                                        inputmode="numeric" value="{{ item.order or '' }}">
+                                        inputmode="numeric" value="{{ item.order | default(loop.index) }}">
 
                                 </td>
 
@@ -148,7 +153,7 @@ Rename files or folders – {{ serviceName }} – Prototype
                                 <td class="govuk-table__cell title_column">
                                     <div class="folder-inline-wrapper">
 
-                                        <form method="post" action="/version-13/B-off-system-MVP/case-overview-folder">
+                                        <form method="get" action="/version-13/B-off-system-MVP/order-materials">
                                             <input type="hidden" name="folderId" value="{{ item.id }}">
                                             <input type="hidden" name="folderName" value="{{ item.name }}">
                                             <button type="submit"
@@ -161,10 +166,6 @@ Rename files or folders – {{ serviceName }} – Prototype
                                                 <strong
                                                     class="govuk-tag govuk-tag--green govuk-!margin-left-1">Renamed</strong>
                                                 {% endif %}
-                                                <!-- {% if flashRenamedId and (item.id | string) == flashRenamedId %}
-                                        <strong
-                                            class="govuk-tag govuk-tag--green govuk-!-margin-left-1">Renamed</strong>
-                                        {% endif %} -->
                                                 {% if flashNewFolderId and (item.id | string) == flashNewFolderId %}
                                                 <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">New
                                                     folder</strong>
@@ -217,7 +218,7 @@ Rename files or folders – {{ serviceName }} – Prototype
 
                                 <td class="govuk-table__cell order-input-cell">
                                     <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
-                                        inputmode="numeric" value="{{ item.order or '' }}">
+                                        inputmode="numeric" value="{{ item.order | default(loop.index) }}">
 
                                 </td>
 
@@ -286,7 +287,7 @@ Rename files or folders – {{ serviceName }} – Prototype
             </div>
 
 
-
+            <input type="hidden" name="folderId" value="{{ folderId }}">
 
             <div class="govuk-button-group govuk-!-margin-left-3">
                 <button class="govuk-button" data-module="govuk-button" type="submit">Save new order</button>
