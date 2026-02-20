@@ -2588,11 +2588,6 @@ router.get('/B-off-system-MVP/order-materials', (req, res) => {
     });
 });
 
-    const helper = materialsHelperFactory(materials);
-
-    const breadcrumbs = helper.getBreadcrumbs(folderId);
-    const children = helper.getChildren(folderId);
-
 
 router.post('/B-off-system-MVP/order-materials', (req, res) => {
 
