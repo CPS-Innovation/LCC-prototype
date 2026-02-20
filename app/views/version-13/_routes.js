@@ -2593,7 +2593,6 @@ router.get('/B-off-system-MVP/order-materials', (req, res) => {
     const breadcrumbs = helper.getBreadcrumbs(folderId);
     const children = helper.getChildren(folderId);
 
-const materialsHelper = require('../../helpers/materials');
 
 router.post('/B-off-system-MVP/order-materials', (req, res) => {
 
