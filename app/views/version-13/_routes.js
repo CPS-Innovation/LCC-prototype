@@ -2588,4 +2588,61 @@ router.get('/B-off-system-MVP/order-materials', (req, res) => {
     });
 });
 
+    const helper = materialsHelperFactory(materials);
+
+    const breadcrumbs = helper.getBreadcrumbs(folderId);
+    const children = helper.getChildren(folderId);
+
+const materialsHelper = require('../../helpers/materials');
+
+router.post('/B-off-system-MVP/order-materials', (req, res) => {
+
+    console.log('✅ POST /order-materials hit', req.body.folderId, Object.keys(req.body).slice(0, 10));
+
+    const sessionData = req.session.data || {};
+    const defaultsData = res.locals.data || {};
+
+    // Ensure we have a session copy to mutate (don’t mutate defaults)
+    if (!sessionData.materials || !sessionData.materials.length) {
+        sessionData.materials = (defaultsData.materials || []).map(m => ({ ...m }));
+        req.session.data.materials = sessionData.materials;
+    }
+
+    const materials = sessionData.materials;
+    const folderId = Number(req.body.folderId ?? sessionData.folderId ?? 0);
+
+    // Only reorder items that are DIRECT children of this folder
+    const children = materials.filter(m => Number(m.parentId) === folderId);
+
+    // Read desired order from posted inputs: order_<id>
+    const desiredById = new Map();
+    children.forEach(item => {
+        const key = `order_${item.id}`;
+        const raw = req.body[key];
+        const n = parseInt(raw, 10);
+
+        // If blank/invalid, push it to the end
+        desiredById.set(String(item.id), Number.isFinite(n) ? n : 999999);
+    });
+
+    // Sort children by desired order, then by name as a tie-break
+    children.sort((a, b) => {
+        const ao = desiredById.get(String(a.id)) ?? 999999;
+        const bo = desiredById.get(String(b.id)) ?? 999999;
+        if (ao !== bo) return ao - bo;
+        return String(a.name || '').localeCompare(String(b.name || ''), 'en', { numeric: true, sensitivity: 'base' });
+    });
+
+    // Renumber to a clean 1..n and store onto the items
+    children.forEach((item, idx) => {
+        item.order = idx + 1;
+    });
+
+    // Persist current folder context too (helps other pages)
+    req.session.data.folderId = folderId;
+
+    
+    return res.redirect('/version-13/B-off-system-MVP/03-case-overview');
+});
+
 module.exports = router
