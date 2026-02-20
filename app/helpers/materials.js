@@ -1,8 +1,8 @@
-module.exports = function(materials) {
+module.exports = function (materials) {
 
   function getChildren(folderId) {
     folderId = Number(folderId) || 0;
-    return materials.filter(m => Number(m.parentId) === folderId);
+    return materials.filter(m => Number(m.parentId ?? 0) === folderId);
   }
 
   function getBreadcrumbs(folderId) {

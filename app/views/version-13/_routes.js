@@ -4,6 +4,7 @@ const router = express.Router();
 const version = 'version-13'
 
 
+
 // Make session data available in all Nunjucks templates as "data"
 router.use((req, res, next) => {
     res.locals.data = req.session.data || {};
@@ -2556,23 +2557,35 @@ router.post('/B-off-system-MVP/mark-as-unread', function (req, res) {
 
 
 
-// 19 February 2026 – version 13
+// 20 February 2026 – version 13
+
+const materialsHelperFactory = require('../../helpers/materials');
 
 router.get('/B-off-system-MVP/order-materials', (req, res) => {
-    const materials = (req.session.data.materials && req.session.data.materials.length)
-        ? req.session.data.materials
-        : (res.locals.data.materials || []);
+    const sessionData = req.session.data || {};
+    const defaultsData = res.locals.data || {};
 
-    const currentFolderId = req.session.data.currentFolderId ?? 1000; // whatever your root is
-    const children = materials.filter(m => String(m.parentId ?? '') === String(currentFolderId));
+    const materials =
+        (sessionData.materials && sessionData.materials.length
+            ? sessionData.materials
+            : defaultsData.materials) || [];
+
+    // folderId from querystring, else session, else 0
+    const folderId = Number(req.query.folderId ?? sessionData.folderId ?? 0);
+
+    // persist context for templates that use data.folderId
+    req.session.data.folderId = folderId;
+
+    const helper = materialsHelperFactory(materials);
+
+    const breadcrumbs = helper.getBreadcrumbs(folderId);
+    const children = helper.getChildren(folderId);
 
     res.render('version-13/B-off-system-MVP/order-materials', {
-        children,
-        materials
+        folderId,
+        breadcrumbs,
+        children
     });
 });
-
-
-
 
 module.exports = router

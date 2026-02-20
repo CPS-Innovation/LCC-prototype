@@ -71,24 +71,6 @@
                     </li>
                     {% endfor %}
 
-                    <!-- {% for crumb in breadcrumbs %}
-                    <li class="govuk-breadcrumbs__list-item">
-
-                        {% if crumb.id == data.folderId %}
-                        {{ crumb.name }}
-                        {% else %}
-                        <form method="post" action="/version-13/B-off-system-MVP/case-overview-folder"
-                            style="display:inline;">
-                            <input type="hidden" name="folderId" value="{{ crumb.id }}">
-                            <input type="hidden" name="folderName" value="{{ crumb.name }}">
-                            <button type="submit" class="govuk-breadcrumbs__link breadcrumb-button">
-                                {{ crumb.name }}
-                            </button>
-                        </form>
-                        {% endif %}
-
-                    </li>
-                    {% endfor %} -->
 
                 </ol>
             </nav>
@@ -215,13 +197,10 @@
                                 </button>
 
                                 <div class="hidden_buttons hidden_buttons--general" id="general_Actions" hidden>
-                                    <!-- <button type="button" class="govuk-button govuk-button--secondary"
-                                        id="toggleOrderMode">
-                                        Order materials
-                                    </button> -->
-                                    
+
                                     <form method="get" action="/version-13/B-off-system-MVP/order-materials"
-                                        id="newFolderForm">
+                                        id="orderMaterialsForm">
+                                         <input type="hidden" name="folderId" value="{{ data.folderId | default(0) }}">
                                         <button id="newFolderButton" class="govuk-button" type="submit">
                                             Order materials
                                         </button>
@@ -253,87 +232,6 @@
     </div>
 </div>
 
-
-<!-- <div class="govuk-grid-row">
-            <div class="govuk-grid-column-full">
-
-                <div class="info_wrapper govuk-!-margin-top-3 govuk-!-margin-bottom-6">
-
-                    <div class="actions_holder">
-                        <div class="moj-button-menu">
-                            <button type="button" id="show_Materials_Actions"
-                                class="govuk-button govuk-button--secondary" data-module="govuk-button">
-                                Actions on selection
-                                <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5.5 0L11 5L0 5L5.5 0Z" fill="currentColor"></path>
-                                </svg>
-                            </button>
-
-                            <div class="hidden_buttons" id="materials_Actions">
-
-                                <form method="post" action="/version-13/B-off-system-MVP/start-copy" id="copyForm">
-                                    <input type="hidden" name="mode" value="copy">
-                                    <input type="hidden" name="selected_ids" id="copy_selected_ids">
-                                    <button id="copyButton" class="govuk-button" type="submit">
-                                        Copy
-                                    </button>
-                                </form>
-
-                                <form method="post" action="/version-13/B-off-system-MVP/set-materials-mode"
-                                    id="moveForm">
-                                    <input type="hidden" name="mode" value="move">
-                                    <input type="hidden" name="selected_ids" id="move_selected_ids">
-                                    <button id="moveButton" class="govuk-button" type="submit">
-                                        Move
-                                    </button>
-                                </form>
-
-                                <form method="post" action="/version-13/B-off-system-MVP/rename-from-list"
-                                    id="renameForm">
-                                    <button id="renameButton" class="govuk-button govuk-button--disabled"
-                                        data-action="rename">
-                                        Rename
-                                    </button>
-                                </form>
-
-                                <button class="govuk-button mark_as_Read" type="button">
-                                    Mark as read
-                                </button>
-
-                                <button class="govuk-button" type="button">
-                                    Mark as unused
-                                </button>
-
-                                <form id="discardForm" method="post"
-                                    action="../../../version-13/B-off-system-MVP/B-discard_material">
-                                    <input id="material_selected" name="material_selected" type="hidden" value="">
-                                    <button id="discardButton" class="govuk-button govuk-button--disabled"
-                                        type="submit">
-                                        Discard
-                                    </button>
-                                </form>
-
-                            </div>
-
-                            <button type="button" class="govuk-button govuk-button--secondary"
-                                onclick="window.location.href='/version-13/B-off-system-MVP/new-folder';">
-                                New folder
-                            </button>
-
-                        </div>
-                    </div>
-
-                </div>
-                <form id="bulkActionForm" method="post" action="/version-13/B-off-system-MVP/materials-action"
-                    class="govuk-!-display-none">
-                    <input type="hidden" name="action" id="bulkActionType" value="">
-                    <input type="hidden" name="selectedId" id="bulkSelectedId" value="">
-                    <input type="hidden" name="selectedName" id="bulkSelectedName" value="">
-                    <input type="hidden" name="selectedIsFolder" id="bulkSelectedIsFolder" value="">
-                </form>
-
-            </div>
-        </div> -->
 
 
 <!-- Success banner -->
