@@ -15,10 +15,59 @@ Rename files or folders – {{ serviceName }} – Prototype
 
 
 {% block content %}
+{% set folderId = folderId | default(data.folderId | default(0)) %}
+{% set breadcrumbs = breadcrumbs | default([]) %}
+
 <div class="govuk-grid-row version-13">
     <div class="govuk-grid-column-full">
 
         <h1 class="govuk-heading-l">Order materials</h1>
+
+        <!-- BREADCRUMBS -->
+        <div class="govuk-grid-row">
+            <nav class="govuk-breadcrumbs govuk-!-margin-left-3" aria-label="Breadcrumb">
+                <ol class="govuk-breadcrumbs__list">
+
+                    {% for crumb in breadcrumbs %}
+                    {% set isCurrent = (crumb.id | string) == (folderId | string) %}
+                    {% set isHome = loop.first %}
+                    {% set inSearchMode = data.filtersSearch %} {# or data.buildFolderResults or whatever you use #}
+
+                    <li class="govuk-breadcrumbs__list-item">
+
+                        {# Special override:
+                        If we're on Home AND in search mode, make Home clickable to clear search #}
+                        {% if isHome and inSearchMode %}
+                        <form method="post" action="/version-13/B-off-system-MVP/clear-search" style="display:inline;">
+                            <button type="submit" class="govuk-breadcrumbs__link breadcrumb-button">
+                                {{ crumb.name }}
+                            </button>
+                        </form>
+
+                        {# Normal rule: current folder crumb is not clickable #}
+                        {% elseif isCurrent %}
+                        {{ crumb.name }}
+
+                        {# Otherwise: clickable crumb goes to that folder #}
+                        {% else %}
+                        <form method="post" action="/version-13/B-off-system-MVP/case-overview-folder"
+                            style="display:inline;">
+                            <input type="hidden" name="folderId" value="{{ crumb.id }}">
+                            <input type="hidden" name="folderName" value="{{ crumb.name }}">
+                            <button type="submit" class="govuk-breadcrumbs__link breadcrumb-button">
+                                {{ crumb.name }}
+                            </button>
+                        </form>
+                        {% endif %}
+
+                    </li>
+                    {% endfor %}
+
+
+                </ol>
+            </nav>
+        </div>
+
 
         <form method="post" action="/version-13/B-off-system-MVP/order-materials" novalidate>
             <!-- <p class="govuk-body govuk-!-margin-bottom-7">You are renaming {{ data.renameCount }} {% if data.renameCount == 1 %}item{% else %}items{% endif %}. Changes will apply when you save.</p> -->
@@ -75,23 +124,6 @@ Rename files or folders – {{ serviceName }} – Prototype
                             <tr class="govuk-table__row material-row" data-id="{{ item.id }}" {% if item.folder
                                 %}data-folder="true" {% else %}data-folder="false" {% endif %}>
 
-
-                                <!-- <td class="govuk-table__cell order-cell">
-                                    <div class="order-gutter">
-                                        <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
-                                            inputmode="numeric" value="{{ item.order or '' }}">
-
-                                        <div class="order-links">
-                                            <a href="#" class="govuk-link move-link move-up is-disabled"
-                                                data-action="up">Move
-                                                up</a>
-                                            <span class="divider">|</span>
-                                            <a href="#" class="govuk-link move-link move-down is-disabled"
-                                                data-action="down">Move
-                                                down</a>
-                                        </div>
-                                    </div>
-                                </td> -->
 
                                 <td class="govuk-table__cell order-links-cell">
                                     <div class="order-links">
@@ -170,26 +202,23 @@ Rename files or folders – {{ serviceName }} – Prototype
                                 </ul>                    
                             </td> -->
 
-                                <td class="govuk-table__cell order-cell">
-                                    <div class="order-gutter">
-                                        <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
-                                            inputmode="numeric" value="{{ item.order or '' }}">
-
-                                        <!-- <div class="order-links" aria-hidden="true">
-                                <span class="govuk-link move-link move-up is-disabled">Move up</span>
-                                <span class="divider" aria-hidden="true">|</span>
-                                <span class="govuk-link move-link move-down is-disabled">Move down</span>
-                            </div> -->
-                                        <div class="order-links" aria-hidden="true">
-                                            <a href="#" class="govuk-link move-link move-up is-disabled"
-                                                data-action="up">Move
-                                                up</a>
-                                            <span class="divider" aria-hidden="true">|</span>
-                                            <a href="#" class="govuk-link move-link move-down is-disabled"
-                                                data-action="down">Move
-                                                down</a>
-                                        </div>
+                                <td class="govuk-table__cell order-links-cell">
+                                    <div class="order-links">
+                                        <a href="#" class="govuk-link move-link move-up is-disabled"
+                                            data-action="up">Move
+                                            up</a>
+                                        <span class="divider">|</span>
+                                        <!-- <span class="govuk-link move-link move-down is-disabled">Move down</span> -->
+                                        <a href="#" class="govuk-link move-link move-down is-disabled"
+                                            data-action="down">Move
+                                            down</a>
                                     </div>
+                                </td>
+
+                                <td class="govuk-table__cell order-input-cell">
+                                    <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
+                                        inputmode="numeric" value="{{ item.order or '' }}">
+
                                 </td>
 
 
