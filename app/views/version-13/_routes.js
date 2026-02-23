@@ -908,7 +908,8 @@ router.post('/B-off-system-MVP/create-case/09-confirmation', function (req, res)
         res.redirect('/version-13/B-off-system-MVP/04A-create-or-link-folders')
     }
     else {
-        res.redirect('/version-13/B-off-system-MVP/03-case-overview')
+        res.redirect('/version-13/B-off-system-MVP/create-case/case-details-placeholder')
+        // res.redirect('/version-13/B-off-system-MVP/03-case-overview')
     }
 })
 
@@ -953,7 +954,8 @@ router.post('/B-off-system-MVP/04A-create-or-link-folders', function (req, res) 
     }
 
     else {
-        res.redirect('/version-13/B-off-system-MVP/03-case-overview')
+        res.redirect('/version-13/B-off-system-MVP/create-case/case-details-placeholder')
+        // res.redirect('/version-13/B-off-system-MVP/03-case-overview')
     }
 
 })
@@ -970,7 +972,8 @@ router.post('/B-off-system-MVP/04A-create-egress-folder', function (req, res) {
         res.redirect('/version-13/B-off-system-MVP/05A-p-drive-files')
     }
     else {
-        res.redirect('/version-13/B-off-system-MVP/03-case-overview')
+        res.redirect('/version-13/B-off-system-MVP/create-case/case-details-placeholder')
+        // res.redirect('/version-13/B-off-system-MVP/03-case-overview')
     }
 
 })
@@ -2635,7 +2638,7 @@ router.post('/B-off-system-MVP/order-materials', (req, res) => {
     // Persist current folder context too (helps other pages)
     req.session.data.folderId = folderId;
 
-    
+
     return res.redirect('/version-13/B-off-system-MVP/03-case-overview');
 });
 
