@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////// Monica CODE - START /////////////////////////////////////////////////////
 console.log("materials.js loaded!");
 
-
+console.log("✅ preview toggle patch loaded", window.location.pathname);
 
 // 17 February 2026
 
@@ -252,11 +252,15 @@ document.addEventListener('click', function (e) {
 
 
 
-
+// 23 February 2026: PREVIEW buttons (legacy + new) should never trigger sorting, so we catch them here at the earliest possible stage.
 // PREVIEW: intercept at WINDOW capture so no other capture listeners can sort the table
+// PREVIEW (legacy): only for old-style buttons that use data-id + hidden_row[data-row_id]
 window.addEventListener('click', function (e) {
      const btn = e.target.closest && e.target.closest('button.show-case');
      if (!btn) return;
+
+     // ✅ If this button is using the NEW preview system, leave it alone.
+     if (btn.hasAttribute('data-preview-target')) return;
 
      e.preventDefault();
      e.stopPropagation();
@@ -264,8 +268,7 @@ window.addEventListener('click', function (e) {
 
      togglePreview(btn);
 }, true);
-
-
+// End of 23 February 2026
 
 
 // Defensive: run after other inits and put our label back
@@ -2792,3 +2795,75 @@ document.addEventListener('click', function (e) {
           }, true);
      });
 })();
+
+
+
+// 23 February 2026 
+// Force folder navigation to work on the order-materials screen
+document.addEventListener('click', function (e) {
+     const link = e.target.closest('a.folder-open');
+     if (!link) return;
+
+     // Only apply on the order screen
+     const inOrderMode =
+          document.querySelector('#materials_table.is-order-mode') ||
+          document.body.classList.contains('order-materials-page');
+
+     if (!inOrderMode) return;
+
+     // Other scripts may be preventing default. We take control.
+     e.preventDefault();
+     e.stopPropagation();
+
+     window.location.href = link.href;
+}, true); // <-- capture phase: runs before other listeners
+
+
+
+
+document.addEventListener(
+     "click",
+     function (e) {
+          const btn = e.target.closest(".show_material_actions");
+          if (!btn) return;
+
+          // add this after "if (!btn) return;"
+          if (!btn.hasAttribute("data-preview-target")) return;
+
+          console.log("✅ NEW preview handler fired", {
+               target: e.target.tagName,
+               btnClasses: btn.className,
+               previewTarget: btn.getAttribute("data-preview-target")
+          });
+
+          // Don't let other handlers "help"
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+          const targetId = btn.getAttribute("data-preview-target");
+          if (!targetId) return;
+
+          const row = document.getElementById(targetId);
+          if (!row) {
+               console.warn("Preview row not found for target:", targetId);
+               return;
+          }
+
+          const opening = row.hasAttribute("hidden") || getComputedStyle(row).display === "none";
+
+          if (opening) {
+               row.removeAttribute("hidden");
+               row.style.setProperty("display", "table-row", "important");
+               btn.setAttribute("aria-expanded", "true");
+               btn.innerHTML = `Hide <i class="fa-solid fa-chevron-up"></i>`;
+          } else {
+               row.setAttribute("hidden", "");
+               row.style.setProperty("display", "none", "important");
+               btn.setAttribute("aria-expanded", "false");
+               btn.innerHTML = `Preview <i class="fa-solid fa-chevron-down"></i>`;
+          }
+
+     },
+     true
+);

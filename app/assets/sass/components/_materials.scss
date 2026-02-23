@@ -4522,3 +4522,8 @@ thead th .govuk-button {
           pointer-events: auto !important;
      }
 }
+
+
+
+.hidden_row[hidden] { display: none; }
+.hidden_row { display: table-row; }

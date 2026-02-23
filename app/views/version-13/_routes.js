@@ -2596,6 +2596,14 @@ router.post('/B-off-system-MVP/order-materials', (req, res) => {
 
     console.log('✅ POST /order-materials hit', req.body.folderId, Object.keys(req.body).slice(0, 10));
 
+    // folderId might be '1000' OR ['1000','0'] if duplicate fields exist
+    const rawFolderId = req.body.folderId;
+    const folderId = Array.isArray(rawFolderId)
+        ? Number(rawFolderId.find(v => v !== '0') ?? rawFolderId[0] ?? 0) // prefer non-root
+        : Number(rawFolderId ?? 0);
+
+    req.session.data.folderId = folderId;
+
     const sessionData = req.session.data || {};
     const defaultsData = res.locals.data || {};
 
@@ -2606,7 +2614,7 @@ router.post('/B-off-system-MVP/order-materials', (req, res) => {
     }
 
     const materials = sessionData.materials;
-    const folderId = Number(req.body.folderId ?? sessionData.folderId ?? 0);
+    // const folderId = Number(req.body.folderId ?? sessionData.folderId ?? 0);
 
     // Only reorder items that are DIRECT children of this folder
     const children = materials.filter(m => Number(m.parentId) === folderId);
