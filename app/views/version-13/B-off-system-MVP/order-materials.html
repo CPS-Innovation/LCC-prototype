@@ -18,15 +18,15 @@ Rename files or folders – {{ serviceName }} – Prototype
 {% set folderId = folderId | default(data.folderId | default(0)) %}
 {% set breadcrumbs = breadcrumbs | default([]) %}
 
-<div class="govuk-grid-row version-13">
+<div class="govuk-grid-row version-13 order-materials-page">
     <div class="govuk-grid-column-full">
 
         <h1 class="govuk-heading-l">Order materials</h1>
 
-        {% if data.folderId == 0 %}
+        {% if folderId == 0 %}
         <p class="govuk-body">This folder has not been ordered yet.</p>
-        {% elseif data.folderId == 1000 %}
-        <p class="govuk-body">This folder has been ordered by Roxanne Rowe.</p>
+        {% elseif folderId == 1000 %}
+        <p class="govuk-body">This folder has been ordered by Roxanne Rowe on 2 March 2026.</p>
         {% else %}
         <p class="govuk-body">This folder has not been ordered yet.</p>
         {% endif %}
@@ -142,7 +142,7 @@ Rename files or folders – {{ serviceName }} – Prototype
                                             down</a>
                                     </div>
                                 </td>
-                                
+
                                 <td class="govuk-table__cell order-input-cell">
                                     <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
                                         inputmode="numeric" value="{{ item.order | default(loop.index) }}">
@@ -153,7 +153,7 @@ Rename files or folders – {{ serviceName }} – Prototype
                                 <td class="govuk-table__cell title_column">
                                     <div class="folder-inline-wrapper">
 
-                                        <form method="get" action="/version-13/B-off-system-MVP/order-materials">
+                                        <!-- <form method="get" action="/version-13/B-off-system-MVP/order-materials">
                                             <input type="hidden" name="folderId" value="{{ item.id }}">
                                             <input type="hidden" name="folderName" value="{{ item.name }}">
                                             <button type="submit"
@@ -172,7 +172,21 @@ Rename files or folders – {{ serviceName }} – Prototype
                                                 {% endif %}
 
                                             </button>
+                                        </form> -->
+                                        <button type="submit" form="open-folder-{{ item.id }}"
+                                            class="govuk-link govuk-link--no-visited-state govuk-button--link folder-open">
+                                            <span class="icon-new folder"></span>
+                                            {{ item.name }}
+                                        </button>
+                                        {% for item in children %}
+                                        {% if item.folder %}
+                                        <form id="open-folder-{{ item.id }}" method="get"
+                                            action="/version-13/B-off-system-MVP/order-materials">
+                                            <input type="hidden" name="folderId" value="{{ item.id }}">
+                                            <input type="hidden" name="folderName" value="{{ item.name }}">
                                         </form>
+                                        {% endif %}
+                                        {% endfor %}
                                     </div>
                                 </td>
 
