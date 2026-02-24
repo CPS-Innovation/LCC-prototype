@@ -394,11 +394,6 @@
                             {% endif %}
                         </th>
 
-                        <!-- <th scope="col" class="govuk-table__header">
-                        <button type="button" class="govuk-link materials-sort" data-sort="name">
-                            File or folder
-                        </button>
-                    </th> -->
                         <th scope="col" class="govuk-table__header">
                             <button type="button" class="govuk-link govuk-link--no-visited-state table-sort"
                                 data-sort="name">
@@ -419,17 +414,6 @@
                             </button>
                         </th>
 
-                        <!-- <th scope="col" class="govuk-table__header">
-                        <button type="button" class="govuk-link materials-sort" data-sort="description">
-                            Description
-                        </button>
-                    </th>
-
-                    <th scope="col" class="govuk-table__header">
-                        <button type="button" class="govuk-link materials-sort" data-sort="category">
-                            Category
-                        </button>
-                    </th> -->
 
                         <th scope="col" class="govuk-table__header"></th>
                     </tr>
@@ -600,7 +584,7 @@
                         <!-- Preview for files -->
                         <td class="govuk-table__cell toggle-panel">
                             <button type="button" class="govuk-button show_material_actions show-case"
-                                data-preview-target="preview-{{ item.id }}">
+                                data-id="{{ item.id }}" data-doc="{{ item.previewLink }}">
                                 Preview <i class="fa-solid fa-chevron-down"></i>
                             </button>
                         </td>
@@ -610,10 +594,11 @@
 
                     {# --- preview row goes IMMEDIATELY AFTER the file row --- #}
                     {% if not item.folder %}
-                    <tr id="preview-{{ item.id }}" class="govuk-table__row hidden_row sortable-ignore" hidden>
-                        <td colspan="6">
+                    <tr class="govuk-table__row hidden_row sortable-ignore" data-row_id="{{ item.id }}"
+                        style="display:none;">
+                        <td colspan="5">
                             <div class="document_holder">
-                                <embed src="{{ item.previewLink }}">
+                                <embed src="{{ item.previewLink }}" type="application/pdf">
                             </div>
                         </td>
                     </tr>

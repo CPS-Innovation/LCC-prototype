@@ -13,13 +13,13 @@ router.use((req, res, next) => {
 
 
 router.use((req, res, next) => {
-    if (!Array.isArray(req.session.data.materialsVersion12)) {
-        const defaults = res.locals.data.materialsVersion12 || [];
-        req.session.data.materialsVersion12 = JSON.parse(JSON.stringify(defaults));
+    if (!Array.isArray(req.session.data.materialsVersion13)) {
+        const defaults = res.locals.data.materialsVersion13 || [];
+        req.session.data.materialsVersion13 = JSON.parse(JSON.stringify(defaults));
     }
 
-    // In v12, materials === materialsVersion12 (rendering alias)
-    res.locals.data.materials = req.session.data.materialsVersion12;
+    // In v13, materials === materialsVersion13 (rendering alias)
+    res.locals.data.materials = req.session.data.materialsVersion13;
 
     next();
 });

@@ -3,6 +3,103 @@ console.log("materials.js loaded!");
 
 console.log("✅ preview toggle patch loaded", window.location.pathname);
 
+
+// 25 February 2026
+// =====================================================
+// PREVIEW (robust + debug)
+// Works whether preview row is next sibling OR elsewhere in tbody
+// Requires:
+// - button has data-id OR the main row has data-id / data-id on tr.material-row
+// - preview row is: tr.hidden_row[data-row_id="ID"] (or adjust selector below)
+// =====================================================
+(function initPreviewToggle() {
+     const PREVIEW_BTN_SEL = 'button.show-case, button.show_material_actions';
+     const PREVIEW_ROW_SEL = (id) => `tr.hidden_row[data-row_id="${CSS.escape(String(id))}"]`;
+
+     function findId(btn) {
+          return btn.getAttribute('data-id') || btn.dataset.id || null;
+     }
+
+     function findMainRow(btn) {
+          return btn.closest('tr.material-row') || btn.closest('tr');
+     }
+
+     function findPreviewRow(id, mainRow) {
+          if (!id) return null;
+
+          // 1) next sibling (best case)
+          const next = mainRow?.nextElementSibling;
+          if (next && next.matches(PREVIEW_ROW_SEL(id))) return next;
+
+          // 2) anywhere in same tbody
+          const tbody = mainRow?.closest('tbody');
+          if (tbody) {
+               const found = tbody.querySelector(PREVIEW_ROW_SEL(id));
+               if (found) return found;
+          }
+
+          // 3) anywhere in document (last resort)
+          return document.querySelector(PREVIEW_ROW_SEL(id));
+     }
+
+     function closeAllExcept(exceptRow, exceptBtn, scopeTbody) {
+          const root = scopeTbody || document;
+
+          root.querySelectorAll('tr.hidden_row').forEach(r => {
+               if (r !== exceptRow) r.style.display = 'none';
+          });
+
+          root.querySelectorAll(PREVIEW_BTN_SEL).forEach(b => {
+               if (b !== exceptBtn) b.innerHTML = 'Preview <i class="fa-solid fa-chevron-down"></i>';
+          });
+     }
+
+     document.addEventListener('click', function (e) {
+          const btn = e.target.closest(PREVIEW_BTN_SEL);
+          if (!btn) return;
+
+          // don’t let forms/other handlers hijack it
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+          const id = findId(btn);
+          const mainRow = findMainRow(btn);
+          const previewRow = findPreviewRow(id, mainRow);
+
+          console.log('[PREVIEW]', { id, mainRowFound: !!mainRow, previewRowFound: !!previewRow });
+
+          if (!id) {
+               console.warn('[PREVIEW] No data-id on button. Add data-id="{{item.id}}" to the Preview button.');
+               return;
+          }
+          if (!previewRow) {
+               console.warn('[PREVIEW] No preview row found. Expected:', PREVIEW_ROW_SEL(id));
+               return;
+          }
+
+          // ensure it sits right under its main row
+          if (mainRow && previewRow.previousElementSibling !== mainRow) {
+               mainRow.insertAdjacentElement('afterend', previewRow);
+          }
+
+          const isOpen = previewRow.style.display === 'table-row';
+          const tbody = mainRow?.closest('tbody');
+          closeAllExcept(previewRow, btn, tbody);
+
+          previewRow.style.display = isOpen ? 'none' : 'table-row';
+          btn.innerHTML = isOpen
+               ? 'Preview <i class="fa-solid fa-chevron-down"></i>'
+               : 'Hide <i class="fa-solid fa-chevron-up"></i>';
+
+          // if it still "doesn't show", this will expose CSS issues
+          const cs = window.getComputedStyle(previewRow);
+          console.log('[PREVIEW] computed display:', cs.display, 'visibility:', cs.visibility);
+     }, true);
+})();
+// End of 25 February 2026
+
+
 // 17 February 2026
 
 // FOLDER OPEN — allow submit but kill table sort
@@ -255,19 +352,19 @@ document.addEventListener('click', function (e) {
 // 23 February 2026: PREVIEW buttons (legacy + new) should never trigger sorting, so we catch them here at the earliest possible stage.
 // PREVIEW: intercept at WINDOW capture so no other capture listeners can sort the table
 // PREVIEW (legacy): only for old-style buttons that use data-id + hidden_row[data-row_id]
-window.addEventListener('click', function (e) {
-     const btn = e.target.closest && e.target.closest('button.show-case');
-     if (!btn) return;
+// window.addEventListener('click', function (e) {
+//      const btn = e.target.closest && e.target.closest('button.show-case');
+//      if (!btn) return;
 
-     // ✅ If this button is using the NEW preview system, leave it alone.
-     if (btn.hasAttribute('data-preview-target')) return;
+//      // ✅ If this button is using the NEW preview system, leave it alone.
+//      if (btn.hasAttribute('data-preview-target')) return;
 
-     e.preventDefault();
-     e.stopPropagation();
-     if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+//      e.preventDefault();
+//      e.stopPropagation();
+//      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
 
-     togglePreview(btn);
-}, true);
+//      togglePreview(btn);
+// }, true);
 // End of 23 February 2026
 
 
@@ -1219,7 +1316,7 @@ $(document).on("click", function (e) {
           $btnComms.removeClass("active");
      }
 
-     var $btnGen = $version1.find("#show_General_Actions");
+     var $btnGen = $version11.find("#show_General_Actions");
      var $panelGen = $version11.find("#general_Actions");
 
      if (!$panelGen.is(e.target) && $panelGen.has(e.target).length === 0 &&
@@ -2328,33 +2425,45 @@ function buildFolderPath(materials, item) {
      return path.join(' / ');
 }
 
+// 25 February 2026 - toggle preview rows (uncomment togglePreview calls and function to enable)
+// Going to comment it and if I need to I can uncoment it
+// document.addEventListener('click', function (e) {
+//      const table = e.target.closest('#materials_table');
+//      if (!table) return;
 
-function togglePreview(btn) {
-     const id = btn.getAttribute('data-id');
-     const row = btn.closest('tr');
-     const previewRow = document.querySelector(`tr.hidden_row[data-row_id="${id}"]`);
-     if (!row || !previewRow) return;
+//      const btn = e.target.closest('button.show-case, button.show_material_actions');
+//      if (!btn) return;
 
-     // close all other previews
-     document.querySelectorAll('tr.hidden_row').forEach(r => {
-          if (r !== previewRow) r.style.display = 'none';
-     });
+//      // ... existing preview logic ...
+// }, true);
+//End of 25 February 2026
 
-     // reset all other buttons
-     document.querySelectorAll('button.show-case').forEach(b => {
-          if (b !== btn) b.innerHTML = 'Preview <i class="fa-solid fa-chevron-down"></i>';
-     });
+// function togglePreview(btn) {
+//      const id = btn.getAttribute('data-id');
+//      const row = btn.closest('tr');
+//      const previewRow = document.querySelector(`tr.hidden_row[data-row_id="${id}"]`);
+//      if (!row || !previewRow) return;
 
-     // keep preview row right after its main row
-     row.insertAdjacentElement('afterend', previewRow);
+//      // close all other previews
+//      document.querySelectorAll('tr.hidden_row').forEach(r => {
+//           if (r !== previewRow) r.style.display = 'none';
+//      });
 
-     const opening = previewRow.style.display !== 'table-row';
-     previewRow.style.display = opening ? 'table-row' : 'none';
+//      // reset all other buttons
+//      document.querySelectorAll('button.show-case').forEach(b => {
+//           if (b !== btn) b.innerHTML = 'Preview <i class="fa-solid fa-chevron-down"></i>';
+//      });
 
-     btn.innerHTML = opening
-          ? 'Hide <i class="fa-solid fa-chevron-up"></i>'
-          : 'Preview <i class="fa-solid fa-chevron-down"></i>';
-}
+//      // keep preview row right after its main row
+//      row.insertAdjacentElement('afterend', previewRow);
+
+//      const opening = previewRow.style.display !== 'table-row';
+//      previewRow.style.display = opening ? 'table-row' : 'none';
+
+//      btn.innerHTML = opening
+//           ? 'Hide <i class="fa-solid fa-chevron-up"></i>'
+//           : 'Preview <i class="fa-solid fa-chevron-down"></i>';
+// }
 
 
 // Stop Enter in order input from submitting the row/page form
