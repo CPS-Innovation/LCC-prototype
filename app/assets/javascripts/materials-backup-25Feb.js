@@ -1,102 +1,99 @@
 ///////////////////////////////////////////////////// Monica CODE - START /////////////////////////////////////////////////////
 console.log("materials.js loaded!");
-
-console.log("✅ preview toggle patch loaded", window.location.pathname);
+console.log("✅ materials.js: top reached", window.location.pathname);
 
 
 // 25 February 2026
+
 // =====================================================
-// PREVIEW (robust + debug)
-// Works whether preview row is next sibling OR elsewhere in tbody
-// Requires:
-// - button has data-id OR the main row has data-id / data-id on tr.material-row
-// - preview row is: tr.hidden_row[data-row_id="ID"] (or adjust selector below)
+// DO NOT BLOCK SORTING OR PREVIEW CLICKS
 // =====================================================
-(function initPreviewToggle() {
-     const PREVIEW_BTN_SEL = 'button.show-case, button.show_material_actions';
-     const PREVIEW_ROW_SEL = (id) => `tr.hidden_row[data-row_id="${CSS.escape(String(id))}"]`;
+function isSortingOrPreviewClick(e) {
+  return !!(
+    e.target.closest('#materials_table thead button[data-sort], #materials_table thead a[data-sort]') ||
+    e.target.closest('button.show-case, button.show_material_actions')
+  );
+}
 
-     function findId(btn) {
-          return btn.getAttribute('data-id') || btn.dataset.id || null;
+
+// =====================================================
+// PREVIEW: ABSOLUTE PRIORITY (must be at the top)
+// =====================================================
+window.addEventListener("click", function (e) {
+     const btn = e.target.closest("button.show-case, button.show_material_actions");
+     if (!btn) return;
+
+     const id = btn.getAttribute("data-id");
+     if (!id) return;
+
+     // Eat the click BEFORE your other capture listeners kill it
+     e.preventDefault();
+     e.stopPropagation();
+     if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+     // Toggle the REAL preview row: tr.hidden_row[data-row_id="..."]
+     const row = btn.closest("tr");
+     const previewRow = document.querySelector(`tr.hidden_row[data-row_id="${CSS.escape(id)}"]`);
+     if (!row || !previewRow) {
+          console.warn("Preview row not found for id:", id);
+          return;
      }
 
-     function findMainRow(btn) {
-          return btn.closest('tr.material-row') || btn.closest('tr');
-     }
+     // Close all others
+     document.querySelectorAll("tr.hidden_row").forEach(r => {
+          if (r !== previewRow) r.style.display = "none";
+     });
 
-     function findPreviewRow(id, mainRow) {
-          if (!id) return null;
+     // Reset all other preview buttons (important: include both selectors)
+     document.querySelectorAll("button.show-case, button.show_material_actions").forEach(b => {
+          if (b !== btn) b.innerHTML = 'Preview <i class="fa-solid fa-chevron-down"></i>';
+     });
 
-          // 1) next sibling (best case)
-          const next = mainRow?.nextElementSibling;
-          if (next && next.matches(PREVIEW_ROW_SEL(id))) return next;
+     // Keep preview row directly after its file row
+     row.insertAdjacentElement("afterend", previewRow);
 
-          // 2) anywhere in same tbody
-          const tbody = mainRow?.closest('tbody');
-          if (tbody) {
-               const found = tbody.querySelector(PREVIEW_ROW_SEL(id));
-               if (found) return found;
+     const opening = previewRow.style.display !== "table-row";
+     previewRow.style.display = opening ? "table-row" : "none";
+
+     btn.innerHTML = opening
+          ? 'Hide <i class="fa-solid fa-chevron-up"></i>'
+          : 'Preview <i class="fa-solid fa-chevron-down"></i>';
+}, true);
+
+
+// =====================================================
+// FALLBACK: if preview row isn't next sibling, find by data-row_id
+// (Designed to fix tab-manage-materials without breaking order-materials)
+// =====================================================
+document.addEventListener('click', function (e) {
+     const btn = e.target.closest('button.show_material_actions.show-case');
+     if (!btn) return;
+
+     // Let your existing handler run first
+     setTimeout(() => {
+          const row = btn.closest('tr.material-row');
+          if (!row) return;
+
+          const rowId = row.dataset.id;
+          const tbody = row.closest('tbody');
+          if (!rowId || !tbody) return;
+
+          // If the next sibling is the correct preview row, do nothing
+          const next = row.nextElementSibling;
+          if (next && next.matches(`tr.hidden_row[data-row_id="${rowId}"]`)) return;
+
+          // Otherwise, try to find the preview row anywhere in this tbody
+          const previewRow = tbody.querySelector(`tr.hidden_row[data-row_id="${rowId}"]`);
+          if (!previewRow) return;
+
+          // If preview is supposed to be open but row isn't visible, show it
+          // (We detect "open" by button label containing Hide)
+          const wantsOpen = /\bHide\b/i.test(btn.textContent);
+          if (wantsOpen) {
+               previewRow.style.display = 'table-row';
           }
-
-          // 3) anywhere in document (last resort)
-          return document.querySelector(PREVIEW_ROW_SEL(id));
-     }
-
-     function closeAllExcept(exceptRow, exceptBtn, scopeTbody) {
-          const root = scopeTbody || document;
-
-          root.querySelectorAll('tr.hidden_row').forEach(r => {
-               if (r !== exceptRow) r.style.display = 'none';
-          });
-
-          root.querySelectorAll(PREVIEW_BTN_SEL).forEach(b => {
-               if (b !== exceptBtn) b.innerHTML = 'Preview <i class="fa-solid fa-chevron-down"></i>';
-          });
-     }
-
-     document.addEventListener('click', function (e) {
-          const btn = e.target.closest(PREVIEW_BTN_SEL);
-          if (!btn) return;
-
-          // don’t let forms/other handlers hijack it
-          e.preventDefault();
-          e.stopPropagation();
-          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-
-          const id = findId(btn);
-          const mainRow = findMainRow(btn);
-          const previewRow = findPreviewRow(id, mainRow);
-
-          console.log('[PREVIEW]', { id, mainRowFound: !!mainRow, previewRowFound: !!previewRow });
-
-          if (!id) {
-               console.warn('[PREVIEW] No data-id on button. Add data-id="{{item.id}}" to the Preview button.');
-               return;
-          }
-          if (!previewRow) {
-               console.warn('[PREVIEW] No preview row found. Expected:', PREVIEW_ROW_SEL(id));
-               return;
-          }
-
-          // ensure it sits right under its main row
-          if (mainRow && previewRow.previousElementSibling !== mainRow) {
-               mainRow.insertAdjacentElement('afterend', previewRow);
-          }
-
-          const isOpen = previewRow.style.display === 'table-row';
-          const tbody = mainRow?.closest('tbody');
-          closeAllExcept(previewRow, btn, tbody);
-
-          previewRow.style.display = isOpen ? 'none' : 'table-row';
-          btn.innerHTML = isOpen
-               ? 'Preview <i class="fa-solid fa-chevron-down"></i>'
-               : 'Hide <i class="fa-solid fa-chevron-up"></i>';
-
-          // if it still "doesn't show", this will expose CSS issues
-          const cs = window.getComputedStyle(previewRow);
-          console.log('[PREVIEW] computed display:', cs.display, 'visibility:', cs.visibility);
-     }, true);
-})();
+     }, 0);
+}, true);
 // End of 25 February 2026
 
 
@@ -352,12 +349,13 @@ document.addEventListener('click', function (e) {
 // 23 February 2026: PREVIEW buttons (legacy + new) should never trigger sorting, so we catch them here at the earliest possible stage.
 // PREVIEW: intercept at WINDOW capture so no other capture listeners can sort the table
 // PREVIEW (legacy): only for old-style buttons that use data-id + hidden_row[data-row_id]
+// PREVIEW: single source of truth (works on both tab-manage-materials + order-materials)
 // window.addEventListener('click', function (e) {
-//      const btn = e.target.closest && e.target.closest('button.show-case');
+//      const btn = e.target.closest('button.show-case, button.show_material_actions');
 //      if (!btn) return;
 
-//      // ✅ If this button is using the NEW preview system, leave it alone.
-//      if (btn.hasAttribute('data-preview-target')) return;
+//      const id = btn.getAttribute('data-id');
+//      if (!id) return; // can't toggle without an id
 
 //      e.preventDefault();
 //      e.stopPropagation();
@@ -386,117 +384,235 @@ document.addEventListener('click', function (e) {
      }
 }, true);
 
+console.log("✅ materials.js: about to init sorting", window.location.pathname);
 
+// 24 February 2026: archiving the old manage materials table sorting
+// document.addEventListener("DOMContentLoaded", function () {
+//      const table = document.getElementById("materials_table");
+//      if (!table) return;
 
-// Manage materials table sorting
-document.addEventListener("DOMContentLoaded", function () {
-     const table = document.getElementById("materials_table");
-     if (!table) return;
+//      // Any clickable header with data-sort
+//      const headerButtons = table.querySelectorAll("thead button[data-sort], thead a[data-sort]");
+//      if (!headerButtons.length) return;
 
-     // Any clickable header with data-sort
-     const headerButtons = table.querySelectorAll("thead button[data-sort], thead a[data-sort]");
-     if (!headerButtons.length) return;
+//      const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
 
+//      function cleanText(el) {
+//           if (!el) return "";
+//           const clone = el.cloneNode(true);
+
+//           // remove tags/badges etc that mess with sort
+//           clone.querySelectorAll(".govuk-tag").forEach(n => n.remove());
+
+//           return (clone.innerText || clone.textContent || "").replace(/\s+/g, " ").trim();
+//      }
+
+//      function getSortableText(row, colIndex, key) {
+//           const cell = row.cells[colIndex];
+//           if (!cell) return "";
+
+//           // 🔑 SPECIAL CASE: Order column
+//           if (key === "order") {
+//                const input = cell.querySelector("input.order-input");
+//                if (!input) return Number.MAX_SAFE_INTEGER;
+
+//                const value = parseInt(input.value, 10);
+//                return isNaN(value) ? Number.MAX_SAFE_INTEGER : value;
+//           }
+
+//           // If sorting by name, prefer the visible title element you actually show users
+//           if (key === "name") {
+//                // common patterns in your markup
+//                const openMe = cell.querySelector(".openMe");
+//                if (openMe) return cleanText(openMe);
+
+//                const btnOrLink = cell.querySelector("button.govuk-button--link, button.show-case, a.govuk-link");
+//                if (btnOrLink) return cleanText(btnOrLink);
+
+//                return cleanText(cell);
+//           }
+
+//           return cleanText(cell);
+//      }
+
+//      function buildBlocks(tbody) {
+//           const rows = Array.from(tbody.rows);
+//           const blocks = [];
+
+//           for (let i = 0; i < rows.length; i++) {
+//                const main = rows[i];
+
+//                // Your preview rows are usually class hidden_row
+//                if (main.classList.contains("hidden_row")) continue;
+
+//                const block = [main];
+//                const next = rows[i + 1];
+
+//                if (next && next.classList.contains("hidden_row")) {
+//                     block.push(next);
+//                     i++;
+//                }
+
+//                blocks.push(block);
+//           }
+
+//           return blocks;
+//      }
+
+//      headerButtons.forEach(btn => {
+//           let dir = 1;
+
+//           btn.addEventListener("click", function (e) {
+//                // ABSOLUTE HARD STOP
+//                if (!e.target.closest('thead')) return;
+
+//                const th = btn.closest("th");
+//                if (!th || !th.closest('thead')) return;
+
+//                e.preventDefault();
+//                e.stopPropagation();
+//                if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+//                const key = btn.getAttribute("data-sort") || "";
+//                const colIndex = th.cellIndex;
+
+//                const tbody = table.tBodies[0];
+//                if (!tbody) return;
+
+//                const blocks = buildBlocks(tbody);
+
+//                blocks.sort((A, B) => {
+//                     const a = getSortableText(A[0], colIndex, key);
+//                     const b = getSortableText(B[0], colIndex, key);
+//                     return collator.compare(a, b) * dir;
+//                });
+
+//                blocks.forEach(block => block.forEach(r => tbody.appendChild(r)));
+//                dir *= -1;
+
+//                if (window.updateMoveLinks) window.updateMoveLinks();
+//           });
+//      });
+// });
+
+// And now adding a new one
+// Manage materials table sorting (robust: works in tabs + keeps preview rows paired)
+(function () {
+//     console.log("SORT CLICK", btn.dataset.sort, btn.textContent.trim());
      const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
 
      function cleanText(el) {
           if (!el) return "";
           const clone = el.cloneNode(true);
-
-          // remove tags/badges etc that mess with sort
           clone.querySelectorAll(".govuk-tag").forEach(n => n.remove());
-
           return (clone.innerText || clone.textContent || "").replace(/\s+/g, " ").trim();
      }
 
-     function getSortableText(row, colIndex, key) {
-          const cell = row.cells[colIndex];
-          if (!cell) return "";
+     function getKeyValue(mainRow, th, key) {
+          // Column index based lookup (works as long as header matches body columns)
+          const colIndex = th.cellIndex;
+          const cell = mainRow.cells[colIndex];
 
-          // 🔑 SPECIAL CASE: Order column
           if (key === "order") {
-               const input = cell.querySelector("input.order-input");
-               if (!input) return Number.MAX_SAFE_INTEGER;
-
-               const value = parseInt(input.value, 10);
-               return isNaN(value) ? Number.MAX_SAFE_INTEGER : value;
+               // Order input might be in that cell OR somewhere inside the row (depending on page)
+               const input = (cell && cell.querySelector("input.order-input")) || mainRow.querySelector("input.order-input");
+               const v = parseInt(input?.value ?? "", 10);
+               return Number.isFinite(v) ? v : Number.MAX_SAFE_INTEGER;
           }
 
-          // If sorting by name, prefer the visible title element you actually show users
+          if (!cell) return "";
+
           if (key === "name") {
-               // common patterns in your markup
                const openMe = cell.querySelector(".openMe");
                if (openMe) return cleanText(openMe);
 
                const btnOrLink = cell.querySelector("button.govuk-button--link, button.show-case, a.govuk-link");
                if (btnOrLink) return cleanText(btnOrLink);
+          }
 
-               return cleanText(cell);
+          if (key === "category") {
+               const openMe = cell.querySelector(".openMe");
+               if (openMe) return cleanText(openMe);
+
+               const btnOrLink = cell.querySelector("button.govuk-button--link, button.show-case, a.govuk-link");
+               if (btnOrLink) return cleanText(btnOrLink);
           }
 
           return cleanText(cell);
      }
 
      function buildBlocks(tbody) {
-          const rows = Array.from(tbody.rows);
-          const blocks = [];
+          // Pair preview rows by data-row_id, not adjacency
+          const allRows = Array.from(tbody.querySelectorAll("tr"));
+          const previewById = new Map();
 
-          for (let i = 0; i < rows.length; i++) {
-               const main = rows[i];
-
-               // Your preview rows are usually class hidden_row
-               if (main.classList.contains("hidden_row")) continue;
-
-               const block = [main];
-               const next = rows[i + 1];
-
-               if (next && next.classList.contains("hidden_row")) {
-                    block.push(next);
-                    i++;
+          allRows.forEach(r => {
+               if (r.classList.contains("hidden_row") && r.dataset.row_id) {
+                    previewById.set(String(r.dataset.row_id), r);
                }
+          });
+
+          const blocks = [];
+          allRows.forEach(r => {
+               if (!r.classList.contains("material-row")) return;
+
+               const id = String(r.dataset.id || "");
+               const block = [r];
+
+               const preview = previewById.get(id);
+               if (preview) block.push(preview);
 
                blocks.push(block);
-          }
+          });
 
           return blocks;
      }
 
-     headerButtons.forEach(btn => {
-          let dir = 1;
+     // Event delegation: works even if table is rendered after DOMContentLoaded (tabs)
+     document.addEventListener("click", function (e) {
+          const btn = e.target.closest('#materials_table thead button[data-sort], #materials_table thead a[data-sort]');
+          if (!btn) return;
 
-          btn.addEventListener("click", function (e) {
-               // ABSOLUTE HARD STOP
-               if (!e.target.closest('thead')) return;
+          const table = btn.closest("table");
+          const thead = btn.closest("thead");
+          const th = btn.closest("th");
+          const tbody = table?.tBodies?.[0];
+          if (!table || !thead || !th || !tbody) return;
 
-               const th = btn.closest("th");
-               if (!th || !th.closest('thead')) return;
+          e.preventDefault();
+          e.stopPropagation();
 
-               e.preventDefault();
-               e.stopPropagation();
-               if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+          const key = btn.getAttribute("data-sort") || "";
 
-               const key = btn.getAttribute("data-sort") || "";
-               const colIndex = th.cellIndex;
+          // toggle direction stored on the button
+          const currentDir = btn.dataset.dir || "asc";
+          const dir = currentDir === "asc" ? 1 : -1;
+          btn.dataset.dir = currentDir === "asc" ? "desc" : "asc";
 
-               const tbody = table.tBodies[0];
-               if (!tbody) return;
-
-               const blocks = buildBlocks(tbody);
-
-               blocks.sort((A, B) => {
-                    const a = getSortableText(A[0], colIndex, key);
-                    const b = getSortableText(B[0], colIndex, key);
-                    return collator.compare(a, b) * dir;
-               });
-
-               blocks.forEach(block => block.forEach(r => tbody.appendChild(r)));
-               dir *= -1;
-
-               if (window.updateMoveLinks) window.updateMoveLinks();
+          // reset other sort buttons in this table
+          table.querySelectorAll("thead button[data-sort], thead a[data-sort]").forEach(b => {
+               if (b !== btn) delete b.dataset.dir;
           });
-     });
-});
 
+          const blocks = buildBlocks(tbody);
+
+          blocks.sort((A, B) => {
+               const aVal = getKeyValue(A[0], th, key);
+               const bVal = getKeyValue(B[0], th, key);
+
+               if (key === "order") {
+                    return (aVal - bVal) * dir;
+               }
+               return collator.compare(String(aVal), String(bVal)) * dir;
+          });
+
+          // Rebuild tbody in sorted order
+          blocks.forEach(block => block.forEach(r => tbody.appendChild(r)));
+
+          if (window.updateMoveLinks) window.updateMoveLinks();
+     }, true);
+})();
+// End of 24 February 2026
 
 
 // Gutter move buttons
@@ -2425,18 +2541,6 @@ function buildFolderPath(materials, item) {
      return path.join(' / ');
 }
 
-// 25 February 2026 - toggle preview rows (uncomment togglePreview calls and function to enable)
-// Going to comment it and if I need to I can uncoment it
-// document.addEventListener('click', function (e) {
-//      const table = e.target.closest('#materials_table');
-//      if (!table) return;
-
-//      const btn = e.target.closest('button.show-case, button.show_material_actions');
-//      if (!btn) return;
-
-//      // ... existing preview logic ...
-// }, true);
-//End of 25 February 2026
 
 // function togglePreview(btn) {
 //      const id = btn.getAttribute('data-id');
@@ -2450,7 +2554,7 @@ function buildFolderPath(materials, item) {
 //      });
 
 //      // reset all other buttons
-//      document.querySelectorAll('button.show-case').forEach(b => {
+//      document.querySelectorAll('button.show-case, button.show_material_actions').forEach(b => {
 //           if (b !== btn) b.innerHTML = 'Preview <i class="fa-solid fa-chevron-down"></i>';
 //      });
 
@@ -2930,49 +3034,3 @@ document.addEventListener('click', function (e) {
 
 
 
-document.addEventListener(
-     "click",
-     function (e) {
-          const btn = e.target.closest(".show_material_actions");
-          if (!btn) return;
-
-          // add this after "if (!btn) return;"
-          if (!btn.hasAttribute("data-preview-target")) return;
-
-          console.log("✅ NEW preview handler fired", {
-               target: e.target.tagName,
-               btnClasses: btn.className,
-               previewTarget: btn.getAttribute("data-preview-target")
-          });
-
-          // Don't let other handlers "help"
-          e.preventDefault();
-          e.stopPropagation();
-          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-
-          const targetId = btn.getAttribute("data-preview-target");
-          if (!targetId) return;
-
-          const row = document.getElementById(targetId);
-          if (!row) {
-               console.warn("Preview row not found for target:", targetId);
-               return;
-          }
-
-          const opening = row.hasAttribute("hidden") || getComputedStyle(row).display === "none";
-
-          if (opening) {
-               row.removeAttribute("hidden");
-               row.style.setProperty("display", "table-row", "important");
-               btn.setAttribute("aria-expanded", "true");
-               btn.innerHTML = `Hide <i class="fa-solid fa-chevron-up"></i>`;
-          } else {
-               row.setAttribute("hidden", "");
-               row.style.setProperty("display", "none", "important");
-               btn.setAttribute("aria-expanded", "false");
-               btn.innerHTML = `Preview <i class="fa-solid fa-chevron-down"></i>`;
-          }
-
-     },
-     true
-);
