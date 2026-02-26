@@ -2616,6 +2616,22 @@ router.post('/B-off-system-MVP/order-materials', (req, res) => {
     const materials = sessionData.materials;
     // const folderId = Number(req.body.folderId ?? sessionData.folderId ?? 0);
 
+
+    // 26 February 2026
+    // 🔴 PROTOTYPE INTERRUPT RULE
+    const shouldInterrupt = folderId === 1000; // hard-code whatever folder you want
+
+    if (shouldInterrupt) {
+        req.session.data.pendingOrderSave = {
+            folderId,
+            body: req.body
+        };
+
+        return res.redirect('/version-13/B-off-system-MVP/order-interrupt');
+    }
+    // End of 26 February 2026
+
+
     // Only reorder items that are DIRECT children of this folder
     const children = materials.filter(m => Number(m.parentId) === folderId);
 
@@ -2646,6 +2662,64 @@ router.post('/B-off-system-MVP/order-materials', (req, res) => {
     // Persist current folder context too (helps other pages)
     req.session.data.folderId = folderId;
 
+
+    return res.redirect('/version-13/B-off-system-MVP/03-case-overview');
+});
+
+
+router.post('/B-off-system-MVP/order-interrupt', (req, res) => {
+    const pending = req.session.data.pendingOrderSave;
+    if (!pending) {
+        return res.redirect('/version-13/B-off-system-MVP/03-case-overview');
+    }
+
+    const folderId = Number(pending.folderId ?? 0);
+    req.session.data.folderId = folderId;
+
+    const sessionData = req.session.data || {};
+    const defaultsData = res.locals.data || {};
+
+    if (!sessionData.materials || !sessionData.materials.length) {
+        sessionData.materials = (defaultsData.materials || []).map(m => ({ ...m }));
+        req.session.data.materials = sessionData.materials;
+    }
+
+    const materials = sessionData.materials;
+
+    // Apply the exact same save logic, but using pending.body
+    const children = materials.filter(m => Number(m.parentId) === folderId);
+
+    const desiredById = new Map();
+    children.forEach(item => {
+        const key = `order_${item.id}`;
+        const raw = pending.body[key];
+        const n = parseInt(raw, 10);
+        desiredById.set(String(item.id), Number.isFinite(n) ? n : 999999);
+    });
+
+    children.sort((a, b) => {
+        const ao = desiredById.get(String(a.id)) ?? 999999;
+        const bo = desiredById.get(String(b.id)) ?? 999999;
+        if (ao !== bo) return ao - bo;
+        return String(a.name || '').localeCompare(String(b.name || ''), 'en', { numeric: true, sensitivity: 'base' });
+    });
+
+    children.forEach((item, idx) => {
+        item.order = idx + 1;
+    });
+
+    console.log('Person name and date:', req.session.data.orderName, req.session.data.orderDate);
+
+    req.session.data.orderPerson = "you";
+    req.session.data.orderDate = new Date().toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    });
+    console.log('Person name and date:', req.session.data.orderPerson, req.session.data.orderDate);
+
+    // Clean up the delayed save payload
+    delete req.session.data.pendingOrderSave;
 
     return res.redirect('/version-13/B-off-system-MVP/03-case-overview');
 });

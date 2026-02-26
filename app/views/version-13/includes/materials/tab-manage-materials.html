@@ -511,7 +511,6 @@
                                 {% if item.unread or item.new %}
                                 <strong class="govuk-tag govuk-tag--blue">Unread</strong>
                                 {% endif %}
-
                                 {% if data.flashRenamedIds and (item.id | string) in data.flashRenamedIds %}
                                 <strong class="govuk-tag govuk-tag--green govuk-!margin-left-1">Renamed</strong>
                                 {% endif %}
