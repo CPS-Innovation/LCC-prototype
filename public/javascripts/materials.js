@@ -475,7 +475,7 @@ document.addEventListener("DOMContentLoaded", function () {
                e.stopPropagation();
                if (e.stopImmediatePropagation) e.stopImmediatePropagation();
 
-               const key = btn.getAttribute("data-sort") || "";
+               const key = (btn.getAttribute("data-sort") || "").trim().toLowerCase();
                const colIndex = th.cellIndex;
 
                const tbody = table.tBodies[0];
@@ -483,10 +483,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
                const blocks = buildBlocks(tbody);
 
+               const normKey = (key || "").trim().toLowerCase();
+
                blocks.sort((A, B) => {
-                    const a = getSortableText(A[0], colIndex, key);
-                    const b = getSortableText(B[0], colIndex, key);
-                    return collator.compare(a, b) * dir;
+                    // pick the main row in case blocks contain preview rows etc
+                    const rowA = A.find(r => r.classList && r.classList.contains("material-row")) || A[0];
+                    const rowB = B.find(r => r.classList && r.classList.contains("material-row")) || B[0];
+
+                    const a = getSortableText(rowA, colIndex, normKey);
+                    const b = getSortableText(rowB, colIndex, normKey);
+
+                    // numeric sort for order, text sort for everything else
+                    if (normKey === "order") return (a - b) * dir;
+
+                    return collator.compare(String(a), String(b)) * dir;
                });
 
                blocks.forEach(block => block.forEach(r => tbody.appendChild(r)));
