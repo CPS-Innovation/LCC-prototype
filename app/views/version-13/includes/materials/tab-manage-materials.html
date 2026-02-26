@@ -367,20 +367,13 @@
 
     <!-- MAIN TABLE -->
     <div class="materials-aligned">
-        <div class="materials-table-wrapper has-order-gutter">
+        <div class="materials-table-wrapper">
 
-            <table class="govuk-table sortable has-order-toggle" id="materials_table">
+            <table class="govuk-table sortable" id="materials_table">
                 <thead class="govuk-table__head">
                     <!-- <tr class="govuk-table__row material-row" data-id="{{ item.id }}" {% if item.folder %}data-folder="true"
                             {% else %}data-folder="false" {% endif %}> -->
                     <tr class="govuk-table__row">
-                        <th scope="col" class="govuk-table__header">
-                            <button type="button" data-sort="order"
-                                class="govuk-link govuk-link--no-visited-state table-sort">
-                                Order
-                            </button>
-                        </th>
-
                         <th scope="col" class="govuk-table__header">
                             {% if data.materialsMode != "copy" and data.materialsMode != "move" %}
                             <div class="govuk-checkboxes govuk-checkboxes--small MT-15">
@@ -430,23 +423,6 @@
                         %}data-folder="true" {% else %}data-folder="false" {% endif %}>
 
 
-                        <td class="govuk-table__cell order-cell">
-                            <div class="order-gutter">
-                                <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
-                                    inputmode="numeric" value="{{ item.order or '' }}">
-
-                                <div class="order-links">
-                                    <!-- <span class="govuk-link move-link move-up is-disabled">Move up</span> -->
-                                    <a href="#" class="govuk-link move-link move-up is-disabled" data-action="up">Move
-                                        up</a>
-                                    <span class="divider">|</span>
-                                    <!-- <span class="govuk-link move-link move-down is-disabled">Move down</span> -->
-                                    <a href="#" class="govuk-link move-link move-down is-disabled"
-                                        data-action="down">Move
-                                        down</a>
-                                </div>
-                            </div>
-                        </td>
 
                         <!-- Checkbox -->
                         <td class="govuk-table__cell">
@@ -511,34 +487,6 @@
                     {# =============== FILE ROW =============== #}
                     <tr class="govuk-table__row material-row" data-id="{{ item.id }}" {% if item.folder
                         %}data-folder="true" {% else %}data-folder="false" {% endif %}>
-                        <!-- <tr class="govuk-table__row material-row" data-id="{{ item.id }}" data-folder="false"> -->
-                        <!-- <td class="govuk-table__cell title_column">
-                                <ul class="govuk-summary-list__actions-list">
-                                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Move up</span><span class="govuk-visually-hidden"></span></a></li>
-                                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Move down</span><span class="govuk-visually-hidden"></span></a></li>
-                                </ul>                    
-                            </td> -->
-
-                        <td class="govuk-table__cell order-cell">
-                            <div class="order-gutter">
-                                <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
-                                    inputmode="numeric" value="{{ item.order or '' }}">
-
-                                <!-- <div class="order-links" aria-hidden="true">
-                                <span class="govuk-link move-link move-up is-disabled">Move up</span>
-                                <span class="divider" aria-hidden="true">|</span>
-                                <span class="govuk-link move-link move-down is-disabled">Move down</span>
-                            </div> -->
-                                <div class="order-links" aria-hidden="true">
-                                    <a href="#" class="govuk-link move-link move-up is-disabled" data-action="up">Move
-                                        up</a>
-                                    <span class="divider" aria-hidden="true">|</span>
-                                    <a href="#" class="govuk-link move-link move-down is-disabled"
-                                        data-action="down">Move
-                                        down</a>
-                                </div>
-                            </div>
-                        </td>
 
 
                         <!-- Checkbox -->
@@ -596,7 +544,7 @@
                     {% if not item.folder %}
                     <tr class="govuk-table__row hidden_row sortable-ignore" data-row_id="{{ item.id }}"
                         style="display:none;">
-                        <td colspan="5">
+                        <td colspan="6">
                             <div class="document_holder">
                                 <embed src="{{ item.previewLink }}" type="application/pdf">
                             </div>
