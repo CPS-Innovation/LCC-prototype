@@ -25,23 +25,78 @@ window.addEventListener("click", () => console.log("🟡 WINDOW BUBBLE"), false)
 document.addEventListener("click", () => console.log("🟢 DOC CAPTURE"), true);
 document.addEventListener("click", () => console.log("🟡 DOC BUBBLE"), false);
 
-(function saneTableClickGuard() {
-     const TABLE = '#materials_table';
 
+// =====================================================
+// Single sane click guard for #materials_table
+// - Never blocks THEAD (sorting)
+// - Allows real controls in TBODY
+// - Blocks dead-space clicks in TBODY
+// =====================================================
+(function materialsTableClickGuard() {
+     const TABLE_SEL = '#materials_table';
+
+     function isAllowedInBody(target) {
+          // Allow actual interactive elements and anything inside them
+          return !!target.closest(
+               [
+                    'a',
+                    'button',
+                    'input',
+                    'label',
+                    'select',
+                    'textarea',
+                    'summary',
+                    'details',
+                    // allow forms (folder open submits etc.)
+                    'form',
+                    // your known interactive zones/classes
+                    '.order-cell',
+                    '.order-gutter',
+                    '.order-links',
+                    '.toggle-panel',
+                    '.folder-inline-wrapper',
+               ].join(',')
+          );
+     }
+
+     // CAPTURE phase so we beat any “row click” or plugin nonsense,
+     // but we DO NOT kill header sorting.
      window.addEventListener('click', (e) => {
-          const table = e.target.closest?.(TABLE);
+          const table = e.target.closest?.(TABLE_SEL);
           if (!table) return;
 
-          // ✅ allow all header clicks (sorting)
+          // ✅ Sorting lives here. Never interfere.
           if (e.target.closest('thead')) return;
 
-          // ✅ allow real interactive elements in the body
-          if (e.target.closest('a,button,input,label,select,textarea,summary,details')) return;
+          // Only guard TBODY interactions (ignore clicks elsewhere in table, if any)
+          if (!e.target.closest('tbody')) return;
 
-          // Otherwise: dead space, do nothing special
-          // (No preventDefault, no stopPropagation)
+          // ✅ Let real controls work
+          if (isAllowedInBody(e.target)) return;
+
+          // ❌ Dead space in tbody: block it
+          e.preventDefault();
+          e.stopPropagation();
      }, true);
 })();
+
+// (function saneTableClickGuard() {
+//      const TABLE = '#materials_table';
+
+//      window.addEventListener('click', (e) => {
+//           const table = e.target.closest?.(TABLE);
+//           if (!table) return;
+
+//           // ✅ allow all header clicks (sorting)
+//           if (e.target.closest('thead')) return;
+
+//           // ✅ allow real interactive elements in the body
+//           if (e.target.closest('a,button,input,label,select,textarea,summary,details')) return;
+
+//           // Otherwise: dead space, do nothing special
+//           // (No preventDefault, no stopPropagation)
+//      }, true);
+// })();
 
 // 25 February 2026
 // =====================================================
@@ -541,6 +596,18 @@ document.addEventListener("DOMContentLoaded", function () {
                blocks.forEach(block => block.forEach(r => tbody.appendChild(r)));
                dir *= -1;
 
+               // ✅ ORDER-MATERIALS RULE:
+               // After sorting, force the order gutter to become 1..n in the new visual order
+               const isOrderMaterials =
+                    document.body.classList.contains('order-materials-page') ||
+                    window.location.pathname.includes('/order-materials');
+
+               if (isOrderMaterials) {
+                    renumberMainRows(tbody);     // sets inputs 1..n based on current row order
+                    refreshOrderGutter(tbody);   // fixes move up/down states based on position
+               }
+
+               // Keep your existing helper if you still want it
                if (window.updateMoveLinks) window.updateMoveLinks();
           });
      });
