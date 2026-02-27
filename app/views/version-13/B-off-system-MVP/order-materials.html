@@ -26,7 +26,7 @@ Rename files or folders – {{ serviceName }} – Prototype
         {% if folderId == 0 %}
         <p class="govuk-body">This folder has not been ordered yet.</p>
         {% elseif folderId == 1000 %}
-        <p class="govuk-body">This folder has been ordered by {{ data['orderPerson'] }} on {{ data['orderDate'] }}.</p>
+        <p class="govuk-body">{{ data['orderPerson'] }} last changed the order of this folder on {{ data['orderDate'] }}.</p>
         {% else %}
         <p class="govuk-body">This folder has not been ordered yet.</p>
         {% endif %}

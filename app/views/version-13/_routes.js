@@ -2708,9 +2708,9 @@ router.post('/B-off-system-MVP/order-interrupt', (req, res) => {
         item.order = idx + 1;
     });
 
-    console.log('Person name and date:', req.session.data.orderName, req.session.data.orderDate);
+    console.log('Person name and date:', req.session.data.orderPerson, req.session.data.orderDate);
 
-    req.session.data.orderPerson = "you";
+    req.session.data.orderPerson = "You";
     req.session.data.orderDate = new Date().toLocaleDateString('en-GB', {
         day: '2-digit',
         month: 'short',
