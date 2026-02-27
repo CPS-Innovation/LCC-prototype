@@ -3,6 +3,45 @@ console.log("materials.js loaded!");
 
 console.log("✅ preview toggle patch loaded", window.location.pathname);
 
+// ✅ Never let any of our capture-phase click guards block table header sorting
+window.addEventListener('click', function (e) {
+     if (e.target.closest && e.target.closest('#materials_table thead')) {
+          // Don't stop propagation. Let the sort handlers run.
+          return;
+     }
+}, true);
+
+window.addEventListener("click", (e) => {
+     if (e.target.closest("#materials_table thead")) console.log("🟢 WINDOW CAPTURE header");
+}, true);
+
+window.addEventListener("click", (e) => {
+     if (e.target.closest("#materials_table thead")) console.log("🟡 WINDOW BUBBLE header");
+}, false);
+
+window.addEventListener("click", () => console.log("🟢 WINDOW CAPTURE"), true);
+window.addEventListener("click", () => console.log("🟡 WINDOW BUBBLE"), false);
+
+document.addEventListener("click", () => console.log("🟢 DOC CAPTURE"), true);
+document.addEventListener("click", () => console.log("🟡 DOC BUBBLE"), false);
+
+(function saneTableClickGuard() {
+     const TABLE = '#materials_table';
+
+     window.addEventListener('click', (e) => {
+          const table = e.target.closest?.(TABLE);
+          if (!table) return;
+
+          // ✅ allow all header clicks (sorting)
+          if (e.target.closest('thead')) return;
+
+          // ✅ allow real interactive elements in the body
+          if (e.target.closest('a,button,input,label,select,textarea,summary,details')) return;
+
+          // Otherwise: dead space, do nothing special
+          // (No preventDefault, no stopPropagation)
+     }, true);
+})();
 
 // 25 February 2026
 // =====================================================
@@ -199,65 +238,65 @@ window.addEventListener('click', function (e) {
 
 // HARD BLOCK: if a click happens inside the table but NOT in the header,
 // kill it before any "sortable table" plugin can treat it as a sort trigger.
-window.addEventListener('click', function (e) {
-     const table = e.target.closest && e.target.closest('#materials_table');
-     if (!table) return;
+// window.addEventListener('click', function (e) {
+//      const table = e.target.closest && e.target.closest('#materials_table');
+//      if (!table) return;
 
 
-     // Allow legitimate interactive things anywhere in the table
-     const allowed =
-          e.target.closest('button.show-case') ||
-          e.target.closest('#materials_table tbody form') ||
-          e.target.closest('#materials_table tbody button') ||
-          e.target.closest('#materials_table tbody a') ||
-          e.target.closest('.order-cell, .order-links-cell, .order-input-cell') ||
-          e.target.closest('a.move-link[data-action]') ||
-          e.target.closest('input[type="checkbox"], label');
+//      // Allow legitimate interactive things anywhere in the table
+//      const allowed =
+//           e.target.closest('button.show-case') ||
+//           e.target.closest('#materials_table tbody form') ||
+//           e.target.closest('#materials_table tbody button') ||
+//           e.target.closest('#materials_table tbody a') ||
+//           e.target.closest('.order-cell, .order-links-cell, .order-input-cell') ||
+//           e.target.closest('a.move-link[data-action]') ||
+//           e.target.closest('input[type="checkbox"], label');
 
-     // If it’s not a header click and not an allowed control, nuke it.
-     if (!allowed) {
-          e.preventDefault();
-          e.stopPropagation();
-          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-     }
-}, true);
+//      // If it’s not a header click and not an allowed control, nuke it.
+//      if (!allowed) {
+//           e.preventDefault();
+//           e.stopPropagation();
+//           if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+//      }
+// }, true);
 
 // =====================================================
 // HARD GUARD: stop "phantom header clicks" (sticky/overlay THEAD)
 // =====================================================
-window.addEventListener('click', function (e) {
-     const table = document.getElementById('materials_table');
-     if (!table) return;
+// window.addEventListener('click', function (e) {
+//      const table = document.getElementById('materials_table');
+//      if (!table) return;
 
-     const thead = table.querySelector('thead');
-     if (!thead) return;
+//      const thead = table.querySelector('thead');
+//      if (!thead) return;
 
-     // Only care if the click is *reported* as inside THEAD
-     if (!e.target.closest('thead')) return;
+//      // Only care if the click is *reported* as inside THEAD
+//      if (!e.target.closest('thead')) return;
 
-     // If the pointer is actually BELOW the visible THEAD,
-     // this is almost certainly a header overlay stealing clicks.
-     const r = thead.getBoundingClientRect();
-     const clickedOutsideVisibleHead = e.clientY > r.bottom || e.clientY < r.top || e.clientX < r.left || e.clientX > r.right;
+//      // If the pointer is actually BELOW the visible THEAD,
+//      // this is almost certainly a header overlay stealing clicks.
+//      const r = thead.getBoundingClientRect();
+//      const clickedOutsideVisibleHead = e.clientY > r.bottom || e.clientY < r.top || e.clientX < r.left || e.clientX > r.right;
 
-     if (clickedOutsideVisibleHead) {
-          e.preventDefault();
-          e.stopPropagation();
-          if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-     }
-}, true);
+//      if (clickedOutsideVisibleHead) {
+//           e.preventDefault();
+//           e.stopPropagation();
+//           if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+//      }
+// }, true);
 
 // Nuclear option: tbody clicks can NEVER sort
-document.addEventListener('click', function (e) {
-     if (e.target.closest('#materials_table tbody')) {
-          const th = e.target.closest('th');
-          if (th) {
-               e.preventDefault();
-               e.stopPropagation();
-               if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-          }
-     }
-}, true);
+// document.addEventListener('click', function (e) {
+//      if (e.target.closest('#materials_table tbody')) {
+//           const th = e.target.closest('th');
+//           if (th) {
+//                e.preventDefault();
+//                e.stopPropagation();
+//                if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+//           }
+//      }
+// }, true);
 
 
 // End of 5 February 2026
@@ -265,16 +304,16 @@ document.addEventListener('click', function (e) {
 // 5 February 2026
 
 // Nuclear option: tbody clicks can NEVER sort
-document.addEventListener('click', function (e) {
-     if (e.target.closest('#materials_table tbody')) {
-          const th = e.target.closest('th');
-          if (th) {
-               e.preventDefault();
-               e.stopPropagation();
-               if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-          }
-     }
-}, true);
+// document.addEventListener('click', function (e) {
+//      if (e.target.closest('#materials_table tbody')) {
+//           const th = e.target.closest('th');
+//           if (th) {
+//                e.preventDefault();
+//                e.stopPropagation();
+//                if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+//           }
+//      }
+// }, true);
 
 
 // End of 5 February 2026
@@ -282,31 +321,31 @@ document.addEventListener('click', function (e) {
 
 // HARD BLOCK: inside tbody, only allow real interactive things.
 // Everything else is dead space and must not trigger sort/row-click nonsense.
-window.addEventListener('click', function (e) {
-     const table = e.target.closest && e.target.closest('#materials_table');
-     if (!table) return;
+// window.addEventListener('click', function (e) {
+//      const table = e.target.closest && e.target.closest('#materials_table');
+//      if (!table) return;
 
-     // Never block header sorting
-     if (e.target.closest('thead')) return;
+//      // Never block header sorting
+//      if (e.target.closest('thead')) return;
 
-     const allowed =
-          // Anything that is a real control inside tbody should work across ALL versions:
-          e.target.closest('#materials_table tbody form') ||
-          e.target.closest('#materials_table tbody button') ||
-          e.target.closest('#materials_table tbody a') ||
-          e.target.closest('#materials_table tbody input') ||
-          e.target.closest('#materials_table tbody label') ||
-          // plus your gutter stuff if it exists
-          e.target.closest('.order-cell, .order-links-cell, .order-input-cell') ||
-          e.target.closest('a.move-link[data-action]');
+//      const allowed =
+//           // Anything that is a real control inside tbody should work across ALL versions:
+//           e.target.closest('#materials_table tbody form') ||
+//           e.target.closest('#materials_table tbody button') ||
+//           e.target.closest('#materials_table tbody a') ||
+//           e.target.closest('#materials_table tbody input') ||
+//           e.target.closest('#materials_table tbody label') ||
+//           // plus your gutter stuff if it exists
+//           e.target.closest('.order-cell, .order-links-cell, .order-input-cell') ||
+//           e.target.closest('a.move-link[data-action]');
 
-     if (allowed) return;
+//      if (allowed) return;
 
-     // Otherwise: dead space
-     e.preventDefault();
-     e.stopPropagation();
-     if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-}, true);
+//      // Otherwise: dead space
+//      e.preventDefault();
+//      e.stopPropagation();
+//      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+// }, true);
 
 
 
