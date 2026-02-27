@@ -849,6 +849,25 @@ table.sortable {
                }
           }
 
+          button.table-sort--disabled {
+               // keep link-blue styling but remove the sort icon
+               background: none !important;
+               padding-right: 0 !important;
+
+               // feel non-clickable
+               text-decoration: none;
+               cursor: default;
+
+               &:hover,
+               &:active,
+               &:focus {
+                    background: none !important;
+                    text-decoration: none;
+                    font-weight: bold; // keep or remove, your call
+                    outline: none; // optional: since it's not focusable anyway
+               }
+          }
+
           .title {
                margin-top: 0.5em;
           }
@@ -4525,15 +4544,67 @@ thead th .govuk-button {
 
 
 
-.hidden_row[hidden] { display: none; }
-.hidden_row { display: table-row; }
+.hidden_row[hidden] {
+     display: none;
+}
+
+.hidden_row {
+     display: table-row;
+}
 
 
 
 
-// 25 February 2026
+// 27 February 2026
+
+.table-sort--disabled {
+     color: #1d70b8;
+     /* GOV.UK link blue */
+     text-decoration: none;
+     /* remove underline */
+     cursor: default;
+     /* not clickable */
+}
+
+.table-sort--disabled:hover {
+     color: #1d70b8;
+     text-decoration: none;
+}
 
 
 
-// End of 25 February 2026
 
+.button-link {
+     background: none;
+     border: 0;
+     padding: 0;
+     color: $govuk-link-colour;
+     text-decoration: underline;
+     cursor: pointer;
+     font: inherit;
+}
+
+.button-link:hover {
+     color: $govuk-link-hover-colour;
+}
+
+.button-link:focus {
+     @include govuk-focused-text;
+}
+
+
+.clear-search-button {
+     @include govuk-link-common;
+     @include govuk-link-style-default;
+
+     font-weight: govuk-font-weight-bold;
+
+     background: none;
+     border: 0;
+     padding: 0;
+     cursor: pointer;
+}
+
+.clear-search-button { font-size: 19px !important; }
+
+// End of 27 February 2026

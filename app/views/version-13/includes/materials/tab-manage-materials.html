@@ -85,7 +85,8 @@
                     <div class="materials-toolbar govuk-!-margin-top-3 govuk-!-margin-bottom-4">
                         <div class="materials-toolbar__search">
                             <!-- Search -->
-                            <details class="govuk-details materials-search" data-module="govuk-details">
+                            <details class="govuk-details materials-search" data-module="govuk-details" {% if
+                                data.filtersSearch and data.filtersSearch | trim | length> 0 %}open{% endif %}>
                                 <summary class="govuk-details__summary">
                                     <span class="govuk-details__summary-text">
                                         <span class="search-icon-box" aria-hidden="true">
@@ -117,7 +118,17 @@
                                             </div>
                                         </div>
                                     </form>
+                                    {% if data.filtersSearch and data.filtersSearch | trim | length > 0 %}
+                                    <form method="post" action="/version-13/B-off-system-MVP/clear-search"
+                                        class="govuk-!-margin-top-2">
+                                        <button type="submit" formaction="/version-13/B-off-system-MVP/clear-search"
+                                            class="govuk-link clear-search-button">
+                                            Clear search
+                                        </button>
+                                    </form>
+                                    {% endif %}
                                 </div>
+
                             </details>
                         </div>
 
@@ -395,7 +406,9 @@
                         </th>
 
                         <th scope="col" class="govuk-table__header">
-                            <button type="button" class="govuk-link govuk-link--no-visited-state table-sort">
+                            <button type="button"
+                                class="govuk-link govuk-link--no-visited-state table-sort table-sort--disabled" disabled
+                                aria-disabled="true">
                                 Description
                             </button>
                         </th>

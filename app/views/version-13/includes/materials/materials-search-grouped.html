@@ -4,18 +4,14 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
 
 {% set flashRenamedIdSafe = flashRenamedId | default('') %}
 
-<div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-4">
+<!-- <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-4 govuk-!-margin-left-6">
     <form action="/version-13/B-off-system-MVP/clear-search" method="post" novalidate>
         Showing results for: <strong>{{ data.filtersSearch }}</strong>
         <button class="govuk-link govuk-link--no-visited-state suspect govuk-!-margin-left-2" type="submit">Clear
             search</button>
     </form>
 
-    <!-- <a href="/version-13/includes/materials/clear-filter?type=search" 
-       class="govuk-link govuk-link--no-visited-state govuk-!-margin-left-1">
-       Clear search
-    </a> -->
-</div>
+</div> -->
 
 {% if not groupedSearchResults or (groupedSearchResults | length == 0) %}
 <p class="govuk-body"><strong>No materials found.</strong></p>
@@ -40,7 +36,8 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
             </th>
 
             <th scope="col" class="govuk-table__header">
-                <button type="button" class="govuk-link govuk-link--no-visited-state table-sort">
+                <button type="button" class="govuk-link govuk-link--no-visited-state table-sort table-sort--disabled"
+                    disabled aria-disabled="true">
                     Description
                 </button>
             </th>
@@ -99,15 +96,15 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
                             </button>
                         </div>
 
-                            {% if flashRenamedIdSafe and folder.id is defined and (folder.id ~ '') == flashRenamedIdSafe
-                            %}
-                            <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">Renamed</strong>
-                            {% endif %}
+                        {% if flashRenamedIdSafe and folder.id is defined and (folder.id ~ '') == flashRenamedIdSafe
+                        %}
+                        <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">Renamed</strong>
+                        {% endif %}
 
-                            {% if flashNewFolderIdSafe and folder.id is defined and (folder.id ~ '') ==
-                            flashNewFolderIdSafe %}
-                            <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">New folder</strong>
-                            {% endif %}
+                        {% if flashNewFolderIdSafe and folder.id is defined and (folder.id ~ '') ==
+                        flashNewFolderIdSafe %}
+                        <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">New folder</strong>
+                        {% endif %}
 
                         </button>
                         <!-- {% if folder.new == true %}

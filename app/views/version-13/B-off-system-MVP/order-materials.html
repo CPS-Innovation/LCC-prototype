@@ -26,7 +26,8 @@ Rename files or folders – {{ serviceName }} – Prototype
         {% if folderId == 0 %}
         <p class="govuk-body">This folder has not been ordered yet.</p>
         {% elseif folderId == 1000 %}
-        <p class="govuk-body">{{ data['orderPerson'] }} last changed the order of this folder on {{ data['orderDate'] }}.</p>
+        <p class="govuk-body">{{ data['orderPerson'] }} last changed the order of this folder on {{ data['orderDate']
+            }}.</p>
         {% else %}
         <p class="govuk-body">This folder has not been ordered yet.</p>
         {% endif %}
@@ -87,10 +88,11 @@ Rename files or folders – {{ serviceName }} – Prototype
                                 <th scope="col" class="govuk-table__header">
                                     <span class="govuk-visually-hidden">Move items</span>
                                 </th>
-                                
+
                                 <th scope="col" class="govuk-table__header">
-                                    <button type="button" data-sort="order"
-                                        class="govuk-link govuk-link--no-visited-state table-sort">
+                                    <button type="button"
+                                        class="govuk-link govuk-link--no-visited-state table-sort table-sort--disabled"
+                                        disabled aria-disabled="true">
                                         Order
                                     </button>
                                 </th>
@@ -103,10 +105,13 @@ Rename files or folders – {{ serviceName }} – Prototype
                                 </th>
 
                                 <th scope="col" class="govuk-table__header">
-                                    <button type="button" class="govuk-link govuk-link--no-visited-state table-sort">
+                                    <button type="button"
+                                        class="govuk-link govuk-link--no-visited-state table-sort table-sort--disabled"
+                                        disabled aria-disabled="true">
                                         Description
                                     </button>
                                 </th>
+
 
                                 <th scope="col" class="govuk-table__header">
                                     <button type="button" data-sort="orderCategory"
