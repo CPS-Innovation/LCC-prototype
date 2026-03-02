@@ -4702,8 +4702,14 @@ thead th .govuk-button {
 
 
 #materials_table .order_column {
-  text-align: center;
-  vertical-align: top;
+     text-align: center;
+     vertical-align: top;
+}
+
+
+
+#materials_table.is-order-mode .order-input {
+     pointer-events: auto !important;
 }
 
 // End of 2 March 2026
