@@ -1589,7 +1589,7 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
     const reason = req.body.discarding_material;
 
     // SOURCE OF TRUTH (v12)
-    const materials = req.session.data.materialsVersion12 || [];
+    const materials = req.session.data.materialsVersion13 || [];
 
     // If folders should remove descendants too, expand IDs:
     const toRemove = new Set(selected.map(String));
@@ -1615,7 +1615,7 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
         });
     }
 
-    req.session.data.materialsVersion12 = materials.filter(
+    req.session.data.materialsVersion13 = materials.filter(
         m => !toRemove.has(String(m.id))
     );
 
