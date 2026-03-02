@@ -4,6 +4,11 @@
     {% set searchTerm = data.filtersSearch | default('') %}
     {% set isSearchResults = (searchTerm | trim | length > 0) %}
 
+    {% set currentFolderId = data.folderId | default(0) %}
+    {% set currentFolderKey = currentFolderId | string %}
+    {% set hasSavedOrder = (data.orderMeta and data.orderMeta[currentFolderKey]) %}
+    {% set showOrder = (currentFolderId == 1007) or hasSavedOrder %}
+
     <div class="govuk-grid-row">
 
         <h2 class="govuk-heading-m govuk-!-margin-left-3 govuk-!-margin-top-0 govuk-!-margin-bottom-4">
@@ -387,29 +392,30 @@
     {% else %}
 
     <!-- <div class="govuk-inset-text govuk-!-margin-left-6 govuk-!-margin-top-0"> -->
-{% set folderId = data.folderId | default(0) %}
-{% set meta = (data.orderMeta and data.orderMeta[folderId | string]) %}
+    {% set folderId = data.folderId | default(0) %}
+    {% set meta = (data.orderMeta and data.orderMeta[folderId | string]) %}
 
-{% if folderId != 0 %}
-  {% if meta %}
+    {% if folderId != 0 %}
+    {% if meta %}
     <p class="govuk-body govuk-!-margin-left-6">
-      {{ meta.person }} last changed the order of this folder on {{ meta.date }}.
-      <a class="govuk-link"
-         href="/version-13/B-off-system-MVP/order-materials?folderId={{ folderId }}">
-        Change order
-      </a>
+        {{ meta.person }} last changed the order of this folder on {{ meta.date }}.
+        <a class="govuk-link" href="/version-13/B-off-system-MVP/order-materials?folderId={{ folderId }}">
+            Change order
+        </a>
     </p>
-  {% else %}
+    {% else %}
     <p class="govuk-body govuk-!-margin-left-6">
-      This folder has not been ordered yet.
-      <a class="govuk-link"
-         href="/version-13/B-off-system-MVP/order-materials?folderId={{ folderId }}">
-        Change order
-      </a>
+        This folder has not been ordered yet.
+        <a class="govuk-link" href="/version-13/B-off-system-MVP/order-materials?folderId={{ folderId }}">
+            Change order
+        </a>
     </p>
-  {% endif %}
-{% endif %}
+    {% endif %}
+    {% endif %}
     <!-- </div> -->
+    {% set currentFolderId = data.folderId | default(0) %}
+    {% set showOrderColumn = (currentFolderId != 0) %}
+    {% set isSeededFolder = (currentFolderId == 1007) %}
 
     <!-- MAIN TABLE -->
     <div class="materials-aligned">
@@ -432,6 +438,15 @@
                             </div>
                             {% endif %}
                         </th>
+
+                        {% if showOrderColumn %}
+                        <th scope="col" class="govuk-table__header">
+                            <button type="button" class="govuk-link govuk-link--no-visited-state table-sort"
+                                data-sort="order">
+                                Order
+                            </button>
+                        </th>
+                        {% endif %}
 
                         <th scope="col" class="govuk-table__header">
                             <button type="button" class="govuk-link govuk-link--no-visited-state table-sort"
@@ -464,6 +479,7 @@
                 <tbody class="govuk-table__body">
 
                     {% for item in children %}
+                    {% set rowNumber = loop.index %}
                     {% if item.folder %}
                     {# =============== FOLDER ROW =============== #}
 
@@ -486,6 +502,17 @@
                             </div>
                             {% endif %}
                         </td>
+
+                        {% if showOrderColumn %}
+                        <td class="govuk-table__cell order_column"
+                            data-order="{% if isSeededFolder %}{{ rowNumber }}{% elif item.order %}{{ item.order }}{% endif %}">
+                            {% if isSeededFolder %}
+                            {{ rowNumber }}
+                            {% elif item.order %}
+                            {{ item.order }}
+                            {% endif %}
+                        </td>
+                        {% endif %}
 
                         <!-- Folder title (clickable) -->
                         <td class="govuk-table__cell title_column">
@@ -553,6 +580,17 @@
                             {% endif %}
                         </td>
 
+                        {% if showOrderColumn %}
+                        <td class="govuk-table__cell order_column"
+                            data-order="{% if isSeededFolder %}{{ rowNumber }}{% elif item.order %}{{ item.order }}{% endif %}">
+                            {% if isSeededFolder %}
+                            {{ rowNumber }}
+                            {% elif item.order %}
+                            {{ item.order }}
+                            {% endif %}
+                        </td>
+                        {% endif %}
+
                         <!-- File title -->
                         <td class="govuk-table__cell title_column">
                             <div class="openMe">
@@ -597,7 +635,7 @@
                     {% if not item.folder %}
                     <tr class="govuk-table__row hidden_row sortable-ignore" data-row_id="{{ item.id }}"
                         style="display:none;">
-                        <td colspan="6">
+                        <td colspan="{{ 7 if showOrderColumn else 6 }}">
                             <div class="document_holder">
                                 <embed src="{{ item.previewLink }}" type="application/pdf">
                             </div>

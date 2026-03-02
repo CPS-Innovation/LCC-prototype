@@ -508,12 +508,13 @@ document.addEventListener("DOMContentLoaded", function () {
           if (!cell) return "";
 
           // 🔑 SPECIAL CASE: Order column
+          // 🔑 SPECIAL CASE: Order column (plain text version)
           if (key === "order") {
-               const input = cell.querySelector("input.order-input");
-               if (!input) return Number.MAX_SAFE_INTEGER;
+               const raw = cell.dataset.order ?? (cell.innerText || cell.textContent || "");
+               const n = parseInt(String(raw).trim(), 10);
 
-               const value = parseInt(input.value, 10);
-               return isNaN(value) ? Number.MAX_SAFE_INTEGER : value;
+               // Blank or invalid → push to bottom
+               return Number.isFinite(n) ? n : Number.MAX_SAFE_INTEGER;
           }
 
           // If sorting by name, prefer the visible title element you actually show users

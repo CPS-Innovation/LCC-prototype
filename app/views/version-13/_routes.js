@@ -2590,6 +2590,28 @@ router.get('/B-off-system-MVP/order-materials', (req, res) => {
     // persist context for templates that use data.folderId
     req.session.data.folderId = folderId;
 
+    // ✅ PROTOTYPE SEED: only folder 1007 starts "ordered"
+    sessionData.orderMeta = sessionData.orderMeta || {};
+    sessionData._seededOrder1007 = sessionData._seededOrder1007 || false;
+
+    if (!sessionData._seededOrder1007) {
+        // 1) Seed "last ordered" message for folder 1007
+        sessionData.orderMeta["1007"] = {
+            person: "Roxanne Rowe",
+            date: "12 January 2026"
+        };
+
+        // 2) Seed numeric order values for direct children of folder 1007 only
+        const kids1007 = materials.filter(m => m && Number(m.parentId) === 1007);
+
+        // Use current array order as the initial order (simple + stable for a prototype)
+        kids1007.forEach((item, idx) => {
+            item.order = idx + 1;
+        });
+
+        sessionData._seededOrder1007 = true;
+    }
+
     const helper = materialsHelperFactory(materials);
 
     const breadcrumbs = helper.getBreadcrumbs(folderId);
