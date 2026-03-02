@@ -1142,6 +1142,17 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const data = req.session.data;
     const materials = data.materials || [];
 
+    // ✅ Seed default "last ordered" metadata (prototype baseline)
+    data.orderMeta = data.orderMeta || {};
+
+    // Only seed if it's not already set (so user actions can overwrite it)
+    if (!data.orderMeta["1007"]) {
+        data.orderMeta["1007"] = {
+            person: "Roxanne Rowe",
+            date: "12 January 2026"
+        };
+    }
+
     // 👇 MINIMAL PATCH – add these two lines
     const flashRenamedId = String(data.flashRenamedId || '');
     req.session.data.flashRenamedId = '';
@@ -1182,8 +1193,8 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     // Helper utils
     const utils = createMaterialsUtils(materials);
 
-    // Current folder fallback
-    const folderId = Number(data.folderId) || 0;
+    // Current folder
+    const folderId = Number(data.folderId ?? 0);
 
     // ================================
     // 1. Get the raw children of this folder
@@ -2594,15 +2605,14 @@ router.get('/B-off-system-MVP/order-materials', (req, res) => {
 
 router.post('/B-off-system-MVP/order-materials', (req, res) => {
 
-    console.log('✅ POST /order-materials hit', req.body.folderId, Object.keys(req.body).slice(0, 10));
+    console.log('✅ POST /order-materials hit', {
+        sessionFolderId: req.session.data.folderId,
+        bodyFolderId: req.body.folderId
+    });
 
     // folderId might be '1000' OR ['1000','0'] if duplicate fields exist
-    const rawFolderId = req.body.folderId;
-    const folderId = Array.isArray(rawFolderId)
-        ? Number(rawFolderId[0] ?? 0)  // take the first one, don't "escape" root
-        : Number(rawFolderId ?? 0);
-
-    req.session.data.folderId = folderId;
+    // ✅ Use the folder context you already stored when the page loaded
+    const folderId = Number(req.session.data.folderId ?? 0);
 
     const sessionData = req.session.data || {};
     const defaultsData = res.locals.data || {};
@@ -2619,7 +2629,7 @@ router.post('/B-off-system-MVP/order-materials', (req, res) => {
 
     // 26 February 2026
     // 🔴 PROTOTYPE INTERRUPT RULE
-    const shouldInterrupt = folderId === 1000; // hard-code whatever folder you want
+    const shouldInterrupt = folderId === 1007; // hard-code whatever folder you want
 
     if (shouldInterrupt) {
         req.session.data.pendingOrderSave = {
@@ -2658,6 +2668,17 @@ router.post('/B-off-system-MVP/order-materials', (req, res) => {
     children.forEach((item, idx) => {
         item.order = idx + 1;
     });
+
+    // ✅ ADD THIS: Persist per-folder "last ordered" metadata
+    req.session.data.orderMeta = req.session.data.orderMeta || {};
+    req.session.data.orderMeta[String(folderId)] = {
+        person: "You",
+        date: new Date().toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        })
+    };
 
     // Persist current folder context too (helps other pages)
     req.session.data.folderId = folderId;
@@ -2708,12 +2729,23 @@ router.post('/B-off-system-MVP/order-interrupt', (req, res) => {
         item.order = idx + 1;
     });
 
+    // ✅ ADD THIS: Persist per-folder "last ordered" metadata
+    req.session.data.orderMeta = req.session.data.orderMeta || {};
+    req.session.data.orderMeta[String(folderId)] = {
+        person: "You",
+        date: new Date().toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        })
+    };
+
     console.log('Person name and date:', req.session.data.orderPerson, req.session.data.orderDate);
 
     req.session.data.orderPerson = "You";
     req.session.data.orderDate = new Date().toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
+        day: 'numeric',
+        month: 'long',
         year: 'numeric'
     });
     console.log('Person name and date:', req.session.data.orderPerson, req.session.data.orderDate);

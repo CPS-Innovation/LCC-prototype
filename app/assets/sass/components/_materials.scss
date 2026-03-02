@@ -4667,3 +4667,37 @@ thead th .govuk-button {
 }
 
 // End of 1 March 2026
+
+
+
+// 2 March 2026
+
+.govuk-tag {
+     text-decoration: none;
+}
+
+.folder-open .govuk-tag,
+.openMe .govuk-tag {
+     text-decoration: none !important;
+}
+
+/* 1) Stop the underline from being painted across EVERYTHING inside the button/link */
+.folder-open,
+.folder-open:link,
+.folder-open:visited {
+     text-decoration: none !important;
+}
+
+/* 2) Put the underline back ONLY on the folder name text */
+.folder-open .folder-name {
+     text-decoration: underline;
+     text-decoration-thickness: max(1px, .0625rem);
+     text-underline-offset: .1em;
+}
+
+/* 3) Make absolutely sure tags never get underlined */
+.folder-open .govuk-tag {
+     text-decoration: none !important;
+}
+
+// End of 2 March 2026
