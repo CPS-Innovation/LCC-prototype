@@ -4605,6 +4605,65 @@ thead th .govuk-button {
      cursor: pointer;
 }
 
-.clear-search-button { font-size: 19px !important; }
+.clear-search-button {
+     font-size: 19px !important;
+}
 
 // End of 27 February 2026
+
+
+
+// 1 March 2026
+// Tags in line with file and folder names on table
+.openMe {
+     display: flex;
+     align-items: center;
+     flex-wrap: wrap;
+     gap: 6px;
+}
+
+.file-name {
+     display: inline;
+     flex: 0 1 auto;
+     min-width: 0;
+}
+
+.file-tags {
+     display: inline-flex;
+     align-items: center;
+     gap: 6px;
+     flex-wrap: wrap;
+}
+
+
+.folder-open {
+     display: inline-flex;
+     align-items: center;
+     gap: 8px; // space between icon and name block
+}
+
+.folder-name-and-tags {
+     display: inline-flex;
+     align-items: center;
+     gap: 6px;
+     flex-wrap: wrap; // remove if you never want wrapping
+}
+
+.folder-name {
+     display: inline;
+}
+
+
+
+// Nudge the title column away from the checkbox and gutter, to visually group it with the tags and keep it from feeling cramped.
+#materials_table td.title_column,
+#materials_table th.title_column {
+     padding-right: 24px; // increase or decrease to taste
+}
+
+#materials_table td.description_column,
+#materials_table th.description_column {
+     padding-left: 12px;
+}
+
+// End of 1 March 2026

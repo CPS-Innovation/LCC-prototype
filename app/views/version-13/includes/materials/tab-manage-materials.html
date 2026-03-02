@@ -1,6 +1,9 @@
 <!-- ///////////////////////////////// TAB 2 - CONTENT - START ///////////////////////////////// -->
 <div class="tab-manage-materials-page">
 
+    {% set searchTerm = data.filtersSearch | default('') %}
+    {% set isSearchResults = (searchTerm | trim | length > 0) %}
+
     <div class="govuk-grid-row">
 
         <h2 class="govuk-heading-m govuk-!-margin-left-3 govuk-!-margin-top-0 govuk-!-margin-bottom-4">
@@ -210,7 +213,8 @@
 
                                     <button type="button" id="show_General_Actions"
                                         class="govuk-button govuk-button--secondary" aria-expanded="false"
-                                        aria-controls="general_Actions" data-module="govuk-button">
+                                        aria-controls="general_Actions" data-module="govuk-button" {% if isSearchResults
+                                        %}disabled aria-disabled="true" {% endif %}>
                                         Folder options
                                         <svg width="11" height="5" viewBox="0 0 11 5"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -365,7 +369,7 @@
         </p> -->
 
     <!-- SEARCH MODES -->
-    {% set searchTerm = data.filtersSearch %}
+    <!-- {% set searchTerm = data.filtersSearch %} -->
     <!-- {{ searchTerm }}
         {% set insideFolderSearch = (data.flag == "1") %} -->
 
@@ -459,22 +463,23 @@
                                 <form method="post" action="/version-13/B-off-system-MVP/case-overview-folder">
                                     <input type="hidden" name="folderId" value="{{ item.id }}">
                                     <input type="hidden" name="folderName" value="{{ item.name }}">
+
                                     <button type="submit"
                                         class="govuk-link govuk-link--no-visited-state govuk-button--link folder-open">
-                                        <span class="icon-new folder"></span>
-                                        {{ item.name }}
 
-                                        {% if data.flashRenamedIds and (item.id | string) in data.flashRenamedIds %}
-                                        <strong class="govuk-tag govuk-tag--green govuk-!margin-left-1">Renamed</strong>
-                                        {% endif %}
-                                        <!-- {% if flashRenamedId and (item.id | string) == flashRenamedId %}
-                                        <strong
-                                            class="govuk-tag govuk-tag--green govuk-!-margin-left-1">Renamed</strong>
-                                        {% endif %} -->
-                                        {% if flashNewFolderId and (item.id | string) == flashNewFolderId %}
-                                        <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">New
-                                            folder</strong>
-                                        {% endif %}
+                                        <span class="icon-new folder"></span>
+
+                                        <span class="folder-name-and-tags">
+                                            <span class="folder-name">{{ item.name }}</span>
+
+                                            {% if data.flashRenamedIds and (item.id | string) in data.flashRenamedIds %}
+                                            <strong class="govuk-tag govuk-tag--green">Renamed</strong>
+                                            {% endif %}
+
+                                            {% if flashNewFolderId and (item.id | string) == flashNewFolderId %}
+                                            <strong class="govuk-tag govuk-tag--green">New folder</strong>
+                                            {% endif %}
+                                        </span>
 
                                     </button>
                                 </form>
@@ -520,14 +525,19 @@
                         <!-- File title -->
                         <td class="govuk-table__cell title_column">
                             <div class="openMe">
-                                {{ item.name }}
-                                {% if item.unread or item.new %}
-                                <strong class="govuk-tag govuk-tag--blue">Unread</strong>
-                                {% endif %}
-                                {% if data.flashRenamedIds and (item.id | string) in data.flashRenamedIds %}
-                                <strong class="govuk-tag govuk-tag--green govuk-!margin-left-1">Renamed</strong>
-                                {% endif %}
 
+                                <!-- <span class="file-name-and-tags"> -->
+                                <span class="file-tags">
+                                    <span class="file-name">{{ item.name }}</span>
+
+                                    {% if item.unread or item.new %}
+                                    <strong class="govuk-tag govuk-tag--blue">Unread</strong>
+                                    {% endif %}
+
+                                    {% if data.flashRenamedIds and (item.id | string) in data.flashRenamedIds %}
+                                    <strong class="govuk-tag govuk-tag--green">Renamed</strong>
+                                    {% endif %}
+                                </span>
                             </div>
                         </td>
 
