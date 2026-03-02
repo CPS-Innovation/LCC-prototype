@@ -23,14 +23,21 @@ Rename files or folders – {{ serviceName }} – Prototype
 
         <h1 class="govuk-heading-l">Order materials</h1>
 
-        {% if folderId == 0 %}
-        <p class="govuk-body">This folder has not been ordered yet.</p>
-        {% elseif folderId == 1000 %}
-        <p class="govuk-body">{{ data['orderPerson'] }} last changed the order of this folder on {{ data['orderDate']
-            }}.</p>
+        {% set folderId = data.folderId | default(0) %}
+        {% set meta = (data.orderMeta and data.orderMeta[folderId | string]) %}
+
+        {% if folderId != 0 %}
+        {% if meta %}
+        <p class="govuk-body govuk-!-margin-left-6">
+            {{ meta.person }} last changed the order of this folder on {{ meta.date }}.
+        </p>
         {% else %}
-        <p class="govuk-body">This folder has not been ordered yet.</p>
+        <p class="govuk-body govuk-!-margin-left-6">
+            This folder has not been ordered yet.
+        </p>
         {% endif %}
+        {% endif %}
+
 
         <!-- BREADCRUMBS -->
         <div class="govuk-grid-row govuk-!-margin-top-6 govuk-!-margin-left-3">
