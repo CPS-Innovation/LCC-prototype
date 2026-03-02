@@ -2599,7 +2599,7 @@ router.post('/B-off-system-MVP/order-materials', (req, res) => {
     // folderId might be '1000' OR ['1000','0'] if duplicate fields exist
     const rawFolderId = req.body.folderId;
     const folderId = Array.isArray(rawFolderId)
-        ? Number(rawFolderId.find(v => v !== '0') ?? rawFolderId[0] ?? 0) // prefer non-root
+        ? Number(rawFolderId[0] ?? 0)  // take the first one, don't "escape" root
         : Number(rawFolderId ?? 0);
 
     req.session.data.folderId = folderId;

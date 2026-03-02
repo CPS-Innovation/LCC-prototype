@@ -214,13 +214,6 @@ Rename files or folders – {{ serviceName }} – Prototype
                             {# =============== FILE ROW =============== #}
                             <tr class="govuk-table__row material-row" data-id="{{ item.id }}" {% if item.folder
                                 %}data-folder="true" {% else %}data-folder="false" {% endif %}>
-                                <!-- <tr class="govuk-table__row material-row" data-id="{{ item.id }}" data-folder="false"> -->
-                                <!-- <td class="govuk-table__cell title_column">
-                                <ul class="govuk-summary-list__actions-list">
-                                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Move up</span><span class="govuk-visually-hidden"></span></a></li>
-                                    <li class="govuk-summary-list__actions-list-item"><a class="govuk-link" href="#"><span aria-hidden="true">Move down</span><span class="govuk-visually-hidden"></span></a></li>
-                                </ul>                    
-                            </td> -->
 
                                 <td class="govuk-table__cell order-links-cell">
                                     <div class="order-links">
@@ -238,23 +231,25 @@ Rename files or folders – {{ serviceName }} – Prototype
                                 <td class="govuk-table__cell order-input-cell">
                                     <input type="number" class="govuk-input order-input" name="order_{{ item.id }}"
                                         inputmode="numeric" value="{{ item.order | default(loop.index) }}">
-
                                 </td>
-
 
 
                                 <!-- File title -->
                                 <td class="govuk-table__cell title_column">
                                     <div class="openMe">
-                                        {{ item.name }}
-                                        {% if item.unread or item.new %}
-                                        <strong class="govuk-tag govuk-tag--blue">Unread</strong>
-                                        {% endif %}
 
-                                        {% if data.flashRenamedIds and (item.id | string) in data.flashRenamedIds %}
-                                        <strong class="govuk-tag govuk-tag--green govuk-!margin-left-1">Renamed</strong>
-                                        {% endif %}
+                                        <!-- <span class="file-name-and-tags"> -->
+                                        <span class="file-tags">
+                                            <span class="file-name">{{ item.name }}</span>
 
+                                            {% if item.unread or item.new %}
+                                            <strong class="govuk-tag govuk-tag--blue">Unread</strong>
+                                            {% endif %}
+
+                                            {% if data.flashRenamedIds and (item.id | string) in data.flashRenamedIds %}
+                                            <strong class="govuk-tag govuk-tag--green">Renamed</strong>
+                                            {% endif %}
+                                        </span>
                                     </div>
                                 </td>
 
