@@ -12,7 +12,8 @@ module.exports = function (materials) {
       if (ao !== bo) return ao - bo;
 
       // tie-break so it’s stable
-      return String(a.name || '').localeCompare(String(b.name || ''), 'en', { numeric: true, sensitivity: 'base' });
+      // tie-break so it’s stable (by id, not name)
+      return Number(a.id) - Number(b.id);
     });
 
     return children;
