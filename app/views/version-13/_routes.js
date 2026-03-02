@@ -1180,6 +1180,12 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const copyPreviewTree = data.copyPreviewTree || [];
     const movePreviewTree = data.movePreviewTree || [];
 
+    const copyDestinationId = data.copyDestinationId || 0;
+    const moveDestinationId = data.moveDestinationId || 0;
+
+    req.session.data.copyDestinationId = null;
+    req.session.data.moveDestinationId = null;
+
     // Immediately reset so they only show once
     req.session.data.copySuccess = false;
     req.session.data.moveSuccess = false;
@@ -1394,7 +1400,9 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         copyDestinationName,
         moveDestinationName,
         copyPreviewTree,
-        movePreviewTree
+        movePreviewTree,
+        copyDestinationId,
+        moveDestinationId
     });
 
     req.session.data.lastRenamedId = null;
@@ -2056,6 +2064,8 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
         : [];
 
     const destinationFolderId = req.body.destinationFolder;
+    req.session.data.copyDestinationId = destinationFolderId;
+
     const materials = (req.session.data.materials || res.locals.data.materials || []);
 
     console.log("Copying:", ids, "into folder", destinationFolderId);
@@ -2141,6 +2151,8 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
         : [];
 
     const destinationFolderId = req.body.destinationFolder;
+    req.session.data.moveDestinationId = destinationFolderId;
+
     const materials = (req.session.data.materials || res.locals.data.materials || []);
 
     console.log("Moving:", ids, "into folder", destinationFolderId);

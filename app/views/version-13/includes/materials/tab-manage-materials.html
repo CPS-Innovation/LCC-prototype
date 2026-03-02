@@ -80,7 +80,10 @@
                     {% if copyDestinationName %}
                     <p class="govuk-body">
                         They are in:
-                        <strong>{{ copyDestinationName }}</strong>
+                        <a class="govuk-link"
+                            href="/version-13/B-off-system-MVP/03-case-overview?folderId={{ copyDestinationId }}">
+                            {{ copyDestinationName }}
+                        </a>
                     </p>
                     {% else %}
                     <p class="govuk-body">
@@ -118,7 +121,10 @@
                     {% if moveDestinationName %}
                     <p class="govuk-body">
                         They are in:
-                        <strong>{{ moveDestinationName }}</strong>
+                        <a class="govuk-link"
+                            href="/version-13/B-off-system-MVP/03-case-overview?folderId={{ moveDestinationId }}">
+                            {{ moveDestinationName }}
+                        </a>
                     </p>
                     {% else %}
                     <p class="govuk-body">
