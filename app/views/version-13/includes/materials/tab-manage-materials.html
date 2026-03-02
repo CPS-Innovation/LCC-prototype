@@ -35,6 +35,110 @@
         <!-- MAIN COLUMN -->
         <div class="govuk-grid-column-full" id="materials_column_2">
 
+            <!-- Success banner -->
+            {% macro renderTree(nodes) %}
+            <ul class="govuk-list govuk-list--bullet">
+                {% for node in nodes %}
+
+                {% if node.isFolder %}
+                <li class="no-bullet" style="list-style-type:none; margin-left:-1em;">
+
+                    <span class="icon-new folder"></span>
+                    <strong>{{ node.name }}</strong>
+
+                    {% if node.children and (node.children | length) > 0 %}
+                    {{ renderTree(node.children) }}
+                    {% endif %}
+                </li>
+
+                {% else %}
+                <li>
+                    {{ node.name }}
+                </li>
+                {% endif %}
+
+                {% endfor %}
+            </ul>
+            {% endmacro %}
+
+            {% if copySuccess %}
+            <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white govuk-!-margin-bottom-4"
+                role="alert" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title">Success</h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <h3 class="govuk-notification-banner__heading">
+                        The materials have been copied
+                    </h3>
+
+                    {% if copyDestinationName %}
+                    <p class="govuk-body">
+                        They are in:
+                        <strong>{{ copyDestinationName }}</strong>
+                    </p>
+                    {% else %}
+                    <p class="govuk-body">
+                        They are in:
+                        <strong>Home: Thundercat</strong>
+                    </p>
+                    {% endif %}
+
+                    {% if copyPreviewTree and (copyPreviewTree | length) > 0 %}
+                    <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Show copied materials
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            {{ renderTree(copyPreviewTree) }}
+                        </div>
+                    </details>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% elseif moveSuccess %}
+            <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white govuk-!-margin-bottom-4"
+                role="alert" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title">Success</h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <h3 class="govuk-notification-banner__heading">
+                        The materials have been moved
+                    </h3>
+
+                    {% if moveDestinationName %}
+                    <p class="govuk-body">
+                        They are in:
+                        <strong>{{ moveDestinationName }}</strong>
+                    </p>
+                    {% else %}
+                    <p class="govuk-body">
+                        They are in:
+                        <strong>Home: Thundercat</strong>
+                    </p>
+                    {% endif %}
+
+                    {% if movePreviewTree and (movePreviewTree | length) > 0 %}
+                    <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Show moved materials
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            {{ renderTree(movePreviewTree) }}
+                        </div>
+                    </details>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+
             <!-- BREADCRUMBS -->
             <div class="govuk-grid-row govuk-!-margin-left-3">
                 <nav class="govuk-breadcrumbs govuk-!-margin-left-3" aria-label="Breadcrumb">
@@ -211,7 +315,13 @@
 
                                     </div>
 
-                                    <button type="button" id="show_General_Actions"
+                                    <button type="button" class="govuk-button govuk-button--secondary"
+                                        onclick="window.location.href='/version-13/B-off-system-MVP/new-folder';" {% if
+                                        isSearchResults %}disabled aria-disabled="true" {% endif %}>
+                                        New folder
+                                    </button>
+
+                                    <!-- <button type="button" id="show_General_Actions"
                                         class="govuk-button govuk-button--secondary" aria-expanded="false"
                                         aria-controls="general_Actions" data-module="govuk-button" {% if isSearchResults
                                         %}disabled aria-disabled="true" {% endif %}>
@@ -239,7 +349,7 @@
                                                 Create new folder
                                             </button>
                                         </form>
-                                    </div>
+                                    </div> -->
 
                                 </div>
                             </div>
@@ -261,108 +371,6 @@
 
 
 
-    <!-- Success banner -->
-    {% macro renderTree(nodes) %}
-    <ul class="govuk-list govuk-list--bullet">
-        {% for node in nodes %}
-
-        {% if node.isFolder %}
-        <li class="no-bullet" style="list-style-type:none; margin-left:-1em;">
-
-            <span class="icon-new folder"></span>
-            <strong>{{ node.name }}</strong>
-
-            {% if node.children and (node.children | length) > 0 %}
-            {{ renderTree(node.children) }}
-            {% endif %}
-        </li>
-
-        {% else %}
-        <li>
-            {{ node.name }}
-        </li>
-        {% endif %}
-
-        {% endfor %}
-    </ul>
-    {% endmacro %}
-
-    {% if copySuccess %}
-    <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white" role="alert"
-        data-module="govuk-notification-banner">
-        <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title">Success</h2>
-        </div>
-        <div class="govuk-notification-banner__content">
-            <h3 class="govuk-notification-banner__heading">
-                The materials have been copied
-            </h3>
-
-            {% if copyDestinationName %}
-            <p class="govuk-body">
-                They are in:
-                <strong>{{ copyDestinationName }}</strong>
-            </p>
-            {% else %}
-            <p class="govuk-body">
-                They are in:
-                <strong>Home: Thundercat</strong>
-            </p>
-            {% endif %}
-
-            {% if copyPreviewTree and (copyPreviewTree | length) > 0 %}
-            <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
-                <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text">
-                        Show copied materials
-                    </span>
-                </summary>
-                <div class="govuk-details__text">
-                    {{ renderTree(copyPreviewTree) }}
-                </div>
-            </details>
-            {% endif %}
-        </div>
-    </div>
-
-    {% elseif moveSuccess %}
-    <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white" role="alert"
-        data-module="govuk-notification-banner">
-        <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title">Success</h2>
-        </div>
-        <div class="govuk-notification-banner__content">
-            <h3 class="govuk-notification-banner__heading">
-                The materials have been moved
-            </h3>
-
-            {% if moveDestinationName %}
-            <p class="govuk-body">
-                They are in:
-                <strong>{{ moveDestinationName }}</strong>
-            </p>
-            {% else %}
-            <p class="govuk-body">
-                They are in:
-                <strong>Home: Thundercat</strong>
-            </p>
-            {% endif %}
-
-            {% if movePreviewTree and (movePreviewTree | length) > 0 %}
-            <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
-                <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text">
-                        Show moved materials
-                    </span>
-                </summary>
-                <div class="govuk-details__text">
-                    {{ renderTree(movePreviewTree) }}
-                </div>
-            </details>
-            {% endif %}
-        </div>
-    </div>
-    {% endif %}
 
     <!-- <p style="color:red;">
             DEBUG: filtersSearch="{{ data.filtersSearch }}", flag="{{ data.flag }}", grouped="{{ data.groupedSearchResults | length }}"
@@ -378,7 +386,30 @@
 
     {% else %}
 
+    <!-- <div class="govuk-inset-text govuk-!-margin-left-6 govuk-!-margin-top-0"> -->
+{% set folderId = data.folderId | default(0) %}
+{% set meta = (data.orderMeta and data.orderMeta[folderId | string]) %}
 
+{% if folderId != 0 %}
+  {% if meta %}
+    <p class="govuk-body govuk-!-margin-left-6">
+      {{ meta.person }} last changed the order of this folder on {{ meta.date }}.
+      <a class="govuk-link"
+         href="/version-13/B-off-system-MVP/order-materials?folderId={{ folderId }}">
+        Change order
+      </a>
+    </p>
+  {% else %}
+    <p class="govuk-body govuk-!-margin-left-6">
+      This folder has not been ordered yet.
+      <a class="govuk-link"
+         href="/version-13/B-off-system-MVP/order-materials?folderId={{ folderId }}">
+        Change order
+      </a>
+    </p>
+  {% endif %}
+{% endif %}
+    <!-- </div> -->
 
     <!-- MAIN TABLE -->
     <div class="materials-aligned">
