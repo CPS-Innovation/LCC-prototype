@@ -21,65 +21,23 @@ Rename files or folders – {{ serviceName }} – Prototype
 <div class="govuk-grid-row ur-mar-2026 order-materials-page">
     <div class="govuk-grid-column-full">
 
-        <h1 class="govuk-heading-l">Order materials</h1>
+        <h1 class="govuk-heading-l">Order materials for {{ data.folderName }}</h1>
 
         {% set folderId = data.folderId | default(0) %}
         {% set meta = (data.orderMeta and data.orderMeta[folderId | string]) %}
 
         {% if folderId != 0 %}
         {% if meta %}
-        <p class="govuk-body govuk-!-margin-left-6">
+        <p class="govuk-body govuk-!-margin-left-3">
             {{ meta.person }} last changed the order of this folder on {{ meta.date }}.
         </p>
         {% else %}
-        <p class="govuk-body govuk-!-margin-left-6">
+        <p class="govuk-body govuk-!-margin-left-3">
             This folder has not been ordered yet.
         </p>
         {% endif %}
         {% endif %}
 
-
-        <!-- BREADCRUMBS -->
-        <div class="govuk-grid-row govuk-!-margin-top-6 govuk-!-margin-left-3">
-            <nav class="govuk-breadcrumbs govuk-!-margin-left-3" aria-label="Breadcrumb">
-                <ol class="govuk-breadcrumbs__list">
-
-                    {% for crumb in breadcrumbs %}
-                    {% set isCurrent = (crumb.id | string) == (folderId | string) %}
-                    {% set isHome = loop.first %}
-                    {% set inSearchMode = data.filtersSearch %} {# or data.buildFolderResults or whatever you use #}
-
-                    <li class="govuk-breadcrumbs__list-item">
-
-                        {# Special override:
-                        If we're on Home AND in search mode, make Home clickable to clear search #}
-                        {% if isHome and inSearchMode %}
-                        <form method="post" action="/ur-mar-2026/B-off-system-MVP/clear-search" style="display:inline;">
-                            <button type="submit" class="govuk-breadcrumbs__link breadcrumb-button">
-                                {{ crumb.name }}
-                            </button>
-                        </form>
-
-                        {# Normal rule: current folder crumb is not clickable #}
-                        {% elseif isCurrent %}
-                        {{ crumb.name }}
-
-                        {# Otherwise: clickable crumb goes to that folder #}
-                        {# Otherwise: clickable crumb stays on order-materials #}
-                        {% else %}
-                        <a class="govuk-breadcrumbs__link"
-                            href="/ur-mar-2026/B-off-system-MVP/order-materials?folderId={{ crumb.id }}&folderName={{ crumb.name | urlencode }}">
-                            {{ crumb.name }}
-                        </a>
-                        {% endif %}
-
-                    </li>
-                    {% endfor %}
-
-
-                </ol>
-            </nav>
-        </div>
 
 
         <form method="post" action="/ur-mar-2026/B-off-system-MVP/order-materials" novalidate>
