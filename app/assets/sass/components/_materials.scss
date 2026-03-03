@@ -4713,3 +4713,20 @@ thead th .govuk-button {
 }
 
 // End of 2 March 2026
+
+
+// 3 March 2026
+
+/* ur-mar-2026: make order page interactive again */
+#materials_table.is-order-mode .order-input,
+#materials_table.is-order-mode .move-link {
+     pointer-events: auto !important;
+}
+
+#materials_table.is-order-mode .order-links,
+#materials_table.is-order-mode .order-links-cell,
+#materials_table.is-order-mode .order-input-cell {
+     pointer-events: auto !important;
+}
+
+// End of 3 March 2026
