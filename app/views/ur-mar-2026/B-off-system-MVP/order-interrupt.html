@@ -18,7 +18,7 @@ Changing the folder order – {{ serviceName }} – Prototype
 
     <h1 class="govuk-heading-l">Changing the folder order</h1>
 
-    <p class="govuk-body">This will remove the folder order set by {{ data.orderPerson }} on {{ data.orderDate }}.</p>
+    <p class="govuk-body">This will remove the folder order set by {% if data.orderPerson == 'You' %}you{% else %}{{ data.orderPerson }}{% endif %} on {{ data.orderDate }}.</p>
 
     <p class="govuk-body">If you continue, your new order will be applied to this folder.</p>
 
