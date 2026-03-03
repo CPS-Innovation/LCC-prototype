@@ -21,7 +21,7 @@ Rename files or folders – {{ serviceName }} – Prototype
 <div class="govuk-grid-row ur-mar-2026 order-materials-page">
     <div class="govuk-grid-column-full">
 
-        <h1 class="govuk-heading-l">Order materials for {{ data.folderName }}</h1>
+        <h1 class="govuk-heading-l">Order materials</h1>
 
         {% set folderId = data.folderId | default(0) %}
         {% set meta = (data.orderMeta and data.orderMeta[folderId | string]) %}
@@ -40,7 +40,7 @@ Rename files or folders – {{ serviceName }} – Prototype
 
 
         <!-- BREADCRUMBS -->
-        <!-- <div class="govuk-grid-row govuk-!-margin-top-6 govuk-!-margin-left-3">
+        <div class="govuk-grid-row govuk-!-margin-top-6 govuk-!-margin-left-3">
             <nav class="govuk-breadcrumbs govuk-!-margin-left-3" aria-label="Breadcrumb">
                 <ol class="govuk-breadcrumbs__list">
 
@@ -79,7 +79,7 @@ Rename files or folders – {{ serviceName }} – Prototype
 
                 </ol>
             </nav>
-        </div> -->
+        </div>
 
 
         <form method="post" action="/ur-mar-2026/B-off-system-MVP/order-materials" novalidate>
