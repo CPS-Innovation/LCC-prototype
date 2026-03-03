@@ -21,7 +21,7 @@ Rename files or folders – {{ serviceName }} – Prototype
 <div class="govuk-grid-row ur-mar-2026 order-materials-page">
     <div class="govuk-grid-column-full">
 
-        <h1 class="govuk-heading-l">Order materials for {{ data.folderName }}</h1>
+        <h1 class="govuk-heading-l">Order materials</h1>
 
         {% set folderId = data.folderId | default(0) %}
         {% set meta = (data.orderMeta and data.orderMeta[folderId | string]) %}
