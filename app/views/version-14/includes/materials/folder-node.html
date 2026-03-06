@@ -28,7 +28,11 @@
     <ul class="folder-children" hidden>
       {% for child in children %}
         {% set node = child %}
+<<<<<<<< HEAD:app/views/version-14/includes/materials/folder-node.html
         {% include "version-14/B-off-system-MVP/includes/materials/folder-node.html" %}
+========
+        {% include "ur-mar-2026-closed/B-off-system-MVP/includes/materials/folder-node.html" %}
+>>>>>>>> upstream/main:app/views/ur-mar-2026-closed/includes/materials/folder-node.html
       {% endfor %}
     </ul>
   {% endif %}
