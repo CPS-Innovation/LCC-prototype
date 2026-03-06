@@ -1,0 +1,42 @@
+{% extends "layoutCPS-OFF.html" %}
+{% block header %}
+    {% include "../../includes/banner-OFF-V7.html" %}
+{% endblock %}
+{% block beforeContent %}
+<a class="govuk-back-link" href="javascript:history.back()">Back</a>
+{% endblock %}
+{% block content %}
+
+
+<div class="govuk-grid-row" id="create-case-journey">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="gov-pages">
+            <form method="post" action="/version-14/B-off-system-MVP/create-case/02-area" id="newCase_Form-A">  
+
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            What is the division or area?
+                        </h1>
+                    </legend>
+
+                    <div class="govuk-form-group" id="newCase_Operation_AREA-Value">
+                        <!-- <label class="govuk-label" for="newCase_URN">What is the division or area?</label> -->
+
+                        <!-- <label class="govuk-label" for="newCase_Operation_AREA">Select an area</label> -->
+                        <p id="newCase_Area-error" class="govuk-error-message govuk-!-margin-bottom-2"><span class="govuk-visually-hidden">Error:</span> Select an area</p>
+                        <input class="govuk-input govuk-input--width-20" id="docType-Area" name="docType-Area" type="text" value="{{ data['area'] }}">
+                    </div>
+
+                </fieldset>
+
+                {% include "../../includes/buttons.html" %}
+            </form>
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+    </div>
+</div>
+
+{% endblock %}

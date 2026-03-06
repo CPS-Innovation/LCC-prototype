@@ -1,0 +1,100 @@
+{% extends "layoutCPS-OFF.html" %}
+
+{% block header %}
+    {% include "../../includes/banner-OFF-V7.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<!-- <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+    </div>
+</div> -->
+
+<div class="govuk-grid-row" id="create-case-journey">
+
+    <div class="govuk-grid-column-two-thirds">
+        <div class="gov-pages">
+
+            <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-4">Register a case</h1>
+            <div id="changedName-hint" class="govuk-hint">
+                You must add an operation name or suspect details to continue.
+            </div>
+
+            <form action="/version-14/B-off-system-MVP/create-case/01-register-case" method="post" novalidate>
+
+                <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                    <h2 class="govuk-fieldset__heading">
+                        Do you have an operation name?
+                    </h2>
+                    </legend>
+                    {% if firstNamesError != '' %}
+                        <span id="contact-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span> {{ firstNamesError }}
+                        </span>
+                    {% endif %}
+
+
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="operation-name-yes" name="operation-name-yes-no" type="radio" value="Yes" data-aria-controls="conditional-contact" {% if data['operationNameYesNo'] === 'Yes' %}checked {% endif %}>
+                            <label class="govuk-label govuk-radios__label" for="operation-name-yes">
+                            Yes
+                            </label>
+                        </div>
+                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact">
+                            <div class="govuk-form-group">
+                            <label class="govuk-label" for="operation-name">
+                                Operation name
+                            </label>
+                            <input class="govuk-input govuk-input--width-20" id="operation-name" name="operation-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['operationName'] }}">
+                            </div>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="operation-name-no" name="operation-name-yes-no" type="radio" value="No" data-aria-controls="conditional-contact-2" {% if not data['operationNameYesNo'] === 'No' %}checked{% endif %}>
+                            <label class="govuk-label govuk-radios__label" for="operation-name-no">
+                            No
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+                </div>
+
+                <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                    <h2 class="govuk-fieldset__heading">
+                        Do you have any suspect details?
+                    </h2>
+                    </legend>
+                    <div class="govuk-radios" data-module="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="suspect-details-yes" name="suspect-details-yes-no" type="radio" value="Yes" {% if data['suspectDetailsYesNo'] === 'Yes' %}checked{% endif %}>
+                        <label class="govuk-label govuk-radios__label" for="suspect-details-yes">
+                        Yes
+                        </label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="suspect-details-no" name="suspect-details-yes-no" type="radio" value="No" {% if not data['suspectDetailsYesNo'] === 'No' %}checked{% endif %}>
+                        <label class="govuk-label govuk-radios__label" for="suspect-details-no">
+                        No
+                        </label>
+                    </div>
+                    </div>
+                </fieldset>
+                </div>
+
+                {% include "../../includes/buttons.html" %}
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
