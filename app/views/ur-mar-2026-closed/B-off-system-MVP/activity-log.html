@@ -64,7 +64,7 @@
                             <div class="hods-timeline__item" id="audit_documents_move_folder">
                                 <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">Moved folders</strong>
                                 <h2 class="hods-timeline__title"><span class="moved_documents_folder_name"></span> have been moved to <span class="move_folder_name"></span> on the shared drive</h2>
-                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} user_testing_session@cps.gov.uk</p>
+                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usabilty.testing.session@cps.gov.uk</p>
                                 <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
                                 <p class="hods-timeline__description">Below is a list of documents/folders moved:</p>
                                 <ul class="govuk-list govuk-list--bullet moved_documents_folder_name"></ul>
@@ -77,7 +77,7 @@
                             <!-- Rename -->
                             <div class="hods-timeline__item" id="audit_documents_rename_folder">
                                 <h2 class="hods-timeline__title"><span class="folder_title"></span> has been renamed to <span class="new_folder_title"></span> on the shared drive</h2>
-                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} user_testing_session@cps.gov.uk</p>
+                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usabilty.testing.session@cps.gov.uk</p>
                                 <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
                                 <p class="hods-timeline__source">
                                     <span class="url-text title">Original name:</span> <span class="url-text">Thunderstruck > <span class="folder_title"></span></span><br>
@@ -89,7 +89,7 @@
                             <div class="hods-timeline__item" id="audit_documents_delete_folder">
                                 <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">Folder deleted</strong>
                                 <h2 class="hods-timeline__title"><span class="delete_folder_name">{{ data['shared_drive_NewFolder'] }}</span> has been deleted from the shared drive</h2>
-                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} user_testing_session@cps.gov.uk</p>
+                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usabilty.testing.session@cps.gov.uk</p>
                                 <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
                                 <p class="hods-timeline__source">
                                     <span class="url-text title">Original source:</span> <span class="url-text">Thunderstruck > <span class="delete_folder_name">{{ data['shared_drive_NewFolder'] }}</span></span><br>
@@ -100,7 +100,7 @@
                             <div class="hods-timeline__item" id="audit_documents_new_folder">
                                 <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">New folder</strong>
                                 <h2 class="hods-timeline__title"><span class="new_folder_name">{{ data['shared_drive_NewFolder'] }}</span> has been created on the shared drive</h2>
-                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} user_testing_session@cps.gov.uk</p>
+                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usabilty.testing.session@cps.gov.uk</p>
                                 <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
                                 <p class="hods-timeline__source">
                                     <span class="url-text title">New folder:</span> <span class="url-text">Thunderstruck > <span class="new_folder_name">{{ data['shared_drive_NewFolder'] }}</span></span><br>
@@ -113,7 +113,7 @@
                                 <strong class="govuk-tag govuk-tag--green" style="display: inline-block;">Completed with no errors</strong>
                                 <h2 class="hods-timeline__title">Transfer from egress to shared drive</h2>
                                 <!-- <h2 class="hods-timeline__title">Documents/folders moved from egress to the shared drive in <span class="transfer_folder_name"></span></h2> -->
-                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} user_testing_session@cps.gov.uk</p>
+                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usabilty.testing.session@cps.gov.uk</p>
                                 <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
                                 <p class="hods-timeline__source">
                                     <span class="url-text title">Source:</span> <span class="url-text">Egress > Investigator</span><br>
@@ -135,7 +135,7 @@
                                 <strong class="govuk-tag govuk-tag--green" style="display: inline-block;">Completed with no errors</strong>
                                 <h2 class="hods-timeline__title">Transfer from egress to shared drive</h2>
                                 <!-- <h2 class="hods-timeline__title">Documents/folders copied from egress to the shared drive in <span class="transfer_folder_name"></span></h2> -->
-                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} user_testing_session@cps.gov.uk</p>
+                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usabilty.testing.session@cps.gov.uk</p>
                                 <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
                                 <p class="hods-timeline__source">
                                     <span class="url-text title">Source:</span> <span class="url-text">Egress > Investigator</span><br>
@@ -156,7 +156,7 @@
                             {% if data['offCMS_Egress_files'] == 'Yes' or data['offCMS_Egress_files_V2'] == 'Yes' %}
                                 <div class="hods-timeline__item">
                                     <h2 class="hods-timeline__title">Case connected to Egress</h2>
-                                    <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} user_testing_session@cps.gov.uk</p>
+                                    <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usabilty.testing.session@cps.gov.uk</p>
                                     <p class="hods-timeline__date"><span id="egress-stamp">Today, 12:05pm</span></p>
                                 </div>
                             {% else %}
@@ -175,7 +175,7 @@
                             {% if data['offCMS_PDrive_files'] or data['offCMS_PDrive_files_V2'] %}
                                 <div class="hods-timeline__item">
                                     <h2 class="hods-timeline__title">Case connected to the Shared drive</h2>
-                                    <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} user_testing_session@cps.gov.uk</p>
+                                    <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usabilty.testing.session@cps.gov.uk</p>
                                     <p class="hods-timeline__date"><span id="shared_drive-stamp">Today, 12:05pm</span></p>
                                 </div>
                             {% else %}
@@ -202,7 +202,7 @@
                                     {% elseif data['newCase_DefendantName-CompanyName'] %}
                                         <h2 class="hods-timeline__title"> Case was {{ data['newCase_DefendantName-CompanyName'] }} created</h2>
                                     {% endif %}
-                                    <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} user_testing_session@cps.gov.uk</p>
+                                    <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usabilty.testing.session@cps.gov.uk</p>
                                     <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
                                 </div>
                             {% else %}
@@ -223,7 +223,7 @@
                                 {% endif %}
                                 <h2 class="hods-timeline__title">Transfer from egress to shared drive</h2>
                                 <!-- <h2 class="hods-timeline__title">mg11_BLAYNEE.pdf have been copied to Thunderstruck on the shared drive</h2> -->
-                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} user_testing_session@cps.gov.uk</p>
+                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usabilty.testing.session@cps.gov.uk</p>
                                 <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
                                 {% if data['file_locked_transfer'] == 'Try again' or data['file_locked_transfer'] == 'Duplicate file' %}
                                     <p class="hods-timeline__description">1 file was transferred.</p>
@@ -257,7 +257,7 @@
                                 <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">Transfer</strong>
                                 <strong class="govuk-tag govuk-tag--green" style="display: inline-block;">Completed with no errors</strong>
                                 <h2 class="hods-timeline__title">Transfer from egress to shared drive</h2>
-                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} user_testing_session@cps.gov.uk</p>
+                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usabilty.testing.session@cps.gov.uk</p>
                                 <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
                                 <p class="hods-timeline__description">75 files were transferred.</p>
                                 <p class="hods-timeline__source">
@@ -368,7 +368,7 @@
                                     <strong class="govuk-tag govuk-tag--yellow" style="display: inline-block;">Completed with errors</strong>
                                 {% endif %}
             -->                        <h2 class="hods-timeline__title">Transfer from egress to shared drive</h2>
-                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} user_testing_session@cps.gov.uk</p>
+                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usabilty.testing.session@cps.gov.uk</p>
                                 <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
                                 {% if data['duplicate_files_transfer'] == 'Overwrite existing files' %}
                                     <p class="hods-timeline__description">75 files were transferred.</p>
@@ -489,7 +489,7 @@
                                     <strong class="govuk-tag govuk-tag--red" style="display: inline-block;">Failed</strong>
                                 {% endif %}
             -->                        <h2 class="hods-timeline__title">Transfer from egress to shared drive</h2>
-                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} user_testing_session@cps.gov.uk</p>
+                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usabilty.testing.session@cps.gov.uk</p>
                                 <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
             <!--                         {% if data['failed_file_transfer'] == 'Try again,false' %}
                                     <p class="hods-timeline__description">2 folders and 151 files were transferred.</p>
@@ -691,7 +691,7 @@
                                 <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">Transfer</strong>
                                 <strong class="govuk-tag govuk-tag--green" style="display: inline-block;">Completed</strong>                    
                                 <h2 class="hods-timeline__title">Transfer from egress to shared drive</h2>
-                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} user_testing_session@cps.gov.uk</p>
+                                <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usabilty.testing.session@cps.gov.uk</p>
                                 <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
                                 <p class="hods-timeline__description">200 files were transferred.</p>
                                 <p class="hods-timeline__source">

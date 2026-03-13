@@ -1141,6 +1141,7 @@ const createMaterialsUtils = require('../../helpers/materials.js');
 router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const data = req.session.data;
     const materials = data.materials || [];
+    const transferMaterials = data.transferMaterials || [];
 
     // ✅ Seed default "last ordered" metadata (prototype baseline)
     data.orderMeta = data.orderMeta || {};
@@ -1206,6 +1207,14 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     // 1. Get the raw children of this folder
     // ================================
     let children = utils.getChildren(folderId);
+
+    // Current folder
+    const transferFolderId = Number(data.folderId ?? 0);
+
+    // ================================
+    // 1. Get the raw children of this folder
+    // ================================
+    let transferChildren = utils.getChildren(transferFolderId);
 
     // ================================
     // 2. Apply filters
@@ -1387,6 +1396,8 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     // ================================
     res.render('manage-materials-beta-v1/B-off-system-MVP/03-case-overview', {
         materials,
+        transferMaterials,
+        transferChildren,
         data,
         children,           // now filtered!
         breadcrumbs,
