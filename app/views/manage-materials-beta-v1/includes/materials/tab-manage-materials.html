@@ -466,17 +466,9 @@
                     </th>
 
                     <th scope="col" class="govuk-table__header">
-                        <button type="button"
-                            class="govuk-link govuk-link--no-visited-state table-sort table-sort--disabled" disabled
-                            aria-disabled="true">
-                            Description
-                        </button>
-                    </th>
-
-                    <th scope="col" class="govuk-table__header">
                         <button type="button" class="govuk-link govuk-link--no-visited-state table-sort"
-                            data-sort="category">
-                            Category
+                            data-sort="type">
+                            Type
                         </button>
                     </th>
 
@@ -554,14 +546,9 @@
                         </div>
                     </td>
 
-                    <!-- Last updated (optional for folders) -->
-                    <td class="govuk-table__cell description_column">
-                        {{ item.description or "" }}
-                    </td>
-
                     <!-- Status (usually blank or basic tag for folders) -->
                     <td class="govuk-table__cell category_column">
-                        {{ item.category or "" }}
+                        {{ item.type or "" }}
                     </td>
 
                     <!-- Copy / Move here action -->
@@ -608,10 +595,6 @@
                             <span class="file-tags">
                                 <span class="file-name">{{ item.name }}</span>
 
-                                {% if item.unread or item.new %}
-                                <strong class="govuk-tag govuk-tag--blue">Unread</strong>
-                                {% endif %}
-
                                 {% if data.flashRenamedIds and (item.id | string) in data.flashRenamedIds %}
                                 <strong class="govuk-tag govuk-tag--green">Renamed</strong>
                                 {% endif %}
@@ -619,14 +602,9 @@
                         </div>
                     </td>
 
-                    <!-- Date -->
-                    <td class="govuk-table__cell">
-                        {{ item.description or "" }}
-                    </td>
-
                     <!-- Status -->
                     <td class="govuk-table__cell">
-                        {{ item.category or "" }}
+                        {{ item.type or "" }}
                     </td>
 
                     <!-- Preview for files -->
@@ -644,7 +622,7 @@
                 {% if not item.folder %}
                 <tr class="govuk-table__row hidden_row sortable-ignore" data-row_id="{{ item.id }}"
                     style="display:none;">
-                    <td colspan="{{ 7 if showOrderColumn else 6 }}">
+                    <td colspan="{{ 6 if showOrderColumn else 4 }}">
                         <div class="document_holder">
                             <embed src="{{ item.previewLink }}" type="application/pdf">
                         </div>

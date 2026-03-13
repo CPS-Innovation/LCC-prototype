@@ -908,6 +908,40 @@ document.addEventListener('DOMContentLoaded', function () {
      updateButtonState();
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+     const transferButton = document.getElementById('transferNowButton');
+     if (!transferButton) return;
+
+     function getCheckedTransferIds() {
+          return Array.from(document.querySelectorAll('input.js-transfer-checkbox:checked'))
+               .filter(cb => cb.value && cb.value !== 'ALL')
+               .map(cb => cb.value.toString());
+     }
+
+     function updateTransferButtonState() {
+          const enabled = getCheckedTransferIds().length > 0;
+          transferButton.disabled = !enabled;
+          transferButton.classList.toggle('govuk-button--disabled', !enabled);
+     }
+
+     document.addEventListener('change', function (e) {
+          if (e.target.matches('input.js-transfer-select-all')) {
+               const all = document.querySelectorAll('input.js-transfer-checkbox');
+               all.forEach(cb => {
+                    cb.checked = e.target.checked;
+               });
+               updateTransferButtonState();
+               return;
+          }
+
+          if (e.target.matches('input.js-transfer-checkbox')) {
+               updateTransferButtonState();
+          }
+     });
+
+     updateTransferButtonState();
+});
+
 
 
 
@@ -1447,6 +1481,21 @@ $(document).ready(function () {
           $panel.toggle();
      });
 
+     $version11.find("#show_Transfer_Actions").on("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const $btn = $(this);
+          const $menu = $btn.closest(".moj-button-menu");
+          const $panel = $menu.find("#transfer_Actions");
+
+          const left = $btn.offset().left - $menu.offset().left;
+          $panel.css({ left });
+
+          $btn.toggleClass("active");
+          $panel.toggle();
+     });
+
      $version13.find("#show_General_Actions").on("click", function (e) {
           e.preventDefault();
           e.stopPropagation();
@@ -1555,6 +1604,15 @@ $(document).on("click", function (e) {
           !$btnComms.is(e.target) && $btnComms.has(e.target).length === 0) {
           $panelComms.hide();
           $btnComms.removeClass("active");
+     }
+
+     var $btnTransfer = $version11.find("#show_Transfer_Actions");
+     var $panelTransfer = $version11.find("#transfer_Actions");
+
+     if (!$panelTransfer.is(e.target) && $panelTransfer.has(e.target).length === 0 &&
+          !$btnTransfer.is(e.target) && $btnTransfer.has(e.target).length === 0) {
+          $panelTransfer.hide();
+          $btnTransfer.removeClass("active");
      }
 
      var $btnGen = $version11.find("#show_General_Actions");

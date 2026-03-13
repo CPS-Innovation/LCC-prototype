@@ -7,6 +7,42 @@
 {% block beforeContent %}
 {% endblock %}
 
+{% block pageScripts %}
+<style>
+  #tab-2-content #materials_table {
+    table-layout: auto;
+  }
+
+  #tab-2-content #materials_table th:last-child,
+  #tab-2-content #materials_table td:last-child {
+    white-space: nowrap;
+    width: 140px;
+  }
+
+  #tab-2-content #materials_table .category_column,
+  #tab-2-content #materials_table td:nth-child(3) {
+    white-space: nowrap;
+    width: 180px;
+  }
+
+  #tab-2-content #materials_table .title_column {
+    width: 50%;
+    max-width: 50%;
+    white-space: normal;
+  }
+
+  #tab-2-content #materials_table .folder-name-and-tags,
+  #tab-2-content #materials_table .file-tags,
+  #tab-2-content #materials_table .material-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    white-space: normal;
+  }
+</style>
+{% endblock %}
+
 {% block v11Content %}
 
 <div class="govuk-grid-row">

@@ -1,6 +1,8 @@
 <!-- ///////////////////////////////// TAB 1 - CONTENT - START ///////////////////////////////// -->
 <div class="tab-manage-materials-page">
 
+    {% set transferItems = data.transferEgress | default([]) %}
+
     <div class="govuk-grid-row">
 
         <h2 class="govuk-heading-m govuk-!-margin-left-3 govuk-!-margin-top-0 govuk-!-margin-bottom-4">
@@ -10,15 +12,140 @@
         <p class="govuk-body govuk-!-margin-left-3 govuk-!-margin-bottom-3">
             Select the files or folders you want to transfer and where you want to put them.<br>
             You can also transfer <a class="govuk-link">from the shared drive to Egress.</a>
-
         </p>
-        <!-- <p class="govuk-!-margin-left-3">To rename multiple items, select them and choose 'Rename selected items' from Actions on selection.</p> -->
+
         <div class="materials-aligned">
             <hr>
         </div>
     </div>
 
+    <div class="govuk-grid-row govuk-!-margin-top-2">
+        <div class="govuk-grid-column-full" id="transfer_materials_column">
+
+            <div class="govuk-grid-row govuk-!-margin-left-3">
+                <nav class="govuk-breadcrumbs govuk-!-margin-left-3" aria-label="Breadcrumb">
+                    <ol class="govuk-breadcrumbs__list">
+                        <li class="govuk-breadcrumbs__list-item">Egress</li>
+                        <li class="govuk-breadcrumbs__list-item">Investigator</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="govuk-grid-row govuk-!-margin-left-3">
+                <div class="govuk-grid-column-full">
+                    <div class="materials-toolbar govuk-!-margin-top-3 govuk-!-margin-bottom-4">
+                        <div class="materials-toolbar__actions">
+                            <div class="actions_holder">
+                                <div class="moj-button-menu">
+                                    <button type="button" id="show_Transfer_Actions"
+                                        class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                                        Actions on selection
+                                        <svg width="11" height="5" viewBox="0 0 11 5"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5.5 0L11 5L0 5L5.5 0Z" fill="currentColor"></path>
+                                        </svg>
+                                    </button>
+
+                                    <div class="hidden_buttons" id="transfer_Actions">
+                                        <button id="transferNowButton"
+                                            class="govuk-button govuk-button--disabled" type="button" disabled>
+                                            Transfer selected items
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="materials-aligned">
+                <div class="materials-table-wrapper">
+                    <table class="govuk-table sortable" id="transfer_materials_table">
+                        <thead class="govuk-table__head">
+                            <tr class="govuk-table__row">
+                                <th scope="col" class="govuk-table__header">
+                                    <div class="govuk-checkboxes govuk-checkboxes--small MT-15">
+                                        <div class="govuk-checkboxes__item">
+                                            <input class="govuk-checkboxes__input js-transfer-select-all"
+                                                id="transfer_documents_ALL" type="checkbox" value="ALL">
+                                            <label class="govuk-label govuk-checkboxes__label"
+                                                for="transfer_documents_ALL"></label>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th scope="col" class="govuk-table__header">
+                                    <button type="button" class="govuk-link govuk-link--no-visited-state table-sort"
+                                        data-sort="name">
+                                        File or folder
+                                    </button>
+                                </th>
+                                <th scope="col" class="govuk-table__header">
+                                    <button type="button"
+                                        class="govuk-link govuk-link--no-visited-state table-sort table-sort--disabled"
+                                        disabled aria-disabled="true">
+                                        Description
+                                    </button>
+                                </th>
+                                <th scope="col" class="govuk-table__header">
+                                    <button type="button" class="govuk-link govuk-link--no-visited-state table-sort"
+                                        data-sort="category">
+                                        Category
+                                    </button>
+                                </th>
+                                <th scope="col" class="govuk-table__header"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="govuk-table__body">
+                            {% for item in transferItems %}
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">
+                                    <div class="govuk-checkboxes govuk-checkboxes--small">
+                                        <div class="govuk-checkboxes__item">
+                                            <input class="govuk-checkboxes__input js-transfer-checkbox"
+                                                id="transfer_select_{{ item.id }}" type="checkbox"
+                                                name="transfer_document" value="{{ item.id }}"
+                                                data-name="{{ item.name }}" data-folder="{{ item.folder }}">
+                                            <label class="govuk-label govuk-checkboxes__label"
+                                                for="transfer_select_{{ item.id }}"></label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="govuk-table__cell title_column">
+                                    {% if item.folder %}
+                                    <span class="folder-name-and-tags">
+                                        <span class="icon-new folder"></span>
+                                        <span class="folder-name">{{ item.name }}</span>
+                                    </span>
+                                    {% else %}
+                                    <span class="file-tags">
+                                        <span class="file-name">{{ item.name }}</span>
+                                    </span>
+                                    {% endif %}
+                                </td>
+                                <td class="govuk-table__cell">{{ item.description or "" }}</td>
+                                <td class="govuk-table__cell">{{ item.category or "" }}</td>
+                                <td class="govuk-table__cell">
+                                    {% if not item.folder and item.previewLink %}
+                                    <a class="govuk-link" href="{{ item.previewLink }}" target="_blank"
+                                        rel="noopener noreferrer">Preview</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {% if not transferItems or (transferItems | length) == 0 %}
+            <p class="no_results">
+                <strong>No results</strong> found in Egress
+            </p>
+            {% endif %}
+
+        </div>
+    </div>
+
 </div>
-
-
 <!-- ///////////////////////////////// TAB 1 - CONTENT - END ///////////////////////////////// -->

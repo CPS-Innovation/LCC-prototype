@@ -13,13 +13,22 @@ router.use((req, res, next) => {
 
 
 router.use((req, res, next) => {
-    if (!Array.isArray(req.session.data.materialsVersion13)) {
-        const defaults = res.locals.data.materialsVersion13 || [];
-        req.session.data.materialsVersion13 = JSON.parse(JSON.stringify(defaults));
+    if (!Array.isArray(req.session.data.materialsBetaV1Session)) {
+        const defaults = res.locals.data.materialsBetaV1 || [];
+        req.session.data.materialsBetaV1Session = JSON.parse(JSON.stringify(defaults));
     }
 
-    // In v13, materials === materialsVersion13 (rendering alias)
-    res.locals.data.materials = req.session.data.materialsVersion13;
+    Object.defineProperty(req.session.data, 'materials', {
+        get() {
+            return this.materialsBetaV1Session;
+        },
+        set(value) {
+            this.materialsBetaV1Session = value;
+        },
+        configurable: true
+    });
+
+    res.locals.data.materials = req.session.data.materialsBetaV1Session;
 
     next();
 });
@@ -1143,6 +1152,15 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const materials = data.materials || [];
     const transferMaterials = data.transferMaterials || [];
 
+    function sortByName(items) {
+        return [...items].sort((a, b) =>
+            String(a?.name || '').localeCompare(String(b?.name || ''), 'en', {
+                numeric: true,
+                sensitivity: 'base'
+            })
+        );
+    }
+
     // ✅ Seed default "last ordered" metadata (prototype baseline)
     data.orderMeta = data.orderMeta || {};
 
@@ -1256,6 +1274,9 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     if (statusFilters.length > 0) {
         children = children.filter(m => statusFilters.includes(m.status));
     }
+
+    children = sortByName(children);
+
     // Breadcrumbs unaffected
     const breadcrumbs = utils.getBreadcrumbs(folderId);
 
@@ -1380,7 +1401,21 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
             }
         });
 
-        return Object.values(groups).filter(g => g.folder || (g.files && g.files.length));
+        return Object.values(groups)
+            .filter(g => g.folder || (g.files && g.files.length))
+            .map(group => ({
+                ...group,
+                files: sortByName(group.files || [])
+            }))
+            .sort((a, b) => {
+                const aName = a.folder ? a.folder.name : (a.files[0]?.name || '');
+                const bName = b.folder ? b.folder.name : (b.files[0]?.name || '');
+
+                return String(aName).localeCompare(String(bName), 'en', {
+                    numeric: true,
+                    sensitivity: 'base'
+                });
+            });
     }
 
     const groupedSearchResults = buildGroupedSearchResults(materials, search);
@@ -1442,6 +1477,8 @@ router.get('/manage-materials-beta-v1/manage-materials', function (req, res) {
 
 
 router.post('/B-off-system-MVP/case-overview-folder', function (req, res) {
+    const materials = req.session.data.materials || [];
+
     // req.session.data.currentLevel = req.body['currentLevel']
     // req.session.data.selectedFolder = req.body['selectedFolder']
     req.session.data.searchLabel = req.body['searchLabel']
@@ -1452,6 +1489,7 @@ router.post('/B-off-system-MVP/case-overview-folder', function (req, res) {
     console.log("Selected folder name:", req.session.data.folderName)
     req.session.data.level = req.body['level']
     console.log("Selected level:", req.session.data.level)
+    let parentFolder = null;
     if (req.session.data.folderName) {
         parentFolder = materials.find(m => m.name === req.session.data.folderName && m.folder);
     }
@@ -1467,6 +1505,7 @@ router.post('/B-off-system-MVP/case-overview-folder', function (req, res) {
 
 
 router.post('/B-off-system-MVP/case-overview-search-folder', function (req, res) {
+    const materials = req.session.data.materials || [];
 
     // Incoming from form/button
     const folderId = req.body.folderId;
@@ -1608,7 +1647,7 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
     const reason = req.body.discarding_material;
 
     // SOURCE OF TRUTH (v12)
-    const materials = req.session.data.materialsVersion13 || [];
+    const materials = req.session.data.materials || [];
 
     // If folders should remove descendants too, expand IDs:
     const toRemove = new Set(selected.map(String));
@@ -1634,7 +1673,7 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
         });
     }
 
-    req.session.data.materialsVersion13 = materials.filter(
+    req.session.data.materials = materials.filter(
         m => !toRemove.has(String(m.id))
     );
 
