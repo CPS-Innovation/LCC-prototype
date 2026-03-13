@@ -870,11 +870,11 @@ document.addEventListener("DOMContentLoaded", () => {
 // Discarding materials
 // Discarding materials (works for normal + search)
 document.addEventListener('DOMContentLoaded', function () {
-     const form = document.getElementById('discardForm');
-     const hiddenInput = document.getElementById('material_selected');
-     const discardButton = document.getElementById('discardButton');
+     const forms = Array.from(document.querySelectorAll('form[id="discardForm"]'));
+     const hiddenInputs = Array.from(document.querySelectorAll('input[id="material_selected"]'));
+     const discardButtons = Array.from(document.querySelectorAll('button[id="discardButton"]'));
 
-     if (!form || !hiddenInput || !discardButton) return;
+     if (!forms.length || !hiddenInputs.length || !discardButtons.length) return;
 
      function getCheckedIds() {
           return Array.from(document.querySelectorAll('input.js-material-checkbox:checked'))
@@ -885,8 +885,10 @@ document.addEventListener('DOMContentLoaded', function () {
      function updateButtonState() {
           const selected = getCheckedIds();
           const enabled = selected.length > 0;
-          discardButton.disabled = !enabled;
-          discardButton.classList.toggle('govuk-button--disabled', !enabled);
+          discardButtons.forEach(function (discardButton) {
+               discardButton.disabled = !enabled;
+               discardButton.classList.toggle('govuk-button--disabled', !enabled);
+          });
      }
 
      document.addEventListener('change', function (e) {
@@ -895,8 +897,12 @@ document.addEventListener('DOMContentLoaded', function () {
           }
      });
 
-     form.addEventListener('submit', function () {
-          hiddenInput.value = getCheckedIds().join(',');
+     forms.forEach(function (form, index) {
+          form.addEventListener('submit', function () {
+               if (hiddenInputs[index]) {
+                    hiddenInputs[index].value = getCheckedIds().join(',');
+               }
+          });
      });
 
      updateButtonState();
@@ -917,61 +923,174 @@ document.addEventListener('DOMContentLoaded', function () {
 
 ///////////////////////////////////////////////////// CHRIS CODE - START /////////////////////////////////////////////////////
 
-// TABS
-$(document).ready(function () {
-     // Only target elements within version-11
-     var $version11 = $('.version-11');
 
-     $version11.find("#new-tabs .tab-link").on("click", function (e) {
-          e.preventDefault();
-          $version11.find('ul#new-tabs li').removeClass('govuk-tabs__list-item--selected');
-          $(this).parent().addClass('govuk-tabs__list-item--selected');
+// Mónica – 11 March 2026
 
-          $version11.find('.extra-nav').hide();
-          $version11.find('.extended-navigation').removeClass('govuk-tabs__list-item--selected');
-          $version11.find('.show-hide').removeClass('active');
+/////////////////////////////////////////////////////
+// Manage materials beta tabs (case overview)
+/////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////
+// manage-materials-beta-v1 case overview tabs
+/////////////////////////////////////////////////////
+
+document.addEventListener("DOMContentLoaded", function () {
+     const tabsWrap = document.getElementById("manage-materials-beta-v1-tabs");
+     if (!tabsWrap) return;
+
+     const tabLinks = tabsWrap.querySelectorAll(".manage-materials-beta-v1-tab-link");
+     const tabItems = tabsWrap.querySelectorAll(".manage-materials-beta-v1-tabs-item");
+     const tabPanels = tabsWrap.querySelectorAll(".manage-materials-beta-v1-tab-panel");
+
+     console.log("links found:", tabLinks.length);
+     console.log("panels found:", tabPanels.length);
+
+     function openManageMaterialsBetaTab(panelId) {
+          console.log("opening panel:", panelId);
+
+          tabPanels.forEach(function (panel) {
+               console.log("checking panel:", panel.id);
+
+               if (panel.id === panelId) {
+                    panel.style.display = "block";
+               } else {
+                    panel.style.display = "none";
+               }
+          });
+
+          tabItems.forEach(function (item) {
+               item.classList.remove("govuk-tabs__list-item--selected");
+          });
+
+          tabLinks.forEach(function (link) {
+               const parentItem = link.closest(".manage-materials-beta-v1-tabs-item");
+               if (!parentItem) return;
+
+               if (link.getAttribute("data-mm-panel") === panelId) {
+                    parentItem.classList.add("govuk-tabs__list-item--selected");
+               }
+          });
+     }
+
+     tabLinks.forEach(function (link) {
+          link.addEventListener("click", function (e) {
+               e.preventDefault();
+               e.stopPropagation();
+
+               const panelId = this.getAttribute("data-mm-panel");
+               console.log("clicked:", panelId);
+               openManageMaterialsBetaTab(panelId);
+          });
      });
-
-     $version11.find('.tab-1-content').on("click", function (e) {
-          $version11.find('.panel').hide();
-          $version11.find('#tab-1-content').show();
-     });
-
-     $version11.find('.tab-2-content').on("click", function (e) {
-          $version11.find('.panel').hide();
-          $version11.find('#tab-2-content').show();
-     });
-
-     $version11.find('.tab-3-content').on("click", function (e) {
-          $version11.find('.panel').hide();
-          $version11.find('#tab-3-content').show();
-          $version11.find('#tab-list').show();
-          $version11.find('#docCopy').hide();
-     });
-
-     $version11.find('.tab-3-content_link').on("click", function (e) {
-          $version11.find('.panel').hide();
-          $version11.find('#tab-3-content').show();
-          $version11.find('#tab-list').show();
-          $version11.find('#docCopy').hide();
-     });
-
-     $version11.find('.tab-4-content').on("click", function (e) {
-          $version11.find('.panel').hide();
-          $version11.find('#tab-4-content').show();
-     });
-
-     $version11.find('.tab-5-content').on("click", function (e) {
-          $version11.find('.panel').hide();
-          $version11.find('#tab-5-content').show();
-     });
-
-     $version11.find('.tab-5-content_link').on("click", function (e) {
-          $version11.find('.panel').hide();
-          $version11.find('#tab-5-content').show();
-     });
-
 });
+
+
+// TABS
+// $(document).ready(function () {
+//      var $scope = $('.version-11');
+
+//      if (!$scope.length) {
+//           $scope = $(document);
+//      }
+
+//      $scope.find('#new-tabs .tab-link').on('click', function (e) {
+//           e.preventDefault();
+
+//           var $link = $(this);
+//           var $tabs = $link.closest('#new-tabs');
+//           var target = $link.data('target');
+
+//           if (!target) return;
+
+//           $tabs.find('.govuk-tabs__list-item').removeClass('govuk-tabs__list-item--selected');
+//           $link.parent().addClass('govuk-tabs__list-item--selected');
+
+//           $tabs.find('.panel').hide();
+//           $tabs.find(target).show();
+
+//           $scope.find('.extra-nav').hide();
+//           $scope.find('.extended-navigation').removeClass('govuk-tabs__list-item--selected');
+//           $scope.find('.show-hide').removeClass('active');
+
+//           if (target === '#tab-3-content') {
+//                $scope.find('#tab-list').show();
+//                $scope.find('#docCopy').hide();
+//           }
+//      });
+
+//      $scope.find('.tab-3-content_link').on('click', function (e) {
+//           e.preventDefault();
+//           $scope.find('.panel').hide();
+//           $scope.find('#tab-3-content').show();
+//           $scope.find('#tab-list').show();
+//           $scope.find('#docCopy').hide();
+//      });
+
+//      $scope.find('.tab-5-content_link').on('click', function (e) {
+//           e.preventDefault();
+//           $scope.find('.panel').hide();
+//           $scope.find('#tab-5-content').show();
+//      });
+// });
+
+// End of 11 March 2026
+
+
+// TABS
+// $(document).ready(function () {
+//      // Only target elements within version-11
+//      var $version11 = $('.version-11');
+
+//      $version11.find("#new-tabs .tab-link").on("click", function (e) {
+//           e.preventDefault();
+//           $version11.find('ul#new-tabs li').removeClass('govuk-tabs__list-item--selected');
+//           $(this).parent().addClass('govuk-tabs__list-item--selected');
+
+//           $version11.find('.extra-nav').hide();
+//           $version11.find('.extended-navigation').removeClass('govuk-tabs__list-item--selected');
+//           $version11.find('.show-hide').removeClass('active');
+//      });
+
+//      $version11.find('.tab-1-content').on("click", function (e) {
+//           $version11.find('.panel').hide();
+//           $version11.find('#tab-1-content').show();
+//      });
+
+//      $version11.find('.tab-2-content').on("click", function (e) {
+//           $version11.find('.panel').hide();
+//           $version11.find('#tab-2-content').show();
+//      });
+
+//      $version11.find('.tab-3-content').on("click", function (e) {
+//           $version11.find('.panel').hide();
+//           $version11.find('#tab-3-content').show();
+//           $version11.find('#tab-list').show();
+//           $version11.find('#docCopy').hide();
+//      });
+
+//      $version11.find('.tab-3-content_link').on("click", function (e) {
+//           $version11.find('.panel').hide();
+//           $version11.find('#tab-3-content').show();
+//           $version11.find('#tab-list').show();
+//           $version11.find('#docCopy').hide();
+//      });
+
+//      $version11.find('.tab-4-content').on("click", function (e) {
+//           $version11.find('.panel').hide();
+//           $version11.find('#tab-4-content').show();
+//      });
+
+//      $version11.find('.tab-5-content').on("click", function (e) {
+//           $version11.find('.panel').hide();
+//           $version11.find('#tab-5-content').show();
+//      });
+
+//      $version11.find('.tab-5-content_link').on("click", function (e) {
+//           $version11.find('.panel').hide();
+//           $version11.find('#tab-5-content').show();
+//      });
+
+// });
 
 // FILTER
 $(document).ready(function () {
@@ -1313,13 +1432,13 @@ $(document).ready(function () {
      var $version13 = $('.version-13');
 
 
-     $version11.find("#show_Materials_Actions").on("click", function (e) {
+     $version11.find('button[id="show_Materials_Actions"]').on("click", function (e) {
           e.preventDefault();
           e.stopPropagation();
 
           const $btn = $(this);
           const $menu = $btn.closest(".moj-button-menu"); // anchor container
-          const $panel = $menu.find("#materials_Actions");
+          const $panel = $menu.find('div[id="materials_Actions"]').first();
 
           const left = $btn.offset().left - $menu.offset().left;
           $panel.css({ left });
@@ -1415,14 +1534,19 @@ $(document).ready(function () {
 $(document).on("click", function (e) {
      var $version11 = $('.version-11');
 
-     var $btnMat = $version11.find("#show_Materials_Actions");
-     var $panelMat = $version11.find("#materials_Actions");
+     $version11.find(".moj-button-menu").each(function () {
+          var $menu = $(this);
+          var $btnMat = $menu.find('button[id="show_Materials_Actions"]').first();
+          var $panelMat = $menu.find('div[id="materials_Actions"]').first();
 
-     if (!$panelMat.is(e.target) && $panelMat.has(e.target).length === 0 &&
-          !$btnMat.is(e.target) && $btnMat.has(e.target).length === 0) {
-          $panelMat.hide();
-          $btnMat.removeClass("active");
-     }
+          if (!$btnMat.length || !$panelMat.length) return;
+
+          if (!$panelMat.is(e.target) && $panelMat.has(e.target).length === 0 &&
+               !$btnMat.is(e.target) && $btnMat.has(e.target).length === 0) {
+               $panelMat.hide();
+               $btnMat.removeClass("active");
+          }
+     });
 
      var $btnComms = $version11.find("#show_Comms_Actions");
      var $panelComms = $version11.find("#comms_Actions");
@@ -1880,9 +2004,8 @@ function closeNotesModal() {
      console.log("Copy code is running");
      document.body.dataset.materialsMode = "copy";
 
-     const copyBtn = document.getElementById('copyButton');
-     const moveBtn = document.getElementById('moveButton');
-     const toggleBtn = document.getElementById('show_Materials_Actions');
+     const copyBtns = Array.from(document.querySelectorAll('button[id="copyButton"]'));
+     const moveBtns = Array.from(document.querySelectorAll('button[id="moveButton"]'));
 
 
      function getSelectedMaterialIds() {
@@ -1891,7 +2014,11 @@ function closeNotesModal() {
           ).map(x => x.value);
      }
 
-     function activateMode(mode) {
+     function activateMode(mode, triggerBtn) {
+          const toggleBtn = triggerBtn && triggerBtn.closest('.moj-button-menu')
+               ? triggerBtn.closest('.moj-button-menu').querySelector('button[id="show_Materials_Actions"]')
+               : null;
+
           if (toggleBtn) toggleBtn.click();
 
           document.querySelectorAll('.show_material_actions').forEach(btn => btn.remove());
@@ -1945,8 +2072,13 @@ function closeNotesModal() {
           form.submit();
      }
 
-     if (copyBtn) copyBtn.addEventListener('click', () => activateMode('copy'));
-     if (moveBtn) moveBtn.addEventListener('click', () => activateMode('move'));
+     copyBtns.forEach(copyBtn => {
+          copyBtn.addEventListener('click', () => activateMode('copy', copyBtn));
+     });
+
+     moveBtns.forEach(moveBtn => {
+          moveBtn.addEventListener('click', () => activateMode('move', moveBtn));
+     });
 
 })();
 
@@ -1957,19 +2089,19 @@ function getSelectedMaterialIds() {
           .join(',');
 }
 
-const copyForm = document.getElementById('copyForm');
-if (copyForm) {
+document.querySelectorAll('form[id="copyForm"]').forEach((copyForm, index) => {
      copyForm.addEventListener('submit', () => {
-          document.getElementById('copy_selected_ids').value = getSelectedMaterialIds();
+          const inputs = document.querySelectorAll('input[id="copy_selected_ids"]');
+          if (inputs[index]) inputs[index].value = getSelectedMaterialIds();
      });
-}
+});
 
-const moveForm = document.getElementById('moveForm');
-if (moveForm) {
+document.querySelectorAll('form[id="moveForm"]').forEach((moveForm, index) => {
      moveForm.addEventListener('submit', () => {
-          document.getElementById('move_selected_ids').value = getSelectedMaterialIds();
+          const inputs = document.querySelectorAll('input[id="move_selected_ids"]');
+          if (inputs[index]) inputs[index].value = getSelectedMaterialIds();
      });
-}
+});
 
 
 const newFolderForm = document.getElementById('newFolderForm');
@@ -2275,10 +2407,10 @@ function getSelectedItems() {
 function updateActionsUI() {
      const selected = getSelectedItems();
 
-     const renameBtn = document.getElementById('renameButton');
-     const discardBtn = document.getElementById('discardButton');
-     const copyBtn = document.getElementById('copyButton');
-     const moveBtn = document.getElementById('moveButton');
+     const renameBtns = Array.from(document.querySelectorAll('button[id="renameButton"]'));
+     const discardBtns = Array.from(document.querySelectorAll('button[id="discardButton"]'));
+     const copyBtns = Array.from(document.querySelectorAll('button[id="copyButton"]'));
+     const moveBtns = Array.from(document.querySelectorAll('button[id="moveButton"]'));
      const updateBtn = document.getElementById('updateButton');
      const markReadBtn = document.getElementById('markReadButton');
      const markUnreadBtn = document.getElementById('markUnreadButton');
@@ -2293,7 +2425,7 @@ function updateActionsUI() {
      // Discard / Copy / Move: ONE OR MORE
      const multiOK = selected.length > 0;
 
-     [discardBtn, copyBtn, moveBtn, markReadBtn, markUnreadBtn].forEach(btn => {
+     [...discardBtns, ...copyBtns, ...moveBtns, markReadBtn, markUnreadBtn].forEach(btn => {
           if (!btn) return;
           btn.disabled = !multiOK;
           btn.classList.toggle('govuk-button--disabled', !multiOK);
@@ -2301,18 +2433,18 @@ function updateActionsUI() {
 
      // Populate hidden fields for Copy / Move
      const ids = selected.map(x => x.id).join(',');
-     const copyHidden = document.getElementById('copy_selected_ids');
-     const moveHidden = document.getElementById('move_selected_ids');
+     const copyHidden = Array.from(document.querySelectorAll('input[id="copy_selected_ids"]'));
+     const moveHidden = Array.from(document.querySelectorAll('input[id="move_selected_ids"]'));
      const markReadHidden = document.getElementById('mark_read_selected_ids');
      const markUnreadHidden = document.getElementById('mark_unread_selected_ids');
-     const discardHidden = document.getElementById('material_selected');
+     const discardHidden = Array.from(document.querySelectorAll('input[id="material_selected"]'));
 
 
-     if (copyHidden) copyHidden.value = ids;
-     if (moveHidden) moveHidden.value = ids;
+     copyHidden.forEach(input => input.value = ids);
+     moveHidden.forEach(input => input.value = ids);
      if (markReadHidden) markReadHidden.value = ids;
      if (markUnreadHidden) markUnreadHidden.value = ids;
-     if (discardHidden) discardHidden.value = selected[0]?.id || '';
+     discardHidden.forEach(input => input.value = selected[0]?.id || '');
 }
 
 // =====================================================
@@ -2688,9 +2820,9 @@ document.addEventListener('DOMContentLoaded', initMaterialsPage);
 
 // Rename multiple materials from Actions on selection
 (function () {
-     const renameForm = document.getElementById('renameForm');
-     const renameBtn = document.getElementById('renameButton');
-     const renameIdsInput = document.getElementById('rename_selected_ids');
+     const renameForms = Array.from(document.querySelectorAll('form[id="renameForm"]'));
+     const renameBtns = Array.from(document.querySelectorAll('button[id="renameButton"]'));
+     const renameIdsInputs = Array.from(document.querySelectorAll('input[id="rename_selected_ids"]'));
 
      function getSelected() {
           return Array.from(document.querySelectorAll('.js-material-checkbox:checked'))
@@ -2701,10 +2833,14 @@ document.addEventListener('DOMContentLoaded', initMaterialsPage);
           const selected = getSelected();
           const enabled = selected.length > 0;
 
-          renameBtn.classList.toggle('govuk-button--disabled', !enabled);
-          renameBtn.disabled = !enabled;
+          renameBtns.forEach(function (renameBtn) {
+               renameBtn.classList.toggle('govuk-button--disabled', !enabled);
+               renameBtn.disabled = !enabled;
+          });
 
-          if (renameIdsInput) renameIdsInput.value = selected.join(',');
+          renameIdsInputs.forEach(function (renameIdsInput) {
+               renameIdsInput.value = selected.join(',');
+          });
      }
 
      // When any row checkbox changes
@@ -2723,16 +2859,16 @@ document.addEventListener('DOMContentLoaded', initMaterialsPage);
      setRenameEnabled();
 
      // Before submit, ensure IDs are up to date
-     if (renameForm) {
+     renameForms.forEach(function (renameForm, index) {
           renameForm.addEventListener('submit', function (e) {
                const selected = getSelected();
                if (!selected.length) {
                     e.preventDefault();
                     return;
                }
-               if (renameIdsInput) renameIdsInput.value = selected.join(',');
+               if (renameIdsInputs[index]) renameIdsInputs[index].value = selected.join(',');
           });
-     }
+     });
 })();
 
 
