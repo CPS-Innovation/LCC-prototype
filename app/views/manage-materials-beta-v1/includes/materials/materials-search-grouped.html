@@ -157,7 +157,17 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
                     <!-- {{ m.name | highlight(data.filtersSearch) | safe }} -->
                 </span>
             </td>
-            <td class="govuk-table__cell">{{ m.type }}</td>
+            <td class="govuk-table__cell">
+                {% if m.type %}
+                {% set materialTypeParts = m.type.split(' – ') %}
+                {% if materialTypeParts.length > 1 %}
+                <div class="govuk-hint folder-path">{{ materialTypeParts[materialTypeParts.length - 1] }}</div>
+                <div>{{ materialTypeParts[0] }}</div>
+                {% else %}
+                <div>{{ m.type }}</div>
+                {% endif %}
+                {% endif %}
+            </td>
 
 
             <td class="govuk-table__cell toggle-panel">

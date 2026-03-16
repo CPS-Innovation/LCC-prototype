@@ -548,7 +548,15 @@
 
                     <!-- Status (usually blank or basic tag for folders) -->
                     <td class="govuk-table__cell category_column">
-                        {{ item.type or "" }}
+                        {% if item.type %}
+                        {% set itemTypeParts = item.type.split(' – ') %}
+                        {% if itemTypeParts.length > 1 %}
+                        <div class="govuk-hint folder-path">{{ itemTypeParts[itemTypeParts.length - 1] }}</div>
+                        <div>{{ itemTypeParts[0] }}</div>
+                        {% else %}
+                        <div>{{ item.type }}</div>
+                        {% endif %}
+                        {% endif %}
                     </td>
 
                     <!-- Copy / Move here action -->
@@ -604,7 +612,15 @@
 
                     <!-- Status -->
                     <td class="govuk-table__cell">
-                        {{ item.type or "" }}
+                        {% if item.type %}
+                        {% set itemTypeParts = item.type.split(' – ') %}
+                        {% if itemTypeParts.length > 1 %}
+                        <div class="govuk-hint folder-path">{{ itemTypeParts[itemTypeParts.length - 1] }}</div>
+                        <div>{{ itemTypeParts[0] }}</div>
+                        {% else %}
+                        <div>{{ item.type }}</div>
+                        {% endif %}
+                        {% endif %}
                     </td>
 
                     <!-- Preview for files -->
