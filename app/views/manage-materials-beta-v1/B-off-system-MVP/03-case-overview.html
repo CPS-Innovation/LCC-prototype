@@ -10,7 +10,13 @@
 {% block pageScripts %}
 <style>
   #tab-2-content #materials_table {
-    table-layout: auto;
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  #tab-2-content #materials_table th:first-child,
+  #tab-2-content #materials_table td:first-child {
+    width: 56px;
   }
 
   #tab-2-content #materials_table th:last-child,
@@ -19,16 +25,21 @@
     width: 140px;
   }
 
-  #tab-2-content #materials_table .category_column,
-  #tab-2-content #materials_table td:nth-child(3) {
-    white-space: nowrap;
-    width: 180px;
+  #tab-2-content #materials_table th:nth-child(2),
+  #tab-2-content #materials_table td:nth-child(2),
+  #tab-2-content #materials_table .title_column {
+    width: calc(46% - 50px);
+    max-width: calc(46% - 50px);
+    white-space: normal;
   }
 
-  #tab-2-content #materials_table .title_column {
-    width: 50%;
-    max-width: 50%;
+  #tab-2-content #materials_table th:nth-child(3),
+  #tab-2-content #materials_table td:nth-child(3),
+  #tab-2-content #materials_table .category_column {
     white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    vertical-align: top;
   }
 
   #tab-2-content #materials_table .folder-name-and-tags,
