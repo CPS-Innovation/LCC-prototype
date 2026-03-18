@@ -10,7 +10,8 @@
 {% block pageScripts %}
 <style>
   #tab-2-content #materials_table {
-    table-layout: fixed;
+    max-width: 75%;
+    table-layout: auto;
     width: 100%;
   }
 
@@ -33,15 +34,6 @@
     white-space: normal;
   }
 
-  #tab-2-content #materials_table th:nth-child(3),
-  #tab-2-content #materials_table td:nth-child(3),
-  #tab-2-content #materials_table .category_column {
-    white-space: normal;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    vertical-align: top;
-  }
-
   #tab-2-content #materials_table .folder-name-and-tags,
   #tab-2-content #materials_table .file-tags,
   #tab-2-content #materials_table .material-name {
@@ -50,6 +42,29 @@
     gap: 8px;
     flex-wrap: wrap;
     white-space: normal;
+  }
+
+  #tab-2-content #materials_table tbody button.show-case,
+  #tab-2-content #materials_table tbody button.show_material_actions {
+    background: none;
+    border: 0;
+    box-shadow: none;
+    color: #1d70b8;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    text-decoration: underline;
+  }
+
+  #tab-2-content #materials_table tbody button.show-case:focus,
+  #tab-2-content #materials_table tbody button.show_material_actions:focus,
+  #tab-2-content #materials_table tbody button.show-case:active,
+  #tab-2-content #materials_table tbody button.show_material_actions:active {
+    background: none;
+    box-shadow: none;
+    color: #1d70b8;
+    outline: 3px solid #ffdd00;
+    outline-offset: 2px;
   }
 </style>
 {% endblock %}
