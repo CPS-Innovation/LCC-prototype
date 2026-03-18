@@ -465,6 +465,14 @@
                         </button>
                     </th>
 
+                    <th scope="col" class="govuk-table__header">
+                        <button type="button" class="govuk-link govuk-link--no-visited-state table-sort"
+                            data-sort="type">
+                            Type
+                        </button>
+                    </th>
+
+
                     <th scope="col" class="govuk-table__header"></th>
                 </tr>
             </thead>
@@ -538,6 +546,19 @@
                         </div>
                     </td>
 
+                    <!-- Status (usually blank or basic tag for folders) -->
+                    <td class="govuk-table__cell category_column">
+                        {% if item.type %}
+                        {% set itemTypeParts = item.type.split(' – ') %}
+                        {% if itemTypeParts.length > 1 %}
+                        <div class="govuk-hint folder-path">{{ itemTypeParts[itemTypeParts.length - 1] }}</div>
+                        <div>{{ itemTypeParts[0] }}</div>
+                        {% else %}
+                        <div>{{ item.type }}</div>
+                        {% endif %}
+                        {% endif %}
+                    </td>
+
                     <!-- Copy / Move here action -->
                     <td class="govuk-table__cell materials-action-cell">
                     </td>
@@ -589,6 +610,19 @@
                         </div>
                     </td>
 
+                    <!-- Status -->
+                    <td class="govuk-table__cell">
+                        {% if item.type %}
+                        {% set itemTypeParts = item.type.split(' – ') %}
+                        {% if itemTypeParts.length > 1 %}
+                        <div class="govuk-hint folder-path">{{ itemTypeParts[itemTypeParts.length - 1] }}</div>
+                        <div>{{ itemTypeParts[0] }}</div>
+                        {% else %}
+                        <div>{{ item.type }}</div>
+                        {% endif %}
+                        {% endif %}
+                    </td>
+
                     <!-- Preview for files -->
                     <td class="govuk-table__cell toggle-panel">
                         <button type="button" class="govuk-button show_material_actions show-case"
@@ -604,7 +638,7 @@
                 {% if not item.folder %}
                 <tr class="govuk-table__row hidden_row sortable-ignore" data-row_id="{{ item.id }}"
                     style="display:none;">
-                    <td colspan="{{ 5 if showOrderColumn else 3 }}">
+                    <td colspan="{{ 6 if showOrderColumn else 4 }}">
                         <div class="document_holder">
                             <embed src="{{ item.previewLink }}" type="application/pdf">
                         </div>

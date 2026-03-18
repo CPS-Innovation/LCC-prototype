@@ -1146,6 +1146,79 @@ router.post('/includes/materials/materials-filter', function (req, res) {
 
 const createMaterialsUtils = require('../../helpers/materials.js');
 
+function getActivityActor(data) {
+    return {
+        name: data['offCMS_Username'] || 'dwight_schrute',
+        email: 'usabilty.testing.session@cps.gov.uk'
+    };
+}
+
+function formatActivityTimestamp(value) {
+    const date = value instanceof Date ? value : new Date(value || Date.now());
+    const now = new Date();
+
+    const time = date.toLocaleTimeString('en-GB', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    }).toLowerCase().replace(' ', '');
+
+    const isToday =
+        date.getDate() === now.getDate() &&
+        date.getMonth() === now.getMonth() &&
+        date.getFullYear() === now.getFullYear();
+
+    if (isToday) return `Today, ${time}`;
+
+    const day = date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+
+    return `${day}, ${time}`;
+}
+
+function getFolderPathLabel(materials, folderId) {
+    const parts = [];
+    let currentId = folderId;
+    const seen = new Set();
+
+    while (currentId !== null && currentId !== undefined && !seen.has(String(currentId))) {
+        seen.add(String(currentId));
+        const folder = materials.find(m => m && m.folder && String(m.id) === String(currentId));
+        if (!folder) break;
+        parts.unshift(folder.name);
+        currentId = folder.parentId;
+    }
+
+    return parts.length ? `Home: Thundercat > ${parts.join(' > ')}` : 'Home: Thundercat';
+}
+
+function getItemPathLabel(materials, item, nameOverride) {
+    const parentPath = getFolderPathLabel(materials, item.parentId);
+    const itemName = nameOverride || item.name || 'Unnamed item';
+    return `${parentPath} > ${itemName}`;
+}
+
+function createBaseActivityEntry(data) {
+    const actor = getActivityActor(data);
+    return {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        byName: actor.name,
+        byEmail: actor.email,
+        dateLabel: formatActivityTimestamp(new Date())
+    };
+}
+
+function pushMaterialsActivity(data, entry) {
+    data.materialsActivityLog = data.materialsActivityLog || [];
+    data.materialsActivityLog.unshift({
+        ...createBaseActivityEntry(data),
+        ...entry
+    });
+}
+
 
 router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const data = req.session.data;
@@ -1626,6 +1699,18 @@ router.post('/B-off-system-MVP/new-folder', function (req, res) {
     // Save back into session
     data.materials = materials;
 
+    pushMaterialsActivity(data, {
+        type: 'new-folder',
+        tag: 'New folder',
+        title: `${newFolder.name} has been created on the shared drive`,
+        sourceLines: [
+            {
+                label: 'New folder:',
+                value: getItemPathLabel(materials, newFolder)
+            }
+        ]
+    });
+
     // Redirect back to manage materials
     res.redirect('/manage-materials-beta-v1/B-off-system-MVP/03-case-overview');
 });
@@ -1673,9 +1758,28 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
         });
     }
 
-    req.session.data.materials = materials.filter(
-        m => !toRemove.has(String(m.id))
-    );
+    const removedItems = materials.filter(m => toRemove.has(String(m.id)));
+
+    req.session.data.materials = materials.filter(m => !toRemove.has(String(m.id)));
+
+    if (removedItems.length) {
+        const folderItems = removedItems.filter(item => item.folder);
+        const primaryItem = removedItems[0];
+        const allPaths = removedItems.map(item => getItemPathLabel(materials, item));
+
+        pushMaterialsActivity(req.session.data, {
+            type: 'delete',
+            tag: folderItems.length === 1 && removedItems.length === 1 ? 'Folder deleted' : 'Items deleted',
+            title: removedItems.length === 1
+                ? `${primaryItem.name} has been deleted from the shared drive`
+                : `${removedItems.length} items have been deleted from the shared drive`,
+            description: removedItems.length > 1 ? 'Below is a list of documents and folders deleted:' : null,
+            listItems: removedItems.length > 1 ? removedItems.map(item => item.name) : null,
+            sourceLines: removedItems.length === 1
+                ? [{ label: 'Original source:', value: allPaths[0] }]
+                : [{ label: 'Original locations:', value: 'Multiple locations' }]
+        });
+    }
 
     req.session.data.lastDiscard = {
         reason,
@@ -1780,15 +1884,39 @@ router.post('/B-off-system-MVP/rename-multiple-save', function (req, res) {
         }
     });
 
+    const renamedEntries = [];
+
     materials.forEach(item => {
         const id = String(item.id);
         if (updates[id] !== undefined && updates[id] !== '') {
+            renamedEntries.push({
+                item,
+                oldName: item.name,
+                newName: updates[id]
+            });
             item.name = updates[id];
         }
     });
 
     req.session.data.materials = materials;
     req.session.data.flashRenamedIds = Object.keys(updates).filter(id => updates[id]);
+
+    renamedEntries.reverse().forEach(entry => {
+        pushMaterialsActivity(req.session.data, {
+            type: 'rename',
+            title: `${entry.oldName} has been renamed to ${entry.newName} on the shared drive`,
+            sourceLines: [
+                {
+                    label: 'Original name:',
+                    value: getItemPathLabel(materials, entry.item, entry.oldName)
+                },
+                {
+                    label: 'New name:',
+                    value: getItemPathLabel(materials, entry.item, entry.newName)
+                }
+            ]
+        });
+    });
 
     return res.redirect('/manage-materials-beta-v1/B-off-system-MVP/03-case-overview');
 });
@@ -1838,6 +1966,7 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
         });
     }
 
+    const oldName = item.name;
     item.name = newName;
     req.session.data.flashRenamedId = item.id;
 
@@ -1850,6 +1979,21 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
     }
 
     data.materials = materials;
+
+    pushMaterialsActivity(data, {
+        type: 'rename',
+        title: `${oldName} has been renamed to ${newName} on the shared drive`,
+        sourceLines: [
+            {
+                label: 'Original name:',
+                value: getItemPathLabel(materials, item, oldName)
+            },
+            {
+                label: 'New name:',
+                value: getItemPathLabel(materials, item, newName)
+            }
+        ]
+    });
 
     req.session.data.groupedSearchResults = null; // or [] to force rebuild on next render
 
@@ -2177,6 +2321,31 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
     req.session.data.copyPreviewTree = copyPreviewTree;
     req.session.data.copySuccess = true;
 
+    if (copiedNames.length) {
+        const sourceItems = ids
+            .map(id => originalMaterials.find(m => String(m.id) === String(id)))
+            .filter(Boolean);
+        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+
+        pushMaterialsActivity(req.session.data, {
+            type: 'copy',
+            tag: 'Copied items',
+            title: `${copiedNames.length === 1 ? copiedNames[0] : `${copiedNames.length} items`} ${copiedNames.length === 1 ? 'has' : 'have'} been copied to ${destinationFolderName || 'Home: Thundercat'} on the shared drive`,
+            description: 'Below is a list of documents and folders copied:',
+            listItems: copiedNames,
+            sourceLines: [
+                {
+                    label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
+                    value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations'
+                },
+                {
+                    label: 'New location:',
+                    value: getFolderPathLabel(materials, destinationFolderId)
+                }
+            ]
+        });
+    }
+
     // Clear selection state
     req.session.data.copySelectedIds = [];
     req.session.data.copySelectedNames = [];
@@ -2250,6 +2419,31 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
     req.session.data.moveDestinationName = destinationFolderName;
     req.session.data.movePreviewTree = movePreviewTree;
     req.session.data.moveSuccess = true;
+
+    if (movedNames.length) {
+        const sourceItems = ids
+            .map(id => originalMaterials.find(m => String(m.id) === String(id)))
+            .filter(Boolean);
+        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+
+        pushMaterialsActivity(req.session.data, {
+            type: 'move',
+            tag: 'Moved items',
+            title: `${movedNames.length === 1 ? movedNames[0] : `${movedNames.length} items`} ${movedNames.length === 1 ? 'has' : 'have'} been moved to ${destinationFolderName || 'Home: Thundercat'} on the shared drive`,
+            description: 'Below is a list of documents and folders moved:',
+            listItems: movedNames,
+            sourceLines: [
+                {
+                    label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
+                    value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations'
+                },
+                {
+                    label: 'New location:',
+                    value: getFolderPathLabel(materials, destinationFolderId)
+                }
+            ]
+        });
+    }
 
     // Clear selection state
     req.session.data.moveSelectedIds = [];
