@@ -39,17 +39,35 @@
                         }}</strong>
                     {% endif %}
                     <h2 class="hods-timeline__title">{{ entry.title }}</h2>
-                    <p class="hods-timeline__by">by {{ entry.byName }} {{ entry.byEmail }}</p>
+                    <p class="hods-timeline__by">by {{ entry.byEmail }}</p>
                     <p class="hods-timeline__date"><span>{{ entry.dateLabel }}</span></p>
                     {% if entry.description %}
                     <p class="hods-timeline__description">{{ entry.description }}</p>
                     {% endif %}
                     {% if entry.listItems and (entry.listItems | length > 0) %}
+                    {% if entry.type == 'copy' or entry.type == 'move' %}
+                    <details class="govuk-details govuk-!-margin-bottom-2">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">View files</span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            <ul class="govuk-list govuk-list--bullet">
+                                {% for itemName in entry.listItems %}
+                                <li>{{ itemName }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </details>
+                    <a class="govuk-button copy-button" href="#">
+                        Download the list of files (.csv)
+                    </a>
+                    {% else %}
                     <ul class="govuk-list govuk-list--bullet">
                         {% for itemName in entry.listItems %}
                         <li>{{ itemName }}</li>
                         {% endfor %}
                     </ul>
+                    {% endif %}
                     {% endif %}
                     {% if entry.sourceLines and (entry.sourceLines | length > 0) %}
                     <p class="hods-timeline__source">
