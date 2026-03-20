@@ -148,6 +148,31 @@
                     {% endif %}
                 </div>
             </div>
+            {% elseif deleteSuccess %}
+            <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white govuk-!-margin-bottom-4"
+                role="alert" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title">Success</h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <h3 class="govuk-notification-banner__heading">
+                        The materials have been deleted
+                    </h3>
+
+                    {% if deletePreviewTree and (deletePreviewTree | length) > 0 %}
+                    <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Show deleted materials
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            {{ renderTree(deletePreviewTree) }}
+                        </div>
+                    </details>
+                    {% endif %}
+                </div>
+            </div>
             {% endif %}
 
 
@@ -320,7 +345,7 @@
                                         </form> -->
 
                                         <form id="discardForm" method="post"
-                                            action="../../../manage-materials-beta-v1/B-off-system-MVP/B-discard_material">
+                                            action="../../../manage-materials-beta-v1/B-off-system-MVP/delete">
                                             <input id="material_selected" name="material_selected" type="hidden"
                                                 value="">
                                             <button id="discardButton" class="govuk-button govuk-button--disabled"
@@ -670,7 +695,7 @@
                             </form>
 
                             <form id="discardForm" method="post"
-                                action="../../../manage-materials-beta-v1/B-off-system-MVP/B-discard_material">
+                                action="../../../manage-materials-beta-v1/B-off-system-MVP/delete">
                                 <input id="material_selected" name="material_selected" type="hidden" value="">
                                 <button id="discardButton" class="govuk-button govuk-button--disabled" type="submit">
                                     Delete

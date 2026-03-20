@@ -1205,7 +1205,7 @@ function createBaseActivityEntry(data) {
     const actor = getActivityActor(data);
     return {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-        byName: actor.name,
+        byName: '',
         byEmail: actor.email,
         dateLabel: formatActivityTimestamp(new Date())
     };
@@ -1262,6 +1262,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     // Extract flags + lists for THIS render only
     const copySuccess = data.copySuccess === true;
     const moveSuccess = data.moveSuccess === true;
+    const deleteSuccess = data.deleteSuccess === true;
 
     const copyList = data.copyList || [];
     const moveList = data.moveList || [];
@@ -1271,6 +1272,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
 
     const copyPreviewTree = data.copyPreviewTree || [];
     const movePreviewTree = data.movePreviewTree || [];
+    const deletePreviewTree = data.deletePreviewTree || [];
 
     const copyDestinationId = data.copyDestinationId || 0;
     const moveDestinationId = data.moveDestinationId || 0;
@@ -1281,12 +1283,14 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     // Immediately reset so they only show once
     req.session.data.copySuccess = false;
     req.session.data.moveSuccess = false;
+    req.session.data.deleteSuccess = false;
     req.session.data.copyList = [];
     req.session.data.moveList = [];
     req.session.data.copyDestinationName = null;
     req.session.data.moveDestinationName = null;
     req.session.data.copyPreviewTree = [];
     req.session.data.movePreviewTree = [];
+    req.session.data.deletePreviewTree = [];
 
     // Helper utils
     const utils = createMaterialsUtils(materials);
@@ -1514,12 +1518,14 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         flashNewFolderId,
         copySuccess,
         moveSuccess,
+        deleteSuccess,
         copyList,
         moveList,
         copyDestinationName,
         moveDestinationName,
         copyPreviewTree,
         movePreviewTree,
+        deletePreviewTree,
         copyDestinationId,
         moveDestinationId
     });
@@ -1759,8 +1765,81 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
     }
 
     const removedItems = materials.filter(m => toRemove.has(String(m.id)));
+    const deletePreviewTree = buildPreviewTree(materials, Array.from(toRemove));
 
     req.session.data.materials = materials.filter(m => !toRemove.has(String(m.id)));
+    req.session.data.deletePreviewTree = deletePreviewTree;
+    req.session.data.deleteSuccess = removedItems.length > 0;
+
+    if (removedItems.length) {
+        const folderItems = removedItems.filter(item => item.folder);
+        const primaryItem = removedItems[0];
+        const allPaths = removedItems.map(item => getItemPathLabel(materials, item));
+
+        pushMaterialsActivity(req.session.data, {
+            type: 'delete',
+            tag: folderItems.length === 1 && removedItems.length === 1 ? 'Folder deleted' : 'Items deleted',
+            title: removedItems.length === 1
+                ? `${primaryItem.name} has been deleted from the shared drive`
+                : `${removedItems.length} items have been deleted from the shared drive`,
+            description: removedItems.length > 1 ? 'Below is a list of documents and folders deleted:' : null,
+            listItems: removedItems.length > 1 ? removedItems.map(item => item.name) : null,
+            sourceLines: removedItems.length === 1
+                ? [{ label: 'Original source:', value: allPaths[0] }]
+                : [{ label: 'Original locations:', value: 'Multiple locations' }]
+        });
+    }
+
+    req.session.data.lastDiscard = {
+        reason,
+        items: Array.from(toRemove),
+        date: new Date().toISOString()
+    };
+
+    res.redirect('/manage-materials-beta-v1/B-off-system-MVP/03-case-overview');
+});
+
+// Discard material
+router.post('/B-off-system-MVP/delete-material', function (req, res) {
+    const selected = req.body.material_selected
+        ? req.body.material_selected.split(',').map(s => s.trim())
+        : [];
+
+    const reason = req.body.discarding_material;
+
+    // SOURCE OF TRUTH (v12)
+    const materials = req.session.data.materials || [];
+
+    // If folders should remove descendants too, expand IDs:
+    const toRemove = new Set(selected.map(String));
+
+    // Build parent -> children map
+    const byParent = new Map();
+    materials.forEach(m => {
+        const p = m.parentId ?? null;
+        if (!byParent.has(String(p))) byParent.set(String(p), []);
+        byParent.get(String(p)).push(String(m.id));
+    });
+
+    // BFS/DFS down the tree
+    const stack = [...toRemove];
+    while (stack.length) {
+        const id = stack.pop();
+        const kids = byParent.get(String(id)) || [];
+        kids.forEach(kid => {
+            if (!toRemove.has(kid)) {
+                toRemove.add(kid);
+                stack.push(kid);
+            }
+        });
+    }
+
+    const removedItems = materials.filter(m => toRemove.has(String(m.id)));
+    const deletePreviewTree = buildPreviewTree(materials, Array.from(toRemove));
+
+    req.session.data.materials = materials.filter(m => !toRemove.has(String(m.id)));
+    req.session.data.deletePreviewTree = deletePreviewTree;
+    req.session.data.deleteSuccess = removedItems.length > 0;
 
     if (removedItems.length) {
         const folderItems = removedItems.filter(item => item.folder);
