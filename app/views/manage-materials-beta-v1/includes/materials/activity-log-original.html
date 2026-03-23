@@ -39,40 +39,28 @@
                         }}</strong>
                     {% endif %}
                     <h2 class="hods-timeline__title">{{ entry.title }}</h2>
-                    <div style="clear: both; display: block; margin-top: 4px; margin-bottom: 10px;">
-                        <p class="govuk-body-s" style="margin: 0; color: #484949;">{{ entry.dateLabel }} by {{ entry.byEmail }}</p>
-                    </div>
+                    <p class="hods-timeline__by">by {{ entry.byEmail }}</p>
+                    <p class="hods-timeline__date"><span>{{ entry.dateLabel }}</span></p>
                     {% if entry.description %}
                     <p class="hods-timeline__description">{{ entry.description }}</p>
                     {% endif %}
-                    {% if entry.sourceLines and (entry.sourceLines | length > 0) %}
-                    <div class="govuk-!-margin-bottom-2">
-                        {% for line in entry.sourceLines %}
-                        <p class="govuk-body-s govuk-!-margin-bottom-1">
-                            <strong>{{ line.label }}</strong>
-                            {% if line.href %}
-                            <a class="govuk-link" href="{{ line.href }}">{{ line.value }}</a>
-                            {% else %}
-                            {{ line.value }}
-                            {% endif %}
-                        </p>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
                     {% if entry.listItems and (entry.listItems | length > 0) %}
-                    {% if (entry.type == 'copy' or entry.type == 'move') and (entry.listItems | length > 5) %}
+                    {% if entry.type == 'copy' or entry.type == 'move' %}
                     <details class="govuk-details govuk-!-margin-bottom-2">
                         <summary class="govuk-details__summary">
-                            <span class="govuk-details__summary-text" style="font-size: 17px;">View items</span>
+                            <span class="govuk-details__summary-text">View files</span>
                         </summary>
-                        <div class="govuk-details__text" style="margin-bottom: 0; display: flow-root; padding-top: 2px; padding-bottom: 2px;">
-                            <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0" style="margin-top: 0; margin-bottom: 0;">
+                        <div class="govuk-details__text">
+                            <ul class="govuk-list govuk-list--bullet">
                                 {% for itemName in entry.listItems %}
                                 <li>{{ itemName }}</li>
                                 {% endfor %}
                             </ul>
                         </div>
                     </details>
+                    <a class="govuk-button copy-button" href="#">
+                        Download the list of files (.csv)
+                    </a>
                     {% else %}
                     <ul class="govuk-list govuk-list--bullet">
                         {% for itemName in entry.listItems %}
@@ -80,6 +68,14 @@
                         {% endfor %}
                     </ul>
                     {% endif %}
+                    {% endif %}
+                    {% if entry.sourceLines and (entry.sourceLines | length > 0) %}
+                    <p class="hods-timeline__source">
+                        {% for line in entry.sourceLines %}
+                        <span class="url-text title">{{ line.label }}</span> <span class="url-text">{{ line.value
+                            }}</span><br>
+                        {% endfor %}
+                    </p>
                     {% endif %}
                 </div>
                 {% endfor %}
@@ -124,7 +120,7 @@
                             Investigator</span><br>
                         <span class="url-text title">Destination:</span> <span class="url-text">Thunderstruck > <span
                                 class="transfer_folder_name"></span></span><br>
-                    </p>b
+                    </p>
                     <p class="hods-timeline__description">Below is a list of documents/folders copied:</p>
                     <details class="govuk-details govuk-!-margin-bottom-2" id="activity_listing">
                         <summary class="govuk-details__summary"><span class="govuk-details__summary-text">View
@@ -717,12 +713,12 @@
 
                 <!-- Digital evidence folder - LONG CHARACTERS -->
                 <div class="hods-timeline__item">
-                    <!-- <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">Transfer</strong> -->
-                    
-                    <h2 class="hods-timeline__title">Transfer from egress to shared drive <strong class="govuk-tag govuk-tag--green">Completed</strong></h2>
-                    <p class="hods-timeline__by">
+                    <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">Transfer</strong>
+                    <strong class="govuk-tag govuk-tag--green" style="display: inline-block;">Completed</strong>
+                    <h2 class="hods-timeline__title">Transfer from egress to shared drive</h2>
+                    <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usability.testing.session@cps.gov.uk
                     </p>
-                    <p class="hods-timeline__date"><span id="">Yesterday at 12:05pm by {{ data['offCMS_Username'] }} usability.testing.session@cps.gov.uk</span></p>
+                    <p class="hods-timeline__date"><span id="">Yesterday 12:05pm</span></p>
                     <p class="hods-timeline__description">200 files were transferred.</p>
                     <p class="hods-timeline__source">
                         <span class="url-text title">Source:</span> <span class="url-text">Egress >
@@ -1043,8 +1039,8 @@
 
                 <div class="hods-timeline__item">
                     <h2 class="hods-timeline__title">Case registered</h2>
-                    <!-- <p class="hods-timeline__by">by dwight_schrute@cps.gov.uk</p> -->
-                    <p class="hods-timeline__date"><span id="">22 March 2026 at 9:05am by dwight_schrute@cps.gov.uk</span></p>
+                    <p class="hods-timeline__by">by dwight_schrute@cps.gov.uk</p>
+                    <p class="hods-timeline__date"><span id="">Yesterday 9:05am</span></p>
                 </div>
 
 
