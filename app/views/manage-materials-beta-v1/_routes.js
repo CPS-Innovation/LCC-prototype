@@ -1149,13 +1149,15 @@ const createMaterialsUtils = require('../../helpers/materials.js');
 function getActivityActor(data) {
     return {
         name: data['offCMS_Username'] || 'dwight_schrute',
-        email: 'usabilty.testing.session@cps.gov.uk'
+        email: data['urUser'] || 'usability.testing.session@cps.gov.uk'
     };
 }
 
 function formatActivityTimestamp(value) {
     const date = value instanceof Date ? value : new Date(value || Date.now());
     const now = new Date();
+    const yesterday = new Date(now);
+    yesterday.setDate(now.getDate() - 1);
 
     const time = date.toLocaleTimeString('en-GB', {
         hour: 'numeric',
@@ -1168,15 +1170,21 @@ function formatActivityTimestamp(value) {
         date.getMonth() === now.getMonth() &&
         date.getFullYear() === now.getFullYear();
 
-    if (isToday) return `Today, ${time}`;
+    const isYesterday =
+        date.getDate() === yesterday.getDate() &&
+        date.getMonth() === yesterday.getMonth() &&
+        date.getFullYear() === yesterday.getFullYear();
+
+    if (isToday) return `Today at ${time}`;
+    if (isYesterday) return `Yesterday at ${time}`;
 
     const day = date.toLocaleDateString('en-GB', {
         day: '2-digit',
-        month: '2-digit',
+        month: 'long',
         year: 'numeric'
     });
 
-    return `${day}, ${time}`;
+    return `${day} at ${time}`;
 }
 
 function getFolderPathLabel(materials, folderId) {
@@ -2405,21 +2413,24 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
             .map(id => originalMaterials.find(m => String(m.id) === String(id)))
             .filter(Boolean);
         const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const sourceParentIds = [...new Set(sourceItems.map(item => String(item.parentId ?? 0)))];
 
         pushMaterialsActivity(req.session.data, {
             type: 'copy',
-            tag: 'Copied items',
-            title: `${copiedNames.length === 1 ? copiedNames[0] : `${copiedNames.length} items`} ${copiedNames.length === 1 ? 'has' : 'have'} been copied to ${destinationFolderName || 'Home: Thundercat'} on the shared drive`,
-            description: 'Below is a list of documents and folders copied:',
+            title: 'Items copied',
+            // title: `${copiedNames.length === 1 ? copiedNames[0] : `${copiedNames.length} items`} ${copiedNames.length === 1 ? 'has' : 'have'} been copied to ${destinationFolderName || 'Home: Thundercat'} on the shared drive`,
+            // description: 'Below is a list of documents and folders copied:',
             listItems: copiedNames,
             sourceLines: [
                 {
                     label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
-                    value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations'
+                    value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
+                    href: sourceParents.length === 1 ? `/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
                 },
                 {
                     label: 'New location:',
-                    value: getFolderPathLabel(materials, destinationFolderId)
+                    value: getFolderPathLabel(materials, destinationFolderId),
+                    href: `/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
                 }
             ]
         });
@@ -2504,21 +2515,24 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
             .map(id => originalMaterials.find(m => String(m.id) === String(id)))
             .filter(Boolean);
         const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const sourceParentIds = [...new Set(sourceItems.map(item => String(item.parentId ?? 0)))];
 
         pushMaterialsActivity(req.session.data, {
             type: 'move',
-            tag: 'Moved items',
-            title: `${movedNames.length === 1 ? movedNames[0] : `${movedNames.length} items`} ${movedNames.length === 1 ? 'has' : 'have'} been moved to ${destinationFolderName || 'Home: Thundercat'} on the shared drive`,
-            description: 'Below is a list of documents and folders moved:',
+            title: 'Items moved',
+            // title: `${movedNames.length === 1 ? movedNames[0] : `${movedNames.length} items`} ${movedNames.length === 1 ? 'has' : 'have'} been moved to ${destinationFolderName || 'Home: Thundercat'} on the shared drive`,
+            // description: 'Below is a list of documents and folders moved:',
             listItems: movedNames,
             sourceLines: [
                 {
                     label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
-                    value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations'
+                    value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
+                    href: sourceParents.length === 1 ? `/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
                 },
                 {
                     label: 'New location:',
-                    value: getFolderPathLabel(materials, destinationFolderId)
+                    value: getFolderPathLabel(materials, destinationFolderId),
+                    href: `/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
                 }
             ]
         });
