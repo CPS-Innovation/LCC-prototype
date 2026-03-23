@@ -11,8 +11,12 @@
 <style>
   #tab-2-content #materials_table {
     max-width: 75%;
-    table-layout: fixed;
+    table-layout: auto;
     width: 100%;
+  }
+
+  #tab-2-content #materials_table.materials-search-grouped-table {
+    table-layout: fixed;
   }
 
   #tab-2-content .materials-notification--white {
@@ -29,7 +33,7 @@
   #tab-2-content #materials_table th:last-child,
   #tab-2-content #materials_table td:last-child {
     white-space: nowrap;
-    width: 90px;
+    width: 120px;
     text-align: right;
   }
 
@@ -54,9 +58,9 @@
     white-space: normal;
   }
 
-  #tab-2-content #materials_table .material-title,
-  #tab-2-content #materials_table .openMe,
-  #tab-2-content #materials_table .folder-path {
+  #tab-2-content #materials_table.materials-search-grouped-table .material-title,
+  #tab-2-content #materials_table.materials-search-grouped-table .openMe,
+  #tab-2-content #materials_table.materials-search-grouped-table .folder-path {
     display: block;
     float: none;
     max-width: 100%;
