@@ -36,12 +36,6 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
                 </button>
             </th>
 
-            <th scope="col" class="govuk-table__header">
-                <button type="button" class="govuk-link govuk-link--no-visited-state table-sort" data-sort="type">
-                    Type
-                </button>
-            </th>
-
             <th class="govuk-table__header"></th>
         </tr>
     </thead>
@@ -98,15 +92,10 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
                         flashNewFolderIdSafe %}
                         <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">New folder</strong>
                         {% endif %}
-
-                        </button>
                     </div>
                 </form>
             </td>
-            <td class="govuk-table__cell">
-            </td>
-
-            <td class="govuk-table__cell"></td>
+            <td class="govuk-table__cell toggle-panel"></td>
         </tr>
         {% endif %}
 
@@ -127,7 +116,7 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
             </td>
 
             <td class="govuk-table__cell title_column">
-                <span class="material-title">
+                <div class="material-title">
                     <form action="/manage-materials-beta-v1/B-off-system-MVP/case-overview-folder" method="post">
                         <div class="openMe">
                             <!-- {% if folder.name %}
@@ -155,21 +144,8 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
 
                     <!-- {{ folder.name | highlight(data.filtersSearch) | safe }} / -->
                     <!-- {{ m.name | highlight(data.filtersSearch) | safe }} -->
-                </span>
+                </div>
             </td>
-            <td class="govuk-table__cell">
-                {% if m.type %}
-                {% set materialTypeParts = m.type.split(' – ') %}
-                {% if materialTypeParts.length > 1 %}
-                <div class="govuk-hint folder-path">{{ materialTypeParts[materialTypeParts.length - 1] }}</div>
-                <div>{{ materialTypeParts[0] }}</div>
-                {% else %}
-                <div>{{ m.type }}</div>
-                {% endif %}
-                {% endif %}
-            </td>
-
-
             <td class="govuk-table__cell toggle-panel">
                 <button type="button" class="govuk-button show_material_actions show-case" data-id="{{ m.id }}"
                     data-doc="{{ m.previewLink }}">
@@ -179,7 +155,7 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
         </tr>
 
         <tr class="govuk-table__row hidden_row" data-row_id="{{ m.id }}">
-            <td colspan="4">
+            <td colspan="3">
                 <div class="document_holder">
                     <embed src="{{ m.previewLink }}">
                 </div>
