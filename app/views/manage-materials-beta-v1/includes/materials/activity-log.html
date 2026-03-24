@@ -28,6 +28,25 @@
         </div>
         <div class="section-content">
             <div class="hods-timeline">
+                {% macro renderActivityTree(nodes, nested = false) %}
+                <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0" style="margin-top: 0; margin-bottom: 0;{% if nested %} margin-left: 24px;{% endif %}">
+                    {% for node in nodes %}
+                    {% if node.isFolder %}
+                    <li class="no-bullet" style="list-style-type:none; margin-left: 0;">
+                        <div style="display: block; margin-bottom: 6px; margin-left: -1em;">
+                            <span class="icon-new folder"></span>
+                            <strong>{{ node.name }}</strong>
+                        </div>
+                        {% if node.children and (node.children | length) > 0 %}
+                        {{ renderActivityTree(node.children, true) }}
+                        {% endif %}
+                    </li>
+                    {% else %}
+                    <li>{{ node.name }}</li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+                {% endmacro %}
 
                 {% for entry in data.materialsActivityLog | default([]) %}
                 <div class="hods-timeline__item">
@@ -51,34 +70,43 @@
                         <p class="govuk-body-s govuk-!-margin-bottom-1">
                             <strong>{{ line.label }}</strong>
                             {% if line.href %}
-                            <a class="govuk-link" href="{{ line.href }}">{{ line.value }}</a>
+                            <a class="govuk-link" href="{{ line.href }}">{{ line.value | replace(" > ", "&nbsp;&nbsp;›&nbsp;&nbsp;") | safe }}</a>
                             {% else %}
-                            {{ line.value }}
+                            {{ line.value | replace(" > ", "&nbsp;&nbsp;›&nbsp;&nbsp;") | safe }}
                             {% endif %}
                         </p>
                         {% endfor %}
                     </div>
                     {% endif %}
                     {% if entry.listItems and (entry.listItems | length > 0) %}
-                    {% if (entry.type == 'copy' or entry.type == 'move') and (entry.listItems | length > 5) %}
+                    {% set useTree = entry.previewTree and (entry.previewTree | length > 0) %}
+                    {% if (entry.type == 'copy' or entry.type == 'move' or entry.type == 'delete' or entry.type == 'rename') and (entry.listItems | length > 5) %}
                     <details class="govuk-details govuk-!-margin-bottom-2">
                         <summary class="govuk-details__summary">
                             <span class="govuk-details__summary-text" style="font-size: 17px;">View items</span>
                         </summary>
                         <div class="govuk-details__text" style="margin-bottom: 0; display: flow-root; padding-top: 2px; padding-bottom: 2px;">
+                            {% if useTree %}
+                            {{ renderActivityTree(entry.previewTree) }}
+                            {% else %}
                             <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0" style="margin-top: 0; margin-bottom: 0;">
                                 {% for itemName in entry.listItems %}
                                 <li>{{ itemName }}</li>
                                 {% endfor %}
                             </ul>
+                            {% endif %}
                         </div>
                     </details>
+                    {% else %}
+                    {% if useTree %}
+                    {{ renderActivityTree(entry.previewTree) }}
                     {% else %}
                     <ul class="govuk-list govuk-list--bullet">
                         {% for itemName in entry.listItems %}
                         <li>{{ itemName }}</li>
                         {% endfor %}
                     </ul>
+                    {% endif %}
                     {% endif %}
                     {% endif %}
                 </div>
@@ -724,11 +752,15 @@
                     </p>
                     <p class="hods-timeline__date"><span id="">Yesterday at 12:05pm by {{ data['offCMS_Username'] }} usability.testing.session@cps.gov.uk</span></p>
                     <p class="hods-timeline__description">200 files were transferred.</p>
-                    <p class="hods-timeline__source">
-                        <span class="url-text title">Source:</span> <span class="url-text">Egress >
-                            Investigator</span><br>
-                        <span class="url-text title">Destination:</span> <span class="url-text">Home: Thundercat
-                    </p>
+                    <div class="govuk-!-margin-bottom-2">
+                        <p class="govuk-body-s govuk-!-margin-bottom-1">
+                            <strong>Original location:</strong> Egress&nbsp;&nbsp;›&nbsp;&nbsp;Investigator
+                        </p>
+                        <p class="govuk-body-s govuk-!-margin-bottom-1">
+                            <strong>New location:</strong>
+                            <a class="govuk-link" href="/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=0">Home: Thundercat</a>
+                        </p>
+                    </div>
                     <details class="govuk-details govuk-!-margin-bottom-2" id="activity_listing">
                         <summary class="govuk-details__summary"><span class="govuk-details__summary-text">View
                                 files</span></summary>
@@ -1031,19 +1063,16 @@
 
                 <div class="hods-timeline__item">
                     <h2 class="hods-timeline__title">Case connected to Egress</h2>
-                    <p class="hods-timeline__by">by dwight_schrute@cps.gov.uk</p>
-                    <p class="hods-timeline__date"><span id="">Yesterday 9:10am</span></p>
+                    <p class="hods-timeline__date"><span id="">Yesterday 9:10am by dwight_schrute@cps.gov.uk</span></p>
                 </div>
 
                 <div class="hods-timeline__item">
                     <h2 class="hods-timeline__title">Case connected to shared drive</h2>
-                    <p class="hods-timeline__by">by dwight_schrute@cps.gov.uk</p>
-                    <p class="hods-timeline__date"><span id="">Yesterday 9:10am</span></p>
+                    <p class="hods-timeline__date"><span id="">Yesterday 9:10am by dwight_schrute@cps.gov.uk</span></p>
                 </div>
 
                 <div class="hods-timeline__item">
                     <h2 class="hods-timeline__title">Case registered</h2>
-                    <!-- <p class="hods-timeline__by">by dwight_schrute@cps.gov.uk</p> -->
                     <p class="hods-timeline__date"><span id="">22 March 2026 at 9:05am by dwight_schrute@cps.gov.uk</span></p>
                 </div>
 

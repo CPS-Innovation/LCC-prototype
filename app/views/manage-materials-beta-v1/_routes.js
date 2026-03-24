@@ -1780,21 +1780,21 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
     req.session.data.deleteSuccess = removedItems.length > 0;
 
     if (removedItems.length) {
-        const folderItems = removedItems.filter(item => item.folder);
-        const primaryItem = removedItems[0];
-        const allPaths = removedItems.map(item => getItemPathLabel(materials, item));
+        const sourceParents = [...new Set(removedItems.map(item => getFolderPathLabel(materials, item.parentId)))];
+        const sourceParentIds = [...new Set(removedItems.map(item => String(item.parentId ?? 0)))];
 
         pushMaterialsActivity(req.session.data, {
             type: 'delete',
-            tag: folderItems.length === 1 && removedItems.length === 1 ? 'Folder deleted' : 'Items deleted',
-            title: removedItems.length === 1
-                ? `${primaryItem.name} has been deleted from the shared drive`
-                : `${removedItems.length} items have been deleted from the shared drive`,
-            description: removedItems.length > 1 ? 'Below is a list of documents and folders deleted:' : null,
-            listItems: removedItems.length > 1 ? removedItems.map(item => item.name) : null,
-            sourceLines: removedItems.length === 1
-                ? [{ label: 'Original source:', value: allPaths[0] }]
-                : [{ label: 'Original locations:', value: 'Multiple locations' }]
+            title: 'Items deleted',
+            listItems: removedItems.map(item => item.name),
+            previewTree: deletePreviewTree,
+            sourceLines: [
+                {
+                    label: sourceParents.length === 1 ? 'Location:' : 'Locations:',
+                    value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
+                    href: sourceParents.length === 1 ? `/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
+                }
+            ]
         });
     }
 
@@ -1850,21 +1850,21 @@ router.post('/B-off-system-MVP/delete-material', function (req, res) {
     req.session.data.deleteSuccess = removedItems.length > 0;
 
     if (removedItems.length) {
-        const folderItems = removedItems.filter(item => item.folder);
-        const primaryItem = removedItems[0];
-        const allPaths = removedItems.map(item => getItemPathLabel(materials, item));
+        const sourceParents = [...new Set(removedItems.map(item => getFolderPathLabel(materials, item.parentId)))];
+        const sourceParentIds = [...new Set(removedItems.map(item => String(item.parentId ?? 0)))];
 
         pushMaterialsActivity(req.session.data, {
             type: 'delete',
-            tag: folderItems.length === 1 && removedItems.length === 1 ? 'Folder deleted' : 'Items deleted',
-            title: removedItems.length === 1
-                ? `${primaryItem.name} has been deleted from the shared drive`
-                : `${removedItems.length} items have been deleted from the shared drive`,
-            description: removedItems.length > 1 ? 'Below is a list of documents and folders deleted:' : null,
-            listItems: removedItems.length > 1 ? removedItems.map(item => item.name) : null,
-            sourceLines: removedItems.length === 1
-                ? [{ label: 'Original source:', value: allPaths[0] }]
-                : [{ label: 'Original locations:', value: 'Multiple locations' }]
+            title: 'Items deleted',
+            listItems: removedItems.map(item => item.name),
+            previewTree: deletePreviewTree,
+            sourceLines: [
+                {
+                    label: sourceParents.length === 1 ? 'Location:' : 'Locations:',
+                    value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
+                    href: sourceParents.length === 1 ? `/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
+                }
+            ]
         });
     }
 
@@ -1988,22 +1988,32 @@ router.post('/B-off-system-MVP/rename-multiple-save', function (req, res) {
     req.session.data.materials = materials;
     req.session.data.flashRenamedIds = Object.keys(updates).filter(id => updates[id]);
 
-    renamedEntries.reverse().forEach(entry => {
+    if (renamedEntries.length) {
+        const locationPaths = [...new Set(renamedEntries.map(entry => getFolderPathLabel(materials, entry.item.parentId)))];
+        const locationIds = [...new Set(renamedEntries.map(entry => String(entry.item.parentId ?? 0)))];
+        const renameNameMap = Object.fromEntries(
+            renamedEntries.map(entry => [String(entry.item.id), `${entry.oldName} → ${entry.newName}`])
+        );
+        const renamePreviewTree = buildPreviewTree(
+            materials,
+            renamedEntries.map(entry => String(entry.item.id)),
+            renameNameMap
+        );
+
         pushMaterialsActivity(req.session.data, {
             type: 'rename',
-            title: `${entry.oldName} has been renamed to ${entry.newName} on the shared drive`,
+            title: renamedEntries.length === 1 ? 'Item renamed' : 'Items renamed',
+            listItems: renamedEntries.map(entry => `${entry.oldName} → ${entry.newName}`),
+            previewTree: renamePreviewTree,
             sourceLines: [
                 {
-                    label: 'Original name:',
-                    value: getItemPathLabel(materials, entry.item, entry.oldName)
-                },
-                {
-                    label: 'New name:',
-                    value: getItemPathLabel(materials, entry.item, entry.newName)
+                    label: locationPaths.length === 1 ? 'Location:' : 'Locations:',
+                    value: locationPaths.length === 1 ? locationPaths[0] : 'Multiple locations',
+                    href: locationPaths.length === 1 ? `/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=${locationIds[0]}` : null
                 }
             ]
         });
-    });
+    }
 
     return res.redirect('/manage-materials-beta-v1/B-off-system-MVP/03-case-overview');
 });
@@ -2069,15 +2079,16 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
 
     pushMaterialsActivity(data, {
         type: 'rename',
-        title: `${oldName} has been renamed to ${newName} on the shared drive`,
+        title: 'Item renamed',
+        listItems: [`${oldName} → ${newName}`],
+        previewTree: buildPreviewTree(materials, [String(item.id)], {
+            [String(item.id)]: `${oldName} → ${newName}`
+        }),
         sourceLines: [
             {
-                label: 'Original name:',
-                value: getItemPathLabel(materials, item, oldName)
-            },
-            {
-                label: 'New name:',
-                value: getItemPathLabel(materials, item, newName)
+                label: 'Location:',
+                value: getFolderPathLabel(materials, item.parentId),
+                href: `/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=${item.parentId ?? 0}`
             }
         ]
     });
@@ -2186,7 +2197,7 @@ function getAllDescendants(materials, parentId) {
 }
 
 // Helper: build a nested tree for preview in the banner
-function buildPreviewTree(materials, rootIds) {
+function buildPreviewTree(materials, rootIds, nameOverrides = {}) {
     const byId = {};
     materials.forEach(m => {
         byId[String(m.id)] = m;
@@ -2199,7 +2210,7 @@ function buildPreviewTree(materials, rootIds) {
 
         return {
             id: item.id,
-            name: item.name,
+            name: nameOverrides[String(item.id)] || item.name,
             isFolder: !!item.folder,
             children
         };
@@ -2358,7 +2369,7 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
     }
 
     // Snapshot BEFORE mutation
-    const originalMaterials = [...materials];
+    const originalMaterials = materials.map(item => ({ ...item }));
 
     const copiedNames = [];
 
@@ -2421,6 +2432,7 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
             // title: `${copiedNames.length === 1 ? copiedNames[0] : `${copiedNames.length} items`} ${copiedNames.length === 1 ? 'has' : 'have'} been copied to ${destinationFolderName || 'Home: Thundercat'} on the shared drive`,
             // description: 'Below is a list of documents and folders copied:',
             listItems: copiedNames,
+            previewTree: copyPreviewTree,
             sourceLines: [
                 {
                     label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
@@ -2473,7 +2485,7 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
     }
 
     // Snapshot BEFORE mutation
-    const originalMaterials = [...materials];
+    const originalMaterials = materials.map(item => ({ ...item }));
 
     // ✅ Build preview tree BEFORE moving anything (for the success banner)
     const movePreviewTree = buildPreviewTree(originalMaterials, ids);
@@ -2523,6 +2535,7 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
             // title: `${movedNames.length === 1 ? movedNames[0] : `${movedNames.length} items`} ${movedNames.length === 1 ? 'has' : 'have'} been moved to ${destinationFolderName || 'Home: Thundercat'} on the shared drive`,
             // description: 'Below is a list of documents and folders moved:',
             listItems: movedNames,
+            previewTree: movePreviewTree,
             sourceLines: [
                 {
                     label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
