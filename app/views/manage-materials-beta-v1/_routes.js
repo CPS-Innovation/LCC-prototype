@@ -1715,12 +1715,12 @@ router.post('/B-off-system-MVP/new-folder', function (req, res) {
 
     pushMaterialsActivity(data, {
         type: 'new-folder',
-        tag: 'New folder',
-        title: `${newFolder.name} has been created on the shared drive`,
+        title: 'Folder created',
         sourceLines: [
             {
                 label: 'New folder:',
-                value: getItemPathLabel(materials, newFolder)
+                value: getItemPathLabel(materials, newFolder),
+                href: `/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=${newFolder.id}`
             }
         ]
     });
@@ -1733,6 +1733,50 @@ router.post('/B-off-system-MVP/new-folder', function (req, res) {
 router.post('/manage-materials-beta-v1/B-off-system-MVP/case-overview', function (req, res) {
     const data = req.session.data;
     res.render('manage-materials-beta-v1/B-off-system-MVP/03-case-overview', { materials: data.materials || [], data });
+});
+
+
+router.post('/B-off-system-MVP/delete', function (req, res) {
+    const selected = req.body.material_selected
+        ? req.body.material_selected.split(',').map(s => s.trim())
+        : [];
+
+    const data = req.session.data;
+    const materials = data.materials || [];
+    const toRemove = new Set(selected.map(String));
+
+    const byParent = new Map();
+    materials.forEach(m => {
+        const p = m.parentId ?? null;
+        if (!byParent.has(String(p))) byParent.set(String(p), []);
+        byParent.get(String(p)).push(String(m.id));
+    });
+
+    const stack = [...toRemove];
+    while (stack.length) {
+        const id = stack.pop();
+        const kids = byParent.get(String(id)) || [];
+        kids.forEach(kid => {
+            if (!toRemove.has(kid)) {
+                toRemove.add(kid);
+                stack.push(kid);
+            }
+        });
+    }
+
+    const removedItems = materials.filter(m => toRemove.has(String(m.id)));
+    const deleteRootIds = removedItems
+        .filter(item => !toRemove.has(String(item.parentId)))
+        .map(item => String(item.id));
+
+    res.render('manage-materials-beta-v1/B-off-system-MVP/delete', {
+        data: {
+            ...data,
+            material_selected: req.body.material_selected || '',
+            deleteItemsPreviewTree: buildPreviewTree(materials, deleteRootIds),
+            deleteItemsCount: removedItems.length
+        }
+    });
 });
 
 
@@ -1773,7 +1817,10 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
     }
 
     const removedItems = materials.filter(m => toRemove.has(String(m.id)));
-    const deletePreviewTree = buildPreviewTree(materials, Array.from(toRemove));
+    const deleteRootIds = removedItems
+        .filter(item => !toRemove.has(String(item.parentId)))
+        .map(item => String(item.id));
+    const deletePreviewTree = buildPreviewTree(materials, deleteRootIds);
 
     req.session.data.materials = materials.filter(m => !toRemove.has(String(m.id)));
     req.session.data.deletePreviewTree = deletePreviewTree;
@@ -1843,7 +1890,10 @@ router.post('/B-off-system-MVP/delete-material', function (req, res) {
     }
 
     const removedItems = materials.filter(m => toRemove.has(String(m.id)));
-    const deletePreviewTree = buildPreviewTree(materials, Array.from(toRemove));
+    const deleteRootIds = removedItems
+        .filter(item => !toRemove.has(String(item.parentId)))
+        .map(item => String(item.id));
+    const deletePreviewTree = buildPreviewTree(materials, deleteRootIds);
 
     req.session.data.materials = materials.filter(m => !toRemove.has(String(m.id)));
     req.session.data.deletePreviewTree = deletePreviewTree;
@@ -1992,12 +2042,19 @@ router.post('/B-off-system-MVP/rename-multiple-save', function (req, res) {
         const locationPaths = [...new Set(renamedEntries.map(entry => getFolderPathLabel(materials, entry.item.parentId)))];
         const locationIds = [...new Set(renamedEntries.map(entry => String(entry.item.parentId ?? 0)))];
         const renameNameMap = Object.fromEntries(
-            renamedEntries.map(entry => [String(entry.item.id), `${entry.oldName} → ${entry.newName}`])
+            renamedEntries.map(entry => [
+                String(entry.item.id),
+                entry.item.folder
+                    ? { name: entry.oldName, renamedTo: entry.newName }
+                    : `${entry.oldName} → ${entry.newName}`
+            ])
         );
         const renamePreviewTree = buildPreviewTree(
             materials,
             renamedEntries.map(entry => String(entry.item.id)),
-            renameNameMap
+            renameNameMap,
+            false,
+            false
         );
 
         pushMaterialsActivity(req.session.data, {
@@ -2082,8 +2139,10 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
         title: 'Item renamed',
         listItems: [`${oldName} → ${newName}`],
         previewTree: buildPreviewTree(materials, [String(item.id)], {
-            [String(item.id)]: `${oldName} → ${newName}`
-        }),
+            [String(item.id)]: item.folder
+                ? { name: oldName, renamedTo: newName }
+                : `${oldName} → ${newName}`
+        }, false, false),
         sourceLines: [
             {
                 label: 'Location:',
@@ -2197,21 +2256,26 @@ function getAllDescendants(materials, parentId) {
 }
 
 // Helper: build a nested tree for preview in the banner
-function buildPreviewTree(materials, rootIds, nameOverrides = {}) {
+function buildPreviewTree(materials, rootIds, nameOverrides = {}, includeDescendants = true, boldFolders = true) {
     const byId = {};
     materials.forEach(m => {
         byId[String(m.id)] = m;
     });
 
     function buildNode(item) {
-        const children = materials
-            .filter(m => String(m.parentId) === String(item.id))
-            .map(buildNode);
+        const override = nameOverrides[String(item.id)];
+        const children = includeDescendants
+            ? materials
+                .filter(m => String(m.parentId) === String(item.id))
+                .map(buildNode)
+            : [];
 
         return {
             id: item.id,
-            name: nameOverrides[String(item.id)] || item.name,
+            name: override && typeof override === 'object' ? override.name : (override || item.name),
             isFolder: !!item.folder,
+            isBold: !!item.folder && boldFolders,
+            renamedTo: override && typeof override === 'object' ? override.renamedTo : null,
             children
         };
     }

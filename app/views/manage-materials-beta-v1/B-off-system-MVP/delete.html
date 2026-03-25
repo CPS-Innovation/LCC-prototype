@@ -16,6 +16,59 @@ Discard documents – {{ serviceName }} – Prototype
 {% block content %}
 <div class="govuk-width-container">
 
+     <style>
+          .delete-items-details__summary {
+               list-style: none;
+          }
+
+          .delete-items-details__summary::-webkit-details-marker {
+               display: none;
+          }
+
+          .delete-items-details__summary::before {
+               content: "\25BC";
+               color: #1d70b8;
+               display: inline-block;
+               margin-right: 10px;
+          }
+
+          .delete-items-details[open] .delete-items-details__summary::before {
+               content: "\25B2";
+          }
+
+          .delete-items-details__label--hide {
+               display: none;
+          }
+
+          .delete-items-details[open] .delete-items-details__label--view {
+               display: none;
+          }
+
+          .delete-items-details[open] .delete-items-details__label--hide {
+               display: inline;
+          }
+     </style>
+
+     {% macro renderDeleteTree(nodes) %}
+     <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-3 govuk-!-margin-bottom-4">
+          {% for node in nodes %}
+          {% if node.isFolder %}
+          <li style="list-style: none; margin-left: -1em;">
+               <span class="icon-new folder"></span>
+               <strong>{{ node.name }}</strong>
+               {% if node.children and (node.children | length) > 0 %}
+               <div style="margin-left: 24px;">
+                    {{ renderDeleteTree(node.children) }}
+               </div>
+               {% endif %}
+          </li>
+          {% else %}
+          <li>{{ node.name }}</li>
+          {% endif %}
+          {% endfor %}
+     </ul>
+     {% endmacro %}
+
      <div class="govuk-grid-row">
           <div class="govuk-grid-column-two-thirds">
                <a href="javascript:history.back()" class="govuk-back-link">Back</a>
@@ -39,6 +92,24 @@ Discard documents – {{ serviceName }} – Prototype
                               <p class="govuk-body">If the file or folder is shared, other users will no longer be able
                                    to access it.</p>
                               <p class="govuk-body">Are you sure you want to permanently delete these items?</p>
+
+                              {% if data.deleteItemsPreviewTree and (data.deleteItemsPreviewTree | length > 0) %}
+                              {% if data.deleteItemsCount > 5 %}
+                              <details class="govuk-details govuk-!-margin-bottom-4 delete-items-details">
+                                   <summary class="govuk-details__summary delete-items-details__summary">
+                                        <span class="govuk-details__summary-text" style="font-size: 17px;">
+                                             <span class="delete-items-details__label--view">View items</span>
+                                             <span class="delete-items-details__label--hide">Hide items</span>
+                                        </span>
+                                   </summary>
+                                   <div class="govuk-details__text" style="margin-bottom: 0; display: flow-root; padding-top: 2px; padding-bottom: 2px;">
+                                        {{ renderDeleteTree(data.deleteItemsPreviewTree) }}
+                                   </div>
+                              </details>
+                              {% else %}
+                              {{ renderDeleteTree(data.deleteItemsPreviewTree) }}
+                              {% endif %}
+                              {% endif %}
 
                          </fieldset>
                     </div>
