@@ -2,6 +2,39 @@
 <p><span class="govuk-caption-m govuk-!-margin-bottom-0" style="display: inline-block;">Last updated <span
             id="materials-audit"></span></span></p>
 
+<style>
+    .materials-activity-details__summary {
+        list-style: none;
+    }
+
+    .materials-activity-details__summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .materials-activity-details__summary::before {
+        content: "\25BC";
+        color: #1d70b8;
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .materials-activity-details[open] .materials-activity-details__summary::before {
+        content: "\25B2";
+    }
+
+    .materials-activity-details__label--hide {
+        display: none;
+    }
+
+    .materials-activity-details[open] .materials-activity-details__label--view {
+        display: none;
+    }
+
+    .materials-activity-details[open] .materials-activity-details__label--hide {
+        display: inline;
+    }
+</style>
+
 <div class="section-wrapper">
 
     <section>
@@ -28,17 +61,28 @@
         </div>
         <div class="section-content">
             <div class="hods-timeline">
-                {% macro renderActivityTree(nodes, nested = false) %}
-                <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0" style="margin-top: 0; margin-bottom: 0;{% if nested %} margin-left: 24px;{% endif %}">
+                {% macro renderActivityTree(nodes) %}
+                <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0" style="margin-top: 0; margin-bottom: 0;">
                     {% for node in nodes %}
                     {% if node.isFolder %}
-                    <li class="no-bullet" style="list-style-type:none; margin-left: 0;">
-                        <div style="display: block; margin-bottom: 6px; margin-left: -1em;">
+                    <li class="no-bullet" style="list-style-type:none; margin-left:-1em; display: flow-root; clear: both;">
+                        <div style="display: block; margin-bottom: 6px; clear: both;">
                             <span class="icon-new folder"></span>
+                            {% if node.isBold == false %}
+                            <span>{{ node.name }}</span>
+                            {% if node.renamedTo %}
+                            <span> → </span>
+                            <span class="icon-new folder"></span>
+                            <span>{{ node.renamedTo }}</span>
+                            {% endif %}
+                            {% else %}
                             <strong>{{ node.name }}</strong>
+                            {% endif %}
                         </div>
                         {% if node.children and (node.children | length) > 0 %}
-                        {{ renderActivityTree(node.children, true) }}
+                        <div style="margin-left: 24px; clear: both;">
+                            {{ renderActivityTree(node.children) }}
+                        </div>
                         {% endif %}
                     </li>
                     {% else %}
@@ -81,9 +125,12 @@
                     {% if entry.listItems and (entry.listItems | length > 0) %}
                     {% set useTree = entry.previewTree and (entry.previewTree | length > 0) %}
                     {% if (entry.type == 'copy' or entry.type == 'move' or entry.type == 'delete' or entry.type == 'rename') and (entry.listItems | length > 5) %}
-                    <details class="govuk-details govuk-!-margin-bottom-2">
-                        <summary class="govuk-details__summary">
-                            <span class="govuk-details__summary-text" style="font-size: 17px;">View items</span>
+                    <details class="govuk-details govuk-!-margin-bottom-2 materials-activity-details">
+                        <summary class="govuk-details__summary materials-activity-details__summary">
+                            <span class="govuk-details__summary-text" style="font-size: 17px;">
+                                <span class="materials-activity-details__label--view">View items</span>
+                                <span class="materials-activity-details__label--hide">Hide items</span>
+                            </span>
                         </summary>
                         <div class="govuk-details__text" style="margin-bottom: 0; display: flow-root; padding-top: 2px; padding-bottom: 2px;">
                             {% if useTree %}
@@ -127,9 +174,13 @@
                                 class="transfer_folder_name"></span></span><br>
                     </p>
                     <p class="hods-timeline__description">Below is a list of documents/folders moved:</p>
-                    <details class="govuk-details govuk-!-margin-bottom-2" id="activity_listing">
-                        <summary class="govuk-details__summary"><span class="govuk-details__summary-text">View
-                                files</span></summary>
+                    <details class="govuk-details govuk-!-margin-bottom-2 materials-activity-details" id="activity_listing">
+                        <summary class="govuk-details__summary materials-activity-details__summary">
+                            <span class="govuk-details__summary-text">
+                                <span class="materials-activity-details__label--view">View items</span>
+                                <span class="materials-activity-details__label--hide">Hide items</span>
+                            </span>
+                        </summary>
                         <div class="govuk-details__text">
                             <ul class="govuk-list govuk-list--bullet documents_folder_name_list"></ul>
                         </div>
@@ -154,9 +205,13 @@
                                 class="transfer_folder_name"></span></span><br>
                     </p>b
                     <p class="hods-timeline__description">Below is a list of documents/folders copied:</p>
-                    <details class="govuk-details govuk-!-margin-bottom-2" id="activity_listing">
-                        <summary class="govuk-details__summary"><span class="govuk-details__summary-text">View
-                                files</span></summary>
+                    <details class="govuk-details govuk-!-margin-bottom-2 materials-activity-details" id="activity_listing">
+                        <summary class="govuk-details__summary materials-activity-details__summary">
+                            <span class="govuk-details__summary-text" style="font-size: 17px;">
+                                <span class="materials-activity-details__label--view">View items</span>
+                                <span class="materials-activity-details__label--hide">Hide items</span>
+                            </span>
+                        </summary>
                         <div class="govuk-details__text">
                             <ul class="govuk-list govuk-list--bullet documents_folder_name_list"></ul>
                         </div>
@@ -565,189 +620,12 @@
                 </div> -->
 
 
-                <!-- Failed transfer -->
-                <!-- <div class="hods-timeline__item">
-                    <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">Transfer</strong>
-                    <strong class="govuk-tag govuk-tag--red" style="display: inline-block;">Failed</strong>
-                        <h2 class="hods-timeline__title">Transfer from egress to shared drive</h2>
-                    <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usability.testing.session@cps.gov.uk</p>
-                    <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
-                    <p class="hods-timeline__description">147 files failed to transfer</p>
-                    <p class="hods-timeline__source">
-                        <span class="url-text title">Source:</span> <span class="url-text">Egress > Investigator</span><br>
-                        <span class="url-text title">Destination:</span> <span class="url-text">Thunderstruck > New Evidence</span>
-                    </p>
-                    <details class="govuk-details govuk-!-margin-bottom-2" id="activity_listing">
-                        <summary class="govuk-details__summary"><span class="govuk-details__summary-text">View files</span></summary>
-                        <div class="govuk-details__text">
-                            <ul class="govuk-list govuk-list--bullet">
-                                <li class="non_list_item"><span class="icon-new folder"></span> SHEAF Ben</li>
-                                <li><span class="icon-new file"></span> S285 - MG11 - Intel analyst 6744 SHEAF Ben 21.05.2025.pdf <strong class="govuk-tag govuk-tag--red" style="display: inline-block;">Failed</strong></li>
-                                <li><span class="icon-new file"></span>  S84 - MG11 - Intel analyst 3256 SHEAF Ben 15.09.2024.pdf <strong class="govuk-tag govuk-tag--red" style="display: inline-block;">Failed</strong></li>
-                                <li><span class="icon-new file"></span> S68 - MG11 - Intel analyst 1234 SHEAF Ben 10.12.2025.pdf <strong class="govuk-tag govuk-tag--red" style="display: inline-block;">Failed</strong></li>
-                                <li class="non_list_item seperator">----------------------------------------------------------------------------------------------------------------------------------</li>
-                                <li><span class="icon-new file"></span> Witness_Statement_Tina_Marsh_2020-01-14.pdf</li>
-                                <li><span class="icon-new file"></span> Testimony_Log_Aaron_Blake_2021-03-08.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Report_Lydia_Nguyen_2023-04-19.pdf</li>
-                                <li><span class="icon-new file"></span> Sworn_Statement_Cory_Adams_2022-06-03.docx</li>
-                                <li><span class="icon-new file"></span> Witness_Account_Michael_Tanaka_2019-12-22.pdf</li>
-                                <li><span class="icon-new file"></span> Eyewitness_Report_Sophie_Lane_2024-08-17.docx</li>
-                                <li><span class="icon-new file"></span> Statement_Ricardo_Diaz_2021-09-27.pdf</li>
-                                <li><span class="icon-new file"></span> Deposition_Transcript_Anna_Keane_2022-10-05.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Memo_Nora_Baxter_2023-11-14.pdf</li>
-                                <li><span class="icon-new file"></span> Testimony_Steven_Holt_2020-04-30.docx</li>
-                                <li><span class="icon-new file"></span> Witness_Form_Erin_Chambers_2025-01-11.pdf</li>
-                                <li><span class="icon-new file"></span> Filed_Statement_Myles_West_2021-05-23.docx</li>
-                                <li><span class="icon-new file"></span> Observation_Log_Kate_Fleming_2023-02-07.pdf</li>
-                                <li><span class="icon-new file"></span> Interview_Notes_George_Carson_2020-07-25.docx</li>
-                                <li><span class="icon-new file"></span> Eyewitness_Summary_Victoria_Snow_2019-08-09.pdf</li>
-                                <li><span class="icon-new file"></span> Statement_Log_Terrence_Cole_2022-11-01.docx</li>
-                                <li><span class="icon-new file"></span> Witness_Report_Felicia_Hughes_2024-03-13.pdf</li>
-                                <li><span class="icon-new file"></span> Signed_Statement_Daniel_Yates_2021-02-16.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Record_Rachel_James_2023-06-29.pdf</li>
-                                <li><span class="icon-new file"></span> Testimony_Transcript_Luis_Cardenas_2022-01-25.docx</li>
-                                <li><span class="icon-new file"></span> Affidavit_Brianna_Keller_2020-03-06.pdf</li>
-                                <li><span class="icon-new file"></span> Witness_Interview_Jason_Harvey_2024-05-01.docx</li>
-                                <li><span class="icon-new file"></span> Statement_Record_Pamela_Cruz_2021-11-12.pdf</li>
-                                <li><span class="icon-new file"></span> Interview_Summary_Caleb_Norris_2019-10-03.docx</li>
-                                <li><span class="icon-new file"></span> Observation_Report_Nicole_Perry_2023-07-16.pdf</li>
-                                <li><span class="icon-new file"></span> Verbal_Statement_Grant_Sanders_2022-02-18.docx</li>
-                                <li><span class="icon-new file"></span> Testimony_Record_Amelia_Scott_2025-04-09.pdf</li>
-                                <li><span class="icon-new file"></span> Interview_Log_Edward_Vega_2020-12-07.docx</li>
-                                <li><span class="icon-new file"></span> Statement_File_Nina_Thorpe_2021-06-14.pdf</li>
-                                <li><span class="icon-new file"></span> Eyewitness_Log_Jordan_Levine_2023-03-23.docx</li>
-                                <li><span class="icon-new file"></span> Witness_Commentary_Dawn_Reed_2022-09-15.pdf</li>
-                                <li><span class="icon-new file"></span> Affidavit_Harrison_Black_2019-04-18.docx</li>
-                                <li><span class="icon-new file"></span> Witness_Form_Jessica_Rowe_2020-08-30.pdf</li>
-                                <li><span class="icon-new file"></span> Interview_Memo_Luke_Roberts_2021-01-19.docx</li>
-                                <li><span class="icon-new file"></span> Testimony_Sheet_Caroline_Bridges_2022-12-05.pdf</li>
-                                <li><span class="icon-new file"></span> Statement_Entry_Gavin_Miller_2023-05-27.docx</li>
-                                <li><span class="icon-new file"></span> Sworn_Account_Emily_Young_2024-01-30.pdf</li>
-                                <li><span class="icon-new file"></span> Witness_Report_Markus_Hendrix_2021-07-08.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Transcript_Lauren_Wade_2020-09-02.pdf</li>
-                                <li><span class="icon-new file"></span> Testimony_File_Tobias_Knight_2023-10-20.docx</li>
-                                <li><span class="icon-new file"></span> Statement_Affidavit_Sasha_Bailey_2022-04-03.pdf</li>
-                                <li><span class="icon-new file"></span> Witness_Entry_Oliver_Sutton_2019-06-29.docx</li>
-                                <li><span class="icon-new file"></span> Eyewitness_Declaration_Simon_Kent_2021-08-11.pdf</li>
-                                <li><span class="icon-new file"></span> Testimony_Log_Madison_Rivers_2020-11-22.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Record_Brandon_Coleman_2024-07-01.pdf</li>
-                                <li><span class="icon-new file"></span> Statement_Note_Tamara_Nixon_2022-05-06.docx</li>
-                                <li><span class="icon-new file"></span> Filed_Statement_Evan_Price_2023-08-28.pdf</li>
-                                <li><span class="icon-new file"></span> Witness_Log_Cassandra_Yu_2019-07-19.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Summary_Jonathan_Bishop_2020-02-13.pdf</li>
-                                <li><span class="icon-new file"></span> Eyewitness_Report_Haley_Vance_2021-03-29.docx</li>
-                                <li><span class="icon-new file"></span> Statement_Entry_Cody_Fox_2022-07-10.pdf</li>
-                                <li><span class="icon-new file"></span> Testimony_Affidavit_Ashley_Gates_2023-12-18.docx</li>
-                                <li><span class="icon-new file"></span> Sworn_Statement_Quinn_Rojas_2020-05-11.pdf</li>
-                                <li><span class="icon-new file"></span> Interview_Log_Benjamin_Moore_2025-03-02.docx</li>
-                                <li><span class="icon-new file"></span> Witness_Report_Isabella_Tran_2021-12-04.pdf</li>
-                                <li><span class="icon-new file"></span> Deposition_Summary_Ethan_Cobb_2023-09-30.docx</li>
-                                <li><span class="icon-new file"></span> Eyewitness_Sheet_Marissa_Gray_2020-06-27.pdf</li>
-                                <li><span class="icon-new file"></span> Observation_Record_Colin_Taylor_2024-10-22.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Statement_Natalie_Cho_2019-11-09.pdf</li>
-                                <li><span class="icon-new file"></span> Testimony_Report_Devon_Mercer_2021-10-13.docx</li>
-                                <li><span class="icon-new file"></span> Statement_Summary_Lindsey_Reed_2022-03-08.pdf</li>
-                                <li><span class="icon-new file"></span> Witness_Log_Marco_Alvarez_2023-01-04.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Account_Caitlin_Jordan_2020-10-21.pdf</li>
-                                <li><span class="icon-new file"></span> Testimony_Form_Zachary_Wells_2024-11-16.docx</li>
-                                <li><span class="icon-new file"></span> Witness_Record_Morgan_Fields_2022-06-01.pdf</li>
-                                <li><span class="icon-new file"></span> Statement_Log_Jeremy_Long_2019-09-05.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Sheet_Abigail_Hart_2023-07-08.pdf</li>
-                                <li><span class="icon-new file"></span> Testimony_Transcript_Sheldon_Frank_2020-01-27.docx</li>
-                                <li><span class="icon-new file"></span> Observation_Summary_Kylie_Maddox_2021-04-20.pdf</li>
-                                <li><span class="icon-new file"></span> Eyewitness_Declaration_Darren_Snow_2022-10-29.docx</li>
-                                <li><span class="icon-new file"></span> Statement_Form_Nia_Boone_2023-05-05.pdf</li>
-                                <li><span class="icon-new file"></span> Interview_Report_Stephanie_Lowe_2020-03-19.docx</li>
-                                <li><span class="icon-new file"></span> Witness_Record_Xavier_Cross_2024-12-03.pdf</li>
-                                <li><span class="icon-new file"></span> Testimony_Log_Leah_Hansen_2021-06-01.docx</li>
-                                <li><span class="icon-new file"></span> Statement_File_Ryan_Hale_2019-12-10.pdf</li>
-                                <li><span class="icon-new file"></span> Interview_Summary_Taylor_Hoffman_2022-08-21.docx</li>
-                                <li><span class="icon-new file"></span> Eyewitness_Report_Samuel_Chan_2023-11-11.pdf</li>
-                                <li><span class="icon-new file"></span> Witness_Transcript_Violet_Spencer_2020-09-07.docx</li>
-                                <li><span class="icon-new file"></span> Observation_Log_Kristen_Bray_2024-04-04.pdf</li>
-                                <li><span class="icon-new file"></span> Testimony_Sheet_Elijah_Rose_2021-05-17.docx</li>
-                                <li><span class="icon-new file"></span> Affidavit_Lucas_Griffith_2022-12-27.pdf</li>
-                                <li><span class="icon-new file"></span> Interview_Record_Dana_Murphy_2019-06-06.docx</li>
-                                <li><span class="icon-new file"></span> Statement_Audit_Trevor_Holt_2023-03-20.pdf</li>
-                                <li><span class="icon-new file"></span> Witness_Form_Hannah_Carlisle_2020-11-02.docx</li>
-                                <li><span class="icon-new file"></span> Deposition_Entry_Aiden_Cooper_2024-02-26.pdf</li>
-                                <li><span class="icon-new file"></span> Testimony_Report_Sienna_Jameson_2021-08-19.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Note_Julian_Ng_2022-01-15.pdf</li>
-                                <li><span class="icon-new file"></span> Statement_Account_Omar_Simmons_2023-10-08.docx</li>
-                                <li><span class="icon-new file"></span> Observation_File_Rebecca_Doyle_2020-12-01.pdf</li>
-                                <li><span class="icon-new file"></span> Witness_Statement_Derek_Quinn_2021-09-20.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Transcript_Mira_Ross_2022-06-19.pdf</li>
-                                <li><span class="icon-new file"></span> Eyewitness_Report_Dominic_Hayes_2023-01-31.docx</li>
-                                <li><span class="icon-new file"></span> Statement_Form_Melanie_Scott_2024-06-08.pdf</li>
-                                <li><span class="icon-new file"></span> Deposition_Log_Peter_Freeman_2021-01-13.docx</li>
-                                <li><span class="icon-new file"></span> Witness_Entry_Lara_Jackson_2020-08-12.pdf</li>
-                                <li><span class="icon-new file"></span> Interview_Memo_Nick_Perez_2019-10-25.docx</li>
-                                <li><span class="icon-new file"></span> Statement_Summary_Karen_Bright_2023-04-14.pdf</li>
-                                <li><span class="icon-new file"></span> Observation_Sheet_Charlie_Bennett_2022-09-13.docx</li>
-                                <li><span class="icon-new file"></span> Testimony_Log_Georgia_Reyes_2021-11-26.pdf</li>
-                                <li><span class="icon-new file"></span> Witness_Record_Elliot_Shaw_2020-05-21.docx</li>
-                                <li><span class="icon-new file"></span> Interview_File_Ruby_Holland_2024-09-01.pdf</li>
-                                <li><span class="icon-new file"></span> Statement_Log_Cameron_Lee_2019-07-11.docx</li>
-                                <li><span class="icon-new file"></span> Eyewitness_Report_Savannah_Rae_2023-06-02.pdf</li>
-                                <li><span class="icon-new file"></span> Testimony_Form_Luke_Davidson_2022-02-23.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Statement_Kylie_Farrell_2020-04-16.pdf</li>
-                                <li><span class="icon-new file"></span> Sworn_Affidavit_Jacob_Burke_2021-12-19.docx</li>
-                                <li><span class="icon-new file"></span> Statement_Log_Erika_Nash_2023-08-06.pdf</li>
-                                <li><span class="icon-new file"></span> Interview_Report_Andre_Spence_2022-07-18.docx</li>
-                                <li><span class="icon-new file"></span> Witness_File_Tessa_Quill_2020-01-08.pdf</li>
-                                <li><span class="icon-new file"></span> Eyewitness_Entry_Frankie_McCall_2019-05-15.docx</li>
-                                <li><span class="icon-new file"></span> Testimony_Record_Adriana_Banks_2024-07-24.pdf</li>
-                                <li><span class="icon-new file"></span> Statement_Log_Silas_Elliott_2021-02-02.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Summary_Tamika_Holland_2023-12-01.pdf</li>
-                                <li><span class="icon-new file"></span> Witness_Report_Collette_Abbott_2020-06-05.docx</li>
-                                <li><span class="icon-new file"></span> Deposition_File_Jamie_Lam_2022-03-29.pdf</li>
-                                <li><span class="icon-new file"></span> Testimony_Log_Alana_Voss_2023-09-03.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Record_Dev_Thompson_2020-10-15.pdf</li>
-                                <li><span class="icon-new file"></span> Observation_Entry_Sharon_Lim_2021-07-27.docx</li>
-                                <li><span class="icon-new file"></span> Witness_Statement_George_Bass_2024-03-01.pdf</li>
-                                <li><span class="icon-new file"></span> Interview_Log_Diane_Moon_2022-05-11.docx</li>
-                                <li><span class="icon-new file"></span> Testimony_Form_Ralph_Turner_2020-08-25.pdf</li>
-                                <li><span class="icon-new file"></span> Statement_Record_Lacy_Tucker_2021-10-02.docx</li>
-                                <li><span class="icon-new file"></span> Witness_Report_Desmond_Jules_2023-11-22.pdf</li>
-                                <li><span class="icon-new file"></span> Interview_Sheet_Hazel_Kirk_2022-04-25.docx</li>
-                                <li><span class="icon-new file"></span> Observation_Log_Roman_Yeats_2019-03-28.pdf</li>
-                                <li><span class="icon-new file"></span> Eyewitness_Form_Paige_Duval_2020-07-04.docx</li>
-                                <li><span class="icon-new file"></span> Testimony_Record_Edgar_Choi_2023-02-17.pdf</li>
-                                <li><span class="icon-new file"></span> Statement_Entry_Daria_Kline_2021-06-25.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Note_Joel_Adair_2024-08-10.pdf</li>
-                                <li><span class="icon-new file"></span> Witness_Log_Nathan_Giles_2022-12-09.docx</li>
-                                <li><span class="icon-new file"></span> Testimony_Report_Jun_Park_2020-03-31.pdf</li>
-                                <li><span class="icon-new file"></span> Statement_Form_Meredith_Cole_2023-10-26.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Record_Landon_Fields_2022-01-06.pdf</li>
-                                <li><span class="icon-new file"></span> Witness_File_Sloane_Bishop_2021-09-02.docx</li>
-                                <li><span class="icon-new file"></span> Testimony_Sheet_Miles_Calder_2020-11-29.pdf</li>
-                                <li><span class="icon-new file"></span> Interview_Log_Sharif_Edwards_2023-07-13.docx</li>
-                                <li><span class="icon-new file"></span> Statement_Affidavit_Jordan_Huff_2024-01-06.pdf</li>
-                                <li><span class="icon-new file"></span> Witness_Report_Tammy_Stern_2021-05-31.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Summary_Eric_Patton_2022-06-14.pdf</li>
-                                <li><span class="icon-new file"></span> Observation_Record_Gia_Santana_2020-02-06.docx</li>
-                                <li><span class="icon-new file"></span> Testimony_Entry_Carmen_McKee_2019-11-19.pdf</li>
-                                <li><span class="icon-new file"></span> Witness_Form_Eli_Grant_2024-10-14.docx</li>
-                                <li><span class="icon-new file"></span> Interview_File_Sadie_Conrad_2022-09-24.pdf</li>
-                                <li><span class="icon-new file"></span> Statement_Log_Theo_Hammer_2023-06-21.docx</li>
-                                <li><span class="icon-new file"></span> Eyewitness_Report_Walter_Tran_2021-04-10.pdf</li>
-                                <li><span class="icon-new file"></span> Testimony_Summary_Dana_Kim_2020-12-15.docx</li>
-                                <li><span class="icon-new file"></span> Interview_Memo_Kristoff_Arden_2023-01-19.pdf</li>
-
-                                <li class="non_list_item"><span class="icon-new folder"></span>Video Surveillance</li>
-                                <li><span class="icon-new file"></span> S81 - Video of crime in action 11-06-2024.mp4 <strong class="govuk-tag govuk-tag--red" style="display: inline-block;">Failed</strong></li>
-                            </ul>
-                        </div>
-                    </details>
-                    <a class="govuk-button copy-button" id="copyDuplicateFilesLink" onclick="copyDuplicateFilesLink()">Download the list of files (.csv) <span class="visuallyhidden">File list successfully downloaded</span></a>
-                </div>
-              -->
 
                 <!-- Digital evidence folder - LONG CHARACTERS -->
                 <div class="hods-timeline__item">
                     <!-- <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">Transfer</strong> -->
                     
-                    <h2 class="hods-timeline__title">Transfer from egress to shared drive <strong class="govuk-tag govuk-tag--green">Completed</strong></h2>
+                    <h2 class="hods-timeline__title" style="display: inline-block;">Transfer from egress to shared drive</h2><strong class="govuk-tag govuk-tag--green" style="display: inline-block; vertical-align: top; margin-left: 6px;">Completed</strong>
                     <p class="hods-timeline__by">
                     </p>
                     <p class="hods-timeline__date"><span id="">Yesterday at 12:05pm by {{ data['offCMS_Username'] }} usability.testing.session@cps.gov.uk</span></p>
@@ -761,9 +639,13 @@
                             <a class="govuk-link" href="/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=0">Home: Thundercat</a>
                         </p>
                     </div>
-                    <details class="govuk-details govuk-!-margin-bottom-2" id="activity_listing">
-                        <summary class="govuk-details__summary"><span class="govuk-details__summary-text">View
-                                files</span></summary>
+                    <details class="govuk-details govuk-!-margin-bottom-2 materials-activity-details" id="activity_listing">
+                        <summary class="govuk-details__summary materials-activity-details__summary">
+                            <span class="govuk-details__summary-text" style="font-size: 17px;">
+                                <span class="materials-activity-details__label--view">View items</span>
+                                <span class="materials-activity-details__label--hide">Hide items</span>
+                            </span>
+                        </summary>
                         <div class="govuk-details__text">
                             <ul class="govuk-list govuk-list--bullet">
                                 <li class="non_list_item"><span class="icon-new folder"></span> BLOGGS Jane</li>
