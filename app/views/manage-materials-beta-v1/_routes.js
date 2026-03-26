@@ -1855,7 +1855,7 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
 });
 
 // Discard material
-router.post('/B-off-system-MVP/delete-material', function (req, res) {
+router.post('/B-off-system-MVP/p-material', function (req, res) {
     const selected = req.body.material_selected
         ? req.body.material_selected.split(',').map(s => s.trim())
         : [];
