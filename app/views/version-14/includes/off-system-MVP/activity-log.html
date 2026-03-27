@@ -1,6 +1,39 @@
 <h2 class="govuk-heading-m" id="">Activity log</h2>
 <p><span class="govuk-caption-m govuk-!-margin-bottom-0" style="display: inline-block;">Last updated <span id="materials-audit"></span></span></p>
 
+<style>
+    .materials-activity-details__summary {
+        list-style: none;
+    }
+
+    .materials-activity-details__summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .materials-activity-details__summary::before {
+        content: "\25BC";
+        color: #1d70b8;
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .materials-activity-details[open] .materials-activity-details__summary::before {
+        content: "\25B2";
+    }
+
+    .materials-activity-details__label--hide {
+        display: none;
+    }
+
+    .materials-activity-details[open] .materials-activity-details__label--view {
+        display: none;
+    }
+
+    .materials-activity-details[open] .materials-activity-details__label--hide {
+        display: inline;
+    }
+</style>
+
 <div class="section-wrapper">
 
     <section>
@@ -27,6 +60,102 @@
         </div>
         <div class="section-content">
             <div class="hods-timeline">
+                {% macro renderActivityTree(nodes) %}
+                <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0" style="margin-top: 0; margin-bottom: 0;">
+                    {% for node in nodes %}
+                    {% if node.isFolder %}
+                    <li class="no-bullet" style="list-style-type:none; margin-left:-1em; display: flow-root; clear: both;">
+                        <div style="display: block; margin-bottom: 6px; clear: both;">
+                            <span class="icon-new folder"></span>
+                            {% if node.isBold == false %}
+                            <span>{{ node.name }}</span>
+                            {% if node.renamedTo %}
+                            <span> → </span>
+                            <span class="icon-new folder"></span>
+                            <span>{{ node.renamedTo }}</span>
+                            {% endif %}
+                            {% else %}
+                            <strong>{{ node.name }}</strong>
+                            {% endif %}
+                        </div>
+                        {% if node.children and (node.children | length) > 0 %}
+                        <div style="margin-left: 24px; clear: both;">
+                            {{ renderActivityTree(node.children) }}
+                        </div>
+                        {% endif %}
+                    </li>
+                    {% else %}
+                    <li>{{ node.name }}</li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+                {% endmacro %}
+
+                {% for entry in data.materialsActivityLog | default([]) %}
+                <div class="hods-timeline__item">
+                    {% if entry.tag %}
+                    <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">{{ entry.tag }}</strong>
+                    {% endif %}
+                    {% if entry.statusTag %}
+                    <strong class="govuk-tag govuk-tag--green" style="display: inline-block;">{{ entry.statusTag }}</strong>
+                    {% endif %}
+                    <h2 class="hods-timeline__title">{{ entry.title }}</h2>
+                    <div style="clear: both; display: block; margin-top: 4px; margin-bottom: 10px;">
+                        <p class="govuk-body-s" style="margin: 0; color: #484949;">{{ entry.dateLabel }} by {{ entry.byEmail }}</p>
+                    </div>
+                    {% if entry.description %}
+                    <p class="hods-timeline__description">{{ entry.description }}</p>
+                    {% endif %}
+                    {% if entry.sourceLines and (entry.sourceLines | length > 0) %}
+                    <div class="govuk-!-margin-bottom-2">
+                        {% for line in entry.sourceLines %}
+                        <p class="govuk-body-s govuk-!-margin-bottom-1">
+                            <strong>{{ line.label }}</strong>
+                            {% if line.href %}
+                            <a class="govuk-link" href="{{ line.href }}">{{ line.value | replace(" > ", "&nbsp;&nbsp;›&nbsp;&nbsp;") | safe }}</a>
+                            {% else %}
+                            {{ line.value | replace(" > ", "&nbsp;&nbsp;›&nbsp;&nbsp;") | safe }}
+                            {% endif %}
+                        </p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% if entry.listItems and (entry.listItems | length > 0) %}
+                    {% set useTree = entry.previewTree and (entry.previewTree | length > 0) %}
+                    {% if (entry.type == 'copy' or entry.type == 'move' or entry.type == 'delete' or entry.type == 'rename') and (entry.listItems | length > 5) %}
+                    <details class="govuk-details govuk-!-margin-bottom-2 materials-activity-details">
+                        <summary class="govuk-details__summary materials-activity-details__summary">
+                            <span class="govuk-details__summary-text" style="font-size: 17px;">
+                                <span class="materials-activity-details__label--view">View items</span>
+                                <span class="materials-activity-details__label--hide">Hide items</span>
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text" style="margin-bottom: 0; display: flow-root; padding-top: 2px; padding-bottom: 2px;">
+                            {% if useTree %}
+                            {{ renderActivityTree(entry.previewTree) }}
+                            {% else %}
+                            <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0" style="margin-top: 0; margin-bottom: 0;">
+                                {% for itemName in entry.listItems %}
+                                <li>{{ itemName }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </details>
+                    {% else %}
+                    {% if useTree %}
+                    {{ renderActivityTree(entry.previewTree) }}
+                    {% else %}
+                    <ul class="govuk-list govuk-list--bullet">
+                        {% for itemName in entry.listItems %}
+                        <li>{{ itemName }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endif %}
+                    {% endif %}
+                </div>
+                {% endfor %}
 
 
                 <!-- Move folder -->

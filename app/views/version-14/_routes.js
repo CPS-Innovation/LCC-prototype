@@ -18,7 +18,16 @@ router.use((req, res, next) => {
         req.session.data.materialsVersion13 = JSON.parse(JSON.stringify(defaults));
     }
 
-    // In v13, materials === materialsVersion13 (rendering alias)
+    Object.defineProperty(req.session.data, 'materials', {
+        get() {
+            return this.materialsVersion13;
+        },
+        set(value) {
+            this.materialsVersion13 = value;
+        },
+        configurable: true
+    });
+
     res.locals.data.materials = req.session.data.materialsVersion13;
 
     next();
@@ -1137,6 +1146,87 @@ router.post('/includes/materials/materials-filter', function (req, res) {
 
 const createMaterialsUtils = require('../../helpers/materials.js');
 
+function getActivityActor(data) {
+    return {
+        name: data['offCMS_Username'] || 'dwight_schrute',
+        email: data['urUser'] || 'usability.testing.session@cps.gov.uk'
+    };
+}
+
+function formatActivityTimestamp(value) {
+    const date = value instanceof Date ? value : new Date(value || Date.now());
+    const now = new Date();
+    const yesterday = new Date(now);
+    yesterday.setDate(now.getDate() - 1);
+
+    const time = date.toLocaleTimeString('en-GB', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    }).toLowerCase().replace(' ', '');
+
+    const isToday =
+        date.getDate() === now.getDate() &&
+        date.getMonth() === now.getMonth() &&
+        date.getFullYear() === now.getFullYear();
+
+    const isYesterday =
+        date.getDate() === yesterday.getDate() &&
+        date.getMonth() === yesterday.getMonth() &&
+        date.getFullYear() === yesterday.getFullYear();
+
+    if (isToday) return `Today at ${time}`;
+    if (isYesterday) return `Yesterday at ${time}`;
+
+    const day = date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+    });
+
+    return `${day} at ${time}`;
+}
+
+function getFolderPathLabel(materials, folderId) {
+    const parts = [];
+    let currentId = folderId;
+    const seen = new Set();
+
+    while (currentId !== null && currentId !== undefined && !seen.has(String(currentId))) {
+        seen.add(String(currentId));
+        const folder = materials.find(m => m && m.folder && String(m.id) === String(currentId));
+        if (!folder) break;
+        parts.unshift(folder.name);
+        currentId = folder.parentId;
+    }
+
+    return parts.length ? `Home: Thundercat > ${parts.join(' > ')}` : 'Home: Thundercat';
+}
+
+function getItemPathLabel(materials, item, nameOverride) {
+    const parentPath = getFolderPathLabel(materials, item.parentId);
+    const itemName = nameOverride || item.name || 'Unnamed item';
+    return `${parentPath} > ${itemName}`;
+}
+
+function createBaseActivityEntry(data) {
+    const actor = getActivityActor(data);
+    return {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        byName: '',
+        byEmail: actor.email,
+        dateLabel: formatActivityTimestamp(new Date())
+    };
+}
+
+function pushMaterialsActivity(data, entry) {
+    data.materialsActivityLog = data.materialsActivityLog || [];
+    data.materialsActivityLog.unshift({
+        ...createBaseActivityEntry(data),
+        ...entry
+    });
+}
+
 
 router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const data = req.session.data;
@@ -1153,7 +1243,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         };
     }
 
-    // 👇 MINIMAL PATCH – add these two lines
+    const lastRenamedId = String(data.lastRenamedId || '');
     const flashRenamedId = String(data.flashRenamedId || '');
     req.session.data.flashRenamedId = '';
 
@@ -1170,6 +1260,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     // Extract flags + lists for THIS render only
     const copySuccess = data.copySuccess === true;
     const moveSuccess = data.moveSuccess === true;
+    const deleteSuccess = data.deleteSuccess === true;
 
     const copyList = data.copyList || [];
     const moveList = data.moveList || [];
@@ -1179,6 +1270,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
 
     const copyPreviewTree = data.copyPreviewTree || [];
     const movePreviewTree = data.movePreviewTree || [];
+    const deletePreviewTree = data.deletePreviewTree || [];
 
     const copyDestinationId = data.copyDestinationId || 0;
     const moveDestinationId = data.moveDestinationId || 0;
@@ -1189,12 +1281,14 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     // Immediately reset so they only show once
     req.session.data.copySuccess = false;
     req.session.data.moveSuccess = false;
+    req.session.data.deleteSuccess = false;
     req.session.data.copyList = [];
     req.session.data.moveList = [];
     req.session.data.copyDestinationName = null;
     req.session.data.moveDestinationName = null;
     req.session.data.copyPreviewTree = [];
     req.session.data.movePreviewTree = [];
+    req.session.data.deletePreviewTree = [];
 
     // Helper utils
     const utils = createMaterialsUtils(materials);
@@ -1395,12 +1489,14 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         flashNewFolderId,
         copySuccess,
         moveSuccess,
+        deleteSuccess,
         copyList,
         moveList,
         copyDestinationName,
         moveDestinationName,
         copyPreviewTree,
         movePreviewTree,
+        deletePreviewTree,
         copyDestinationId,
         moveDestinationId
     });
@@ -1576,6 +1672,18 @@ router.post('/B-off-system-MVP/new-folder', function (req, res) {
     // Save back into session
     data.materials = materials;
 
+    pushMaterialsActivity(data, {
+        type: 'new-folder',
+        title: 'Folder created',
+        sourceLines: [
+            {
+                label: 'New folder:',
+                value: getItemPathLabel(materials, newFolder),
+                href: `/version-14/B-off-system-MVP/03-case-overview?folderId=${newFolder.id}`
+            }
+        ]
+    });
+
     // Redirect back to manage materials
     res.redirect('/version-14/B-off-system-MVP/03-case-overview');
 });
@@ -1588,6 +1696,49 @@ router.post('/version-14/B-off-system-MVP/case-overview', function (req, res) {
 
 
 
+router.post('/B-off-system-MVP/delete', function (req, res) {
+    const selected = req.body.material_selected
+        ? req.body.material_selected.split(',').map(s => s.trim())
+        : [];
+
+    const data = req.session.data;
+    const materials = data.materials || [];
+    const toRemove = new Set(selected.map(String));
+
+    const byParent = new Map();
+    materials.forEach(m => {
+        const p = m.parentId ?? null;
+        if (!byParent.has(String(p))) byParent.set(String(p), []);
+        byParent.get(String(p)).push(String(m.id));
+    });
+
+    const stack = [...toRemove];
+    while (stack.length) {
+        const id = stack.pop();
+        const kids = byParent.get(String(id)) || [];
+        kids.forEach(kid => {
+            if (!toRemove.has(kid)) {
+                toRemove.add(kid);
+                stack.push(kid);
+            }
+        });
+    }
+
+    const removedItems = materials.filter(m => toRemove.has(String(m.id)));
+    const deleteRootIds = removedItems
+        .filter(item => !toRemove.has(String(item.parentId)))
+        .map(item => String(item.id));
+
+    res.render('version-14/B-off-system-MVP/delete', {
+        data: {
+            ...data,
+            material_selected: req.body.material_selected || '',
+            deleteItemsPreviewTree: buildPreviewTree(materials, deleteRootIds),
+            deleteItemsCount: removedItems.length
+        }
+    });
+});
+
 // Discard material
 router.post('/B-off-system-MVP/discard-material', function (req, res) {
     const selected = req.body.material_selected
@@ -1596,8 +1747,7 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
 
     const reason = req.body.discarding_material;
 
-    // SOURCE OF TRUTH (v12)
-    const materials = req.session.data.materialsVersion13 || [];
+    const materials = req.session.data.materials || [];
 
     // If folders should remove descendants too, expand IDs:
     const toRemove = new Set(selected.map(String));
@@ -1623,9 +1773,34 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
         });
     }
 
-    req.session.data.materialsVersion13 = materials.filter(
-        m => !toRemove.has(String(m.id))
-    );
+    const removedItems = materials.filter(m => toRemove.has(String(m.id)));
+    const deleteRootIds = removedItems
+        .filter(item => !toRemove.has(String(item.parentId)))
+        .map(item => String(item.id));
+    const deletePreviewTree = buildPreviewTree(materials, deleteRootIds);
+
+    req.session.data.materials = materials.filter(m => !toRemove.has(String(m.id)));
+    req.session.data.deletePreviewTree = deletePreviewTree;
+    req.session.data.deleteSuccess = removedItems.length > 0;
+
+    if (removedItems.length) {
+        const sourceParents = [...new Set(removedItems.map(item => getFolderPathLabel(materials, item.parentId)))];
+        const sourceParentIds = [...new Set(removedItems.map(item => String(item.parentId ?? 0)))];
+
+        pushMaterialsActivity(req.session.data, {
+            type: 'delete',
+            title: 'Items deleted',
+            listItems: removedItems.map(item => item.name),
+            previewTree: deletePreviewTree,
+            sourceLines: [
+                {
+                    label: sourceParents.length === 1 ? 'Location:' : 'Locations:',
+                    value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
+                    href: sourceParents.length === 1 ? `/version-14/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
+                }
+            ]
+        });
+    }
 
     req.session.data.lastDiscard = {
         reason,
@@ -1730,15 +1905,56 @@ router.post('/B-off-system-MVP/rename-multiple-save', function (req, res) {
         }
     });
 
+    const renamedEntries = [];
+
     materials.forEach(item => {
         const id = String(item.id);
         if (updates[id] !== undefined && updates[id] !== '') {
+            renamedEntries.push({
+                item,
+                oldName: item.name,
+                newName: updates[id]
+            });
             item.name = updates[id];
         }
     });
 
     req.session.data.materials = materials;
     req.session.data.flashRenamedIds = Object.keys(updates).filter(id => updates[id]);
+
+    if (renamedEntries.length) {
+        const locationPaths = [...new Set(renamedEntries.map(entry => getFolderPathLabel(materials, entry.item.parentId)))];
+        const locationIds = [...new Set(renamedEntries.map(entry => String(entry.item.parentId ?? 0)))];
+        const renameNameMap = Object.fromEntries(
+            renamedEntries.map(entry => [
+                String(entry.item.id),
+                entry.item.folder
+                    ? { name: entry.oldName, renamedTo: entry.newName }
+                    : `${entry.oldName} → ${entry.newName}`
+            ])
+        );
+        const renamePreviewTree = buildPreviewTree(
+            materials,
+            renamedEntries.map(entry => String(entry.item.id)),
+            renameNameMap,
+            false,
+            false
+        );
+
+        pushMaterialsActivity(req.session.data, {
+            type: 'rename',
+            title: renamedEntries.length === 1 ? 'Item renamed' : 'Items renamed',
+            listItems: renamedEntries.map(entry => `${entry.oldName} → ${entry.newName}`),
+            previewTree: renamePreviewTree,
+            sourceLines: [
+                {
+                    label: locationPaths.length === 1 ? 'Location:' : 'Locations:',
+                    value: locationPaths.length === 1 ? locationPaths[0] : 'Multiple locations',
+                    href: locationPaths.length === 1 ? `/version-14/B-off-system-MVP/03-case-overview?folderId=${locationIds[0]}` : null
+                }
+            ]
+        });
+    }
 
     return res.redirect('/version-14/B-off-system-MVP/03-case-overview');
 });
@@ -1788,6 +2004,7 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
         });
     }
 
+    const oldName = item.name;
     item.name = newName;
     req.session.data.flashRenamedId = item.id;
 
@@ -1800,6 +2017,24 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
     }
 
     data.materials = materials;
+
+    pushMaterialsActivity(data, {
+        type: 'rename',
+        title: 'Item renamed',
+        listItems: [`${oldName} → ${newName}`],
+        previewTree: buildPreviewTree(materials, [String(item.id)], {
+            [String(item.id)]: item.folder
+                ? { name: oldName, renamedTo: newName }
+                : `${oldName} → ${newName}`
+        }, false, false),
+        sourceLines: [
+            {
+                label: 'Location:',
+                value: getFolderPathLabel(materials, item.parentId),
+                href: `/version-14/B-off-system-MVP/03-case-overview?folderId=${item.parentId ?? 0}`
+            }
+        ]
+    });
 
     req.session.data.groupedSearchResults = null; // or [] to force rebuild on next render
 
@@ -1905,21 +2140,26 @@ function getAllDescendants(materials, parentId) {
 }
 
 // Helper: build a nested tree for preview in the banner
-function buildPreviewTree(materials, rootIds) {
+function buildPreviewTree(materials, rootIds, nameOverrides = {}, includeDescendants = true, boldFolders = true) {
     const byId = {};
     materials.forEach(m => {
         byId[String(m.id)] = m;
     });
 
     function buildNode(item) {
-        const children = materials
-            .filter(m => String(m.parentId) === String(item.id))
-            .map(buildNode);
+        const override = nameOverrides[String(item.id)];
+        const children = includeDescendants
+            ? materials
+                .filter(m => String(m.parentId) === String(item.id))
+                .map(buildNode)
+            : [];
 
         return {
             id: item.id,
-            name: item.name,
+            name: override && typeof override === 'object' ? override.name : (override || item.name),
             isFolder: !!item.folder,
+            isBold: !!item.folder && boldFolders,
+            renamedTo: override && typeof override === 'object' ? override.renamedTo : null,
             children
         };
     }
@@ -1944,7 +2184,7 @@ router.post('/B-off-system-MVP/copy-material-old', function (req, res) {
     console.log("Copying:", ids, "into folder", destinationFolderId);
 
     // Take a snapshot BEFORE we mutate materials, for preview tree
-    const originalMaterials = [...materials];
+    const originalMaterials = materials.map(item => ({ ...item }));
 
     // For banner
     const copiedNames = [];
@@ -2002,6 +2242,33 @@ router.post('/B-off-system-MVP/copy-material-old', function (req, res) {
     req.session.data.copyDestinationName = destinationFolderName;
     req.session.data.copyPreviewTree = copyPreviewTree;
     req.session.data.copySuccess = true;
+
+    if (copiedNames.length) {
+        const sourceItems = ids
+            .map(id => originalMaterials.find(m => String(m.id) === String(id)))
+            .filter(Boolean);
+        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const sourceParentIds = [...new Set(sourceItems.map(item => String(item.parentId ?? 0)))];
+
+        pushMaterialsActivity(req.session.data, {
+            type: 'copy',
+            title: 'Items copied',
+            listItems: copiedNames,
+            previewTree: copyPreviewTree,
+            sourceLines: [
+                {
+                    label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
+                    value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
+                    href: sourceParents.length === 1 ? `/version-14/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
+                },
+                {
+                    label: 'New location:',
+                    value: getFolderPathLabel(materials, destinationFolderId),
+                    href: `/version-14/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
+                }
+            ]
+        });
+    }
 
     // Reset selection + mode
     req.session.data.materialsMode = null;
@@ -2077,7 +2344,7 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
     }
 
     // Snapshot BEFORE mutation
-    const originalMaterials = [...materials];
+    const originalMaterials = materials.map(item => ({ ...item }));
 
     const copiedNames = [];
 
@@ -2126,6 +2393,33 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
     req.session.data.copyDestinationName = destinationFolderName;
     req.session.data.copyPreviewTree = copyPreviewTree;
     req.session.data.copySuccess = true;
+
+    if (copiedNames.length) {
+        const sourceItems = ids
+            .map(id => originalMaterials.find(m => String(m.id) === String(id)))
+            .filter(Boolean);
+        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const sourceParentIds = [...new Set(sourceItems.map(item => String(item.parentId ?? 0)))];
+
+        pushMaterialsActivity(req.session.data, {
+            type: 'copy',
+            title: 'Items copied',
+            listItems: copiedNames,
+            previewTree: copyPreviewTree,
+            sourceLines: [
+                {
+                    label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
+                    value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
+                    href: sourceParents.length === 1 ? `/version-14/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
+                },
+                {
+                    label: 'New location:',
+                    value: getFolderPathLabel(materials, destinationFolderId),
+                    href: `/version-14/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
+                }
+            ]
+        });
+    }
 
     // Clear selection state
     req.session.data.copySelectedIds = [];
@@ -2200,6 +2494,33 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
     req.session.data.moveDestinationName = destinationFolderName;
     req.session.data.movePreviewTree = movePreviewTree;
     req.session.data.moveSuccess = true;
+
+    if (movedNames.length) {
+        const sourceItems = ids
+            .map(id => originalMaterials.find(m => String(m.id) === String(id)))
+            .filter(Boolean);
+        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const sourceParentIds = [...new Set(sourceItems.map(item => String(item.parentId ?? 0)))];
+
+        pushMaterialsActivity(req.session.data, {
+            type: 'move',
+            title: 'Items moved',
+            listItems: movedNames,
+            previewTree: movePreviewTree,
+            sourceLines: [
+                {
+                    label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
+                    value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
+                    href: sourceParents.length === 1 ? `/version-14/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
+                },
+                {
+                    label: 'New location:',
+                    value: getFolderPathLabel(materials, destinationFolderId),
+                    href: `/version-14/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
+                }
+            ]
+        });
+    }
 
     // Clear selection state
     req.session.data.moveSelectedIds = [];
