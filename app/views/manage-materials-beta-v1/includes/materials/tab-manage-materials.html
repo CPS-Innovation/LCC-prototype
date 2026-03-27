@@ -629,7 +629,7 @@
                 {% if not item.folder %}
                 <tr class="govuk-table__row hidden_row sortable-ignore" data-row_id="{{ item.id }}"
                     style="display:none;">
-                    <td colspan="{{ 5 if showOrderColumn else 3 }}">
+                    <td colspan="3">
                         <div class="document_holder">
                             <embed src="{{ item.previewLink }}" type="application/pdf">
                         </div>
