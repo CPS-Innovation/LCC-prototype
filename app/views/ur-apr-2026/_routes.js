@@ -3056,10 +3056,10 @@ router.post('/B-off-system-MVP/order-materials', (req, res) => {
 router.post('/B-off-system-MVP/create-case/cancel-interrupt', (req, res) => {
     const returnTo = getSafeReturnTo(req.body?.returnTo);
 
-    if (req.body['cancel-registration'] == 'Stop registering the case.') {
+    if (req.body['cancel-registration'] == 'Yes, cancel registration') {
         return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/00-homepage');
     }
-    else if (req.body['cancel-registration'] == 'Continue registering the case.' && returnTo) {
+    else if (req.body['cancel-registration'] == 'No, go back and continue registration' && returnTo) {
         return res.redirect(returnTo);
     }
 
