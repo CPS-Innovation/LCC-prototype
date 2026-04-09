@@ -1,0 +1,35 @@
+{% extends "layoutCPS-OFF.html" %}
+{% block header %}
+    {% include "../../includes/banner-OFF-V7.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-panel govuk-panel--confirmation">
+          <h1 class="govuk-panel__title">
+            Case registered successfully
+          </h1>
+          <div class="govuk-panel__body">
+            URN<br><strong>{{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}/{{ data['URN4'] }}</strong>
+          </div>
+        </div>
+        <!-- <p class="govuk-body">We have sent you a confirmation email.</p> -->
+        <h2 class="govuk-heading-m">Next steps</h2>
+        <p class="govuk-body">
+          Use the URN to find the case.
+        </p>
+        <p class="govuk-body">
+          Continue to the homepage to view your tasks, cases or find a case.
+        </p>
+
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}
