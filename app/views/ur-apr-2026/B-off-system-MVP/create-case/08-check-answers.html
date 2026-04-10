@@ -33,7 +33,8 @@
                 {% if data['newCase_URN-Compass_ID'] %}
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">URN</dt>
-                    <dd class="govuk-summary-list__value"> {% if data['URN1'] %}
+                    <dd class="govuk-summary-list__value">
+                        {% if data['URN1'] %}
                         {{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}/{{ data['URN4'] }}
                         {% else %}
                         87AA65432/26
@@ -45,8 +46,13 @@
                 {% else %}
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">URN</dt>
-                    <dd class="govuk-summary-list__value">{{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}/{{
-                        data['URN4'] }}</dd>
+                    <dd class="govuk-summary-list__value">
+                        {% if data['URN1'] %}
+                        {{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}/{{ data['URN4'] }}
+                        {% else %}
+                        87AA65432/26
+                        {% endif %}
+                    </dd>
                     <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state"
                             href="02-case-details">Change<span class="govuk-visually-hidden"> URN</span></a></dd>
                 </div>
