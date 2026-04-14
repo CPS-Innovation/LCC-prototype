@@ -133,10 +133,7 @@
                     <dt class="govuk-summary-list__key">
                         <span class="icon-new user"></span> <span
                             class="uppercase">{{data['suspectLastName'][id]}}</span>, {{data['suspectFirstName'][id]}}
-                        {% if data['suspectOffenderType'][id] == 'Prolific youth offender (PYO)' or
-                        data['suspectOffenderType'][id] == 'Youth offender (YO)' or data['suspectOffenderType'][id] ==
-                        'Both prolific priority offender (PPO) and prolific youth offender (PYO)' %}&nbsp;&nbsp;<strong
-                            class="govuk-tag">Youth</strong> {% endif %}
+                        {% if isYouthSuspect(id) %}&nbsp;&nbsp;<strong class="govuk-tag">Youth</strong> {% endif %}
                     </dt>
                     <dd class="govuk-summary-list__value">
                         {% if hasCharge %}
@@ -372,9 +369,7 @@
                                         </div> -->
 
 
-                        {% if data['suspectOffenderType'][sid] == 'Both prolific priority offender (PPO) and prolific
-                        youth offender (PYO)' or data['suspectOffenderType'][sid] == 'Prolific youth offender (PYO)' or
-                        data['suspectOffenderType'][sid] == 'Youth offender (YO)' %}
+                        {% if isYouthSuspect(sid) %}
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Charged with an adult</dt>
                             <dd class="govuk-summary-list__value">
@@ -556,9 +551,7 @@
                             <dd class="govuk-summary-list__actions"></dd>
                         </div>
 
-                        {% if data['suspectOffenderType'][sid] == 'Both prolific priority offender (PPO) and prolific
-                        youth offender (PYO)' or data['suspectOffenderType'][sid] == 'Prolific youth offender (PYO)' or
-                        data['suspectOffenderType'][sid] == 'Youth offender (YO)' %}
+                        {% if isYouthSuspect(sid) %}
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Charged with an adult</dt>
                             <dd class="govuk-summary-list__value">

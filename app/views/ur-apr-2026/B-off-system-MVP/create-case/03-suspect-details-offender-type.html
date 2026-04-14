@@ -22,6 +22,11 @@
                         What type of offender is <span class="uppercase">{{ data['suspect-person-last-name'] }}</span>, {{ data['suspect-person-first-name'] }}?
                     </h1>
                     </legend>
+                    {% if data['forceOffenderTypeAfterDob'] and data['forceOffenderTypeAfterDob'][data['suspectDetailsCount']] %}
+                    <div class="govuk-hint">
+                        This question is required because the suspect is under 18 based on their date of birth.
+                    </div>
+                    {% endif %}
 
                     <!-- Prolific  priority offender (PPO) -->
                     <div class="govuk-radios" data-module="govuk-radios">

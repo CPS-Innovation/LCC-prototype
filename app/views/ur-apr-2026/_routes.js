@@ -11,6 +11,60 @@ function getSafeReturnTo(returnTo) {
     return returnTo;
 }
 
+function isUnder18(day, month, year) {
+    const parsedDay = Number(day);
+    const parsedMonth = Number(month);
+    const parsedYear = Number(year);
+
+    if (!parsedDay || !parsedMonth || !parsedYear) {
+        return false;
+    }
+
+    const dob = new Date(parsedYear, parsedMonth - 1, parsedDay);
+
+    if (
+        dob.getFullYear() !== parsedYear ||
+        dob.getMonth() !== parsedMonth - 1 ||
+        dob.getDate() !== parsedDay
+    ) {
+        return false;
+    }
+
+    const today = new Date();
+    let age = today.getFullYear() - parsedYear;
+    const birthdayHasPassedThisYear =
+        today.getMonth() > dob.getMonth() ||
+        (today.getMonth() === dob.getMonth() && today.getDate() >= parsedDay);
+
+    if (!birthdayHasPassedThisYear) {
+        age -= 1;
+    }
+
+    return age < 18;
+}
+
+function shouldAskOffenderType(value) {
+    return value === 'Type of offender';
+}
+
+function hasYouthOffenderType(value) {
+    return value === 'Youth offender (YO)' ||
+        value === 'Prolific youth offender (PYO)' ||
+        value === 'Both prolific priority offender (PPO) and prolific youth offender (PYO)';
+}
+
+function isYouthSuspect(data, id) {
+    if (isUnder18(
+        data?.suspectDayBirth?.[id],
+        data?.suspectMonthBirth?.[id],
+        data?.suspectYearBirth?.[id]
+    )) {
+        return true;
+    }
+
+    return hasYouthOffenderType(data?.suspectOffenderType?.[id]);
+}
+
 
 
 // Make session data available in all Nunjucks templates as "data"
@@ -18,6 +72,9 @@ router.use((req, res, next) => {
     res.locals.data = req.session.data || {};
     res.locals.encodedCurrentPath = encodeURIComponent(req.originalUrl);
     res.locals.returnTo = getSafeReturnTo(req.query?.returnTo) || getSafeReturnTo(req.body?.returnTo);
+    res.locals.isYouthSuspect = function (id) {
+        return isYouthSuspect(req.session.data || {}, id);
+    };
     next();
 });
 
@@ -247,7 +304,7 @@ router.post('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) 
     else if (req.session.data.suspectArrestSummons[id] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
     }
-    else if (req.session.data.suspectOffenderType[id] != undefined) {
+    else if (shouldAskOffenderType(req.session.data.suspectOffenderType[id])) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
@@ -265,6 +322,19 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-dob', function (re
     req.session.data.suspectDayBirth[count] = req.body['date-of-birth-day']
     req.session.data.suspectMonthBirth[count] = Number(req.body['date-of-birth-month'])
     req.session.data.suspectYearBirth[count] = req.body['date-of-birth-year']
+
+    if (isUnder18(
+        req.session.data.suspectDayBirth[count],
+        req.session.data.suspectMonthBirth[count],
+        req.session.data.suspectYearBirth[count]
+    )) {
+        if (!Array.isArray(req.session.data.forceOffenderTypeAfterDob)) {
+            req.session.data.forceOffenderTypeAfterDob = []
+        }
+
+        req.session.data.forceOffenderTypeAfterDob[count] = true
+        return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
+    }
 
     if (req.session.data.suspectGender[count] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-gender')
@@ -287,7 +357,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-dob', function (re
     else if (req.session.data.suspectArrestSummons[count] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
     }
-    else if (req.session.data.suspectOffenderType[count] != undefined) {
+    else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
@@ -320,7 +390,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-gender', function 
     else if (req.session.data.suspectArrestSummons[count] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
     }
-    else if (req.session.data.suspectOffenderType[count] != undefined) {
+    else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
@@ -350,7 +420,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-disability', funct
     else if (req.session.data.suspectArrestSummons[count] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
     }
-    else if (req.session.data.suspectOffenderType[count] != undefined) {
+    else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
@@ -377,7 +447,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-religion', functio
     else if (req.session.data.suspectArrestSummons[count] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
     }
-    else if (req.session.data.suspectOffenderType[count] != undefined) {
+    else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
@@ -401,7 +471,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-ethnicity', functi
     else if (req.session.data.suspectArrestSummons[count] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
     }
-    else if (req.session.data.suspectOffenderType[count] != undefined) {
+    else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
@@ -451,7 +521,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-alias-summary', fu
         else if (req.session.data.suspectArrestSummons[count] != undefined) {
             res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
         }
-        else if (req.session.data.suspectOffenderType[count] != undefined) {
+        else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
             res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
         }
         else {
@@ -471,7 +541,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-sdo', function (re
     if (req.session.data.suspectArrestSummons[count] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
     }
-    else if (req.session.data.suspectOffenderType[count] != undefined) {
+    else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
@@ -486,7 +556,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-arrest-summons', f
 
     req.session.data.suspectArrestSummons[count] = req.body['arrest-summons']
 
-    if (req.session.data.suspectOffenderType[count] != undefined) {
+    if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
@@ -512,6 +582,35 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-offender-type', fu
         req.session.data.arrestDate[count] = req.body['arrest-date-pyo']
     }
 
+    const continueAfterDob =
+        Array.isArray(req.session.data.forceOffenderTypeAfterDob) &&
+        req.session.data.forceOffenderTypeAfterDob[count]
+
+    if (continueAfterDob) {
+        req.session.data.forceOffenderTypeAfterDob[count] = false
+
+        if (req.session.data.suspectGender[count] != undefined) {
+            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-gender')
+        }
+        else if (req.session.data.suspectDisability[count] != undefined) {
+            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-disability')
+        }
+        else if (req.session.data.suspectReligion[count] != undefined) {
+            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-religion')
+        }
+        else if (req.session.data.suspectEthnicity[count] != undefined) {
+            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-ethnicity')
+        }
+        else if (req.session.data.suspectAlias[count] != undefined) {
+            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-add-alias')
+        }
+        else if (req.session.data.suspectSDO[count] != undefined) {
+            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-sdo')
+        }
+        else if (req.session.data.suspectArrestSummons[count] != undefined) {
+            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
+        }
+    }
 
 
     res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03B-suspect-summary')
