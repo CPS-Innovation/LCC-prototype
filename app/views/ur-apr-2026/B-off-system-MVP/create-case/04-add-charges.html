@@ -13,7 +13,7 @@
 
             <h1 class="govuk-heading-l govuk-!-margin-bottom-5">Add charges</h1>
             
-            <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{% if data['suspectCompanyName'][data['currentSuspectId']] %} {{ data['suspectCompanyName'][data['currentSuspectId']] }} {% else %} <span class="uppercase">{{data['suspectLastName'][data['currentSuspectId']]}}</span>, {{data['suspectFirstName'][data['currentSuspectId']]}} {% endif %}{% if data['suspectOffenderType'][data['currentSuspectId']] == 'Both prolific priority offender (PPO) and prolific youth offender (PYO)' or data['suspectOffenderType'][data['currentSuspectId']] == 'Youth offender (YO)' or data['suspectOffenderType'][data['currentSuspectId']] == 'Youth offender (YO)' %}&nbsp;&nbsp;<strong class="govuk-tag">Youth</strong> {% endif %}</span></h2>
+            <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{% if data['suspectCompanyName'][data['currentSuspectId']] %} {{ data['suspectCompanyName'][data['currentSuspectId']] }} {% else %} <span class="uppercase">{{data['suspectLastName'][data['currentSuspectId']]}}</span>, {{data['suspectFirstName'][data['currentSuspectId']]}} {% endif %}{% if isYouthSuspect(data['currentSuspectId']) %}&nbsp;&nbsp;<strong class="govuk-tag">Youth</strong> {% endif %}</span></h2>
 
             <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ data['currentResultsChargeCode'][data['currentChargeId']] }} &ndash; {{ data['currentResultsChargeDescription'][data['currentChargeId']] }}</h2>
             <hr class=" govuk-!-margin-bottom-6">
@@ -203,7 +203,7 @@
                 <!-- OPTION 4 - END -->
 
                 <!-- OPTION 4 - START -->
-                {% if data['suspectOffenderType'][data['currentSuspectId']] == 'Both prolific priority offender (PPO) and prolific youth offender (PYO)' or data['suspectOffenderType'][data['currentSuspectId']] == 'Prolific youth offender (PYO)' or data['suspectOffenderType'][data['currentSuspectId']] == 'Youth offender (YO)' %}
+                {% if isYouthSuspect(data['currentSuspectId']) %}
                     <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">

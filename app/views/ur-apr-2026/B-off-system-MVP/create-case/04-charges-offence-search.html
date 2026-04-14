@@ -11,7 +11,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <div class="gov-pages">
-            <h1 class="govuk-heading-l">Add a charge for {% if data['suspectCompanyName'][data['currentSuspectId']] %} {{ data['suspectCompanyName'][data['currentSuspectId']] }} {% else %} <span class="uppercase">{{data['suspectLastName'][data['currentSuspectId']]}}</span>, {{data['suspectFirstName'][data['currentSuspectId']]}} {% endif %}{% if data['suspectOffenderType'][data['currentSuspectId']] == 'Both prolific priority offender (PPO) and prolific youth offender (PYO)' or data['suspectOffenderType'][data['currentSuspectId']] == 'Youth offender (YO)' or data['suspectOffenderType'][data['currentSuspectId']] == 'Youth offender (YO)' %}&nbsp;&nbsp;<strong class="govuk-tag">Youth</strong> {% endif %}</span></h1>
+            <h1 class="govuk-heading-l">Add a charge for {% if data['suspectCompanyName'][data['currentSuspectId']] %} {{ data['suspectCompanyName'][data['currentSuspectId']] }} {% else %} <span class="uppercase">{{data['suspectLastName'][data['currentSuspectId']]}}</span>, {{data['suspectFirstName'][data['currentSuspectId']]}} {% endif %}{% if isYouthSuspect(data['currentSuspectId']) %}&nbsp;&nbsp;<strong class="govuk-tag">Youth</strong> {% endif %}</span></h1>
 
             <form method="post" action="/ur-apr-2026/B-off-system-MVP/create-case/04-charges-offence-search">  
                 <fieldset class="govuk-fieldset">
