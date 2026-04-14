@@ -89,7 +89,15 @@ router.post('/B-off-system-MVP/create-case/01-register-case', function (req, res
 
 // Area page
 router.post('/B-off-system-MVP/create-case/02-area', function (req, res) {
-    req.session.data.area = req.body['docType-Area']
+    const area = (req.body['docType-Area'] || '').trim()
+
+    if (!area) {
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/02-area', {
+            areaError: 'Select a division or area'
+        })
+    }
+
+    req.session.data.area = area
     res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/02-case-details')
 })
 
@@ -97,13 +105,41 @@ router.post('/B-off-system-MVP/create-case/02-area', function (req, res) {
 router.post('/B-off-system-MVP/create-case/02-case-details', function (req, res) {
     console.log("Case details page submitted")
 
-    //    req.session.data.area = req.body['docType-Area']
-    req.session.data.URN1 = req.body['newCase_URN-A']
-    req.session.data.URN2 = req.body['newCase_URN-B']
-    req.session.data.URN3 = req.body['newCase_URN-C']
-    req.session.data.URN4 = req.body['newCase_URN-D']
-    req.session.data.registeringUnit = req.body['newCase_RegisteringUnit']
-    req.session.data.WCU = req.body['newCase_WCU']
+    const URN1 = (req.body['newCase_URN-A'] || '').trim()
+    const URN2 = (req.body['newCase_URN-B'] || '').trim()
+    const URN3 = (req.body['newCase_URN-C'] || '').trim()
+    const URN4 = (req.body['newCase_URN-D'] || '').trim()
+    const registeringUnit = (req.body['newCase_RegisteringUnit'] || '').trim()
+    const WCU = (req.body['newCase_WCU'] || '').trim()
+
+    req.session.data.URN1 = URN1
+    req.session.data.URN2 = URN2
+    req.session.data.URN3 = URN3
+    req.session.data.URN4 = URN4
+    req.session.data.registeringUnit = registeringUnit
+    req.session.data.WCU = WCU
+
+    const errors = {}
+
+    if (URN2.length <= 1) {
+        errors.urn = 'Enter the URN'
+    } else if (URN2 === '87') {
+        errors.urn = 'This URN already exists in CMS'
+    }
+
+    if (!registeringUnit) {
+        errors.registeringUnit = 'Select the registering unit'
+    }
+
+    if (!WCU) {
+        errors.wcu = 'Select the witness care unit'
+    }
+
+    if (Object.keys(errors).length > 0) {
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/02-case-details', {
+            errors
+        })
+    }
 
     if (req.session.data.suspectDetailsYesNo === 'Yes') {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-add-suspect')

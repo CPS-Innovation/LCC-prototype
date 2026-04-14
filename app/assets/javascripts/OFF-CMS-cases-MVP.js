@@ -3,7 +3,7 @@
 $(document).ready(function () {
 
     $('.search_error_free, .search_error_2, .search_error_3, .search_error_4').hide();
-    $('.govuk-error-message, #search_errors_summary, ul.govuk-error-summary__list li').hide();
+    $('#search_errors_summary, #nothing_error, #operation_name-error, #operation_area-error, #defendant_name-error, #defendant_area-error, #urn_name-error, #urn_name-invalid_error, #search_errors_summary ul.govuk-error-summary__list li').hide();
 
     // Error 1 - Trigger
     $("#searchOFF_SYSTEM_Error_1").on("click", function (e) {
@@ -3597,13 +3597,6 @@ $(document).ready(function () {
             $('#newCase_Name_Error').show();
         }
 
-        // AREA
-        if ($('#newCase_Operation_AREA').val() == null) {
-            $('#create_case_errors_summary ul li.newCase_Area').show();
-            $('#newCase_Operation_AREA-Value').addClass('govuk-form-group--error');
-            $('#newCase_Area-error').show();
-        }
-
         // URN
         if ($('#newCase_URN-B').val().length <= 1) {
             $('#create_case_errors_summary ul li.newCase_URN').show();
@@ -4023,5 +4016,3 @@ $(document).ready(function () {
 })
 
 // import Sortable from 'sortablejs';
-
-
