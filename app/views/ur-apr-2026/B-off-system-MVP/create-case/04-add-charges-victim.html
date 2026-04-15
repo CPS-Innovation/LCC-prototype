@@ -37,33 +37,33 @@
                             {% for victim in data.victims %}
                             {% if victim.id > 0 %}
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="{{victim.id}}" name="existing-victim"
-                                    type="radio" value="{{victim.id}}" data-aria-controls="victim">
-                                <label class="govuk-label govuk-radios__label" for="contact">
+                                <input class="govuk-radios__input" id="existing-victim-{{ victim.id }}" name="existing-victim"
+                                    type="radio" value="{{victim.id}}" data-aria-controls="victim-{{ victim.id }}-controls">
+                                <label class="govuk-label govuk-radios__label" for="existing-victim-{{ victim.id }}">
                                     {{victim.firstName}} {{victim.lastName}}
                                 </label>
                             </div>
                             <div class="govuk-radios__conditional govuk-radios__conditional--hidden"
-                                id="victim">
+                                id="victim-{{ victim.id }}-controls">
                                 <div class="govuk-form-group" id="">
                                     <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                                         <div class="govuk-checkboxes__item">
-                                            <input class="govuk-checkboxes__input" id="newCharge_Vulnerable"
+                                            <input class="govuk-checkboxes__input" id="existing-victim-{{ victim.id }}-vulnerable"
                                                 name="newCharge_Vulnerable" type="checkbox" value="Vulnerable">
                                             <label class="govuk-label govuk-checkboxes__label"
-                                                for="newCharge_Vulnerable">Vulnerable</label>
+                                                for="existing-victim-{{ victim.id }}-vulnerable">The victim is vulnerable</label>
                                         </div>
                                         <div class="govuk-checkboxes__item">
-                                            <input class="govuk-checkboxes__input" id="newCharge_Intimidated"
+                                            <input class="govuk-checkboxes__input" id="existing-victim-{{ victim.id }}-intimidated"
                                                 name="newCharge_Intimidated" type="checkbox" value="Intimidated">
                                             <label class="govuk-label govuk-checkboxes__label"
-                                                for="newCharge_Intimidated">Intimidated</label>
+                                                for="existing-victim-{{ victim.id }}-intimidated">The victim has been intimidated</label>
                                         </div>
                                         <div class="govuk-checkboxes__item">
-                                            <input class="govuk-checkboxes__input" id="charge-victim-witness"
-                                                name="charge-victim-witness" type="checkbox" value="Witness">
+                                            <input class="govuk-checkboxes__input" id="existing-victim-{{ victim.id }}-witness"
+                                                name="charge-victim-witness" type="checkbox" value="Witness" checked>
                                             <label class="govuk-label govuk-checkboxes__label"
-                                                for="charge-victim-witness">Witness</label>
+                                                for="existing-victim-{{ victim.id }}-witness">The victim is a witness</label>
                                         </div>
                                     </div>
                                 </div>
@@ -84,34 +84,34 @@
                                 <div class="govuk-form-group">
                                     <label class="govuk-label" for="newCharge_Victim_FirstName">Victim first
                                         name</label>
-                                    <input class="govuk-input govuk-input--width-20" id="newCharge_Victim_FirstName"
+                                    <input class="govuk-input govuk-input--width-20" id="new-victim-first-name"
                                         name="newCharge_Victim_FirstName" type="text">
                                 </div>
                                 <div class="govuk-form-group">
-                                    <label class="govuk-label" for="newCharge_Victim_SurnameName">Victim last
+                                    <label class="govuk-label" for="new-victim-last-name">Victim last
                                         name</label>
-                                    <input class="govuk-input govuk-input--width-20" id="newCharge_Victim_SurnameName"
+                                    <input class="govuk-input govuk-input--width-20" id="new-victim-last-name"
                                         name="newCharge_Victim_SurnameName" type="text">
                                 </div>
                                 <div class="govuk-form-group" id="">
                                     <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                                         <div class="govuk-checkboxes__item">
-                                            <input class="govuk-checkboxes__input" id="newCharge_Vulnerable"
+                                            <input class="govuk-checkboxes__input" id="new-victim-vulnerable"
                                                 name="newCharge_Vulnerable" type="checkbox" value="Vulnerable">
                                             <label class="govuk-label govuk-checkboxes__label"
-                                                for="newCharge_Vulnerable">Vulnerable</label>
+                                                for="new-victim-vulnerable">The victim is vulnerable</label>
                                         </div>
                                         <div class="govuk-checkboxes__item">
-                                            <input class="govuk-checkboxes__input" id="newCharge_Intimidated"
+                                            <input class="govuk-checkboxes__input" id="new-victim-intimidated"
                                                 name="newCharge_Intimidated" type="checkbox" value="Intimidated">
                                             <label class="govuk-label govuk-checkboxes__label"
-                                                for="newCharge_Intimidated">Intimidated</label>
+                                                for="new-victim-intimidated">The victim has been intimidated</label>
                                         </div>
                                         <div class="govuk-checkboxes__item">
-                                            <input class="govuk-checkboxes__input" id="charge-victim-witness"
-                                                name="charge-victim-witness" type="checkbox" value="Witness">
+                                            <input class="govuk-checkboxes__input" id="new-victim-witness"
+                                                name="charge-victim-witness" type="checkbox" value="Witness" checked>
                                             <label class="govuk-label govuk-checkboxes__label"
-                                                for="charge-victim-witness">Witness</label>
+                                                for="new-victim-witness">The victim is a witness</label>
                                         </div>
                                     </div>
                                 </div>
@@ -122,34 +122,34 @@
                 {% else %}
 
                 <div class="govuk-form-group">
-                    <label class="govuk-label" for="newCharge_Victim_FirstName">Victim first name</label>
-                    <input class="govuk-input govuk-input--width-20" id="newCharge_Victim_FirstName"
+                    <label class="govuk-label" for="first-victim-first-name">Victim first name</label>
+                    <input class="govuk-input govuk-input--width-20" id="first-victim-first-name"
                         name="newCharge_Victim_FirstName" type="text">
                 </div>
                 <div class="govuk-form-group">
-                    <label class="govuk-label" for="newCharge_Victim_SurnameName">Victim last name</label>
-                    <input class="govuk-input govuk-input--width-20" id="newCharge_Victim_SurnameName"
+                    <label class="govuk-label" for="first-victim-last-name">Victim last name</label>
+                    <input class="govuk-input govuk-input--width-20" id="first-victim-last-name"
                         name="newCharge_Victim_SurnameName" type="text">
                 </div>
                 <div class="govuk-form-group" id="">
                     <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                         <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input" id="newCharge_Vulnerable" name="newCharge_Vulnerable"
+                            <input class="govuk-checkboxes__input" id="first-victim-vulnerable" name="newCharge_Vulnerable"
                                 type="checkbox" value="Vulnerable">
                             <label class="govuk-label govuk-checkboxes__label"
-                                for="newCharge_Vulnerable">Vulnerable</label>
+                                for="first-victim-vulnerable">The victim is vulnerable</label>
                         </div>
                         <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input" id="newCharge_Intimidated"
+                            <input class="govuk-checkboxes__input" id="first-victim-intimidated"
                                 name="newCharge_Intimidated" type="checkbox" value="Intimidated">
                             <label class="govuk-label govuk-checkboxes__label"
-                                for="newCharge_Intimidated">Intimidated</label>
+                                for="first-victim-intimidated">The victim has been intimidated</label>
                         </div>
                         <div class="govuk-checkboxes__item">
-                            <input class="govuk-checkboxes__input" id="charge-victim-witness"
-                                name="charge-victim-witness" type="checkbox" value="Witness">
+                            <input class="govuk-checkboxes__input" id="first-victim-witness"
+                                name="charge-victim-witness" type="checkbox" value="Witness" checked>
                             <label class="govuk-label govuk-checkboxes__label"
-                                for="charge-victim-witness">Witness</label>
+                                for="first-victim-witness">The victim is a witness</label>
                         </div>
                     </div>
                 </div>

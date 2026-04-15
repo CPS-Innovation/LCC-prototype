@@ -124,7 +124,7 @@ module.exports = {
   "chargeToMonth": [],
   "chargeToYear": [],
   "chargeComments": [],
-  "chargeVictimYesNo:": [],
+  "chargeVictimYesNo": [],
   "chargeVictimFirstName": [],
   "chargeVictimLastName": [],
   "chargeVictimVulnerable": [],
