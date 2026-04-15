@@ -95,17 +95,21 @@
                             {% endif %}
                           {% endfor %}
 
+                          {% set victimVulnerable = data['chargeVictimVulnerable'][i] or (matchedVictim and matchedVictim.vulnerable) %}
+                          {% set victimIntimidated = data['chargeVictimIntimidated'][i] or (matchedVictim and matchedVictim.intimidated) %}
+                          {% set victimWitness = data['chargeVictimWitness'][i] or (matchedVictim and matchedVictim.witness) %}
+
                           {% if matchedVictim %}
                             {{ matchedVictim.firstName }} {{ matchedVictim.lastName }}
-                            {% if matchedVictim.vulnerable or matchedVictim.intimidated or matchedVictim.witness %}
+                            {% if victimVulnerable or victimIntimidated or victimWitness %}
                               <br>
-                              {% if matchedVictim.vulnerable %}
+                              {% if victimVulnerable %}
                                 <strong class="govuk-tag govuk-tag--blue">Vulnerable</strong>
                               {% endif %}
-                              {% if matchedVictim.intimidated %}
+                              {% if victimIntimidated %}
                                 <strong class="govuk-tag govuk-tag--blue">Intimidated</strong>
                               {% endif %}
-                              {% if matchedVictim.witness %}
+                              {% if victimWitness %}
                                 <strong class="govuk-tag govuk-tag--blue">Witness</strong>
                               {% endif %}
                             {% endif %}

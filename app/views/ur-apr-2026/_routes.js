@@ -859,6 +859,10 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function (req, res) 
     console.log("Charge count:", count)
     console.log("Current suspect id:", req.session.data.currentSuspectId)
 
+    if (!Array.isArray(req.session.data.chargeVictimYesNo)) {
+        req.session.data.chargeVictimYesNo = []
+    }
+
     // If only 1 suspect and first charge
     if (req.session.data.suspectCount === 1) {
         console.log("Only 1 suspect")
@@ -876,7 +880,7 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function (req, res) 
     req.session.data.chargeToMonth[count] = req.body['addCharge_Form_Date-Month_2']
     req.session.data.chargeToYear[count] = req.body['addCharge_Form_Date-Year_2']
     //    req.session.data.chargeComments[count] = req.body['newCharge_Comment']
-    // req.session.data.chargeVictimYesNo[count] = req.body['newCharge_Victim_YesNo']
+    req.session.data.chargeVictimYesNo[count] = req.body['newCharge_Victim_YesNo']
 
     // Victim
     req.session.data.chargeVictimFirstName[count] = req.body['newCharge_Victim_FirstName']
@@ -897,6 +901,30 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function (req, res) 
 
     console.log("Charge id:", req.session.data.chargeId[count])
 
+    const chargeErrors = {}
+    const hasOffenceDate =
+        String(req.body['addCharge_Form_Date-Day'] || '').trim() &&
+        String(req.body['addCharge_Form_Date-Month'] || '').trim() &&
+        String(req.body['addCharge_Form_Date-Year'] || '').trim()
+
+    if (!hasOffenceDate) {
+        chargeErrors.offenceDate = 'Enter an offence date that is today or in the past'
+    }
+
+    if (!req.body['newCharge_Victim_YesNo']) {
+        chargeErrors.victim = 'Select whether there is a victim'
+    }
+
+    if (isYouthSuspect(req.session.data, req.session.data.currentSuspectId) && !req.body['charged-with-adult']) {
+        chargeErrors.chargedWithAdult = 'Select whether the suspect is charged with an adult'
+    }
+
+    if (Object.keys(chargeErrors).length > 0) {
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/04-add-charges', {
+            chargeErrors
+        })
+    }
+
 
     req.session.data.chargeCount = count + 1
     console.log("Charge count 2:", req.session.data.chargeCount)
@@ -915,16 +943,17 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function (req, res) 
 router.post('/B-off-system-MVP/create-case/04-add-charges-victim', function (req, res) {
     var count = req.session.data.chargeCount - 1
 
+    req.session.data.chargeVictimVulnerable[count] = req.body['newCharge_Vulnerable']
+    req.session.data.chargeVictimIntimidated[count] = req.body['newCharge_Intimidated']
+    req.session.data.chargeVictimWitness[count] = req.body['charge-victim-witness']
+
     if (req.session.data.victims.length == 1 || req.body['existing-victim'] == 'new-victim') {
         req.session.data.chargeVictimId[count] = req.session.data.victims.length
         req.session.data.countVictims = req.session.data.victims.length
         req.session.data.victims.push({
             id: req.session.data.victims.length,
             firstName: req.body['newCharge_Victim_FirstName'],
-            lastName: req.body['newCharge_Victim_SurnameName'],
-            vulnerable: req.body['newCharge_Vulnerable'],
-            intimidated: req.body['newCharge_Intimidated'],
-            witness: req.body['charge-victim-witness']
+            lastName: req.body['newCharge_Victim_SurnameName']
         });
     }
     else {
