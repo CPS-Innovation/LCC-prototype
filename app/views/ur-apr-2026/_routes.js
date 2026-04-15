@@ -65,13 +65,77 @@ function isYouthSuspect(data, id) {
     return hasYouthOffenderType(data?.suspectOffenderType?.[id]);
 }
 
+function asChargeVictimFlag(value, expectedValue) {
+    return value === expectedValue ? expectedValue : '';
+}
+
+function asArray(value) {
+    if (Array.isArray(value)) {
+        return value;
+    }
+
+    if (value === undefined || value === null || value === '') {
+        return [];
+    }
+
+    return [value];
+}
+
+function getCreateCaseReturnTo(req) {
+    return getSafeReturnTo(req.query?.returnTo) ||
+        getSafeReturnTo(req.body?.returnTo) ||
+        getSafeReturnTo(req.session?.data?.createCaseReturnTo);
+}
+
+function setCreateCaseReturnTo(req) {
+    const returnTo = getCreateCaseReturnTo(req);
+
+    if (returnTo) {
+        req.session.data.createCaseReturnTo = returnTo;
+    }
+
+    return returnTo;
+}
+
+function clearCreateCaseReturnTo(req) {
+    if (req.session?.data) {
+        delete req.session.data.createCaseReturnTo;
+    }
+}
+
+function nextSuspectDetailsRouteAfterOffenderType(data, count) {
+    if (data.suspectGender[count] != undefined) {
+        return '/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-gender';
+    }
+    if (data.suspectDisability[count] != undefined) {
+        return '/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-disability';
+    }
+    if (data.suspectReligion[count] != undefined) {
+        return '/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-religion';
+    }
+    if (data.suspectEthnicity[count] != undefined) {
+        return '/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-ethnicity';
+    }
+    if (data.suspectAlias[count] != undefined) {
+        return '/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-add-alias';
+    }
+    if (data.suspectSDO[count] != undefined) {
+        return '/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-sdo';
+    }
+    if (data.suspectArrestSummons[count] != undefined) {
+        return '/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-arrest-summons';
+    }
+
+    return '/ur-apr-2026/B-off-system-MVP/create-case/03B-suspect-summary';
+}
+
 
 
 // Make session data available in all Nunjucks templates as "data"
 router.use((req, res, next) => {
     res.locals.data = req.session.data || {};
     res.locals.encodedCurrentPath = encodeURIComponent(req.originalUrl);
-    res.locals.returnTo = getSafeReturnTo(req.query?.returnTo) || getSafeReturnTo(req.body?.returnTo);
+    res.locals.returnTo = setCreateCaseReturnTo(req);
     res.locals.isYouthSuspect = function (id) {
         return isYouthSuspect(req.session.data || {}, id);
     };
@@ -204,7 +268,7 @@ router.post('/B-off-system-MVP/create-case/02-case-details', function (req, res)
     else {
         const valueToRemove = 'Pre-Charge Decision'
 
-        req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
+        req.session.data.newCase_MonitoringCodes = asArray(req.session.data.newCase_MonitoringCodes).filter(item => item !== valueToRemove)
 
         const suspects = [].concat(req.session.data.suspectId).map(String)
         const charged = [].concat(req.session.data.chargeSuspectId).map(String)
@@ -219,6 +283,8 @@ router.post('/B-off-system-MVP/create-case/02-case-details', function (req, res)
 
 // First hearing details
 router.post('/B-off-system-MVP/create-case/02-first-hearing-details', function (req, res) {
+    const returnTo = getCreateCaseReturnTo(req)
+
     req.session.data.firstHearingDetailsYesNo = req.body['first-hearing-details']
 
     if (req.session.data.firstHearingDetailsYesNo === 'Yes') {
@@ -228,13 +294,18 @@ router.post('/B-off-system-MVP/create-case/02-first-hearing-details', function (
 
     const valueToRemove = 'Pre-Charge Decision'
 
-    req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
+    req.session.data.newCase_MonitoringCodes = asArray(req.session.data.newCase_MonitoringCodes).filter(item => item !== valueToRemove)
 
     const suspects = [].concat(req.session.data.suspectId).map(String)
     const charged = [].concat(req.session.data.chargeSuspectId).map(String)
 
     const hasUncharged = suspects.some(id => !charged.includes(id))
     req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
+
+    if (returnTo) {
+        clearCreateCaseReturnTo(req)
+        return res.redirect(returnTo)
+    }
 
     res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/06-monitoring-codes')
 
@@ -283,6 +354,9 @@ router.post('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) 
     if (req.session.data.suspectDOB[id] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-dob')
     }
+    else if (shouldAskOffenderType(req.session.data.suspectOffenderType[id])) {
+        res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
+    }
     else if (req.session.data.suspectGender[id] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-gender')
     }
@@ -303,9 +377,6 @@ router.post('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) 
     }
     else if (req.session.data.suspectArrestSummons[id] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
-    }
-    else if (shouldAskOffenderType(req.session.data.suspectOffenderType[id])) {
-        res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03B-suspect-summary')
@@ -336,7 +407,10 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-dob', function (re
         return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
 
-    if (req.session.data.suspectGender[count] != undefined) {
+    if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
+        res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
+    }
+    else if (req.session.data.suspectGender[count] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-gender')
     }
     else if (req.session.data.suspectDisability[count] != undefined) {
@@ -356,9 +430,6 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-dob', function (re
     }
     else if (req.session.data.suspectArrestSummons[count] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
-    }
-    else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
-        res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
     }
     else {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03B-suspect-summary')
@@ -554,7 +625,15 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-sdo', function (re
 router.post('/B-off-system-MVP/create-case/03-suspect-details-arrest-summons', function (req, res) {
     count = req.session.data.suspectDetailsCount
 
-    req.session.data.suspectArrestSummons[count] = req.body['arrest-summons']
+    const arrestSummons = (req.body['arrest-summons'] || '').trim()
+
+    req.session.data.suspectArrestSummons[count] = arrestSummons
+
+    if (!arrestSummons) {
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-arrest-summons', {
+            arrestSummonsError: 'Select an Arrest Summons Number (ASN)'
+        })
+    }
 
     if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
@@ -582,38 +661,12 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-offender-type', fu
         req.session.data.arrestDate[count] = req.body['arrest-date-pyo']
     }
 
-    const continueAfterDob =
-        Array.isArray(req.session.data.forceOffenderTypeAfterDob) &&
-        req.session.data.forceOffenderTypeAfterDob[count]
-
-    if (continueAfterDob) {
+    if (Array.isArray(req.session.data.forceOffenderTypeAfterDob) &&
+        req.session.data.forceOffenderTypeAfterDob[count]) {
         req.session.data.forceOffenderTypeAfterDob[count] = false
-
-        if (req.session.data.suspectGender[count] != undefined) {
-            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-gender')
-        }
-        else if (req.session.data.suspectDisability[count] != undefined) {
-            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-disability')
-        }
-        else if (req.session.data.suspectReligion[count] != undefined) {
-            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-religion')
-        }
-        else if (req.session.data.suspectEthnicity[count] != undefined) {
-            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-ethnicity')
-        }
-        else if (req.session.data.suspectAlias[count] != undefined) {
-            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-add-alias')
-        }
-        else if (req.session.data.suspectSDO[count] != undefined) {
-            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-sdo')
-        }
-        else if (req.session.data.suspectArrestSummons[count] != undefined) {
-            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
-        }
     }
 
-
-    res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03B-suspect-summary')
+    res.redirect(nextSuspectDetailsRouteAfterOffenderType(req.session.data, count))
 })
 
 
@@ -622,10 +675,16 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-offender-type', fu
 
 // Suspect summary
 router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function (req, res) {
+    const returnTo = getCreateCaseReturnTo(req)
+
     if (req.body['add-another'] === 'Yes') {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-add-suspect')
     }
     else {
+        if (returnTo) {
+            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/04-want-to-add-charges')
+        }
+
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/04-want-to-add-charges')
         // res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/06-monitoring-codes') 
     }
@@ -718,6 +777,8 @@ router.post('/B-off-system-MVP/create-case/03-edit-suspect-router', function (re
 
 // Want to add charges
 router.post('/B-off-system-MVP/create-case/04-want-to-add-charges', function (req, res) {
+    const returnTo = getCreateCaseReturnTo(req)
+
     req.session.data.wantToAddCharges = req.body['add-charges']
     console.log("Want to add charges:", req.session.data.wantToAddCharges)
     console.log("Suspect count:", req.session.data.suspectCount)
@@ -732,9 +793,14 @@ router.post('/B-off-system-MVP/create-case/04-want-to-add-charges', function (re
         }
     }
     else {
+        if (returnTo) {
+            clearCreateCaseReturnTo(req)
+            return res.redirect(returnTo)
+        }
+
         const valueToRemove = 'Pre-Charge Decision'
 
-        req.session.data.newCase_MonitoringCodes = req.session.data.newCase_MonitoringCodes.filter(item => item !== valueToRemove)
+        req.session.data.newCase_MonitoringCodes = asArray(req.session.data.newCase_MonitoringCodes).filter(item => item !== valueToRemove)
 
         const suspects = [].concat(req.session.data.suspectId).map(String)
         const charged = [].concat(req.session.data.chargeSuspectId).map(String)
@@ -885,9 +951,9 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function (req, res) 
     // Victim
     req.session.data.chargeVictimFirstName[count] = req.body['newCharge_Victim_FirstName']
     req.session.data.chargeVictimLastName[count] = req.body['newCharge_Victim_SurnameName']
-    req.session.data.chargeVictimVulnerable[count] = req.body['newCharge_Vulnerable']
-    req.session.data.chargeVictimIntimidated[count] = req.body['newCharge_Intimidated']
-    req.session.data.chargeVictimWitness[count] = req.body['charge-victim-witness']
+    req.session.data.chargeVictimVulnerable[count] = ''
+    req.session.data.chargeVictimIntimidated[count] = ''
+    req.session.data.chargeVictimWitness[count] = ''
 
 
     // Offence address
@@ -943,11 +1009,26 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function (req, res) 
 router.post('/B-off-system-MVP/create-case/04-add-charges-victim', function (req, res) {
     var count = req.session.data.chargeCount - 1
 
-    req.session.data.chargeVictimVulnerable[count] = req.body['newCharge_Vulnerable']
-    req.session.data.chargeVictimIntimidated[count] = req.body['newCharge_Intimidated']
-    req.session.data.chargeVictimWitness[count] = req.body['charge-victim-witness']
+    req.session.data.chargeVictimVulnerable[count] = ''
+    req.session.data.chargeVictimIntimidated[count] = ''
+    req.session.data.chargeVictimWitness[count] = ''
 
     if (req.session.data.victims.length == 1 || req.body['existing-victim'] == 'new-victim') {
+        const useNewVictimFields = req.session.data.victims.length > 1
+
+        req.session.data.chargeVictimVulnerable[count] = asChargeVictimFlag(
+            useNewVictimFields ? req.body['new-victim-vulnerable'] : req.body['first-victim-vulnerable'],
+            'Vulnerable'
+        )
+        req.session.data.chargeVictimIntimidated[count] = asChargeVictimFlag(
+            useNewVictimFields ? req.body['new-victim-intimidated'] : req.body['first-victim-intimidated'],
+            'Intimidated'
+        )
+        req.session.data.chargeVictimWitness[count] = asChargeVictimFlag(
+            useNewVictimFields ? req.body['new-victim-witness'] : req.body['first-victim-witness'],
+            'Witness'
+        )
+
         req.session.data.chargeVictimId[count] = req.session.data.victims.length
         req.session.data.countVictims = req.session.data.victims.length
         req.session.data.victims.push({
@@ -957,6 +1038,21 @@ router.post('/B-off-system-MVP/create-case/04-add-charges-victim', function (req
         });
     }
     else {
+        const selectedVictimId = req.body['existing-victim']
+
+        req.session.data.chargeVictimVulnerable[count] = asChargeVictimFlag(
+            req.body[`existing-victim-${selectedVictimId}-vulnerable`],
+            'Vulnerable'
+        )
+        req.session.data.chargeVictimIntimidated[count] = asChargeVictimFlag(
+            req.body[`existing-victim-${selectedVictimId}-intimidated`],
+            'Intimidated'
+        )
+        req.session.data.chargeVictimWitness[count] = asChargeVictimFlag(
+            req.body[`existing-victim-${selectedVictimId}-witness`],
+            'Witness'
+        )
+
         req.session.data.chargeVictimId[count] = req.body['existing-victim']
     }
 
@@ -971,10 +1067,16 @@ router.post('/B-off-system-MVP/create-case/04-add-charges-victim', function (req
 
 // Charges summary
 router.post('/B-off-system-MVP/create-case/04-charges-summary', function (req, res) {
+    const returnTo = getCreateCaseReturnTo(req)
+
     if (req.body['add-another'] === 'Yes') {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/04-add-charges-suspect')
     }
     else {
+        if (returnTo) {
+            return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/02-first-hearing-details')
+        }
+
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/02-first-hearing-details')
     }
 
