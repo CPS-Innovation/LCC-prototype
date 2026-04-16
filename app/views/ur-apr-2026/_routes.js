@@ -881,7 +881,7 @@ router.post('/B-off-system-MVP/create-case/04-charges-offence-search', function 
         req.session.data.currentResultsFromDate = req.session.data.resultsFromDate
         req.session.data.currentResultsToDate = req.session.data.resultsToDate
     }
-    else if (req.body['charge-search'].includes("fraud") || req.body['charge-search'].includes("aud")) {
+    else if (req.body['charge-search'].includes("fraud") || req.body['charge-search'].includes("aud") || req.body['charge-search'].includes("Fraud")) {
         req.session.data.currentResultsId = req.session.data.resultsIdFraud
         req.session.data.currentResultsChargeCode = req.session.data.resultsChargeCodeFraud
         req.session.data.currentResultsChargeDescription = req.session.data.resultsChargeDescriptionFraud

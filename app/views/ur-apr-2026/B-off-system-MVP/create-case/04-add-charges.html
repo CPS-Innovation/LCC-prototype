@@ -11,9 +11,26 @@
     <div class="govuk-grid-column-two-thirds">
         <div class="wrapper gov-pages">
 
+            <style>
+                .create-case-heading-with-tag {
+                    align-items: center;
+                    column-gap: 8px;
+                    display: flex;
+                    flex-wrap: wrap;
+                }
+
+                .create-case-heading-with-tag__text {
+                    display: inline-block;
+                }
+
+                .create-case-heading-with-tag .govuk-tag {
+                    margin-top: 2px;
+                }
+            </style>
+
             <h1 class="govuk-heading-l govuk-!-margin-bottom-5">Add charges</h1>
             
-            <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{% if data['suspectCompanyName'][data['currentSuspectId']] %} {{ data['suspectCompanyName'][data['currentSuspectId']] }} {% else %} <span class="uppercase">{{data['suspectLastName'][data['currentSuspectId']]}}</span>, {{data['suspectFirstName'][data['currentSuspectId']]}} {% endif %}{% if isYouthSuspect(data['currentSuspectId']) %}&nbsp;&nbsp;<strong class="govuk-tag">Youth</strong> {% endif %}</span></h2>
+            <h2 class="govuk-heading-s govuk-!-margin-bottom-2 create-case-heading-with-tag"><span class="create-case-heading-with-tag__text">{% if data['suspectCompanyName'][data['currentSuspectId']] %}{{ data['suspectCompanyName'][data['currentSuspectId']] }}{% else %}<span class="uppercase">{{data['suspectLastName'][data['currentSuspectId']]}}</span>, {{data['suspectFirstName'][data['currentSuspectId']]}}{% endif %}</span>{% if isYouthSuspect(data['currentSuspectId']) %}<strong class="govuk-tag">Youth</strong>{% endif %}</h2>
 
             <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ data['currentResultsChargeCode'][data['currentChargeId']] }} &ndash; {{ data['currentResultsChargeDescription'][data['currentChargeId']] }}</h2>
             <hr class=" govuk-!-margin-bottom-6">
