@@ -2,6 +2,30 @@
 {% block header %}
     {% include "../../includes/banner-OFF-V7.html" %}
 {% endblock %}
+
+{% block pageScripts %}
+<script>
+  (function () {
+    var defaultDate = '17/4/2026';
+    var calendars = document.querySelectorAll('.create_case_date_picker');
+
+    calendars.forEach(function (calendar) {
+      var inputId = calendar.getAttribute('data-input-id');
+      var input = document.getElementById(inputId);
+
+      if (!input) {
+        return;
+      }
+
+      calendar.addEventListener('click', function () {
+        if (!input.value.trim()) {
+          input.value = defaultDate;
+        }
+      });
+    });
+  })();
+</script>
+{% endblock %}
 {% block beforeContent %}
 <a class="govuk-back-link" href="javascript:history.back()">Back</a>
 {% endblock %}
@@ -60,7 +84,7 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <img src="../../../../public/images/date_picker.png" alt="Date picker" class="create_case_date_picker">
+                                <img src="../../../../public/images/date_picker.png" alt="Date picker" class="create_case_date_picker" data-input-id="arrest-date-pyo">
                             </div>
                         </div>                                
                     </div>
@@ -88,7 +112,7 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <img src="../../../../public/images/date_picker.png" alt="Date picker" class="create_case_date_picker">
+                                <img src="../../../../public/images/date_picker.png" alt="Date picker" class="create_case_date_picker" data-input-id="arrest-date-ppo-pyo">
                             </div>
                         </div>                                
                     </div>
@@ -116,7 +140,7 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <img src="../../../../public/images/date_picker.png" alt="Date picker" class="create_case_date_picker">
+                                <img src="../../../../public/images/date_picker.png" alt="Date picker" class="create_case_date_picker" data-input-id="arrest-date-yo">
                             </div>
                         </div>                                
                     </div>
