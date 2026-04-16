@@ -185,6 +185,37 @@
                     </div>
                     {% endif %}
 
+                    {% if data['suspectOffenderType'][id] %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Type of offender</dt>
+                        <dd class="govuk-summary-list__value">{% if data['suspectOffenderType'][id] %}{{
+                            data['suspectOffenderType'][id] }}{% else %} Unspecified {% endif %}</dd>
+                        <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd> -->
+                    </div>
+                    {% if data['arrestDate'][id] %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Arrest date</dt>
+                        <dd class="govuk-summary-list__value">
+                            {% if '/' in data['arrestDate'][id] %}
+                                {% set arrestDateParts = data['arrestDate'][id].split('/') %}
+                                {% if arrestDateParts.length == 3 %}
+                                    {{ arrestDateParts[0] | int }} {{ data['monthName'][arrestDateParts[1] | int] }} {{ arrestDateParts[2] }}
+                                {% else %}
+                                    {{ data['arrestDate'][id] }}
+                                {% endif %}
+                            {% else %}
+                                {% set arrestDateParts = data['arrestDate'][id].split('-') %}
+                                {% if arrestDateParts.length == 3 %}
+                                    {{ arrestDateParts[2] | int }} {{ data['monthName'][arrestDateParts[1] | int] }} {{ arrestDateParts[0] }}
+                                {% else %}
+                                    {{ data['arrestDate'][id] }}
+                                {% endif %}
+                            {% endif %}
+                        </dd>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+
                     {% if data['suspectGender'][id] %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Gender</dt>
@@ -249,37 +280,6 @@
                             data['suspectArrestSummons'][id] }}{% else %} Not entered {% endif %}</dd>
                         <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd> -->
                     </div>
-                    {% endif %}
-
-                    {% if data['suspectOffenderType'][id] %}
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Type of offender</dt>
-                        <dd class="govuk-summary-list__value">{% if data['suspectOffenderType'][id] %}{{
-                            data['suspectOffenderType'][id] }}{% else %} Unspecified {% endif %}</dd>
-                        <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> ehtnicity</span></a></dd> -->
-                    </div>
-                    {% if data['arrestDate'][id] %}
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Arrest date</dt>
-                        <dd class="govuk-summary-list__value">
-                            {% if '/' in data['arrestDate'][id] %}
-                                {% set arrestDateParts = data['arrestDate'][id].split('/') %}
-                                {% if arrestDateParts.length == 3 %}
-                                    {{ arrestDateParts[0] | int }} {{ data['monthName'][arrestDateParts[1] | int] }} {{ arrestDateParts[2] }}
-                                {% else %}
-                                    {{ data['arrestDate'][id] }}
-                                {% endif %}
-                            {% else %}
-                                {% set arrestDateParts = data['arrestDate'][id].split('-') %}
-                                {% if arrestDateParts.length == 3 %}
-                                    {{ arrestDateParts[2] | int }} {{ data['monthName'][arrestDateParts[1] | int] }} {{ arrestDateParts[0] }}
-                                {% else %}
-                                    {{ data['arrestDate'][id] }}
-                                {% endif %}
-                            {% endif %}
-                        </dd>
-                    </div>
-                    {% endif %}
                     {% endif %}
 
                     <h2 class="govuk-heading-m govuk-!-margin-top-6">Charges</h2>
