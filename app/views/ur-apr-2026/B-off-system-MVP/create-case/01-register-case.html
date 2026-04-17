@@ -80,7 +80,7 @@
                         </label>
                     </div>
                     <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="suspect-details-no" name="suspect-details-yes-no" type="radio" value="No" {% if not data['suspectDetailsYesNo'] === 'No' %}checked{% endif %}>
+                        <input class="govuk-radios__input" id="suspect-details-no" name="suspect-details-yes-no" type="radio" value="No" {% if data['suspectDetailsYesNo'] === 'No' %}checked{% endif %}>
                         <label class="govuk-label govuk-radios__label" for="suspect-details-no">
                         No
                         </label>

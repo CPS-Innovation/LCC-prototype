@@ -7,6 +7,8 @@
 {% endblock %}
 {% block content %}
 
+{% set hasSuspects = (data['suspectCount'] and data['suspectCount'] > 0 and data['suspectId'] and (data['suspectId'] | length) > 0) %}
+
 <div class="govuk-grid-row" id="create-case-journey">
 
     <div class="govuk-grid-column-two-thirds">
@@ -95,7 +97,7 @@
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Suspects</dt>
                     <dd class="govuk-summary-list__value">
-                        {% if data['suspectCount'] and data['suspectCount'] > 0 %}
+                        {% if hasSuspects %}
                         {{ data['suspectCount'] }} suspect{% if data['suspectCount'] != 1 %}s{% endif %} added
                         {% else %}
                         Not entered
@@ -112,10 +114,9 @@
             <!-- //////////////////////////////////////////////////// SECTION 1 - END //////////////////////////////////////////////////// -->
 
             <!-- //////////////////////////////////////////////////// SECTION 2 – SUSPECTS - START //////////////////////////////////////////////////// -->
-            {% if data['suspectDetailsYesNo'] == 'Yes' %}
+            {% if hasSuspects %}
             <h2 class="govuk-heading-m">Suspects</h2>
-
-            {% endif %}
+            
             {% for id in data['suspectId'] %}
             {% if (data['suspectType'][id] == 'Person') %}
             {% set sid = data['suspectId'][id] %}
@@ -168,24 +169,29 @@
                     </span>
                 </summary>
                 <div class="govuk-details__text">
-                    {% if data['suspectDOB'][id] or data['suspectGender'][id] or data['suspectDisability'][id] or
-                    data['suspectReligion'][id] or data['suspectEthnicity'][id] or data['suspectAlias'][id] or
-                    data['suspectSDO'][id] or data['suspectArrestSummons'][id] or data['suspectOffenderType'][id] %}
+                    {% if data['suspectDayBirth'][id] or (data['suspectOffenderType'][id] and data['suspectOffenderType'][id] != 'Type of offender') or
+                    (data['suspectGender'][id] and data['suspectGender'][id] != 'Gender') or
+                    (data['suspectDisability'][id] and data['suspectDisability'][id] != 'Disability') or
+                    (data['suspectReligion'][id] and data['suspectReligion'][id] != 'Religion') or
+                    (data['suspectEthnicity'][id] and data['suspectEthnicity'][id] != 'Ethnicity') or
+                    data['suspectAlias'][id] or data['suspectSDO'][id] or
+                    (data['suspectArrestSummons'][id] and data['suspectArrestSummons'][id] != 'Arrest summons') %}
 
                     <h2 class="govuk-heading-m">Suspect details</h2>
                     {% endif %}
 
-                    {% if data['suspectDOB'][id] %}
+                    {% if data['suspectDayBirth'][id] %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Date of birth</dt>
-                        <dd class="govuk-summary-list__value">{% if data['suspectDayBirth'][id] %}
+                        <dd class="govuk-summary-list__value">
                             {{data['suspectDayBirth'][id]}} {{data['monthName'][data['suspectMonthBirth'][id]]}}
-                            {{data['suspectYearBirth'][id]}} {% else %} Not entered {% endif %}</dd>
+                            {{data['suspectYearBirth'][id]}}
+                        </dd>
                         <!-- <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state" href="#">Change<span class="govuk-visually-hidden"> date of birth</span></a></dd> -->
                     </div>
                     {% endif %}
 
-                    {% if data['suspectOffenderType'][id] %}
+                    {% if data['suspectOffenderType'][id] and data['suspectOffenderType'][id] != 'Type of offender' %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Type of offender</dt>
                         <dd class="govuk-summary-list__value">{% if data['suspectOffenderType'][id] %}{{
@@ -216,7 +222,7 @@
                     {% endif %}
                     {% endif %}
 
-                    {% if data['suspectGender'][id] %}
+                    {% if data['suspectGender'][id] and data['suspectGender'][id] != 'Gender' %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Gender</dt>
                         <dd class="govuk-summary-list__value">{% if data['suspectGender'][id] %}{{
@@ -225,7 +231,7 @@
                     </div>
                     {% endif %}
 
-                    {% if data['suspectDisability'][id] %}
+                    {% if data['suspectDisability'][id] and data['suspectDisability'][id] != 'Disability' %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Disability</dt>
                         <dd class="govuk-summary-list__value">{% if data['suspectDisability'][id] %}{{
@@ -234,7 +240,7 @@
                     </div>
                     {% endif %}
 
-                    {% if data['suspectReligion'][id] %}
+                    {% if data['suspectReligion'][id] and data['suspectReligion'][id] != 'Religion' %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Religion</dt>
                         <dd class="govuk-summary-list__value">{% if data['suspectReligion'][id] %}{{
@@ -243,7 +249,7 @@
                     </div>
                     {% endif %}
 
-                    {% if data['suspectEthnicity'][id] %}
+                    {% if data['suspectEthnicity'][id] and data['suspectEthnicity'][id] != 'Ethnicity' %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Ethnicity</dt>
                         <dd class="govuk-summary-list__value">{% if data['suspectEthnicity'][id] %}{{
@@ -273,7 +279,7 @@
                     </div>
                     {% endif %}
 
-                    {% if data['suspectArrestSummons'][id] %}
+                    {% if data['suspectArrestSummons'][id] and data['suspectArrestSummons'][id] != 'Arrest summons' %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Arrest summons</dt>
                         <dd class="govuk-summary-list__value">{% if data['suspectArrestSummons'][id] %}{{
@@ -627,6 +633,7 @@
             {% endif %}
             {% endfor %}
             </dl>
+            {% endif %}
 
             <!-- //////////////////////////////////////////////////// SECTION 2 - END //////////////////////////////////////////////////// -->
 
