@@ -81,6 +81,78 @@ function asArray(value) {
     return [value];
 }
 
+function trimString(value) {
+    return typeof value === 'string' ? value.trim() : '';
+}
+
+function resetCreateCaseSuspectsAndCharges(req) {
+    req.session.data.suspectCount = 0;
+    req.session.data.suspectDetailsCount = 0;
+    req.session.data.suspectId = [];
+    req.session.data.suspectType = [];
+    req.session.data.suspectFirstName = [];
+    req.session.data.suspectLastName = [];
+    req.session.data.suspectDOB = [];
+    req.session.data.suspectCompanyName = [];
+    req.session.data.suspectDayBirth = [];
+    req.session.data.suspectMonthBirth = [];
+    req.session.data.suspectYearBirth = [];
+    req.session.data.suspectGender = [];
+    req.session.data.suspectDisability = [];
+    req.session.data.suspectReligion = [];
+    req.session.data.suspectEthnicity = [];
+    req.session.data.suspectSDO = [];
+    req.session.data.suspectArrestSummons = [];
+    req.session.data.suspectOffenderType = [];
+    req.session.data.suspectAlias = [];
+    req.session.data.arrestDate = [];
+    req.session.data.forceOffenderTypeAfterDob = [];
+    req.session.data.removeSuspectId = '';
+    req.session.data.aliasId = [];
+    req.session.data.aliasFirstName = [];
+    req.session.data.aliasLastName = [];
+    req.session.data.aliasCount = 0;
+    req.session.data.aliasDetailsCount = 0;
+    req.session.data.aliasSuspectID = [];
+    req.session.data.aliasTempSuspectId = 0;
+    req.session.data.editSuspect = 999;
+    req.session.data.displaySuspect = 999;
+
+    req.session.data.wantToAddCharges = '';
+    req.session.data.chargeCount = 0;
+    req.session.data.chargeId = [];
+    req.session.data.chargeSuspectId = [];
+    req.session.data.chargeVictimId = [];
+    req.session.data.chargeCode = [];
+    req.session.data.chargeDescription = [];
+    req.session.data.chargeFromDay = [];
+    req.session.data.chargeFromMonth = [];
+    req.session.data.chargeFromYear = [];
+    req.session.data.chargeToDay = [];
+    req.session.data.chargeToMonth = [];
+    req.session.data.chargeToYear = [];
+    req.session.data.chargeComments = [];
+    req.session.data.chargeVictimYesNo = [];
+    req.session.data.chargeVictimFirstName = [];
+    req.session.data.chargeVictimLastName = [];
+    req.session.data.chargeVictimVulnerable = [];
+    req.session.data.chargeVictimIntimidated = [];
+    req.session.data.chargeVictimWitness = [];
+    req.session.data.offenceAddress1 = [];
+    req.session.data.offenceAddress2 = [];
+    req.session.data.offenceTown = [];
+    req.session.data.offencePostcode = [];
+    req.session.data.offenceCountry = [];
+    req.session.data.currentSuspectId = 0;
+    req.session.data.currentChargeId = 0;
+    req.session.data.chargedWithAdult = [];
+    req.session.data.grouped = [];
+    req.session.data.counts = [];
+    req.session.data.victims = JSON.parse(JSON.stringify(victims));
+    req.session.data.countVictims = 0;
+    req.session.data.preCharge = 'No';
+}
+
 function getCreateCaseReturnTo(req) {
     return getSafeReturnTo(req.query?.returnTo) ||
         getSafeReturnTo(req.body?.returnTo) ||
@@ -189,6 +261,10 @@ router.post('/B-off-system-MVP/create-case/01-register-case', function (req, res
     req.session.data.operationNameYesNo = req.body['operation-name-yes-no']
     req.session.data.suspectDetailsYesNo = req.body['suspect-details-yes-no']
     req.session.data.firstHearingDetailsYesNo = req.body['first-hearing-details']
+
+    if (req.session.data.suspectDetailsYesNo !== 'Yes') {
+        resetCreateCaseSuspectsAndCharges(req)
+    }
 
     if (req.session.data.operationNameYesNo === 'Yes') {
         req.session.data.operationName = req.body['operation-name']
@@ -317,14 +393,30 @@ router.post('/B-off-system-MVP/create-case/02-first-hearing-details', function (
 // Add suspects
 router.post('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) {
     count = req.session.data.suspectCount
+    const suspectType = req.body['suspect-type']
+    const suspectFirstName = trimString(req.body['suspect-person-first-name'])
+    const suspectLastName = trimString(req.body['suspect-person-last-name'])
+    const suspectCompanyName = trimString(req.body['suspect-company-name'])
 
-    req.session.data.suspectType[count] = req.body['suspect-type']
+    if (!suspectType) {
+        return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-add-suspect')
+    }
+
+    if (suspectType === 'Person' && (!suspectFirstName || !suspectLastName)) {
+        return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-add-suspect')
+    }
+
+    if (suspectType === 'Company' && !suspectCompanyName) {
+        return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-add-suspect')
+    }
+
+    req.session.data.suspectType[count] = suspectType
     req.session.data.suspectId[count] = count
     req.session.data.aliasTempSuspectId = count
 
-    if (req.body['suspect-type'] == 'Person') {
-        req.session.data.suspectFirstName[count] = req.body['suspect-person-first-name']
-        req.session.data.suspectLastName[count] = req.body['suspect-person-last-name']
+    if (suspectType == 'Person') {
+        req.session.data.suspectFirstName[count] = suspectFirstName
+        req.session.data.suspectLastName[count] = suspectLastName
         req.session.data.suspectDOB[count] = req.body['suspect-person-dob']
         req.session.data.suspectGender[count] = req.body['suspect-person-gender']
         req.session.data.suspectDisability[count] = req.body['suspect-person-disability']
@@ -339,7 +431,7 @@ router.post('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) 
         console.log("SDO:", req.session.data.suspectSDO[count])
     }
     else {
-        req.session.data.suspectCompanyName[count] = req.body['suspect-company-name']
+        req.session.data.suspectCompanyName[count] = suspectCompanyName
     }
 
     req.session.data.suspectDetailsCount = count
