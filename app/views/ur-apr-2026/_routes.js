@@ -456,6 +456,14 @@ router.post('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) 
         })
     }
 
+    if (suspectType === 'Company' && !suspectCompanyName) {
+        errors.companyName = 'Enter the company name'
+        errorList.push({
+            text: errors.companyName,
+            href: '#suspect-company-name'
+        })
+    }
+
     if (errorList.length > 0) {
         req.session.data.suspectType[count] = suspectType
 
@@ -536,10 +544,61 @@ router.post('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) 
 // Suspect details – date of birth
 router.post('/B-off-system-MVP/create-case/03-suspect-details-dob', function (req, res) {
     count = req.session.data.suspectDetailsCount
+    const day = trimString(req.body['date-of-birth-day'])
+    const month = trimString(req.body['date-of-birth-month'])
+    const year = trimString(req.body['date-of-birth-year'])
 
-    req.session.data.suspectDayBirth[count] = req.body['date-of-birth-day']
-    req.session.data.suspectMonthBirth[count] = Number(req.body['date-of-birth-month'])
-    req.session.data.suspectYearBirth[count] = req.body['date-of-birth-year']
+    req.session.data.suspectDayBirth[count] = day
+    req.session.data.suspectMonthBirth[count] = month
+    req.session.data.suspectYearBirth[count] = year
+
+    const errors = {}
+    const errorList = []
+
+    if (!day || !month || !year) {
+        errors.dateOfBirth = 'Enter the date of birth'
+        errorList.push({
+            text: errors.dateOfBirth,
+            href: '#date-of-birth-day'
+        })
+    } else {
+        const numericDay = Number(day)
+        const numericMonth = Number(month)
+        const numericYear = Number(year)
+
+        if (!Number.isInteger(numericDay) || numericDay < 1 || numericDay > 31) {
+            errors.day = 'Day must be a valid number'
+            errorList.push({
+                text: errors.day,
+                href: '#date-of-birth-day'
+            })
+        }
+
+        if (!Number.isInteger(numericMonth) || numericMonth < 1 || numericMonth > 12) {
+            errors.month = 'Month must be a valid number'
+            errorList.push({
+                text: errors.month,
+                href: '#date-of-birth-month'
+            })
+        }
+
+        if (!/^\d{4}$/.test(year)) {
+            errors.year = 'Year must be a valid number'
+            errorList.push({
+                text: errors.year,
+                href: '#date-of-birth-year'
+            })
+        }
+    }
+
+    if (errorList.length > 0) {
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-dob', {
+            errors,
+            errorList
+        })
+    }
+
+    req.session.data.suspectMonthBirth[count] = Number(month)
 
     if (isUnder18(
         req.session.data.suspectDayBirth[count],
@@ -587,8 +646,21 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-dob', function (re
 // Suspect details – gender
 router.post('/B-off-system-MVP/create-case/03-suspect-details-gender', function (req, res) {
     count = req.session.data.suspectDetailsCount
+    const gender = req.body['gender']
 
-    req.session.data.suspectGender[count] = req.body['gender']
+    if (!gender) {
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-gender', {
+            errors: {
+                gender: 'Select a gender'
+            },
+            errorList: [{
+                text: 'Select a gender',
+                href: '#gender-female'
+            }]
+        })
+    }
+
+    req.session.data.suspectGender[count] = gender
 
     if (req.session.data.suspectDisability[count] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-disability')
@@ -620,8 +692,21 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-gender', function 
 // Suspect details – disability
 router.post('/B-off-system-MVP/create-case/03-suspect-details-disability', function (req, res) {
     count = req.session.data.suspectDetailsCount
+    const disability = req.body['disability']
 
-    req.session.data.suspectDisability[count] = req.body['disability']
+    if (!disability) {
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-disability', {
+            errors: {
+                disability: 'Select whether the suspect has a disability'
+            },
+            errorList: [{
+                text: 'Select whether the suspect has a disability',
+                href: '#disability-yes'
+            }]
+        })
+    }
+
+    req.session.data.suspectDisability[count] = disability
 
     if (req.session.data.suspectReligion[count] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-religion')
@@ -650,8 +735,21 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-disability', funct
 // Suspect details – religion
 router.post('/B-off-system-MVP/create-case/03-suspect-details-religion', function (req, res) {
     count = req.session.data.suspectDetailsCount
+    const religion = req.body['religion']
 
-    req.session.data.suspectReligion[count] = req.body['religion']
+    if (!religion) {
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-religion', {
+            errors: {
+                religion: 'Select the suspect\'s religion'
+            },
+            errorList: [{
+                text: 'Select the suspect\'s religion',
+                href: '#religion-no-religion'
+            }]
+        })
+    }
+
+    req.session.data.suspectReligion[count] = religion
 
     if (req.session.data.suspectEthnicity[count] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-ethnicity')
@@ -677,8 +775,21 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-religion', functio
 // Suspect details – ethnicity
 router.post('/B-off-system-MVP/create-case/03-suspect-details-ethnicity', function (req, res) {
     count = req.session.data.suspectDetailsCount
+    const ethnicity = req.body['ethnicity']
 
-    req.session.data.suspectEthnicity[count] = req.body['ethnicity']
+    if (!ethnicity) {
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-ethnicity', {
+            errors: {
+                ethnicity: 'Select the suspect\'s ethnicity'
+            },
+            errorList: [{
+                text: 'Select the suspect\'s ethnicity',
+                href: '#ethnicity-ns'
+            }]
+        })
+    }
+
+    req.session.data.suspectEthnicity[count] = ethnicity
 
     if (req.session.data.suspectAlias[count] != undefined) {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-add-alias')
@@ -702,11 +813,26 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-ethnicity', functi
 // Suspect details – add alias
 router.post('/B-off-system-MVP/create-case/03-suspect-details-add-alias', function (req, res) {
     aliasCount = req.session.data.aliasCount
+    const aliasFirstName = trimString(req.body['alias-first-name'])
+    const aliasLastName = trimString(req.body['alias-last-name'])
+
+    req.session.data.aliasFirstName[aliasCount] = aliasFirstName
+    req.session.data.aliasLastName[aliasCount] = aliasLastName
+
+    if (!aliasLastName) {
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-add-alias', {
+            errors: {
+                aliasLastName: 'Enter a last name'
+            },
+            errorList: [{
+                text: 'Enter last name',
+                href: '#alias-last-name'
+            }]
+        })
+    }
 
     req.session.data.aliasId[aliasCount] = aliasCount
 
-    req.session.data.aliasFirstName[aliasCount] = req.body['alias-first-name']
-    req.session.data.aliasLastName[aliasCount] = req.body['alias-last-name']
     req.session.data.aliasSuspectID[aliasCount] = req.session.data.suspectDetailsCount
 
     console.log("Alias first name:", req.session.data.aliasFirstName[aliasCount])
@@ -728,8 +854,22 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-alias-summary', fu
     count = req.session.data.suspectDetailsCount
     console.log("Alias summary - suspect count:", count)
     console.log("Arrest summons:", req.session.data.suspectArrestSummons[count])
+    const addAnother = req.body['add-another']
 
-    if (req.body['add-another'] === 'Yes') {
+    if (!addAnother) {
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-alias-summary', {
+            errors: {
+                addAnother: 'Select whether you need to add another alias'
+            },
+            requestBody: req.body,
+            errorList: [{
+                text: 'Select whether you need to add another alias',
+                href: '#add-another'
+            }]
+        })
+    }
+
+    if (addAnother === 'Yes') {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-add-alias')
     }
     else {
@@ -794,8 +934,21 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-arrest-summons', f
 // Suspect details – type of offender
 router.post('/B-off-system-MVP/create-case/03-suspect-details-offender-type', function (req, res) {
     count = (req.session.data.suspectDetailsCount)
+    const offenderType = req.body['offender-type']
 
-    req.session.data.suspectOffenderType[count] = req.body['offender-type']
+    if (!offenderType) {
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type', {
+            errors: {
+                offenderType: 'Select the type of offender'
+            },
+            errorList: [{
+                text: 'Select the type of offender',
+                href: '#offender-type-pyo'
+            }]
+        })
+    }
+
+    req.session.data.suspectOffenderType[count] = offenderType
     console.log("Offender type:", req.session.data.suspectOffenderType[count])
 
     if (req.session.data.suspectOffenderType[count] == 'Youth offender (YO)') {
@@ -823,8 +976,22 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-offender-type', fu
 // Suspect summary
 router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function (req, res) {
     const returnTo = getCreateCaseReturnTo(req)
+    const addAnother = req.body['add-another-suspect']
 
-    if (req.body['add-another'] === 'Yes') {
+    if (!addAnother) {
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/03B-suspect-summary', {
+            errors: {
+                addAnother: 'Select whether you need to add another suspect'
+            },
+            requestBody: req.body,
+            errorList: [{
+                text: 'Select whether you need to add another suspect',
+                href: '#add-another'
+            }]
+        })
+    }
+
+    if (addAnother === 'Yes') {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-add-suspect')
     }
     else {
@@ -1215,8 +1382,23 @@ router.post('/B-off-system-MVP/create-case/04-add-charges-victim', function (req
 // Charges summary
 router.post('/B-off-system-MVP/create-case/04-charges-summary', function (req, res) {
     const returnTo = getCreateCaseReturnTo(req)
+    const addAnother = req.body['add-another-charge']
 
-    if (req.body['add-another'] === 'Yes') {
+    if (!addAnother) {
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/04-charges-summary', {
+            grouped: req.session.data.grouped,
+            errors: {
+                addAnother: 'Select yes if you need to add another charge'
+            },
+            requestBody: req.body,
+            errorList: [{
+                text: 'Select yes if you need to add another charge',
+                href: '#add-another-charge'
+            }]
+        })
+    }
+
+    if (addAnother === 'Yes') {
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/04-add-charges-suspect')
     }
     else {
