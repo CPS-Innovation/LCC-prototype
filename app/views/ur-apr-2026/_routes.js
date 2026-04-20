@@ -242,32 +242,59 @@ router.use((req, res, next) => {
 
 // Register a case - start of journey
 router.post('/B-off-system-MVP/create-case/01-register-case', function (req, res) {
-    // var errors = []
-    // if (req.body['operation-name-yes-no'] === 'undefined') {
-    //   errors.push({
-    //   text: 'Enter their first names',
-    //   href: '#first-names'
-    //   })
-    // }
-    // if (req.body['suspect-details-yes-no'] === '') {
-    //   errors.push({
-    //   text: 'Enter their last names',
-    //   href: '#last-names'
-    //   })
-    // }
+    const operationNameYesNo = req.body['operation-name-yes-no']
+    const suspectDetailsYesNo = req.body['suspect-details-yes-no']
+    const operationName = trimString(req.body['operation-name'])
 
-
-    // if (errors.length === 0) {
-    req.session.data.operationNameYesNo = req.body['operation-name-yes-no']
-    req.session.data.suspectDetailsYesNo = req.body['suspect-details-yes-no']
+    req.session.data.operationNameYesNo = operationNameYesNo
+    req.session.data.suspectDetailsYesNo = suspectDetailsYesNo
+    req.session.data.operationName = operationName
     req.session.data.firstHearingDetailsYesNo = req.body['first-hearing-details']
+
+    const errors = {}
+    const errorList = []
+
+    if (!operationNameYesNo) {
+        errors.operationNameYesNo = 'Select if you have an operation name'
+        errorList.push({
+            text: errors.operationNameYesNo,
+            href: '#operation-name-yes'
+        })
+    }
+
+    if (!suspectDetailsYesNo) {
+        errors.suspectDetailsYesNo = 'Select if you have suspect details'
+        errorList.push({
+            text: errors.suspectDetailsYesNo,
+            href: '#suspect-details-yes'
+        })
+    }
+
+    if (operationNameYesNo === 'Yes' && !operationName) {
+        errors.operationName = 'Enter an operation name'
+        errorList.push({
+            text: errors.operationName,
+            href: '#operation-name'
+        })
+    }
+
+    if (operationNameYesNo === 'No' && suspectDetailsYesNo === 'No') {
+        errors.page = 'You must add an operation name or suspect details to continue'
+        errorList.unshift({
+            text: errors.page,
+            href: '#operation-name-yes'
+        })
+    }
+
+    if (errorList.length > 0) {
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/01-register-case', {
+            errors,
+            errorList
+        })
+    }
 
     if (req.session.data.suspectDetailsYesNo !== 'Yes') {
         resetCreateCaseSuspectsAndCharges(req)
-    }
-
-    if (req.session.data.operationNameYesNo === 'Yes') {
-        req.session.data.operationName = req.body['operation-name']
     }
 
     if (req.session.data.firstHearingDetailsYesNo === 'Yes') {
@@ -398,16 +425,44 @@ router.post('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) 
     const suspectLastName = trimString(req.body['suspect-person-last-name'])
     const suspectCompanyName = trimString(req.body['suspect-company-name'])
 
+    req.session.data.suspectFirstName[count] = suspectFirstName
+    req.session.data.suspectLastName[count] = suspectLastName
+    req.session.data.suspectCompanyName[count] = suspectCompanyName
+
+    const errors = {}
+    const errorList = []
+
     if (!suspectType) {
-        return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-add-suspect')
+        errors.suspectType = 'Select whether the suspect is a person or company'
+        errorList.push({
+            text: errors.suspectType,
+            href: '#suspect-type-person'
+        })
     }
 
-    if (suspectType === 'Person' && (!suspectFirstName || !suspectLastName)) {
-        return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-add-suspect')
+    if (suspectType === 'Person' && !suspectFirstName) {
+        errors.firstName = 'Enter the first name'
+        errorList.push({
+            text: errors.firstName,
+            href: '#suspect-person-first-name'
+        })
     }
 
-    if (suspectType === 'Company' && !suspectCompanyName) {
-        return res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-add-suspect')
+    if (suspectType === 'Person' && !suspectLastName) {
+        errors.lastName = 'Enter the last name'
+        errorList.push({
+            text: errors.lastName,
+            href: '#suspect-person-last-name'
+        })
+    }
+
+    if (errorList.length > 0) {
+        req.session.data.suspectType[count] = suspectType
+
+        return res.render('ur-apr-2026/B-off-system-MVP/create-case/03-add-suspect', {
+            errors,
+            errorList
+        })
     }
 
     req.session.data.suspectType[count] = suspectType

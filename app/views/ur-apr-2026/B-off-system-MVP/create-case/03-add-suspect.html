@@ -7,45 +7,81 @@
 {% endblock %}
 {% block content %}
 
+{% set suspectIndex = data['editSuspect'] if data['editSuspect'] != 999 else data['suspectCount'] %}
+
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
+    {% if errorList and errorList.length %}
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+      <div role="alert">
+        <h2 class="govuk-error-summary__title">
+          There is a problem
+        </h2>
+        <div class="govuk-error-summary__body">
+          <ul class="govuk-list govuk-error-summary__list">
+            {% for error in errorList %}
+            <li>
+              <a href="{{ error.href }}">{{ error.text }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
     {% if data['editSuspect'] == 999 %}
       <form action="/ur-apr-2026/B-off-system-MVP/create-case/03-add-suspect" method="post" novalidate>
     {% else %}
       <form action="/ur-apr-2026/B-off-system-MVP/create-case/03-edit-suspect" method="post" novalidate>
     {% endif %}
 
-      <div class="govuk-form-group">
-        <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+      <div class="govuk-form-group{% if errors and errors.suspectType %} govuk-form-group--error{% endif %}">
+        <fieldset class="govuk-fieldset" {% if errors and errors.suspectType %}aria-describedby="suspect-type-error"{% endif %}>
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                 <h1 class="govuk-fieldset__heading">
                   Add a suspect 
                   <!-- {% if data['editSuspect'] == 999 %} {{data['suspectCount'] + 1}} {% else %} {{data['displaySuspect']}} {% endif %} -->
                 </h1>
             </legend>
+          {% if errors and errors.suspectType %}
+          <span id="suspect-type-error" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span> {{ errors.suspectType }}
+          </span>
+          {% endif %}
           <!-- <div id="contact-hint" class="govuk-hint">
             Suspect 1
           </div> -->
           <div class="govuk-radios" data-module="govuk-radios">
             <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="suspect-type-person" name="suspect-type" type="radio" value="Person" data-aria-controls="conditional-contact" {% if data['suspectType'][data['editSuspect']] == 'Person' %} checked {% endif %}>
+              <input class="govuk-radios__input" id="suspect-type-person" name="suspect-type" type="radio" value="Person" data-aria-controls="conditional-contact" {% if data['suspectType'][suspectIndex] == 'Person' %} checked {% endif %} {% if errors and errors.suspectType %}aria-describedby="suspect-type-error"{% endif %}>
               <label class="govuk-label govuk-radios__label" for="suspect-type-person">
                 Person
               </label>
             </div>
             <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact">
-              <div class="govuk-form-group">
+              <div class="govuk-form-group{% if errors and errors.firstName %} govuk-form-group--error{% endif %}">
                 <label class="govuk-label govuk-!-font-weight-bold" for="suspect-type-person-first-name">
                   First name
                 </label>
-                <input class="govuk-input govuk-!-width-one-third" id="suspect-person-first-name" name="suspect-person-first-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['suspectFirstName'][data['editSuspect']]}}">
+                {% if errors and errors.firstName %}
+                <span id="suspect-person-first-name-error" class="govuk-error-message">
+                  <span class="govuk-visually-hidden">Error:</span> {{ errors.firstName }}
+                </span>
+                {% endif %}
+                <input class="govuk-input govuk-!-width-one-third{% if errors and errors.firstName %} govuk-input--error{% endif %}" id="suspect-person-first-name" name="suspect-person-first-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['suspectFirstName'][suspectIndex]}}" {% if errors and errors.firstName %}aria-describedby="suspect-person-first-name-error"{% endif %}>
               </div>
               
-              <div class="govuk-form-group">
+              <div class="govuk-form-group{% if errors and errors.lastName %} govuk-form-group--error{% endif %}">
                 <label class="govuk-label govuk-!-font-weight-bold" for="suspect-person-last-name">
                   Last name
                 </label>
-                <input class="govuk-input govuk-!-width-one-third" id="suspect-person-last-name" name="suspect-person-last-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['suspectLastName'][data['editSuspect']]}}">
+                {% if errors and errors.lastName %}
+                <span id="suspect-person-last-name-error" class="govuk-error-message">
+                  <span class="govuk-visually-hidden">Error:</span> {{ errors.lastName }}
+                </span>
+                {% endif %}
+                <input class="govuk-input govuk-!-width-one-third{% if errors and errors.lastName %} govuk-input--error{% endif %}" id="suspect-person-last-name" name="suspect-person-last-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['suspectLastName'][suspectIndex]}}" {% if errors and errors.lastName %}aria-describedby="suspect-person-last-name-error"{% endif %}>
               </div>
 
               <div class="govuk-form-group">
@@ -121,7 +157,7 @@
 
 
             <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="suspect-type-company" name="suspect-type" type="radio" value="Company" data-aria-controls="conditional-contact-2" {% if data['suspectType']['editSuspect'] == 'Company' %} checked {% endif %}>
+              <input class="govuk-radios__input" id="suspect-type-company" name="suspect-type" type="radio" value="Company" data-aria-controls="conditional-contact-2" {% if data['suspectType'][suspectIndex] == 'Company' %} checked {% endif %} {% if errors and errors.suspectType %}aria-describedby="suspect-type-error"{% endif %}>
               <label class="govuk-label govuk-radios__label" for="suspect-type-company">
                 Company
               </label>
@@ -131,7 +167,7 @@
                 <label class="govuk-label govuk-!-font-weight-bold" for="suspect-company-name">
                   Company name
                 </label>
-                <input class="govuk-input govuk-!-width-one-third" id="suspect-company-name" name="suspect-company-name" type="text" autocomplete="text" value="{{ data['suspectCompanyName'][data['id']]}}">
+                <input class="govuk-input govuk-!-width-one-third" id="suspect-company-name" name="suspect-company-name" type="text" autocomplete="text" value="{{ data['suspectCompanyName'][suspectIndex]}}">
               </div>
             </div>
           </div>
