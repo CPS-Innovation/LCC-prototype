@@ -163,11 +163,16 @@
               </label>
             </div>
             <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-2">
-              <div class="govuk-form-group">
+              <div class="govuk-form-group{% if errors and errors.companyName %} govuk-form-group--error{% endif %}">
                 <label class="govuk-label govuk-!-font-weight-bold" for="suspect-company-name">
                   Company name
                 </label>
-                <input class="govuk-input govuk-!-width-one-third" id="suspect-company-name" name="suspect-company-name" type="text" autocomplete="text" value="{{ data['suspectCompanyName'][suspectIndex]}}">
+                {% if errors and errors.companyName %}
+                <span id="suspect-company-name-error" class="govuk-error-message">
+                  <span class="govuk-visually-hidden">Error:</span> {{ errors.companyName }}
+                </span>
+                {% endif %}
+                <input class="govuk-input govuk-!-width-one-third{% if errors and errors.companyName %} govuk-input--error{% endif %}" id="suspect-company-name" name="suspect-company-name" type="text" autocomplete="text" value="{{ data['suspectCompanyName'][suspectIndex]}}" {% if errors and errors.companyName %}aria-describedby="suspect-company-name-error"{% endif %}>
               </div>
             </div>
           </div>
