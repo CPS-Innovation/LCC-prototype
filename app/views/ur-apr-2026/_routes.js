@@ -825,7 +825,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-add-alias', functi
                 aliasLastName: 'Enter a last name. If the person only has one name, enter it here.'
             },
             errorList: [{
-                text: 'Enter last name',
+                text: 'Enter last name. If the person only has one name, enter it here.',
                 href: '#alias-last-name'
             }]
         })
