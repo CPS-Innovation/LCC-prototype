@@ -822,7 +822,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-add-alias', functi
     if (!aliasLastName) {
         return res.render('ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-add-alias', {
             errors: {
-                aliasLastName: 'Enter a last name'
+                aliasLastName: 'Enter a last name. If the person only has one name, enter it here.'
             },
             errorList: [{
                 text: 'Enter last name',
