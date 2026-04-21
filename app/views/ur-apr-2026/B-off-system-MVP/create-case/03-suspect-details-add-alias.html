@@ -47,7 +47,7 @@
           <div id="changedName-hint" class="govuk-hint">
               Leave blank if you only have one name
           </div>
-            <input class="govuk-input govuk-!-width-one-third" id="alias-first-name" name="alias-first-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['aliasFirstName'][data['editAlias']]}}">
+            <input class="govuk-input govuk-!-width-one-third" id="alias-first-name" name="alias-first-name" type="text" spellcheck="false" autocomplete="new-password" value="{{ data['aliasFirstName'][data['editAlias']]}}">
           </div>
           
           <div class="govuk-form-group{% if errors and errors.aliasLastName %} govuk-form-group--error{% endif %}">
@@ -59,7 +59,7 @@
               <span class="govuk-visually-hidden">Error:</span> {{ errors.aliasLastName }}
             </span>
             {% endif %}
-            <input class="govuk-input govuk-!-width-one-third{% if errors and errors.aliasLastName %} govuk-input--error{% endif %}" id="alias-last-name" name="alias-last-name" type="text" spellcheck="false" autocomplete="text" value="{{ data['aliasLastName'][data['aliasCount']] or data['aliasLastName'][data['editAlias']]}}" {% if errors and errors.aliasLastName %}aria-describedby="alias-last-name-error"{% endif %}>
+            <input class="govuk-input govuk-!-width-one-third{% if errors and errors.aliasLastName %} govuk-input--error{% endif %}" id="alias-last-name" name="alias-last-name" type="text" spellcheck="false" autocomplete="new-password" value="{{ data['aliasLastName'][data['aliasCount']] or data['aliasLastName'][data['editAlias']]}}" {% if errors and errors.aliasLastName %}aria-describedby="alias-last-name-error"{% endif %}>
           </div>
         </fieldset>
 
