@@ -852,9 +852,10 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-add-alias', functi
 // Alias summary
 router.post('/B-off-system-MVP/create-case/03-suspect-details-alias-summary', function (req, res) {
     count = req.session.data.suspectDetailsCount
-    console.log("Alias summary - suspect count:", count)
-    console.log("Arrest summons:", req.session.data.suspectArrestSummons[count])
     const addAnother = req.body['add-another']
+    const suspectSDO = req.session.data.suspectSDO || []
+    const suspectArrestSummons = req.session.data.suspectArrestSummons || []
+    const suspectOffenderType = req.session.data.suspectOffenderType || []
 
     if (!addAnother) {
         return res.render('ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-alias-summary', {
@@ -873,13 +874,13 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-alias-summary', fu
         res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-add-alias')
     }
     else {
-        if (req.session.data.suspectSDO[count] != undefined) {
+        if (suspectSDO[count] != undefined) {
             res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-sdo')
         }
-        else if (req.session.data.suspectArrestSummons[count] != undefined) {
+        else if (suspectArrestSummons[count] != undefined) {
             res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
         }
-        else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
+        else if (shouldAskOffenderType(suspectOffenderType[count])) {
             res.redirect('/ur-apr-2026/B-off-system-MVP/create-case/03-suspect-details-offender-type')
         }
         else {
@@ -1388,12 +1389,12 @@ router.post('/B-off-system-MVP/create-case/04-charges-summary', function (req, r
         return res.render('ur-apr-2026/B-off-system-MVP/create-case/04-charges-summary', {
             grouped: req.session.data.grouped,
             errors: {
-                addAnother: 'Select yes if you need to add another charge'
+                addAnother: 'Select whether you need to add another charge'
             },
             requestBody: req.body,
             errorList: [{
-                text: 'Select yes if you need to add another charge',
-                href: '#add-another-charge'
+                text: 'Select whether you need to add another charge',
+                href: '#add-another'
             }]
         })
     }
