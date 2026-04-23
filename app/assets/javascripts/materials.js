@@ -2469,21 +2469,21 @@ function updateActionsUI() {
      const discardBtns = Array.from(document.querySelectorAll('button[id="discardButton"]'));
      const copyBtns = Array.from(document.querySelectorAll('button[id="copyButton"]'));
      const moveBtns = Array.from(document.querySelectorAll('button[id="moveButton"]'));
-     const updateBtn = document.getElementById('updateButton');
-     const markReadBtn = document.getElementById('markReadButton');
-     const markUnreadBtn = document.getElementById('markUnreadButton');
+     const updateBtns = Array.from(document.querySelectorAll('button[id="updateButton"]'));
+     const markReadBtns = Array.from(document.querySelectorAll('button[id="markReadButton"]'));
+     const markUnreadBtns = Array.from(document.querySelectorAll('button[id="markUnreadButton"]'));
 
      // Rename: exactly ONE
-     if (updateBtn) {
-          const ok = selected.length === 1;
+     const ok = selected.length === 1;
+     updateBtns.forEach(function (updateBtn) {
           updateBtn.disabled = !ok;
           updateBtn.classList.toggle('govuk-button--disabled', !ok);
-     }
+     });
 
      // Discard / Copy / Move: ONE OR MORE
      const multiOK = selected.length > 0;
 
-     [...discardBtns, ...copyBtns, ...moveBtns, markReadBtn, markUnreadBtn].forEach(btn => {
+     [...discardBtns, ...copyBtns, ...moveBtns, ...markReadBtns, ...markUnreadBtns].forEach(btn => {
           if (!btn) return;
           btn.disabled = !multiOK;
           btn.classList.toggle('govuk-button--disabled', !multiOK);
@@ -2493,15 +2493,15 @@ function updateActionsUI() {
      const ids = selected.map(x => x.id).join(',');
      const copyHidden = Array.from(document.querySelectorAll('input[id="copy_selected_ids"]'));
      const moveHidden = Array.from(document.querySelectorAll('input[id="move_selected_ids"]'));
-     const markReadHidden = document.getElementById('mark_read_selected_ids');
-     const markUnreadHidden = document.getElementById('mark_unread_selected_ids');
+     const markReadHidden = Array.from(document.querySelectorAll('input[id="mark_read_selected_ids"]'));
+     const markUnreadHidden = Array.from(document.querySelectorAll('input[id="mark_unread_selected_ids"]'));
      const discardHidden = Array.from(document.querySelectorAll('input[id="material_selected"]'));
 
 
      copyHidden.forEach(input => input.value = ids);
      moveHidden.forEach(input => input.value = ids);
-     if (markReadHidden) markReadHidden.value = ids;
-     if (markUnreadHidden) markUnreadHidden.value = ids;
+     markReadHidden.forEach(input => input.value = ids);
+     markUnreadHidden.forEach(input => input.value = ids);
      discardHidden.forEach(input => input.value = selected[0]?.id || '');
 }
 
