@@ -1,49 +1,23 @@
 {% extends "layoutCPS-OFF-V11.html" %}
+
 {% block header %}
-    {% include "../includes/banner-OFF-V6.html" %}
+{% include "../includes/banner-OFF-V6.html" %}
 {% endblock %}
+
 {% block beforeContent %}
-
-    <!-- {% if data['searchOFF_URN_VALUE'] %}
-        <div class="hods-status-message case-file-page large_and_complex">
-            <div class="govuk-width-container">
-                <div class="govuk-grid-row">
-                    <div class="govuk-grid-column-full">
-                        <div class="hods-status-message__status">
-                            <span class="hods-status-message__extra">
-                                <strong>Liam Davies</strong> and <strong>Michael Scott</strong> are also working on this case
-                            </span>
-                            <span class="hods-status-message__extra">
-                                Last active: <strong>Now</strong>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% else %}
-
-    {% endif %} -->
-
 {% endblock %}
+
 {% block v11Content %}
 
 <div class="govuk-grid-row">
 
     <div class="govuk-grid-column-full main_Case_Title">
-
-        <div class="title-wrapper"> 
-            {% if data['operationName'] %}
-                <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">{{ data['operationName'] }}</h1>
-            {% else %}
-                <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">Thundercat</h1>
-            {% endif %}
+        <div class="title-wrapper">
+            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">
+                Thundercat
+            </h1>
             <span class="govuk-caption-m govuk-!-margin-bottom-4">
-                {% if data['URN1'] %}
-                    {{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}/{{ data['URN4'] }}
-                {% else %}  
-                    87AA65432/26
-                {% endif %}
+                87AA65432/25
             </span>
         </div>
     </div>
@@ -54,32 +28,29 @@
             <ul class="govuk-tabs__list">
                 <li class="govuk-tabs__list-item" id="tab-1"><a class="tab-link tab-1-content">Transfer materials</a></li>
                 <li class="govuk-tabs__list-item govuk-tabs__list-item--selected" id="tab-2"><a class="tab-link tab-2-content">Manage materials</a></li>
-                <li class="govuk-tabs__list-item" id="tab-4"><a class="tab-link tab-3-content">Activity log</a></li>
+                <li class="govuk-tabs__list-item" id="tab-3"><a class="tab-link tab-3-content">Activity log</a></li>
             </ul>
 
-            <!-- /////////////// TAB CONTENT 1 - START /////////////// -->
             <div class="panel" id="tab-1-content" style="display: none;">
+<<<<<<<< HEAD:app/views/ur-apr-2026-closed/B-off-system-MVP/03-case-overview-old.html
                 <!-- {% include "../includes/off-system-MVP/overview-materials_SD.html" %} -->
                 {% include "../includes/off-system-MVP/overview-materials.html" %}
+========
+                {% include "../includes/materials/tab-transfer-materials.html" %}
+>>>>>>>> upstream/main:app/views/ur-apr-2026/B-off-system-MVP/03-case-overview.html
             </div>
-            <!-- /////////////// TAB CONTENT 1 - END /////////////// -->
 
-            <!-- /////////////// TAB CONTENT 2 - START /////////////// -->
-            <div class="panel ur-apr-2026" id="tab-2-content">
+            <div class="panel" id="tab-2-content">
                 {% include "../includes/materials/tab-manage-materials.html" %}
             </div>
-            <!-- /////////////// TAB CONTENT 2 - END /////////////// -->
 
-            <!-- /////////////// TAB CONTENT 4 - START /////////////// -->
             <div class="panel" id="tab-3-content" style="display: none;">
                 {% include "../includes/materials/activity-log.html" %}
             </div>
-            <!-- /////////////// TAB CONTENT 4 - END /////////////// -->
 
         </div>
 
     </div>
-
 </div>
 
 {% endblock %}
