@@ -226,55 +226,6 @@
             <div class="govuk-grid-row govuk-!-margin-left-3">
                 <div class="govuk-grid-column-full">
                     <div class="materials-toolbar govuk-!-margin-top-3 govuk-!-margin-bottom-4">
-                        <div class="materials-toolbar__search">
-                            <!-- Search -->
-                            <details class="govuk-details materials-search" data-module="govuk-details" {% if
-                                data.filtersSearch and data.filtersSearch | trim | length> 0 %}open{% endif %}>
-                                <summary class="govuk-details__summary">
-                                    <span class="govuk-details__summary-text">
-                                        <span class="search-icon-box" aria-hidden="true">
-                                            <!-- inline SVG so the icon can’t mysteriously vanish -->
-                                            <svg viewBox="0 0 24 24" width="20" height="20" focusable="false"
-                                                aria-hidden="true">
-                                                <path fill="currentColor"
-                                                    d="M10 2a8 8 0 105.3 14l4.4 4.4 1.4-1.4-4.4-4.4A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z" />
-                                            </svg>
-                                        </span>
-                                        Search files and folders
-                                    </span>
-                                </summary>
-
-                                <div class="govuk-details__text govuk-!-margin-left-0">
-                                    <form method="post" action="/ur-apr-2026/B-off-system-MVP/materials-search"
-                                        novalidate>
-                                        <div class="govuk-form-group govuk-!-margin-bottom-2">
-                                            <label class="govuk-label govuk-label--s govuk-!-margin-bottom-3"
-                                                for="materialsSearch">Search</label>
-                                            <div class="govuk-input__wrapper">
-                                                <input class="govuk-input" id="materialsSearch" name="filtersSearch"
-                                                    type="search" value="{{ data.filtersSearch | default('') }}"
-                                                    autocomplete="off">
-                                                <button class="govuk-button govuk-!-margin-bottom-0" type="submit"
-                                                    data-module="govuk-button">
-                                                    Search
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    {% if data.filtersSearch and data.filtersSearch | trim | length > 0 %}
-                                    <form method="post" action="/ur-apr-2026/B-off-system-MVP/clear-search"
-                                        class="govuk-!-margin-top-2">
-                                        <button type="submit" formaction="/ur-apr-2026/B-off-system-MVP/clear-search"
-                                            class="govuk-link clear-search-button">
-                                            Clear search
-                                        </button>
-                                    </form>
-                                    {% endif %}
-                                </div>
-
-                            </details>
-                        </div>
-
                         <div class="materials-toolbar__actions">
                             <div class="actions_holder">
                                 <div class="moj-button-menu">
@@ -389,6 +340,55 @@
 
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="materials-toolbar__search govuk-!-margin-left-4">
+                            <!-- Search -->
+                            <details class="govuk-details materials-search" data-module="govuk-details" {% if
+                                data.filtersSearch and data.filtersSearch | trim | length> 0 %}open{% endif %}>
+                                <summary class="govuk-details__summary">
+                                    <span class="govuk-details__summary-text">
+                                        <span class="search-icon-box" aria-hidden="true">
+                                            <!-- inline SVG so the icon can’t mysteriously vanish -->
+                                            <svg viewBox="0 0 24 24" width="20" height="20" focusable="false"
+                                                aria-hidden="true">
+                                                <path fill="currentColor"
+                                                    d="M10 2a8 8 0 105.3 14l4.4 4.4 1.4-1.4-4.4-4.4A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z" />
+                                            </svg>
+                                        </span>
+                                        Search files and folders
+                                    </span>
+                                </summary>
+
+                                <div class="govuk-details__text govuk-!-margin-left-0">
+                                    <form method="post" action="/ur-apr-2026/B-off-system-MVP/materials-search"
+                                        novalidate>
+                                        <div class="govuk-form-group govuk-!-margin-bottom-2">
+                                            <label class="govuk-label govuk-label--s govuk-!-margin-bottom-3"
+                                                for="materialsSearch">Search</label>
+                                            <div class="govuk-input__wrapper">
+                                                <input class="govuk-input" id="materialsSearch" name="filtersSearch"
+                                                    type="search" value="{{ data.filtersSearch | default('') }}"
+                                                    autocomplete="off">
+                                                <button class="govuk-button govuk-!-margin-bottom-0" type="submit"
+                                                    data-module="govuk-button">
+                                                    Search
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    {% if data.filtersSearch and data.filtersSearch | trim | length > 0 %}
+                                    <form method="post" action="/ur-apr-2026/B-off-system-MVP/clear-search"
+                                        class="govuk-!-margin-top-2">
+                                        <button type="submit" formaction="/ur-apr-2026/B-off-system-MVP/clear-search"
+                                            class="govuk-link clear-search-button">
+                                            Clear search
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+
+                            </details>
                         </div>
                     </div>
                     <div class="materials-toolbar__spacer" aria-hidden="true"></div>
@@ -685,6 +685,93 @@
 
                 </tbody>
             </table>
+        </div>
+
+        <div class="materials-toolbar govuk-!-margin-top-4 govuk-!-margin-bottom-2">
+            <div class="materials-toolbar__actions">
+                <div class="actions_holder">
+                    <div class="moj-button-menu">
+                        <button type="button" id="show_Materials_Actions"
+                            class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                            Actions on selection
+                            <svg width="11" height="5" viewBox="0 0 11 5"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.5 0L11 5L0 5L5.5 0Z" fill="currentColor"></path>
+                            </svg>
+                        </button>
+
+                        <div class="hidden_buttons" id="materials_Actions">
+
+                            <form method="post" action="/ur-apr-2026/B-off-system-MVP/start-copy"
+                                id="copyForm">
+                                <input type="hidden" name="mode" value="copy">
+                                <input type="hidden" name="selected_ids" id="copy_selected_ids">
+                                <button id="copyButton" class="govuk-button" type="submit">
+                                    Copy
+                                </button>
+                            </form>
+
+                            <form method="post" action="/ur-apr-2026/B-off-system-MVP/start-move"
+                                id="moveForm">
+                                <input type="hidden" name="mode" value="move">
+                                <input type="hidden" name="selected_ids" id="move_selected_ids">
+                                <button id="moveButton" class="govuk-button" type="submit">
+                                    Move
+                                </button>
+                            </form>
+
+                            <form method="post" action="/ur-apr-2026/B-off-system-MVP/rename-from-list"
+                                id="renameForm">
+                                <input type="hidden" name="selected_ids" id="rename_selected_ids" value="">
+                                <button id="renameButton" class="govuk-button govuk-button--disabled"
+                                    type="submit">
+                                    Rename selected items
+                                </button>
+                            </form>
+
+                            <button id="updateButton" class="govuk-button govuk-button--disabled"
+                                type="submit">
+                                Update
+                            </button>
+
+                            <form method="post" action="/ur-apr-2026/B-off-system-MVP/mark-as-read">
+                                <input type="hidden" name="selected_ids" id="mark_read_selected_ids"
+                                    value="">
+                                <button type="submit" id="markReadButton"
+                                    class="govuk-button govuk-button--secondary" disabled>
+                                    Mark as read
+                                </button>
+                            </form>
+
+                            <form method="post" action="/ur-apr-2026/B-off-system-MVP/mark-as-unread">
+                                <input type="hidden" name="selected_ids" id="mark_unread_selected_ids"
+                                    value="">
+                                <button type="submit" id="markUnreadButton"
+                                    class="govuk-button govuk-button--secondary" disabled>
+                                    Mark as unread
+                                </button>
+                            </form>
+
+                            <form id="discardForm" method="post"
+                                action="../../../ur-apr-2026/B-off-system-MVP/delete">
+                                <input id="material_selected" name="material_selected" type="hidden"
+                                    value="">
+                                <button id="discardButton" class="govuk-button govuk-button--disabled"
+                                    type="submit">
+                                    Delete
+                                </button>
+                            </form>
+
+                        </div>
+
+                        <button type="button" class="govuk-button govuk-button--secondary"
+                            onclick="window.location.href='/ur-apr-2026/B-off-system-MVP/new-folder';" {% if
+                            isSearchResults %}disabled aria-disabled="true" {% endif %}>
+                            New folder
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     {% endif %}
