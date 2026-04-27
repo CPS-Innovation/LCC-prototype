@@ -15,6 +15,26 @@
 
 {% endif %}
 
+    <style>
+        .materials-transfer-header-row {
+            align-items: flex-end;
+            display: flex;
+            gap: 24px;
+            justify-content: space-between;
+        }
+
+        .materials-transfer-header-row__content {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .materials-transfer-header-row__button {
+            display: flex;
+            flex: 0 0 auto;
+            justify-content: flex-end;
+        }
+    </style>
+
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-half">
             {% if data['failed_file_transfer'] == 'Ignore files,false' or data['duplicate_files_transfer'] == 'Ignore files' or data['file_locked_transfer'] == 'Ignore files' or data['failed_files_COMPLETED'] == 'true' %}
@@ -82,10 +102,19 @@
     <!-- ////////////// SUCESS BANNER - END ////////////// -->
 
     <div class="egress_to_shared_drive">
-        <h2 class="govuk-heading-m" id="">Transfer from <img src="../../../public/images/egress-logo.png" alt="Egress" class="egress-logo small"> to the shared drive</h2>
-        <p><span class="govuk-caption-m govuk-!-margin-bottom-0" style="display: inline-block;">Last updated <span id="materials-timestamp"></span></span></p>
-        <div class="govuk-inset-text govuk-!-margin-top-0">
-            Select the files or folders you want to transfer and where you want to put them.<br>You can also transfer <a href="#" class="switch_direction_1">from the shared drive to Egress</a>.
+        <div class="materials-transfer-header-row">
+            <div class="materials-transfer-header-row__content">
+                <h2 class="govuk-heading-m" id="">Transfer from <img src="../../../public/images/egress-logo.png" alt="Egress" class="egress-logo small"> to the shared drive</h2>
+                <p><span class="govuk-caption-m govuk-!-margin-bottom-0" style="display: inline-block;">Last updated <span id="materials-timestamp"></span></span></p>
+                <div class="govuk-inset-text govuk-!-margin-top-0">
+                    Select the files or folders you want to transfer and where you want to put them.<br>You can also transfer <a href="#" class="switch_direction_1">from the shared drive to Egress</a>.
+                </div>
+            </div>
+            <div class="materials-transfer-header-row__button">
+                <button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                    Disconnect Shared Drive
+                </button>
+            </div>
         </div>
     </div>
     <div class="shared_drive_to_egress">
