@@ -3204,4 +3204,23 @@ router.post('/B-off-system-MVP/order-interrupt', (req, res) => {
     return res.redirect('/manage-materials-beta-v1/B-off-system-MVP/03-case-overview');
 });
 
+router.post('/B-off-system-MVP/disconnect-shared-drive', (req, res) => {
+    const choice = req.body['disconnect-shared-drive-choice'];
+    req.session.data['disconnect-shared-drive-choice'] = choice;
+
+    if (!choice) {
+        return res.render('manage-materials-beta-v1/B-off-system-MVP/disconnect-shared-drive', {
+            disconnectSharedDriveError: 'Select whether you want to disconnect the shared drive'
+        });
+    }
+
+    req.session.data.sharedDriveDisconnected = choice === 'Yes' ? 'Yes' : 'No';
+
+    if (choice === 'Yes') {
+        return res.redirect('/version-15/B-off-system-MVP/02-search-results?searchOFF=Operation+name&searchOFF_Operation_VALUE=Thunderstruck&searchOFF_Operation_AREA=SEOCID+Int+London+and+SE+Div&searchOFF_Defendant_VALUE=&searchOFF_URN_VALUE=&createCaseStarted=false');
+    }
+
+    return res.redirect('/manage-materials-beta-v1/B-off-system-MVP/03-case-overview');
+});
+
 module.exports = router
