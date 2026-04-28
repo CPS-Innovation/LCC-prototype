@@ -40,15 +40,13 @@ Disconnect Shared Drive – {{ serviceName }} – Prototype
 
           <div class="govuk-radios" data-module="govuk-radios" id="disconnect-shared-drive-choice">
             <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="disconnect-shared-drive-yes" name="disconnect-shared-drive-choice" type="radio" value="Yes"
-                {% if data['disconnect-shared-drive-choice'] == 'Yes' %}checked{% endif %}>
+              <input class="govuk-radios__input" id="disconnect-shared-drive-yes" name="disconnect-shared-drive-choice" type="radio" value="Yes">
               <label class="govuk-label govuk-radios__label" for="disconnect-shared-drive-yes">
                 Yes, disconnect this folder
               </label>
             </div>
             <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="disconnect-shared-drive-no" name="disconnect-shared-drive-choice" type="radio" value="No"
-                {% if data['disconnect-shared-drive-choice'] == 'No' %}checked{% endif %}>
+              <input class="govuk-radios__input" id="disconnect-shared-drive-no" name="disconnect-shared-drive-choice" type="radio" value="No">
               <label class="govuk-label govuk-radios__label" for="disconnect-shared-drive-no">
                 No, keep this folder connected
               </label>
