@@ -3210,7 +3210,7 @@ router.post('/B-off-system-MVP/disconnect-shared-drive', (req, res) => {
 
     if (!choice) {
         return res.render('manage-materials-beta-v1/B-off-system-MVP/disconnect-shared-drive', {
-            disconnectSharedDriveError: 'Select whether you want to disconnect the shared drive'
+            disconnectSharedDriveError: 'Select whether you want to disconnect the Shared Drive'
         });
     }
 

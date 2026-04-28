@@ -8,10 +8,6 @@ Disconnect Shared Drive – {{ serviceName }} – Prototype
 {% include "../includes/banner-OFF-V6.html" %}
 {% endblock %}
 
-{% block beforeContent %}
-<a class="govuk-back-link" href="javascript:history.back()">Back</a>
-{% endblock %}
-
 {% block content %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -33,7 +29,7 @@ Disconnect Shared Drive – {{ serviceName }} – Prototype
       <div class="govuk-form-group {% if disconnectSharedDriveError %}govuk-form-group--error{% endif %}">
         <fieldset class="govuk-fieldset" aria-describedby="{% if disconnectSharedDriveError %}disconnect-shared-drive-choice-error{% endif %}">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading">Disconnect this Shared Drive folder?</h1>
+            <h1 class="govuk-fieldset__heading govuk-!-margin-top-4">Disconnect this Shared Drive folder?</h1>
           </legend>
 
           {% if disconnectSharedDriveError %}
