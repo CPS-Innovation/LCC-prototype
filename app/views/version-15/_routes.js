@@ -1,5 +1,5 @@
 const express = require('express');
-const { editSuspect, chargeDescription, materials, victims } = require('../../data/session-data-defaults.js');
+const { editSuspect, chargeDescription, victims } = require('../../data/session-data-defaults.js');
 const router = express.Router();
 const version = 'version-15'
 
@@ -216,22 +216,27 @@ router.use((req, res, next) => {
 
 
 router.use((req, res, next) => {
-    if (!Array.isArray(req.session.data.materialsVersion13)) {
-        const defaults = res.locals.data.materialsVersion13 || [];
-        req.session.data.materialsVersion13 = JSON.parse(JSON.stringify(defaults));
+    if (!Array.isArray(req.session.data.materialsVersion15)) {
+        const defaults =
+            res.locals.data.materialsVersion15 ||
+            res.locals.data.materialsVersion13 ||
+            res.locals.data.materials ||
+            [];
+        req.session.data.materialsVersion15 = JSON.parse(JSON.stringify(defaults));
     }
 
     Object.defineProperty(req.session.data, 'materials', {
         get() {
-            return this.materialsVersion13;
+            return this.materialsVersion15;
         },
         set(value) {
-            this.materialsVersion13 = value;
+            this.materialsVersion15 = value;
         },
         configurable: true
     });
 
-    res.locals.data.materials = req.session.data.materialsVersion13;
+    res.locals.data.materialsVersion15 = req.session.data.materialsVersion15;
+    res.locals.data.materials = req.session.data.materialsVersion15;
 
     next();
 });
@@ -2112,9 +2117,9 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
 
 
 router.get('/version-15/manage-materials', function (req, res) {
-
     const search = req.session.data['filtersSearch'];
-    let results = materialsData;   // your full array
+    const materialsData = req.session.data.materials || res.locals.data.materials || [];
+    let results = materialsData;
 
     if (search && search.trim() !== "") {
         const term = search.toLowerCase();
@@ -2133,6 +2138,9 @@ router.get('/version-15/manage-materials', function (req, res) {
 
 
 router.post('/B-off-system-MVP/case-overview-folder', function (req, res) {
+    const materials = req.session.data.materials || res.locals.data.materials || [];
+    let parentFolder = null;
+
     // req.session.data.currentLevel = req.body['currentLevel']
     // req.session.data.selectedFolder = req.body['selectedFolder']
     req.session.data.searchLabel = req.body['searchLabel']
@@ -2158,6 +2166,7 @@ router.post('/B-off-system-MVP/case-overview-folder', function (req, res) {
 
 
 router.post('/B-off-system-MVP/case-overview-search-folder', function (req, res) {
+    const materials = req.session.data.materials || res.locals.data.materials || [];
 
     // Incoming from form/button
     const folderId = req.body.folderId;
