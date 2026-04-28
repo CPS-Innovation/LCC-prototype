@@ -8,10 +8,6 @@ Disconnect Shared Drive – {{ serviceName }} – Prototype
 {% include "../includes/banner-OFF-V6.html" %}
 {% endblock %}
 
-{% block beforeContent %}
-<a class="govuk-back-link" href="javascript:history.back()">Back</a>
-{% endblock %}
-
 {% block content %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -33,7 +29,7 @@ Disconnect Shared Drive – {{ serviceName }} – Prototype
       <div class="govuk-form-group {% if disconnectSharedDriveError %}govuk-form-group--error{% endif %}">
         <fieldset class="govuk-fieldset" aria-describedby="{% if disconnectSharedDriveError %}disconnect-shared-drive-choice-error{% endif %}">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading">Disconnect this Shared Drive folder?</h1>
+            <h1 class="govuk-fieldset__heading govuk-!-margin-top-4">Disconnect this Shared Drive folder?</h1>
           </legend>
 
           {% if disconnectSharedDriveError %}
@@ -44,15 +40,13 @@ Disconnect Shared Drive – {{ serviceName }} – Prototype
 
           <div class="govuk-radios" data-module="govuk-radios" id="disconnect-shared-drive-choice">
             <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="disconnect-shared-drive-yes" name="disconnect-shared-drive-choice" type="radio" value="Yes"
-                {% if data['disconnect-shared-drive-choice'] == 'Yes' %}checked{% endif %}>
+              <input class="govuk-radios__input" id="disconnect-shared-drive-yes" name="disconnect-shared-drive-choice" type="radio" value="Yes">
               <label class="govuk-label govuk-radios__label" for="disconnect-shared-drive-yes">
                 Yes, disconnect this folder
               </label>
             </div>
             <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="disconnect-shared-drive-no" name="disconnect-shared-drive-choice" type="radio" value="No"
-                {% if data['disconnect-shared-drive-choice'] == 'No' %}checked{% endif %}>
+              <input class="govuk-radios__input" id="disconnect-shared-drive-no" name="disconnect-shared-drive-choice" type="radio" value="No">
               <label class="govuk-label govuk-radios__label" for="disconnect-shared-drive-no">
                 No, keep this folder connected
               </label>
