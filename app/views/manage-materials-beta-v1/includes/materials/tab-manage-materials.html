@@ -427,6 +427,26 @@
 
     {% else %}
 
+{% if pagination and pagination.showPagination %}
+<div class="govuk-!-margin-left-6 govuk-!-margin-bottom-4">
+    <div style="max-width: 33.3333%;">
+        <form method="get" action="/manage-materials-beta-v1/B-off-system-MVP/03-case-overview">
+            <input type="hidden" name="page" value="1">
+            <div class="govuk-form-group govuk-!-margin-bottom-0" style="display:flex; align-items:center; gap:16px;">
+                <label class="govuk-label govuk-!-margin-bottom-0" for="manage-materials-page-size">
+                    Display
+                </label>
+                <select class="govuk-select" id="manage-materials-page-size" name="pageSize" onchange="this.form.submit()">
+                    {% for option in pageSizeOptions %}
+                    <option value="{{ option }}" {% if pagination.pageSize == option %}selected{% endif %}>{{ option }} results per page</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+
     <!-- <div class="govuk-inset-text govuk-!-margin-left-6 govuk-!-margin-top-0"> -->
     {% set folderId = data.folderId | default(0) %}
     {% set meta = (data.orderMeta and data.orderMeta[folderId | string]) %}
@@ -650,6 +670,58 @@
         </table>
     </div>
 </div>
+{% if pagination and pagination.showPagination %}
+<div class="govuk-!-margin-left-6">
+    <nav class="govuk-pagination govuk-!-margin-top-6" aria-label="Pagination">
+        {% if pagination.page > 1 %}
+        <div class="govuk-pagination__prev">
+            <a class="govuk-link govuk-pagination__link"
+                href="/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?page={{ pagination.page - 1 }}&pageSize={{ pagination.pageSize }}"
+                rel="prev">
+                <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                    <path d="m6.5938-0.0078125-6.4688 6.4688 6.4688 6.4688 1.4141-1.4141-4.0625-4.0547h11.102v-2h-11.102l4.0625-4.0625-1.4141-1.4062z"></path>
+                </svg>
+                <span class="govuk-pagination__link-title">Previous</span>
+            </a>
+        </div>
+        {% endif %}
+
+        <ul class="govuk-pagination__list">
+            {% for item in pagination.pageItems %}
+            {% if item.ellipsis %}
+            <li class="govuk-pagination__item govuk-pagination__item--ellipses">
+                &ctdot;
+            </li>
+            {% else %}
+            <li class="govuk-pagination__item {% if item.number == pagination.page %}govuk-pagination__item--current{% endif %}">
+                {% if item.number == pagination.page %}
+                <span class="govuk-pagination__link">{{ item.number }}</span>
+                {% else %}
+                <a class="govuk-link govuk-pagination__link"
+                    href="/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?page={{ item.number }}&pageSize={{ pagination.pageSize }}">
+                    {{ item.number }}
+                </a>
+                {% endif %}
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+
+        {% if pagination.page < pagination.totalPages %}
+        <div class="govuk-pagination__next">
+            <a class="govuk-link govuk-pagination__link"
+                href="/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?page={{ pagination.page + 1 }}&pageSize={{ pagination.pageSize }}"
+                rel="next">
+                <span class="govuk-pagination__link-title">Next</span>
+                <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                    <path d="m8.4062-0.0078125-1.4141 1.4062 4.0625 4.0625h-11.102v2h11.102l-4.0625 4.0547 1.4141 1.4141 6.4688-6.4688-6.4688-6.4688z"></path>
+                </svg>
+            </a>
+        </div>
+        {% endif %}
+    </nav>
+</div>
+{% endif %}
 {% endif %}
 
 <div class="govuk-grid-row govuk-!-margin-left-2">

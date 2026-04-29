@@ -1232,6 +1232,68 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const data = req.session.data;
     const materials = data.materials || [];
     const transferMaterials = data.transferMaterials || [];
+    const pageSizeOptions = [20, 50, 100];
+
+    function normalisePageSize(value) {
+        const parsed = Number(value);
+        return pageSizeOptions.includes(parsed) ? parsed : 20;
+    }
+
+    function buildPaginationItems(currentPage, totalPages) {
+        if (totalPages <= 10) {
+            return Array.from({ length: totalPages }, (_, index) => ({
+                number: index + 1,
+                ellipsis: false
+            }));
+        }
+
+        const items = [];
+        const pages = new Set([
+            1,
+            2,
+            totalPages - 1,
+            totalPages,
+            currentPage - 1,
+            currentPage,
+            currentPage + 1
+        ]);
+
+        const sortedPages = Array.from(pages)
+            .filter(page => page >= 1 && page <= totalPages)
+            .sort((a, b) => a - b);
+
+        sortedPages.forEach((page, index) => {
+            if (index > 0 && page - sortedPages[index - 1] > 1) {
+                items.push({ ellipsis: true });
+            }
+
+            items.push({
+                number: page,
+                ellipsis: false
+            });
+        });
+
+        return items;
+    }
+
+    function paginateItems(items, currentPage, pageSize) {
+        const totalItems = items.length;
+        const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+        const page = Math.min(Math.max(Number(currentPage) || 1, 1), totalPages);
+        const startIndex = (page - 1) * pageSize;
+
+        return {
+            items: items.slice(startIndex, startIndex + pageSize),
+            page,
+            pageSize,
+            totalItems,
+            totalPages,
+            pageItems: buildPaginationItems(page, totalPages),
+            startItem: totalItems === 0 ? 0 : startIndex + 1,
+            endItem: Math.min(startIndex + pageSize, totalItems),
+            showPagination: totalItems > 20
+        };
+    }
 
     function sortByName(items) {
         return [...items].sort((a, b) =>
@@ -1503,7 +1565,105 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
             });
     }
 
+    function countGroupedSearchResultItems(groups) {
+        return groups.reduce((total, group) => {
+            if (!group) return total;
+            return total + (group.matchesFolder ? 1 : 0) + ((group.files && group.files.length) || 0);
+        }, 0);
+    }
+
+    function flattenGroupedSearchResults(groups) {
+        const rows = [];
+
+        groups.forEach(group => {
+            if (!group) return;
+
+            if (group.matchesFolder) {
+                rows.push({
+                    type: 'folder',
+                    groupKey: group.folder ? group.folder.id : `folder-${rows.length}`,
+                    folder: group.folder
+                });
+            }
+
+            (group.files || []).forEach(file => {
+                rows.push({
+                    type: 'file',
+                    groupKey: group.folder ? group.folder.id : `root-${file.id}`,
+                    folder: group.folder,
+                    file
+                });
+            });
+        });
+
+        return rows;
+    }
+
+    function regroupPaginatedSearchRows(rows) {
+        const groups = [];
+        const groupIndex = {};
+
+        rows.forEach(row => {
+            const key = String(row.groupKey);
+
+            if (!groupIndex[key]) {
+                groupIndex[key] = {
+                    folder: row.folder || null,
+                    matchesFolder: false,
+                    files: []
+                };
+                groups.push(groupIndex[key]);
+            }
+
+            if (row.type === 'folder') {
+                groupIndex[key].folder = row.folder || groupIndex[key].folder;
+                groupIndex[key].matchesFolder = true;
+            }
+
+            if (row.type === 'file') {
+                groupIndex[key].folder = row.folder || groupIndex[key].folder;
+                groupIndex[key].files.push(row.file);
+            }
+        });
+
+        return groups.filter(group => group.matchesFolder || group.files.length > 0);
+    }
+
     const groupedSearchResults = buildGroupedSearchResults(materials, search);
+    const pageSize = normalisePageSize(req.query.pageSize || data.manageMaterialsPageSize);
+    const page = Number(req.query.page) || 1;
+
+    req.session.data.manageMaterialsPageSize = pageSize;
+
+    let pagination;
+    let paginatedGroupedSearchResults = groupedSearchResults;
+    let totalDisplayItems;
+
+    if (search) {
+        const totalSearchItems = countGroupedSearchResultItems(groupedSearchResults);
+        const flattenedGroupedSearchResults = flattenGroupedSearchResults(groupedSearchResults);
+        const searchPagination = paginateItems(flattenedGroupedSearchResults, page, pageSize);
+
+        pagination = {
+            ...searchPagination,
+            totalItems: totalSearchItems,
+            totalPages: Math.max(1, Math.ceil(totalSearchItems / pageSize)),
+            page: Math.min(Math.max(Number(page) || 1, 1), Math.max(1, Math.ceil(totalSearchItems / pageSize))),
+            pageItems: buildPaginationItems(
+                Math.min(Math.max(Number(page) || 1, 1), Math.max(1, Math.ceil(totalSearchItems / pageSize))),
+                Math.max(1, Math.ceil(totalSearchItems / pageSize))
+            ),
+            startItem: totalSearchItems === 0 ? 0 : ((Math.min(Math.max(Number(page) || 1, 1), Math.max(1, Math.ceil(totalSearchItems / pageSize))) - 1) * pageSize) + 1,
+            endItem: Math.min(((Math.min(Math.max(Number(page) || 1, 1), Math.max(1, Math.ceil(totalSearchItems / pageSize))) - 1) * pageSize) + pageSize, totalSearchItems),
+            showPagination: totalSearchItems > 20
+        };
+
+        paginatedGroupedSearchResults = regroupPaginatedSearchRows(searchPagination.items);
+        totalDisplayItems = totalSearchItems;
+    } else {
+        pagination = paginateItems(children, page, pageSize);
+        totalDisplayItems = children.length;
+    }
 
     // Prevent browser caching (fixes stale search results after rename)
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -1519,9 +1679,12 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         transferMaterials,
         transferChildren,
         data,
-        children,           // now filtered!
+        children: search ? children : pagination.items,
         breadcrumbs,
-        groupedSearchResults,
+        groupedSearchResults: search ? paginatedGroupedSearchResults : groupedSearchResults,
+        pagination,
+        pageSizeOptions,
+        totalDisplayItems,
         flashRenamedId,
         flashNewFolderId,
         copySuccess,
