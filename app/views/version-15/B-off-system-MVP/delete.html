@@ -47,23 +47,35 @@ Delete documents – {{ serviceName }} – Prototype
           }
      </style>
 
+     {% macro renderDeleteTreeItems(nodes, prefix='') %}
+          {% for node in nodes %}
+               {% if node.isFolder %}
+                    {% if node.renamedTo %}
+                         {% set folderLabel = node.name ~ ' → ' ~ node.renamedTo %}
+                    {% else %}
+                         {% set folderLabel = node.name %}
+                    {% endif %}
+                    {% if prefix %}
+                         {% set folderPath = prefix ~ ' > ' ~ folderLabel %}
+                    {% else %}
+                         {% set folderPath = folderLabel %}
+                    {% endif %}
+                    <li style="list-style: none; margin-left: -1em; margin-bottom: 6px;">
+                         <span class="icon-new folder"></span>
+                         <strong>{{ folderPath }}</strong>
+                    </li>
+                    {% if node.children and (node.children | length) > 0 %}
+                         {{ renderDeleteTreeItems(node.children, folderPath) }}
+                    {% endif %}
+               {% else %}
+                    <li>{{ node.name }}</li>
+               {% endif %}
+          {% endfor %}
+     {% endmacro %}
+
      {% macro renderDeleteTree(nodes) %}
      <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-3 govuk-!-margin-bottom-4">
-          {% for node in nodes %}
-          {% if node.isFolder %}
-          <li style="list-style: none; margin-left: -1em;">
-               <span class="icon-new folder"></span>
-               <strong>{{ node.name }}</strong>
-               {% if node.children and (node.children | length) > 0 %}
-               <div style="margin-left: 24px;">
-                    {{ renderDeleteTree(node.children) }}
-               </div>
-               {% endif %}
-          </li>
-          {% else %}
-          <li>{{ node.name }}</li>
-          {% endif %}
-          {% endfor %}
+          {{ renderDeleteTreeItems(nodes) }}
      </ul>
      {% endmacro %}
 

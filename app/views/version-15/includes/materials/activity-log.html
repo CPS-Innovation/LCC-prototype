@@ -69,34 +69,35 @@
         </div>
         <div class="section-content">
             <div class="hods-timeline">
+                {% macro renderActivityTreeItems(nodes, prefix='') %}
+                    {% for node in nodes %}
+                        {% if node.isFolder %}
+                            {% if node.renamedTo %}
+                                {% set folderLabel = node.name ~ ' → ' ~ node.renamedTo %}
+                            {% else %}
+                                {% set folderLabel = node.name %}
+                            {% endif %}
+                            {% if prefix %}
+                                {% set folderPath = prefix ~ ' > ' ~ folderLabel %}
+                            {% else %}
+                                {% set folderPath = folderLabel %}
+                            {% endif %}
+                            <li class="no-bullet" style="list-style-type:none; margin-left:-1em; margin-bottom: 6px;">
+                                <span class="icon-new folder"></span>
+                                <strong>{{ folderPath }}</strong>
+                            </li>
+                            {% if node.children and (node.children | length) > 0 %}
+                                {{ renderActivityTreeItems(node.children, folderPath) }}
+                            {% endif %}
+                        {% else %}
+                            <li>{{ node.name }}</li>
+                        {% endif %}
+                    {% endfor %}
+                {% endmacro %}
+
                 {% macro renderActivityTree(nodes) %}
                 <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0" style="margin-top: 0; margin-bottom: 0;">
-                    {% for node in nodes %}
-                    {% if node.isFolder %}
-                    <li class="no-bullet" style="list-style-type:none; margin-left:-1em; display: flow-root; clear: both;">
-                        <div style="display: block; margin-bottom: 6px; clear: both;">
-                            <span class="icon-new folder"></span>
-                            {% if node.isBold == false %}
-                            <span>{{ node.name }}</span>
-                            {% if node.renamedTo %}
-                            <span> → </span>
-                            <span class="icon-new folder"></span>
-                            <span>{{ node.renamedTo }}</span>
-                            {% endif %}
-                            {% else %}
-                            <strong>{{ node.name }}</strong>
-                            {% endif %}
-                        </div>
-                        {% if node.children and (node.children | length) > 0 %}
-                        <div style="margin-left: 24px; clear: both;">
-                            {{ renderActivityTree(node.children) }}
-                        </div>
-                        {% endif %}
-                    </li>
-                    {% else %}
-                    <li>{{ node.name }}</li>
-                    {% endif %}
-                    {% endfor %}
+                    {{ renderActivityTreeItems(nodes) }}
                 </ul>
                 {% endmacro %}
 

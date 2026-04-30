@@ -3369,6 +3369,7 @@ router.post('/B-off-system-MVP/order-interrupt', (req, res) => {
 
 router.post('/B-off-system-MVP/disconnect-shared-drive', (req, res) => {
     const choice = req.body['disconnect-shared-drive-choice'];
+    const data = req.session.data;
     req.session.data['disconnect-shared-drive-choice'] = choice;
 
     if (!choice) {
@@ -3380,6 +3381,11 @@ router.post('/B-off-system-MVP/disconnect-shared-drive', (req, res) => {
     req.session.data.sharedDriveDisconnected = choice === 'Yes' ? 'Yes' : 'No';
 
     if (choice === 'Yes') {
+        pushMaterialsActivity(data, {
+            tag: 'Shared drive',
+            title: 'Shared Drive folder Thunderstruck disconnected from this case',
+            description: 'The Shared Drive folder Thunderstruck has been disconnected from this case.'
+        });
         return res.redirect('/manage-materials-beta-v1/B-off-system-MVP/disconnect-shared-drive-confirmation');
     }
 

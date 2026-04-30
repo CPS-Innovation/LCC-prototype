@@ -2767,59 +2767,33 @@ $(document).ready(function () {
     //     return days[d.getDay()]+' '+d.getDate()+'/'+months[d.getMonth()]+'/'+d.getFullYear()+' '+hours+':'+minutes+ampm;
     // }
 
+    function formatMaterialsLastUpdated() {
+    var d = new Date(),
+        minutes = d.getMinutes().toString().length == 1 ? '0' + d.getMinutes() : d.getMinutes(),
+        hours24 = d.getHours(),
+        hours12 = hours24 % 12 || 12,
+        ampm = hours24 >= 12 ? 'pm' : 'am',
+        months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+            'October', 'November', 'December'],
+        days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        return days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() + ' at ' +
+            hours12 + ':' + minutes + ampm;
+    }
+
+    function setIfPresent(id, value) {
+        var element = document.getElementById(id);
+        if (element) {
+            element.innerHTML = value;
+        }
+    }
+
     // Tab 6 - Materials updated
-    document.getElementById("materials-timestamp").innerHTML = formatAMPM();
-    function formatAMPM() {
-    var d = new Date(),
-        minutes = d.getMinutes().toString().length == 1 ? '0'+d.getMinutes() : d.getMinutes(),
-        hours = d.getHours().toString().length == 1 ? '0'+d.getHours() : d.getHours(),
-        ampm = d.getHours() >= 12 ? 'pm' : 'am',
-            months = ['01','02','03','04','05','06','07','08','09','10','11','12'],
-            days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-        return days[d.getDay()]+' '+d.getDate()+'/'+months[d.getMonth()]+'/'+d.getFullYear()+' '+hours+':'+minutes+ampm;
-    }
-    document.getElementById("materials-timestamp_V2").innerHTML = formatAMPM();
-    function formatAMPM() {
-    var d = new Date(),
-        minutes = d.getMinutes().toString().length == 1 ? '0'+d.getMinutes() : d.getMinutes(),
-        hours = d.getHours().toString().length == 1 ? '0'+d.getHours() : d.getHours(),
-        ampm = d.getHours() >= 12 ? 'pm' : 'am',
-            months = ['01','02','03','04','05','06','07','08','09','10','11','12'],
-            days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-        return days[d.getDay()]+' '+d.getDate()+'/'+months[d.getMonth()]+'/'+d.getFullYear()+' '+hours+':'+minutes+ampm;
-    }
-    document.getElementById("materials-audit").innerHTML = formatAMPM();
-    function formatAMPM() {
-    var d = new Date(),
-        minutes = d.getMinutes().toString().length == 1 ? '0'+d.getMinutes() : d.getMinutes(),
-        hours = d.getHours().toString().length == 1 ? '0'+d.getHours() : d.getHours(),
-        ampm = d.getHours() >= 12 ? 'pm' : 'am',
-            months = ['01','02','03','04','05','06','07','08','09','10','11','12'],
-            days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-        return days[d.getDay()]+' '+d.getDate()+'/'+months[d.getMonth()]+'/'+d.getFullYear()+' '+hours+':'+minutes+ampm;
-    }
-
-    document.getElementById("manage-timestamp").innerHTML = formatAMPM();
-    function formatAMPM() {
-    var d = new Date(),
-        minutes = d.getMinutes().toString().length == 1 ? '0'+d.getMinutes() : d.getMinutes(),
-        hours = d.getHours().toString().length == 1 ? '0'+d.getHours() : d.getHours(),
-        ampm = d.getHours() >= 12 ? 'pm' : 'am',
-            months = ['01','02','03','04','05','06','07','08','09','10','11','12'],
-            days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-        return days[d.getDay()]+' '+d.getDate()+'/'+months[d.getMonth()]+'/'+d.getFullYear()+' '+hours+':'+minutes+ampm;
-    }
-
-    document.getElementById("bundles-timestamp").innerHTML = formatAMPM();
-    function formatAMPM() {
-    var d = new Date(),
-        minutes = d.getMinutes().toString().length == 1 ? '0'+d.getMinutes() : d.getMinutes(),
-        hours = d.getHours().toString().length == 1 ? '0'+d.getHours() : d.getHours(),
-        ampm = d.getHours() >= 12 ? 'pm' : 'am',
-            months = ['01','02','03','04','05','06','07','08','09','10','11','12'],
-            days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-        return days[d.getDay()]+' '+d.getDate()+'/'+months[d.getMonth()]+'/'+d.getFullYear()+' '+hours+':'+minutes+ampm;
-    }
+    var materialsLastUpdated = formatMaterialsLastUpdated();
+    setIfPresent("materials-timestamp", materialsLastUpdated);
+    setIfPresent("materials-timestamp_V2", materialsLastUpdated);
+    setIfPresent("materials-audit", materialsLastUpdated);
+    setIfPresent("manage-timestamp", materialsLastUpdated);
+    setIfPresent("bundles-timestamp", materialsLastUpdated);
 
     // Tab 7 - Comms
     document.getElementById("comms-timestamp").innerHTML = formatAMPM();
@@ -3109,4 +3083,3 @@ $(document).ready(function () {
     
 
 })
-
