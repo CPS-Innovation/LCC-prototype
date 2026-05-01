@@ -1,6 +1,7 @@
 <h2 class="govuk-heading-m" id="">Activity log</h2>
+{% set activityLog = data.materialsActivityLog | default([]) %}
 <p><span class="govuk-caption-m govuk-!-margin-bottom-0" style="display: inline-block;">Last updated <span
-            id="materials-audit"></span></span></p>
+            id="materials-audit">{% if activityLog.length > 0 %}{{ activityLog[0].dateLabel }}{% else %}yesterday at 12:05pm{% endif %}</span></span></p>
 
 <style>
     .materials-activity-details__summary {
@@ -101,7 +102,7 @@
                 </ul>
                 {% endmacro %}
 
-                {% for entry in data.materialsActivityLog | default([]) %}
+                {% for entry in activityLog %}
                 <div class="hods-timeline__item">
                     {% if entry.tag %}
                     <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">{{ entry.tag }}</strong>
