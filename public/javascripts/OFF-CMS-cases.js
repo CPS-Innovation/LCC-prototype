@@ -2769,20 +2769,38 @@ $(document).ready(function () {
 
     function formatMaterialsLastUpdated() {
     var d = new Date(),
+        now = new Date(),
+        yesterday = new Date(),
         minutes = d.getMinutes().toString().length == 1 ? '0' + d.getMinutes() : d.getMinutes(),
         hours24 = d.getHours(),
         hours12 = hours24 % 12 || 12,
         ampm = hours24 >= 12 ? 'pm' : 'am',
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
             'October', 'November', 'December'],
-        days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        return days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() + ' at ' +
-            hours12 + ':' + minutes + ampm;
+        label = d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+
+        yesterday.setDate(now.getDate() - 1);
+
+        if (
+            d.getDate() === now.getDate() &&
+            d.getMonth() === now.getMonth() &&
+            d.getFullYear() === now.getFullYear()
+        ) {
+            label = 'today';
+        } else if (
+            d.getDate() === yesterday.getDate() &&
+            d.getMonth() === yesterday.getMonth() &&
+            d.getFullYear() === yesterday.getFullYear()
+        ) {
+            label = 'yesterday';
+        }
+
+        return label + ' at ' + hours12 + ':' + minutes + ampm;
     }
 
     function setIfPresent(id, value) {
         var element = document.getElementById(id);
-        if (element) {
+        if (element && !element.innerHTML.trim()) {
             element.innerHTML = value;
         }
     }
