@@ -1347,6 +1347,14 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const copyPreviewTree = data.copyPreviewTree || [];
     const movePreviewTree = data.movePreviewTree || [];
     const deletePreviewTree = data.deletePreviewTree || [];
+    const copyConflictLoading = data.copyConflictLoading === true;
+    const copyConflictPending = data.copyConflictPending === true;
+    const copyConflictMessage = data.copyConflictMessage || null;
+    const copyConflictItems = data.copyConflictItems || [];
+    const moveConflictLoading = data.moveConflictLoading === true;
+    const moveConflictPending = data.moveConflictPending === true;
+    const moveConflictMessage = data.moveConflictMessage || null;
+    const moveConflictItems = data.moveConflictItems || [];
 
     const copyDestinationId = data.copyDestinationId || 0;
     const moveDestinationId = data.moveDestinationId || 0;
@@ -1365,6 +1373,18 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     req.session.data.copyPreviewTree = [];
     req.session.data.movePreviewTree = [];
     req.session.data.deletePreviewTree = [];
+    req.session.data.copyConflictLoading = false;
+    req.session.data.copyConflictPending = false;
+    if (copyConflictPending) {
+        req.session.data.copyConflictMessage = null;
+        req.session.data.copyConflictItems = [];
+    }
+    req.session.data.moveConflictLoading = false;
+    req.session.data.moveConflictPending = false;
+    if (moveConflictPending) {
+        req.session.data.moveConflictMessage = null;
+        req.session.data.moveConflictItems = [];
+    }
 
     // Helper utils
     const utils = createMaterialsUtils(materials);
@@ -1701,6 +1721,14 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         copyPreviewTree,
         movePreviewTree,
         deletePreviewTree,
+        copyConflictLoading,
+        copyConflictPending,
+        copyConflictMessage,
+        copyConflictItems,
+        moveConflictLoading,
+        moveConflictPending,
+        moveConflictMessage,
+        moveConflictItems,
         copyDestinationId,
         moveDestinationId
     });
@@ -2641,14 +2669,37 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
         return res.redirect('/ur-may-2026/B-off-system-MVP/folder-tree-copy');
     }
 
+    let destinationFolderName = null;
+    const destFolder = materials.find(m => String(m.id) === String(destinationFolderId));
+    if (destFolder) destinationFolderName = destFolder.name;
+
+    const destinationChildren = materials.filter(
+        item => String(item.parentId ?? '') === String(destinationFolderId)
+    );
+    const destinationChildNames = new Set(
+        destinationChildren.map(item => String(item.name || '').trim().toLowerCase())
+    );
+    const conflictingItems = ids
+        .map(id => materials.find(item => String(item.id) === String(id)))
+        .filter(Boolean)
+        .filter(item => destinationChildNames.has(String(item.name || '').trim().toLowerCase()));
+
+    if (conflictingItems.length) {
+        req.session.data.copyConflictLoading = true;
+        req.session.data.copyConflictMessage =
+            conflictingItems.length === 1
+                ? '1 item could not be copied because materials with the same name already exist in this location.'
+                : `${conflictingItems.length} items could not be copied because materials with the same names already exist in this location.`;
+        req.session.data.copyConflictItems = conflictingItems.map(item => item.name);
+        req.session.data.copyDestinationName = destinationFolderName;
+        return res.redirect('/ur-may-2026/B-off-system-MVP/03-case-overview');
+    }
+
+
     // Snapshot BEFORE mutation
     const originalMaterials = materials.map(item => ({ ...item }));
 
     const copiedNames = [];
-
-    let destinationFolderName = null;
-    const destFolder = materials.find(m => String(m.id) === String(destinationFolderId));
-    if (destFolder) destinationFolderName = destFolder.name;
 
     const copyPreviewTree = buildPreviewTree(originalMaterials, ids);
 
@@ -2767,6 +2818,28 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
 
     const destFolder = materials.find(m => String(m.id) === String(destinationFolderId));
     const destinationFolderName = destFolder ? destFolder.name : null;
+
+    const destinationChildren = materials.filter(
+        item => String(item.parentId ?? '') === String(destinationFolderId)
+    );
+    const destinationChildNames = new Set(
+        destinationChildren.map(item => String(item.name || '').trim().toLowerCase())
+    );
+    const conflictingItems = ids
+        .map(id => materials.find(item => String(item.id) === String(id)))
+        .filter(Boolean)
+        .filter(item => destinationChildNames.has(String(item.name || '').trim().toLowerCase()));
+
+    if (conflictingItems.length) {
+        req.session.data.moveConflictLoading = true;
+        req.session.data.moveConflictMessage =
+            conflictingItems.length === 1
+                ? '1 selected item could not be moved because materials with the same name already exist in this location.'
+                : `${conflictingItems.length} selected items could not be moved because materials with the same names already exist in this location.`;
+        req.session.data.moveConflictItems = conflictingItems.map(item => item.name);
+        req.session.data.moveDestinationName = destinationFolderName;
+        return res.redirect('/ur-may-2026/B-off-system-MVP/03-case-overview');
+    }
 
     ids.forEach(id => {
         const original = materials.find(m => String(m.id) === String(id));
@@ -3073,10 +3146,32 @@ router.get('/B-off-system-MVP/folder-tree-copy', function (req, res) {
     }
 
     const folderTree = roots.map(buildNode);
+    const copyError = req.session.data.copyError || null;
+    const copyErrorItems = req.session.data.copyErrorItems || [];
+
+    req.session.data.copyError = null;
+    req.session.data.copyErrorItems = [];
 
     res.render('ur-may-2026/B-off-system-MVP/folder-tree-copy', {
-        folderTree
+        folderTree,
+        data: {
+            ...req.session.data,
+            copyError,
+            copyErrorItems
+        }
     });
+});
+
+router.get('/B-off-system-MVP/copy-conflict-result', function (req, res) {
+    req.session.data.copyConflictLoading = false;
+    req.session.data.copyConflictPending = true;
+    res.redirect('/ur-may-2026/B-off-system-MVP/03-case-overview');
+});
+
+router.get('/B-off-system-MVP/move-conflict-result', function (req, res) {
+    req.session.data.moveConflictLoading = false;
+    req.session.data.moveConflictPending = true;
+    res.redirect('/ur-may-2026/B-off-system-MVP/03-case-overview');
 });
 
 // Move – 3 February 2026
