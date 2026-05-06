@@ -7901,7 +7901,23 @@ module.exports = {
       parentId: 1017,
       folder: false,
       level: 3
+    },
+    {
+      id: 31,
+      name: 'MCLOVE multimedia schedule',
+      order: '',
+      description: 'Summary of the body worn video showing victims injuries',
+      type: 'Exhibit list – MG12',
+      date: '1 Jul 2024',
+      status: 'Used',
+      new: false,
+      docLink: 'MG00.pdf',
+      previewLink: '/public/files/MG00.pdf',
+      parentId: 1000,
+      folder: false,
+      level: 2
     }
+
   ],
 
 
