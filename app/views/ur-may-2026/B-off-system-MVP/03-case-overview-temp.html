@@ -1,0 +1,155 @@
+{% extends "layoutCPS-OFF-V11.html" %}
+
+{% block header %}
+{% include "../includes/banner-OFF-V6.html" %}
+{% endblock %}
+
+{% block beforeContent %}
+{% endblock %}
+
+{% block pageScripts %}
+<style>
+  #tab-2-content #materials_table {
+    max-width: 75%;
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  #tab-2-content .materials-notification--white {
+    box-sizing: border-box;
+    max-width: 75%;
+    width: 100%;
+  }
+
+  #tab-2-content .materials-notification--white {
+    box-sizing: border-box;
+    max-width: 75%;
+    width: 100%;
+  }
+
+  #tab-2-content #materials_table.materials-search-grouped-table {
+    table-layout: fixed;
+  }
+
+  #tab-2-content .materials-notification--white {
+    box-sizing: border-box;
+    max-width: 75%;
+    width: 100%;
+  }
+
+  #tab-2-content #materials_table th:first-child,
+  #tab-2-content #materials_table td:first-child {
+    width: 56px;
+  }
+
+  #tab-2-content #materials_table th:last-child,
+  #tab-2-content #materials_table td:last-child {
+    white-space: nowrap;
+    width: 120px;
+    text-align: right;
+  }
+
+  #tab-2-content #materials_table th:nth-child(2),
+  #tab-2-content #materials_table td:nth-child(2),
+  #tab-2-content #materials_table .title_column {
+    width: calc(68% - 50px);
+    max-width: calc(68% - 50px);
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    vertical-align: top;
+  }
+
+  #tab-2-content #materials_table .folder-name-and-tags,
+  #tab-2-content #materials_table .file-tags,
+  #tab-2-content #materials_table .material-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    white-space: normal;
+  }
+
+  #tab-2-content #materials_table.materials-search-grouped-table .material-title,
+  #tab-2-content #materials_table.materials-search-grouped-table .openMe,
+  #tab-2-content #materials_table.materials-search-grouped-table .folder-path {
+    display: block;
+    float: none;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  #tab-2-content #materials_table tbody button.show-case,
+  #tab-2-content #materials_table tbody button.show_material_actions {
+    background: none;
+    border: 0;
+    box-shadow: none;
+    color: #1d70b8;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    text-decoration: underline;
+  }
+
+  #tab-2-content #materials_table tbody button.show-case:focus,
+  #tab-2-content #materials_table tbody button.show_material_actions:focus,
+  #tab-2-content #materials_table tbody button.show-case:active,
+  #tab-2-content #materials_table tbody button.show_material_actions:active {
+    background: none;
+    box-shadow: none;
+    color: #1d70b8;
+    outline: 3px solid #ffdd00;
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 40.0625em) {
+    #tab-2-content #materials_table,
+    #tab-2-content .materials-notification--white {
+      max-width: 100%;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block v11Content %}
+
+<div class="govuk-grid-row">
+
+    <div class="govuk-grid-column-full main_Case_Title">
+        <div class="title-wrapper">
+            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">
+                Thundercat
+            </h1>
+            <span class="govuk-caption-m govuk-!-margin-bottom-4">
+                87AA65432/25
+            </span>
+        </div>
+    </div>
+
+    <div class="govuk-grid-column-full">
+        <div class="govuk-tabs off-cms-overview" id="new-tabs">
+
+            <ul class="govuk-tabs__list">
+                <li class="govuk-tabs__list-item" id="tab-1"><a class="tab-link tab-1-content">Transfer materials</a></li>
+                <li class="govuk-tabs__list-item govuk-tabs__list-item--selected" id="tab-2"><a class="tab-link tab-2-content">Manage materials</a></li>
+                <li class="govuk-tabs__list-item" id="tab-3"><a class="tab-link tab-3-content">Activity log</a></li>
+            </ul>
+
+            <div class="panel" id="tab-1-content" style="display: none;">
+                {% include "../includes/materials/tab-transfer-materials.html" %}
+            </div>
+
+            <div class="panel" id="tab-2-content">
+                {% include "../includes/materials/tab-manage-materials.html" %}
+            </div>
+
+            <div class="panel" id="tab-3-content" style="display: none;">
+                {% include "../includes/materials/activity-log.html" %}
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
