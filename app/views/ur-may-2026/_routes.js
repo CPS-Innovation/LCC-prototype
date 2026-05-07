@@ -1358,20 +1358,26 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
 
     const copyDestinationId = data.copyDestinationId || 0;
     const moveDestinationId = data.moveDestinationId || 0;
+    const preserveCopyFlash = copyConflictLoading;
+    const preserveMoveFlash = moveConflictLoading;
 
     req.session.data.copyDestinationId = null;
     req.session.data.moveDestinationId = null;
 
     // Immediately reset so they only show once
-    req.session.data.copySuccess = false;
-    req.session.data.moveSuccess = false;
+    if (!preserveCopyFlash) {
+        req.session.data.copySuccess = false;
+        req.session.data.copyList = [];
+        req.session.data.copyDestinationName = null;
+        req.session.data.copyPreviewTree = [];
+    }
+    if (!preserveMoveFlash) {
+        req.session.data.moveSuccess = false;
+        req.session.data.moveList = [];
+        req.session.data.moveDestinationName = null;
+        req.session.data.movePreviewTree = [];
+    }
     req.session.data.deleteSuccess = false;
-    req.session.data.copyList = [];
-    req.session.data.moveList = [];
-    req.session.data.copyDestinationName = null;
-    req.session.data.moveDestinationName = null;
-    req.session.data.copyPreviewTree = [];
-    req.session.data.movePreviewTree = [];
     req.session.data.deletePreviewTree = [];
     req.session.data.copyConflictLoading = false;
     req.session.data.copyConflictPending = false;
@@ -2683,17 +2689,8 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
         .map(id => materials.find(item => String(item.id) === String(id)))
         .filter(Boolean)
         .filter(item => destinationChildNames.has(String(item.name || '').trim().toLowerCase()));
-
-    if (conflictingItems.length) {
-        req.session.data.copyConflictLoading = true;
-        req.session.data.copyConflictMessage =
-            conflictingItems.length === 1
-                ? '1 item could not be copied because materials with the same name already exist in this location.'
-                : `${conflictingItems.length} items could not be copied because materials with the same names already exist in this location.`;
-        req.session.data.copyConflictItems = conflictingItems.map(item => item.name);
-        req.session.data.copyDestinationName = destinationFolderName;
-        return res.redirect('/ur-may-2026/B-off-system-MVP/03-case-overview');
-    }
+    const conflictingIdSet = new Set(conflictingItems.map(item => String(item.id)));
+    const idsToCopy = ids.filter(id => !conflictingIdSet.has(String(id)));
 
 
     // Snapshot BEFORE mutation
@@ -2701,9 +2698,9 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
 
     const copiedNames = [];
 
-    const copyPreviewTree = buildPreviewTree(originalMaterials, ids);
+    const copyPreviewTree = buildPreviewTree(originalMaterials, idsToCopy);
 
-    ids.forEach(id => {
+    idsToCopy.forEach(id => {
         const original = materials.find(m => String(m.id) === id);
         if (!original) return;
 
@@ -2741,10 +2738,10 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
     req.session.data.copyList = copiedNames;
     req.session.data.copyDestinationName = destinationFolderName;
     req.session.data.copyPreviewTree = copyPreviewTree;
-    req.session.data.copySuccess = true;
+    req.session.data.copySuccess = copiedNames.length > 0;
 
     if (copiedNames.length) {
-        const sourceItems = ids
+        const sourceItems = idsToCopy
             .map(id => originalMaterials.find(m => String(m.id) === String(id)))
             .filter(Boolean);
         const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
@@ -2770,6 +2767,20 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
                 }
             ]
         });
+    }
+
+    if (conflictingItems.length) {
+        req.session.data.copyConflictLoading = true;
+        req.session.data.copyConflictMessage =
+            conflictingItems.length === 1
+                ? copiedNames.length > 0
+                    ? '1 item with the same name already exists in this location.'
+                    : '1 item with the same name already exists in this location. No items were copied.'
+                : copiedNames.length > 0
+                    ? `${conflictingItems.length} items with the same name already exist in this location.`
+                    : `${conflictingItems.length} items with the same name already exist in this location. No items were copied.`;
+        req.session.data.copyConflictItems = conflictingItems.map(item => item.name);
+        req.session.data.copyDestinationName = destinationFolderName;
     }
 
     // Clear selection state
@@ -2811,9 +2822,6 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
     // Snapshot BEFORE mutation
     const originalMaterials = materials.map(item => ({ ...item }));
 
-    // ✅ Build preview tree BEFORE moving anything (for the success banner)
-    const movePreviewTree = buildPreviewTree(originalMaterials, ids);
-
     const movedNames = [];
 
     const destFolder = materials.find(m => String(m.id) === String(destinationFolderId));
@@ -2829,19 +2837,10 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
         .map(id => materials.find(item => String(item.id) === String(id)))
         .filter(Boolean)
         .filter(item => destinationChildNames.has(String(item.name || '').trim().toLowerCase()));
+    const conflictingIdSet = new Set(conflictingItems.map(item => String(item.id)));
+    const idsToMove = ids.filter(id => !conflictingIdSet.has(String(id)));
 
-    if (conflictingItems.length) {
-        req.session.data.moveConflictLoading = true;
-        req.session.data.moveConflictMessage =
-            conflictingItems.length === 1
-                ? '1 selected item could not be moved because materials with the same name already exist in this location.'
-                : `${conflictingItems.length} selected items could not be moved because materials with the same names already exist in this location.`;
-        req.session.data.moveConflictItems = conflictingItems.map(item => item.name);
-        req.session.data.moveDestinationName = destinationFolderName;
-        return res.redirect('/ur-may-2026/B-off-system-MVP/03-case-overview');
-    }
-
-    ids.forEach(id => {
+    idsToMove.forEach(id => {
         const original = materials.find(m => String(m.id) === String(id));
         if (!original) return;
 
@@ -2865,11 +2864,12 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
 
     req.session.data.moveList = movedNames;
     req.session.data.moveDestinationName = destinationFolderName;
+    const movePreviewTree = buildPreviewTree(originalMaterials, idsToMove);
     req.session.data.movePreviewTree = movePreviewTree;
-    req.session.data.moveSuccess = true;
+    req.session.data.moveSuccess = movedNames.length > 0;
 
     if (movedNames.length) {
-        const sourceItems = ids
+        const sourceItems = idsToMove
             .map(id => originalMaterials.find(m => String(m.id) === String(id)))
             .filter(Boolean);
         const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
@@ -2895,6 +2895,20 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
                 }
             ]
         });
+    }
+
+    if (conflictingItems.length) {
+        req.session.data.moveConflictLoading = true;
+        req.session.data.moveConflictMessage =
+            conflictingItems.length === 1
+                ? movedNames.length > 0
+                    ? '1 item with the same name already exists in this location.'
+                    : '1 item with the same name already exists in this location. No items were moved.'
+                : movedNames.length > 0
+                    ? `${conflictingItems.length} items with the same name already exist in this location.`
+                    : `${conflictingItems.length} items with the same name already exist in this location. No items were moved.`;
+        req.session.data.moveConflictItems = conflictingItems.map(item => item.name);
+        req.session.data.moveDestinationName = destinationFolderName;
     }
 
     // Clear selection state
