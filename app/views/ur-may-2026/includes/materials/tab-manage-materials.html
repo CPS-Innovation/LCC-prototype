@@ -74,7 +74,91 @@
             </ul>
             {% endmacro %}
 
-            {% if copySuccess %}
+            {% if copyConflictLoading %}
+            <meta http-equiv="refresh" content="10;url=/ur-may-2026/B-off-system-MVP/copy-conflict-result">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <div id="copy-conflict-loading" class="govuk-notification-banner materials-notification--white govuk-!-margin-bottom-4"
+                        role="status" aria-live="polite">
+                        <div class="govuk-notification-banner__content">
+                            <div class="hods-loading-spinner govuk-!-margin-bottom-3">
+                                <div class="hods-loading-spinner__spinner" aria-hidden="true"></div>
+                            </div>
+                            <h3 class="govuk-notification-banner__heading">Copying materials</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% elseif copyConflictPending %}
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-three-quarters">
+                    <div id="copy-conflict-error" class="govuk-error-summary govuk-!-margin-bottom-4" data-module="govuk-error-summary">
+                        <div role="alert">
+                            <h2 class="govuk-error-summary__title" style="color:#d4351c;">Some materials already exist</h2>
+                            <div style="color:#0b0c0c; padding: 0 20px 20px;">
+                                <p class="govuk-body govuk-!-margin-bottom-2 govuk-!-margin-top-3" style="color:#0b0c0c;">{{ copyConflictMessage }}</p>
+                                <p class="govuk-body govuk-!-margin-bottom-0" style="color:#0b0c0c;">To continue, you can:</p>
+                                <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-1 govuk-!-margin-bottom-4" style="color:#0b0c0c; padding-left: 20px; margin-left: 0; line-height: 1.2;">
+                                    <li style="margin-bottom: 0; padding-bottom: 0; line-height: 1.2;">rename the files</li>
+                                    <li style="line-height: 1.2;">choose a different location</li>
+                                </ul>
+                                {% if copyConflictItems and (copyConflictItems | length > 0) %}
+                                <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-4" style="color:#0b0c0c;">The items that already exist:</p>
+                                <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-1 govuk-!-margin-bottom-0" style="color:#0b0c0c; padding-left: 20px; margin-left: 0;">
+                                    {% for itemName in copyConflictItems %}
+                                    <li style="margin-bottom: 0;">{{ itemName }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% elseif moveConflictLoading %}
+            <meta http-equiv="refresh" content="10;url=/ur-may-2026/B-off-system-MVP/move-conflict-result">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <div class="govuk-notification-banner materials-notification--white govuk-!-margin-bottom-4"
+                        role="status" aria-live="polite">
+                        <div class="govuk-notification-banner__content">
+                            <div class="hods-loading-spinner govuk-!-margin-bottom-3">
+                                <div class="hods-loading-spinner__spinner" aria-hidden="true"></div>
+                            </div>
+                            <h3 class="govuk-notification-banner__heading">Moving materials</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% elseif moveConflictPending %}
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-three-quarters">
+                    <div class="govuk-error-summary govuk-!-margin-bottom-4" data-module="govuk-error-summary">
+                        <div role="alert">
+                            <h2 class="govuk-error-summary__title" style="color:#d4351c;">Some materials already exist</h2>
+                            <div style="color:#0b0c0c; padding: 0 20px 20px;">
+                                <p class="govuk-body govuk-!-margin-bottom-2 govuk-!-margin-top-3" style="color:#0b0c0c;">{{ moveConflictMessage }}</p>
+                                <p class="govuk-body govuk-!-margin-bottom-0" style="color:#0b0c0c;">To continue, you can:</p>
+                                <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-1 govuk-!-margin-bottom-4" style="color:#0b0c0c; padding-left: 20px; margin-left: 0; line-height: 1.2;">
+                                    <li style="margin-bottom: 0; padding-bottom: 0; line-height: 1.2;">rename the files</li>
+                                    <li style="margin-bottom: 0; padding-bottom: 0; line-height: 1.2;">choose a different location</li>
+                                </ul>
+                                {% if moveConflictItems and (moveConflictItems | length > 0) %}
+                                <p class="govuk-body govuk-!-margin-bottom-1" style="color:#0b0c0c;">The items that already exist:</p>
+                                <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-1 govuk-!-margin-bottom-0" style="color:#0b0c0c; padding-left: 20px; margin-left: 0;">
+                                    {% for itemName in moveConflictItems %}
+                                    <li style="margin-bottom: 0;">{{ itemName }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if copySuccess and not copyConflictLoading %}
             <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white govuk-!-margin-bottom-4"
                 role="alert" data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
@@ -115,7 +199,7 @@
                 </div>
             </div>
 
-            {% elseif moveSuccess %}
+            {% elseif moveSuccess and not moveConflictLoading %}
             <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white govuk-!-margin-bottom-4"
                 role="alert" data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
@@ -178,96 +262,6 @@
                         </div>
                     </details>
                     {% endif %}
-                </div>
-            </div>
-            {% elseif copyConflictLoading %}
-            <meta http-equiv="refresh" content="10;url=/ur-may-2026/B-off-system-MVP/copy-conflict-result">
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-two-thirds">
-                    <div id="copy-conflict-loading" class="govuk-notification-banner materials-notification--white govuk-!-margin-bottom-4"
-                        role="status" aria-live="polite">
-                        <div class="govuk-notification-banner__content">
-                            <div class="hods-loading-spinner govuk-!-margin-bottom-3">
-                                <div class="hods-loading-spinner__spinner" aria-hidden="true"></div>
-                            </div>
-                            <h3 class="govuk-notification-banner__heading">Copying materials</h3>
-                            <!-- {% if copyDestinationName %}
-                            <p class="govuk-body">Checking whether the selected items can be copied into {{ copyDestinationName }}.</p>
-                            {% else %}
-                            <p class="govuk-body">Checking whether the selected items can be copied into the chosen folder.</p>
-                            {% endif %}
-                            <p class="govuk-body govuk-!-margin-bottom-0">
-                                If nothing changes, <a class="govuk-link" href="/ur-may-2026/B-off-system-MVP/copy-conflict-result">continue</a>.
-                            </p> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% elseif copyConflictPending %}
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-two-thirds">
-                    <div id="copy-conflict-error" class="govuk-error-summary govuk-!-margin-bottom-4" data-module="govuk-error-summary">
-                        <div role="alert">
-                            <h2 class="govuk-error-summary__title" style="color:#d4351c;">Some materials already exist</h2>
-                            <div style="color:#0b0c0c; padding: 0 20px 20px;">
-                                <p class="govuk-body govuk-!-margin-bottom-2 govuk-!-margin-top-3" style="color:#0b0c0c;">{{ copyConflictMessage }}</p>
-                                <p class="govuk-body govuk-!-margin-bottom-0" style="color:#0b0c0c;">To continue, you can:</p>
-                                <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-1 govuk-!-margin-bottom-4" style="color:#0b0c0c; padding-left: 20px; margin-left: 0; line-height: 1.2;">
-                                    <li style="margin-bottom: 0; padding-bottom: 0; line-height: 1.2;">rename the files</li>
-                                    <li style="line-height: 1.2;">choose a different location</li>
-                                </ul>
-                                {% if copyConflictItems and (copyConflictItems | length > 0) %}
-                                <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-4" style="color:#0b0c0c;">Materials that already exist in this location:</p>
-                                <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-1 govuk-!-margin-bottom-0" style="color:#0b0c0c; padding-left: 20px; margin-left: 0;">
-                                    {% for itemName in copyConflictItems %}
-                                    <li style="margin-bottom: 0;">{{ itemName }}</li>
-                                    {% endfor %}
-                                </ul>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% elseif moveConflictLoading %}
-            <meta http-equiv="refresh" content="10;url=/ur-may-2026/B-off-system-MVP/move-conflict-result">
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-two-thirds">
-                    <div class="govuk-notification-banner materials-notification--white govuk-!-margin-bottom-4"
-                        role="status" aria-live="polite">
-                        <div class="govuk-notification-banner__content">
-                            <div class="hods-loading-spinner govuk-!-margin-bottom-3">
-                                <div class="hods-loading-spinner__spinner" aria-hidden="true"></div>
-                            </div>
-                            <h3 class="govuk-notification-banner__heading">Moving materials</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% elseif moveConflictPending %}
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-two-thirds">
-                    <div class="govuk-error-summary govuk-!-margin-bottom-4" data-module="govuk-error-summary">
-                        <div role="alert">
-                            <h2 class="govuk-error-summary__title" style="color:#d4351c;">Some materials already exist</h2>
-                            <div style="color:#0b0c0c; padding: 0 20px 20px;">
-                                <p class="govuk-body govuk-!-margin-bottom-2 govuk-!-margin-top-3" style="color:#0b0c0c;">{{ moveConflictMessage }}</p>
-                                <p class="govuk-body govuk-!-margin-bottom-0" style="color:#0b0c0c;">To continue, you can:</p>
-                                <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-1 govuk-!-margin-bottom-4" style="color:#0b0c0c; padding-left: 20px; margin-left: 0; line-height: 1.2;">
-                                    <li style="margin-bottom: 0; padding-bottom: 0; line-height: 1.2;">rename the files</li>
-                                    <li style="margin-bottom: 0; padding-bottom: 0; line-height: 1.2;">choose a different location</li>
-                                </ul>
-                                {% if moveConflictItems and (moveConflictItems | length > 0) %}
-                                <p class="govuk-body govuk-!-margin-bottom-1" style="color:#0b0c0c;">Materials that already exist in this location:</p>
-                                <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-1 govuk-!-margin-bottom-0" style="color:#0b0c0c; padding-left: 20px; margin-left: 0;">
-                                    {% for itemName in moveConflictItems %}
-                                    <li style="margin-bottom: 0;">{{ itemName }}</li>
-                                    {% endfor %}
-                                </ul>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             {% endif %}
