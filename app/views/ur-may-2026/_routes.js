@@ -2264,10 +2264,10 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         }))
     ];
 
-    const materialsActivityPaginationBase = paginateItems(activityEntries, activityPage, 25);
+    const materialsActivityPaginationBase = paginateItems(activityEntries, activityPage, 10);
     const materialsActivityPagination = {
         ...materialsActivityPaginationBase,
-        showPagination: activityEntries.length > 25
+        showPagination: activityEntries.length > 10
     };
     data.activityPage = materialsActivityPagination.page;
 
