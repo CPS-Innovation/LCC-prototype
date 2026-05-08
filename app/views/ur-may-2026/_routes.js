@@ -33,9 +33,562 @@ router.use((req, res, next) => {
 
     res.locals.data.materialsURMay2026 = req.session.data.materialsURMay2026;
     res.locals.data.materials = req.session.data.materialsURMay2026;
+    res.locals.data.materialsStaticActivityEntries = getStaticMaterialsActivityEntries(req.session.data.materialsURMay2026);
 
     next();
 });
+
+function getStaticMaterialsActivityEntries(materials = []) {
+    const source = String.raw`Items deleted
+Yesterday at 4:00pm by meredith.palmer@cps.gov.uk
+Location: Home: Thundercat > 7. Finance
+• file_0_1.docx
+• file_0_2.docx
+• file_0_3.docx
+
+Items renamed
+Yesterday at 1:45pm by pam.beesly@cps.gov.uk
+Location: Home: Thundercat > 4. Counsel
+• file_1.docx → file_1_v2.docx
+• file_2.docx → file_2_v2.docx
+
+Items deleted
+Yesterday at 1:00pm by pam.beesly@cps.gov.uk
+Location: Home: Thundercat > 4. Counsel
+• file_2_1.docx
+• file_2_2.docx
+• file_2_3.docx
+• file_2_4.docx
+• file_2_5.docx
+
+Item deleted
+Yesterday at 12:00pm by dwight_schrute@cps.gov.uk
+Location: Home: Thundercat > 1. Case management
+• file_3_1.docx
+
+Items renamed
+Yesterday at 11:00am by jordan.ellis@cps.gov.uk
+Location: Home: Thundercat > 15. IDPC
+• file_1.docx → file_1_v2.docx
+• file_2.docx → file_2_v2.docx
+
+Items renamed
+Yesterday at 8:45am by sarah.khan@cps.gov.uk
+Location: Home: Thundercat > 10. Police
+• file_1.docx → file_1_v2.docx
+• file_2.docx → file_2_v2.docx
+• file_3.docx → file_3_v2.docx
+
+Items renamed
+Yesterday at 8:30am by sarah.khan@cps.gov.uk
+Location: Home: Thundercat > 3. Experts
+• file_1.docx → file_1_v2.docx
+
+Items not copied
+08 May 2026 at 11.05am by kelly.kapoor@cps.gov.uk
+Files with the same name already exist in the destination.
+From: Home: Thundercat > 6. Disclosure
+To: Home: Thundercat > 12. Victims and Witnesses
+• file_7_1.docx
+• file_7_2.docx
+
+Items moved
+08 May 2026 at 10:45am by pam.beesly@cps.gov.uk
+From: Home: Thundercat > 5. Correspondence
+To: Home: Thundercat > 3. Experts
+• file_8_1.docx
+• file_8_2.docx
+
+Items copied
+07 May 2026 at 1:15pm by sarah.khan@cps.gov.uk
+From: Home: Thundercat > 3. Experts
+To: Home: Thundercat > 11. Media
+• file_9_1.docx
+• file_9_2.docx
+
+Items deleted
+06 May 2026 at 4:45pm by meredith.palmer@cps.gov.uk
+Location: Home: Thundercat > 7. Finance
+• file_10_1.docx
+• file_10_2.docx
+• file_10_3.docx
+• file_10_4.docx
+
+Items deleted
+05 May 2026 at 1:15pm by sarah.khan@cps.gov.uk
+Location: Home: Thundercat > 12. Victims and Witnesses
+• file_11_1.docx
+• file_11_2.docx
+• file_11_3.docx
+• file_11_4.docx
+• file_11_5.docx
+
+Items copied
+04 May 2026 at 3:30pm by oscar.martinez@cps.gov.uk
+From: Home: Thundercat > 6. Disclosure
+To: Home: Thundercat > 11. Media
+• file_12_1.docx
+• file_12_2.docx
+• file_12_3.docx
+
+Items deleted
+04 May 2026 at 11:30am by meredith.palmer@cps.gov.uk
+Location: Home: Thundercat > 4. Counsel
+• file_13_1.docx
+
+Items moved
+04 May 2026 at 8:15am by kevin.malone@cps.gov.uk
+From: Home: Thundercat > 1. Case management
+To: Home: Thundercat > 6. Disclosure
+• file_14_1.docx
+• file_14_2.docx
+• file_14_3.docx
+
+Items moved
+04 May 2026 at 8:00am by sarah.khan@cps.gov.uk
+From: Home: Thundercat > 15. IDPC
+To: Home: Thundercat > 7. Finance
+• file_15_1.docx
+• file_15_2.docx
+
+Items copied
+03 May 2026 at 5:00pm by meredith.palmer@cps.gov.uk
+From: Home: Thundercat > 12. Victims and Witnesses
+To: Home: Thundercat > 14. Magistrates Court
+• file_16_1.docx
+• file_16_2.docx
+• file_16_3.docx
+• file_16_4.docx
+
+Items renamed
+03 May 2026 at 9:00am by pam.beesly@cps.gov.uk
+Location: Home: Thundercat > 6. Disclosure
+• file_1.docx → file_1_v2.docx
+• file_2.docx → file_2_v2.docx
+
+Items renamed
+01 May 2026 at 6:30pm by kelly.kapoor@cps.gov.uk
+Location: Home: Thundercat > 10. Police
+• file_1.docx → file_1_v2.docx
+
+Items deleted
+01 May 2026 at 6:00pm by jordan.ellis@cps.gov.uk
+Location: Home: Thundercat > 12. Victims and Witnesses
+• file_19_1.docx
+• file_19_2.docx
+• file_19_3.docx
+• file_19_4.docx
+
+Items renamed
+01 May 2026 at 2:30pm by dwight_schrute@cps.gov.uk
+Location: Home: Thundercat > 11. Media
+• file_1.docx → file_1_v2.docx
+• file_2.docx → file_2_v2.docx
+
+Items moved
+01 May 2026 at 1:30pm by dwight_schrute@cps.gov.uk
+From: Home: Thundercat > 4. Counsel
+To: Home: Thundercat > 12. Victims and Witnesses
+• file_21_1.docx
+• file_21_2.docx
+• file_21_3.docx
+• file_21_4.docx
+
+Items deleted
+01 May 2026 at 8:45am by oscar.martinez@cps.gov.uk
+Location: Home: Thundercat > 6. Disclosure
+• file_22_1.docx
+• file_22_2.docx
+• file_22_3.docx
+• file_22_4.docx
+• file_22_5.docx
+
+Items moved
+30 April 2026 at 11:00am by kelly.kapoor@cps.gov.uk
+From: Home: Thundercat > 3. Experts
+To: Home: Thundercat > 7. Finance
+• file_23_1.docx
+• file_23_2.docx
+• file_23_3.docx
+
+Items moved
+29 April 2026 at 6:30pm by angela.martin@cps.gov.uk
+From: Home: Thundercat > 10. Police
+To: Home: Thundercat > 8. Lawyer working copies
+• file_24_1.docx
+• file_24_2.docx
+• file_24_3.docx
+• file_24_4.docx
+• file_24_5.docx
+
+Items deleted
+29 April 2026 at 2:30pm by meredith.palmer@cps.gov.uk
+Location: Home: Thundercat > 15. IDPC
+• file_25_1.docx
+• file_25_2.docx
+
+Items moved
+28 April 2026 at 4:45pm by jordan.ellis@cps.gov.uk
+From: Home: Thundercat > 7. Finance
+To: Home: Thundercat > 12. Victims and Witnesses
+• file_26_1.docx
+• file_26_2.docx
+
+Items copied
+28 April 2026 at 9:45am by kevin.malone@cps.gov.uk
+From: Home: Thundercat > 1. Case management
+To: Home: Thundercat > 11. Media
+• file_27_1.docx
+
+Items copied
+27 April 2026 at 4:30pm by jordan.ellis@cps.gov.uk
+From: Home: Thundercat > 12. Victims and Witnesses
+To: Home: Thundercat > 8. Lawyer working copies
+• file_28_1.docx
+
+Items moved
+27 April 2026 at 3:45pm by pam.beesly@cps.gov.uk
+From: Home: Thundercat > 5. Correspondence
+To: Home: Thundercat > 9. PO working copies
+• file_29_1.docx
+• file_29_2.docx
+
+Items deleted
+27 April 2026 at 2:15pm by kelly.kapoor@cps.gov.uk
+Location: Home: Thundercat > 6. Disclosure
+• file_30_1.docx
+• file_30_2.docx
+
+Items deleted
+27 April 2026 at 8:00am by kelly.kapoor@cps.gov.uk
+Location: Home: Thundercat > 1. Case management
+• file_31_1.docx
+• file_31_2.docx
+• file_31_3.docx
+
+Items copied
+24 April 2026 at 12:00pm by meredith.palmer@cps.gov.uk
+From: Home: Thundercat > 14. Magistrates Court
+To: Home: Thundercat > 5. Correspondence
+• file_32_1.docx
+
+Items moved
+24 April 2026 at 11:30am by jordan.ellis@cps.gov.uk
+From: Home: Thundercat > 10. Police
+To: Home: Thundercat > 1. Case management
+• file_33_1.docx
+• file_33_2.docx
+
+Items renamed
+24 April 2026 at 10:15am by sarah.khan@cps.gov.uk
+Location: Home: Thundercat > 9. PO working copies
+• file_1.docx → file_1_v2.docx
+• file_2.docx → file_2_v2.docx
+• file_3.docx → file_3_v2.docx
+• file_4.docx → file_4_v2.docx
+
+Items deleted
+24 April 2026 at 9:45am by dwight_schrute@cps.gov.uk
+Location: Home: Thundercat > 7. Finance
+• file_35_1.docx
+• file_35_2.docx
+• file_35_3.docx
+• file_35_4.docx
+• file_35_5.docx
+
+Items copied
+23 April 2026 at 7:45pm by jordan.ellis@cps.gov.uk
+From: Home: Thundercat > 12. Victims and Witnesses
+To: Home: Thundercat > 4. Counsel
+• file_36_1.docx
+• file_36_2.docx
+
+Items moved
+23 April 2026 at 7:00pm by kevin.malone@cps.gov.uk
+From: Home: Thundercat > 9. PO working copies
+To: Home: Thundercat > 11. Media
+• file_37_1.docx
+
+Items moved
+23 April 2026 at 4:15pm by wight_schrute@cps.gov.uk
+From: Home: Thundercat > 12. Victims and Witnesses
+To: Home: Thundercat > 10. Police
+• file_38_1.docx
+• file_38_2.docx
+
+Items moved
+23 April 2026 at 3:30pm by oscar.martinez@cps.gov.uk
+From: Home: Thundercat > 9. PO working copies
+To: Home: Thundercat > 12. Victims and Witnesses
+• file_39_1.docx
+• file_39_2.docx
+• file_39_3.docx
+
+Items renamed
+23 April at 3:15pm by pam.beesly@cps.gov.uk
+Location: Home: Thundercat > 15. IDPC
+• file_1.docx → file_1_v2.docx
+• file_2.docx → file_2_v2.docx
+• file_3.docx → file_3_v2.docx
+• file_4.docx → file_4_v2.docx
+
+Items renamed
+23 April 2026 at 2:30pm by kelly.kapoor@cps.gov.uk
+Location: Home: Thundercat > 12. Victims and Witnesses
+• file_1.docx → file_1_v2.docx
+• file_2.docx → file_2_v2.docx
+• file_3.docx → file_3_v2.docx
+
+Items renamed
+23 April 2026 at 2:00pm by oscar.martinez@cps.gov.uk
+Location: Home: Thundercat > 1. Case management
+• file_1.docx → file_1_v2.docx
+
+Items deleted
+23 April 2026 at 1:30pm by oscar.martinez@cps.gov.uk
+Location: Home: Thundercat > 11. Media
+• file_43_1.docx
+• file_43_2.docx
+• file_43_3.docx
+• file_43_4.docx
+• file_43_5.docx
+
+Items renamed
+22 April 2026 at 4:00pm by jordan.ellis@cps.gov.uk
+Location: Home: Thundercat > 3. Experts
+• file_1.docx → file_1_v2.docx
+
+Items deleted
+22 April 2026 at 3:00pm by jordan.ellis@cps.gov.uk
+Location: Home: Thundercat > 11. Media
+• file_45_1.docx
+• file_45_2.docx
+• file_45_3.docx
+• file_45_4.docx
+• file_45_5.docx
+
+Items renamed
+22 April 2026 at 2:30pm by kevin.malone@cps.gov.uk
+Location: Home: Thundercat > 7. Finance
+• file_1.docx → file_1_v2.docx
+• file_2.docx → file_2_v2.docx
+• file_3.docx → file_3_v2.docx
+
+Items deleted
+22 April 2026 at 12:15pm by dwight_schrute@cps.gov.uk
+Location: Home: Thundercat > 1. Case management
+• file_47_1.docx
+• file_47_2.docx
+
+Items deleted
+22 April 2026 at 11:30am by angela.martin@cps.gov.uk
+Location: Home: Thundercat > 9. PO working copies
+• file_48_1.docx
+• file_48_2.docx
+• file_48_3.docx
+• file_48_4.docx
+• file_48_5.docx
+
+Items moved
+22 April 2026 at 9:00am by kevin.malone@cps.gov.uk
+From: Home: Thundercat > 14. Magistrates Court
+To: Home: Thundercat > 6. Disclosure
+• file_49_1.docx
+
+Items deleted
+21 April 2026 at 6:30pm by kelly.kapoor@cps.gov.uk
+Location: Home: Thundercat > 7. Finance
+• file_50_1.docx
+• file_50_2.docx
+• file_50_3.docx
+
+Items deleted
+21 April 2026 at 3:00pm by kevin.malone@cps.gov.uk
+Location: Home: Thundercat > 10. Police
+• file_51_1.docx
+• file_51_2.docx
+• file_51_3.docx
+• file_51_4.docx
+• file_51_5.docx
+
+Items copied
+21 April 2026 at 2:45pm by pam.beesly@cps.gov.uk
+From: Home: Thundercat > 14. Magistrates Court
+To: Home: Thundercat > 4. Counsel
+• file_52_1.docx
+• file_52_2.docx
+• file_52_3.docx
+
+Items moved
+21 April 2026 at 2:15pm by sarah.khan@cps.gov.uk
+From: Home: Thundercat > 6. Disclosure
+To: Home: Thundercat > 7. Finance
+• file_53_1.docx
+• file_53_2.docx
+• file_53_3.docx
+• file_53_4.docx
+• file_53_5.docx
+
+Items renamed
+21 April 2026 at 11:30am by kevin.malone@cps.gov.uk
+Location: Home: Thundercat > 5. Correspondence
+• file_1.docx → file_1_v2.docx
+• file_2.docx → file_2_v2.docx
+
+Items renamed
+21 April 2026 at 11:00am by meredith.palmer@cps.gov.uk
+Location: Home: Thundercat > 15. IDPC
+• file_1.docx → file_1_v2.docx
+• file_2.docx → file_2_v2.docx
+• file_3.docx → file_3_v2.docx
+• file_4.docx → file_4_v2.docx
+
+Items renamed
+21 April 2026 at 10:30am by pam.beesly@cps.gov.uk
+Location: Home: Thundercat > 7. Finance
+• file_1.docx → file_1_v2.docx
+• file_2.docx → file_2_v2.docx
+• file_3.docx → file_3_v2.docx
+
+Items renamed
+21 April 2026 at 9:00am by meredith.palmer@cps.gov.uk
+Location: Home: Thundercat > 11. Media
+• file_1.docx → file_1_v2.docx
+
+Items copied
+21 April 2026 at 7:15am by oscar.martinez@cps.gov.uk
+From: Home: Thundercat > 8. Lawyer working copies
+To: Home: Thundercat > 7. Finance
+• file_58_1.docx
+• file_58_2.docx
+• file_58_3.docx
+
+Items deleted
+20 April 2026 at 7:15pm by kevin.malone@cps.gov.uk
+Location: Home: Thundercat > 4. Counsel
+• file_59_1.docx
+• file_59_2.docx
+
+Items deleted
+21 April 2026 at 5:12pm by creed.bratton@cps.gov.uk
+Location: Home: Thundercat > 7. Finance
+• budget_summary.xlsx`;
+
+    const lines = source.split(/\r?\n/).map(line => line.trimEnd());
+    const entries = [];
+    let index = 0;
+
+    while (index < lines.length) {
+        while (index < lines.length && !lines[index].trim()) index++;
+        if (index >= lines.length) break;
+
+        const title = lines[index++].trim();
+        while (index < lines.length && !lines[index].trim()) index++;
+        if (index >= lines.length) break;
+
+        const dateBy = lines[index++].trim();
+        let description = '';
+        const sourceLines = [];
+        const items = [];
+
+        while (index < lines.length && !lines[index].trim()) index++;
+
+        while (index < lines.length && lines[index].trim()) {
+            const line = lines[index].trim();
+            if (line.startsWith('• ')) {
+                items.push(line.slice(2));
+            } else if (line.startsWith('Location: ')) {
+                const value = line.slice('Location: '.length);
+                sourceLines.push({ label: 'Location:', value, href: getStaticActivityFolderHref(materials, value) });
+            } else if (line.startsWith('From: ')) {
+                const value = line.slice('From: '.length);
+                sourceLines.push({ label: 'Original location:', value, href: getStaticActivityFolderHref(materials, value) });
+            } else if (line.startsWith('To: ')) {
+                const value = line.slice('To: '.length);
+                sourceLines.push({ label: 'New location:', value, href: getStaticActivityFolderHref(materials, value) });
+            } else {
+                description = line;
+            }
+            index++;
+        }
+
+        entries.push({
+            title,
+            dateBy,
+            description,
+            sourceLines,
+            items
+        });
+    }
+
+    entries.push({
+        legacyType: 'transferSharedDrive',
+        title: 'Transfer from Egress to Shared Drive',
+        dateBy: '22 March 2026 at 12:05pm by usability.testing.session@cps.gov.uk',
+        description: '200 files were transferred.',
+        sourceLines: [
+            { label: 'Original location:', value: 'Egress > Investigator' },
+            { label: 'New location:', value: 'Home: Thundercat', href: '/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=0' }
+        ]
+    });
+
+    entries.push({
+        title: 'Case connected to Egress',
+        dateBy: '22 March 2026 at 9:10am by dwight_schrute@cps.gov.uk',
+        description: '',
+        sourceLines: [],
+        items: []
+    });
+
+    entries.push({
+        title: 'Case connected to Shared Drive',
+        dateBy: '22 March 2026 at 9:10am by dwight_schrute@cps.gov.uk',
+        description: '',
+        sourceLines: [],
+        items: []
+    });
+
+    entries.push({
+        title: 'Case registered',
+        dateBy: '22 March 2026 at 9:05am by dwight_schrute@cps.gov.uk',
+        description: '',
+        sourceLines: [],
+        items: []
+    });
+
+    return entries;
+}
+
+function getStaticActivityFolderHref(materials = [], pathLabel = '') {
+    if (!pathLabel || pathLabel === 'Home: Thundercat') {
+        return '/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=0';
+    }
+
+    const normalisedPath = String(pathLabel).replace(/^Home:\s*Thundercat\s*>\s*/, '');
+    const parts = normalisedPath.split('>').map(part => part.trim()).filter(Boolean);
+    if (!parts.length) {
+        return '/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=0';
+    }
+
+    let parentId = 0;
+    let currentFolder = null;
+
+    for (const part of parts) {
+        currentFolder = (materials || []).find(item =>
+            item &&
+            item.folder &&
+            String(item.parentId ?? 0) === String(parentId) &&
+            String(item.name || '').trim() === part
+        );
+
+        if (!currentFolder) return null;
+        parentId = currentFolder.id;
+    }
+
+    return currentFolder
+        ? `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${currentFolder.id}`
+        : null;
+}
 
 
 // Add your routes here - above the module.exports line
@@ -1217,6 +1770,7 @@ function createBaseActivityEntry(data) {
     const actor = getActivityActor(data);
     return {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        createdAt: new Date().toISOString(),
         byName: '',
         byEmail: actor.email,
         dateLabel: formatActivityTimestamp(new Date())
@@ -1229,6 +1783,7 @@ function pushMaterialsActivity(data, entry) {
         ...createBaseActivityEntry(data),
         ...entry
     });
+    data.activityPage = 1;
 }
 
 
@@ -1662,6 +2217,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const groupedSearchResults = buildGroupedSearchResults(materials, search);
     const pageSize = normalisePageSize(req.query.pageSize || data.manageMaterialsPageSize);
     const page = Number(req.query.page) || 1;
+    const activityPage = Number(req.query.activityPage || data.activityPage) || 1;
 
     req.session.data.manageMaterialsPageSize = pageSize;
 
@@ -1695,6 +2251,26 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         totalDisplayItems = children.length;
     }
 
+    const activityEntries = [
+        ...(data.materialsActivityLog || []).map(entry => ({
+            ...entry,
+            metaLine: `${entry.dateLabel} by ${entry.byEmail}`,
+            displayItems: entry.listItems || []
+        })),
+        ...(res.locals.data.materialsStaticActivityEntries || []).map(entry => ({
+            ...entry,
+            metaLine: entry.dateBy,
+            displayItems: entry.items || []
+        }))
+    ];
+
+    const materialsActivityPaginationBase = paginateItems(activityEntries, activityPage, 25);
+    const materialsActivityPagination = {
+        ...materialsActivityPaginationBase,
+        showPagination: activityEntries.length > 25
+    };
+    data.activityPage = materialsActivityPagination.page;
+
     // Prevent browser caching (fixes stale search results after rename)
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.set('Pragma', 'no-cache');
@@ -1715,6 +2291,8 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         pagination,
         pageSizeOptions,
         totalDisplayItems,
+        materialsActivityEntries: materialsActivityPagination.items,
+        materialsActivityPagination,
         flashRenamedId,
         flashNewFolderId,
         copySuccess,
