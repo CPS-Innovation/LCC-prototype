@@ -129,6 +129,73 @@
     }
   }
 </style>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var storageKey = 'ur-may-2026-case-overview-active-tab';
+    var tabsRoot = document.getElementById('new-tabs');
+    var params = new URLSearchParams(window.location.search);
+    var referrer = document.referrer || '';
+
+    if (!tabsRoot || typeof window.sessionStorage === 'undefined') {
+      return;
+    }
+
+    if (referrer.indexOf('/prototype-admin/clear-data') !== -1) {
+      window.sessionStorage.removeItem(storageKey);
+    }
+
+    function saveActiveTab(tabClass) {
+      if (tabClass) {
+        window.sessionStorage.setItem(storageKey, tabClass);
+      }
+    }
+
+    function showTab(tabClass) {
+      if (!tabClass) {
+        return;
+      }
+
+      var tabLink = tabsRoot.querySelector('.tab-link.' + tabClass);
+      var panel = document.getElementById(tabClass);
+      if (!tabLink || !panel) {
+        return;
+      }
+
+      tabsRoot.querySelectorAll('.govuk-tabs__list-item').forEach(function (item) {
+        item.classList.remove('govuk-tabs__list-item--selected');
+      });
+      tabsRoot.querySelectorAll('.panel').forEach(function (panelItem) {
+        panelItem.style.display = 'none';
+      });
+
+      tabLink.parentElement.classList.add('govuk-tabs__list-item--selected');
+      panel.style.display = '';
+      saveActiveTab(tabClass);
+    }
+
+    tabsRoot.querySelectorAll('.tab-link').forEach(function (link) {
+      link.addEventListener('click', function () {
+        var tabClass = Array.from(link.classList).find(function (className) {
+          return /^tab-\d+-content$/.test(className);
+        });
+        saveActiveTab(tabClass);
+      });
+    });
+
+    tabsRoot.querySelectorAll('.view_tab.tab-3-content').forEach(function (link) {
+      link.addEventListener('click', function () {
+        saveActiveTab('tab-3-content');
+      });
+    });
+
+    var savedTabClass = params.get('activeTab') || window.sessionStorage.getItem(storageKey);
+    if (!savedTabClass || savedTabClass === 'tab-2-content') {
+      return;
+    }
+
+    showTab(savedTabClass);
+  });
+</script>
 {% endblock %}
 
 {% block v11Content %}

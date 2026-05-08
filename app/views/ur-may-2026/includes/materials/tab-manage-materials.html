@@ -613,6 +613,7 @@
     <div style="max-width: 33.3333%;">
         <form method="get" action="/ur-may-2026/B-off-system-MVP/03-case-overview">
             <input type="hidden" name="page" value="1">
+            <input type="hidden" name="activityPage" value="{{ materialsActivityPagination.page if materialsActivityPagination else 1 }}">
             <div class="govuk-form-group govuk-!-margin-bottom-0" style="display:flex; align-items:center; gap:16px;">
                 <label class="govuk-label govuk-!-margin-bottom-0" for="manage-materials-page-size">
                     Display
@@ -858,7 +859,7 @@
         {% if pagination.page > 1 %}
         <div class="govuk-pagination__prev">
             <a class="govuk-link govuk-pagination__link"
-                href="/ur-may-2026/B-off-system-MVP/03-case-overview?page={{ pagination.page - 1 }}&pageSize={{ pagination.pageSize }}"
+                href="/ur-may-2026/B-off-system-MVP/03-case-overview?page={{ pagination.page - 1 }}&pageSize={{ pagination.pageSize }}&activityPage={{ materialsActivityPagination.page if materialsActivityPagination else 1 }}"
                 rel="prev">
                 <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
                     <path d="m6.5938-0.0078125-6.4688 6.4688 6.4688 6.4688 1.4141-1.4141-4.0625-4.0547h11.102v-2h-11.102l4.0625-4.0625-1.4141-1.4062z"></path>
@@ -880,7 +881,7 @@
                 <span class="govuk-pagination__link">{{ item.number }}</span>
                 {% else %}
                 <a class="govuk-link govuk-pagination__link"
-                    href="/ur-may-2026/B-off-system-MVP/03-case-overview?page={{ item.number }}&pageSize={{ pagination.pageSize }}">
+                    href="/ur-may-2026/B-off-system-MVP/03-case-overview?page={{ item.number }}&pageSize={{ pagination.pageSize }}&activityPage={{ materialsActivityPagination.page if materialsActivityPagination else 1 }}">
                     {{ item.number }}
                 </a>
                 {% endif %}
@@ -892,7 +893,7 @@
         {% if pagination.page < pagination.totalPages %}
         <div class="govuk-pagination__next">
             <a class="govuk-link govuk-pagination__link"
-                href="/ur-may-2026/B-off-system-MVP/03-case-overview?page={{ pagination.page + 1 }}&pageSize={{ pagination.pageSize }}"
+                href="/ur-may-2026/B-off-system-MVP/03-case-overview?page={{ pagination.page + 1 }}&pageSize={{ pagination.pageSize }}&activityPage={{ materialsActivityPagination.page if materialsActivityPagination else 1 }}"
                 rel="next">
                 <span class="govuk-pagination__link-title">Next</span>
                 <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
