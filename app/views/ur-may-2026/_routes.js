@@ -3400,9 +3400,6 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
     // Snapshot BEFORE mutation
     const originalMaterials = materials.map(item => ({ ...item }));
 
-    // ✅ Build preview tree BEFORE moving anything (for the success banner)
-    const movePreviewTree = buildPreviewTree(originalMaterials, ids);
-
     const movedNames = [];
 
     const destFolder = materials.find(m => String(m.id) === String(destinationFolderId));
@@ -3445,6 +3442,7 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
 
     req.session.data.moveList = movedNames;
     req.session.data.moveDestinationName = destinationFolderName;
+    const movePreviewTree = buildPreviewTree(originalMaterials, idsToMove);
     req.session.data.movePreviewTree = movePreviewTree;
     req.session.data.moveSuccess = movedNames.length > 0;
 
