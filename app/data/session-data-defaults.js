@@ -7751,7 +7751,7 @@ module.exports = {
     },
     {
       id: 1026,
-      name: 'Submission 1 – 13 Dec 2025',
+      name: 'Submission 1 – 7 April 2026',
       order: '',
       description: '',
       type: '',
@@ -7766,7 +7766,7 @@ module.exports = {
     },
     {
       id: 1027,
-      name: 'Submission 2 – 3 March 2026',
+      name: 'Submission 2 – 11 May 2026',
       order: '',
       description: '',
       type: '',
@@ -7913,9 +7913,9 @@ module.exports = {
       new: false,
       docLink: 'MG00.pdf',
       previewLink: '/public/files/MG00.pdf',
-      parentId: 1000,
+      parentId: 1027,
       folder: false,
-      level: 2
+      level: 3
     }
 
   ],
