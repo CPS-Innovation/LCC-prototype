@@ -3348,6 +3348,28 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
     }
 
     if (conflictingItems.length) {
+        const conflictSourceParents = [...new Set(conflictingItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const conflictSourceParentIds = [...new Set(conflictingItems.map(item => String(item.parentId ?? 0)))];
+
+        pushMaterialsActivity(req.session.data, {
+            type: 'copy',
+            title: 'Items not copied',
+            description: 'Files with the same name already exist in the destination.',
+            listItems: conflictingItems.map(item => item.name),
+            sourceLines: [
+                {
+                    label: conflictSourceParents.length === 1 ? 'From:' : 'From:',
+                    value: conflictSourceParents.length === 1 ? conflictSourceParents[0] : 'Multiple locations',
+                    href: conflictSourceParents.length === 1 ? `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${conflictSourceParentIds[0]}` : null
+                },
+                {
+                    label: 'To:',
+                    value: getFolderPathLabel(materials, destinationFolderId),
+                    href: `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
+                }
+            ]
+        });
+
         req.session.data.copyConflictLoading = true;
         req.session.data.copyConflictMessage =
             conflictingItems.length === 1
@@ -3476,6 +3498,28 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
     }
 
     if (conflictingItems.length) {
+        const conflictSourceParents = [...new Set(conflictingItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const conflictSourceParentIds = [...new Set(conflictingItems.map(item => String(item.parentId ?? 0)))];
+
+        pushMaterialsActivity(req.session.data, {
+            type: 'move',
+            title: 'Items not moved',
+            description: 'Files with the same name already exist in the destination.',
+            listItems: conflictingItems.map(item => item.name),
+            sourceLines: [
+                {
+                    label: 'From:',
+                    value: conflictSourceParents.length === 1 ? conflictSourceParents[0] : 'Multiple locations',
+                    href: conflictSourceParents.length === 1 ? `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${conflictSourceParentIds[0]}` : null
+                },
+                {
+                    label: 'To:',
+                    value: getFolderPathLabel(materials, destinationFolderId),
+                    href: `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
+                }
+            ]
+        });
+
         req.session.data.moveConflictLoading = true;
         req.session.data.moveConflictMessage =
             conflictingItems.length === 1
