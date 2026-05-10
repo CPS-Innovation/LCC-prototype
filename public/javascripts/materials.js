@@ -877,9 +877,11 @@ document.addEventListener('DOMContentLoaded', function () {
      if (!forms.length || !hiddenInputs.length || !discardButtons.length) return;
 
      function getCheckedIds() {
-          return Array.from(document.querySelectorAll('input.js-material-checkbox:checked'))
+          const ids = Array.from(document.querySelectorAll('input.js-material-checkbox:checked'))
                .filter(cb => cb.value && cb.value !== 'ALL')
                .map(cb => cb.value.toString());
+
+          return [...new Set(ids)];
      }
 
      function updateButtonState() {
@@ -2449,8 +2451,16 @@ document.addEventListener('click', function (e) {
 // =====================================================
 
 function getSelectedItems() {
+     const seen = new Set();
+
      return Array.from(document.querySelectorAll('input.js-material-checkbox:checked'))
           .filter(cb => cb.value && cb.value !== 'ALL')
+          .filter(cb => {
+               const id = cb.value.toString();
+               if (seen.has(id)) return false;
+               seen.add(id);
+               return true;
+          })
           .map(cb => ({
                id: cb.value.toString(),
                name: cb.dataset.name || '',
@@ -2502,7 +2512,7 @@ function updateActionsUI() {
      moveHidden.forEach(input => input.value = ids);
      markReadHidden.forEach(input => input.value = ids);
      markUnreadHidden.forEach(input => input.value = ids);
-     discardHidden.forEach(input => input.value = selected[0]?.id || '');
+     discardHidden.forEach(input => input.value = ids);
 }
 
 // =====================================================

@@ -21,6 +21,12 @@ router.use((req, res, next) => {
         req.session.data.materialsURMay2026 = JSON.parse(JSON.stringify(defaults));
     }
 
+    req.session.data.materialsURMay2026.forEach(item => {
+        if (!item || item.parentId !== 1007) return;
+        if (item.name === 'Further evidence report (old)') item.id = 34;
+        if (item.name === 'Further evidence report (2)') item.id = 35;
+    });
+
     Object.defineProperty(req.session.data, 'materials', {
         get() {
             return this.materialsURMay2026;
@@ -1902,6 +1908,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const copyPreviewTree = data.copyPreviewTree || [];
     const movePreviewTree = data.movePreviewTree || [];
     const deletePreviewTree = data.deletePreviewTree || [];
+    const renameBlockedLoadingName = data.renameBlockedLoadingName || '';
     const copyConflictLoading = data.copyConflictLoading === true;
     const copyConflictPending = data.copyConflictPending === true;
     const copyConflictMessage = data.copyConflictMessage || null;
@@ -1934,6 +1941,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     }
     req.session.data.deleteSuccess = false;
     req.session.data.deletePreviewTree = [];
+    req.session.data.renameBlockedLoadingName = '';
     req.session.data.copyConflictLoading = false;
     req.session.data.copyConflictPending = false;
     if (copyConflictPending) {
@@ -2305,6 +2313,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         copyPreviewTree,
         movePreviewTree,
         deletePreviewTree,
+        renameBlockedLoadingName,
         copyConflictLoading,
         copyConflictPending,
         copyConflictMessage,
@@ -2517,7 +2526,7 @@ router.post('/ur-may-2026/B-off-system-MVP/case-overview', function (req, res) {
 
 router.post('/B-off-system-MVP/delete', function (req, res) {
     const selected = req.body.material_selected
-        ? req.body.material_selected.split(',').map(s => s.trim())
+        ? [...new Set(req.body.material_selected.split(',').map(s => s.trim()).filter(Boolean))]
         : [];
 
     const data = req.session.data;
@@ -2544,9 +2553,9 @@ router.post('/B-off-system-MVP/delete', function (req, res) {
     }
 
     const removedItems = materials.filter(m => toRemove.has(String(m.id)));
-    const deleteRootIds = removedItems
+    const deleteRootIds = [...new Set(removedItems
         .filter(item => !toRemove.has(String(item.parentId)))
-        .map(item => String(item.id));
+        .map(item => String(item.id)))];
 
     res.render('ur-may-2026/B-off-system-MVP/delete', {
         data: {
@@ -2563,7 +2572,7 @@ router.post('/B-off-system-MVP/delete', function (req, res) {
 // Discard material
 router.post('/B-off-system-MVP/discard-material', function (req, res) {
     const selected = req.body.material_selected
-        ? req.body.material_selected.split(',').map(s => s.trim())
+        ? [...new Set(req.body.material_selected.split(',').map(s => s.trim()).filter(Boolean))]
         : [];
 
     const deleteChoice = (req.body['delete-choice'] || '').trim();
@@ -2600,9 +2609,9 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
     }
 
     const selectedItems = materials.filter(m => selectedSet.has(String(m.id)));
-    const deleteRootIds = selectedItems
+    const deleteRootIds = [...new Set(selectedItems
         .filter(item => !selectedSet.has(String(item.parentId)))
-        .map(item => String(item.id));
+        .map(item => String(item.id)))];
 
     if (!deleteChoice) {
         return res.render('ur-may-2026/B-off-system-MVP/delete', {
@@ -2638,9 +2647,9 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
     }
 
     const removedItems = materials.filter(m => toRemove.has(String(m.id)));
-    const removedRootIds = removedItems
+    const removedRootIds = [...new Set(removedItems
         .filter(item => !toRemove.has(String(item.parentId)))
-        .map(item => String(item.id));
+        .map(item => String(item.id)))];
     const deletePreviewTree = buildPreviewTree(materials, removedRootIds);
 
     req.session.data.materials = materials.filter(m => !toRemove.has(String(m.id)));
@@ -2818,10 +2827,24 @@ router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
     const ids = raw ? raw.split(',').map(s => s.trim()).filter(Boolean) : [];
 
     const selectedItems = materials.filter(m => ids.includes(String(m.id)));
+    const blockedRenameItem = selectedItems.length === 1
+        ? selectedItems.find(item =>
+            item &&
+            !item.folder &&
+            item.name === 'File A' &&
+            Number(item.parentId) === 1007
+        )
+        : null;
+
     req.session.data.renameCount = selectedItems.length;
 
     if (!selectedItems.length) {
         return res.redirect('/B-off-system-MVP/case-overview-folder');
+    }
+
+    if (blockedRenameItem) {
+        req.session.data.renameBlockedLoadingName = blockedRenameItem.name;
+        return res.redirect('/ur-may-2026/B-off-system-MVP/03-case-overview?activeTab=tab-2-content');
     }
 
     return res.render('ur-may-2026/B-off-system-MVP/rename-multiple', {

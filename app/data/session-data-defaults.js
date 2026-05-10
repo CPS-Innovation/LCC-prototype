@@ -7916,7 +7916,53 @@ module.exports = {
       parentId: 1027,
       folder: false,
       level: 3
-    }
+    },
+    {
+      id: 32,
+      name: 'File A',
+      order: '',
+      description: 'Summary of the body worn video showing victims injuries',
+      type: 'Exhibit list – MG12',
+      date: '1 Jul 2024',
+      status: 'Used',
+      new: false,
+      docLink: 'MG00.pdf',
+      previewLink: '/public/files/blank.pdf',
+      parentId: 1007,
+      folder: false,
+      level: 3
+    },
+    {
+      id: 33,
+      name: 'Further evidence report (old)',
+      order: '',
+      description: 'Report of additional evidence submitted on 5 June',
+      type: 'Further evidence or information report – MG20',
+      date: '2 Nov 2024',
+      status: 'Unused',
+      new: false,
+      docLink: 'MG20_5_JUNE.pdf',
+      previewLink: '/public/files/MG20_5_JUNE.pdf',
+      parentId: 1007,
+      folder: false,
+      level: 2
+    },
+    {
+      id: 34,
+      name: 'Further evidence report (2)',
+      order: '',
+      description: 'Report of additional evidence submitted on 5 June',
+      type: 'Further evidence or information report – MG20',
+      date: '2 Nov 2024',
+      status: 'Unused',
+      new: false,
+      docLink: 'MG20_5_JUNE.pdf',
+      previewLink: '/public/files/MG20_5_JUNE.pdf',
+      parentId: 1007,
+      folder: false,
+      level: 2
+    },
+
 
   ],
 

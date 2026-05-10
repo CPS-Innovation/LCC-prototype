@@ -1698,7 +1698,7 @@ router.post('/version-14/B-off-system-MVP/case-overview', function (req, res) {
 
 router.post('/B-off-system-MVP/delete', function (req, res) {
     const selected = req.body.material_selected
-        ? req.body.material_selected.split(',').map(s => s.trim())
+        ? [...new Set(req.body.material_selected.split(',').map(s => s.trim()).filter(Boolean))]
         : [];
 
     const data = req.session.data;
@@ -1725,9 +1725,9 @@ router.post('/B-off-system-MVP/delete', function (req, res) {
     }
 
     const removedItems = materials.filter(m => toRemove.has(String(m.id)));
-    const deleteRootIds = removedItems
+    const deleteRootIds = [...new Set(removedItems
         .filter(item => !toRemove.has(String(item.parentId)))
-        .map(item => String(item.id));
+        .map(item => String(item.id)))];
 
     res.render('version-14/B-off-system-MVP/delete', {
         data: {
@@ -1742,7 +1742,7 @@ router.post('/B-off-system-MVP/delete', function (req, res) {
 // Discard material
 router.post('/B-off-system-MVP/discard-material', function (req, res) {
     const selected = req.body.material_selected
-        ? req.body.material_selected.split(',').map(s => s.trim())
+        ? [...new Set(req.body.material_selected.split(',').map(s => s.trim()).filter(Boolean))]
         : [];
 
     const reason = req.body.discarding_material;
@@ -1774,9 +1774,9 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
     }
 
     const removedItems = materials.filter(m => toRemove.has(String(m.id)));
-    const deleteRootIds = removedItems
+    const deleteRootIds = [...new Set(removedItems
         .filter(item => !toRemove.has(String(item.parentId)))
-        .map(item => String(item.id));
+        .map(item => String(item.id)))];
     const deletePreviewTree = buildPreviewTree(materials, deleteRootIds);
 
     req.session.data.materials = materials.filter(m => !toRemove.has(String(m.id)));
