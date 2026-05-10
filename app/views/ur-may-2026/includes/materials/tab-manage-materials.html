@@ -158,6 +158,38 @@
             </div>
             {% endif %}
 
+            {% if renameBlockedLoadingName %}
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <div class="govuk-notification-banner materials-notification--white govuk-!-margin-bottom-4"
+                        role="status" aria-live="polite" id="rename-blocked-loading-panel">
+                        <div class="govuk-notification-banner__content">
+                            <div class="hods-loading-spinner govuk-!-margin-bottom-3" id="rename-blocked-loading-spinner">
+                                <div class="hods-loading-spinner__spinner" aria-hidden="true"></div>
+                            </div>
+                            <h3 class="govuk-notification-banner__heading" id="rename-blocked-loading-heading">Renaming</h3>
+                            <div id="rename-blocked-loading-message"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                window.setTimeout(function () {
+                    var panel = document.getElementById('rename-blocked-loading-panel');
+                    var spinner = document.getElementById('rename-blocked-loading-spinner');
+                    var heading = document.getElementById('rename-blocked-loading-heading');
+                    var message = document.getElementById('rename-blocked-loading-message');
+
+                    if (panel) panel.setAttribute('role', 'alert');
+                    if (spinner) spinner.style.display = 'none';
+                    if (heading) heading.textContent = 'Material in use';
+                    if (message) {
+                        message.innerHTML = '<p class="govuk-body">Some materials cannot be renamed because they are in use.</p><p class="govuk-body">Close the items and then try again.</p><ul class="govuk-list govuk-list--bullet"><li>{{ renameBlockedLoadingName }}</li></ul>';
+                    }
+                }, 10000);
+            </script>
+            {% endif %}
+
             {% if copySuccess and not copyConflictLoading %}
             <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white govuk-!-margin-bottom-4"
                 role="alert" data-module="govuk-notification-banner">
