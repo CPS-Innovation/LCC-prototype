@@ -1946,20 +1946,19 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const preserveCopyFlash = copyConflictLoading;
     const preserveMoveFlash = moveConflictLoading;
 
-    req.session.data.copyDestinationId = null;
-    req.session.data.moveDestinationId = null;
-
     // Immediately reset so they only show once
     if (!preserveCopyFlash) {
         req.session.data.copySuccess = false;
         req.session.data.copyList = [];
         req.session.data.copyDestinationName = null;
+        req.session.data.copyDestinationId = null;
         req.session.data.copyPreviewTree = [];
     }
     if (!preserveMoveFlash) {
         req.session.data.moveSuccess = false;
         req.session.data.moveList = [];
         req.session.data.moveDestinationName = null;
+        req.session.data.moveDestinationId = null;
         req.session.data.movePreviewTree = [];
     }
     req.session.data.deleteSuccess = false;
