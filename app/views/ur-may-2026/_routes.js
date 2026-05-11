@@ -2855,24 +2855,11 @@ router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
     const ids = raw ? raw.split(',').map(s => s.trim()).filter(Boolean) : [];
 
     const selectedItems = materials.filter(m => ids.includes(String(m.id)));
-    const blockedRenameItem = selectedItems.length === 1
-        ? selectedItems.find(item =>
-            item &&
-            !item.folder &&
-            item.name === 'File A' &&
-            Number(item.parentId) === 1007
-        )
-        : null;
 
     req.session.data.renameCount = selectedItems.length;
 
     if (!selectedItems.length) {
         return res.redirect('/B-off-system-MVP/case-overview-folder');
-    }
-
-    if (blockedRenameItem) {
-        req.session.data.renameBlockedLoadingName = blockedRenameItem.name;
-        return res.redirect('/ur-may-2026/B-off-system-MVP/03-case-overview?activeTab=tab-2-content');
     }
 
     return res.render('ur-may-2026/B-off-system-MVP/rename-multiple', {
@@ -2894,10 +2881,21 @@ router.post('/B-off-system-MVP/rename-multiple-save', function (req, res) {
     });
 
     const renamedEntries = [];
+    const blockedRenameEntries = [];
 
     materials.forEach(item => {
         const id = String(item.id);
         if (updates[id] !== undefined && updates[id] !== '') {
+            if (
+                item &&
+                !item.folder &&
+                item.name === 'File A' &&
+                Number(item.parentId) === 1007
+            ) {
+                blockedRenameEntries.push(item);
+                return;
+            }
+
             renamedEntries.push({
                 item,
                 oldName: item.name,
@@ -2908,7 +2906,7 @@ router.post('/B-off-system-MVP/rename-multiple-save', function (req, res) {
     });
 
     req.session.data.materials = materials;
-    req.session.data.flashRenamedIds = Object.keys(updates).filter(id => updates[id]);
+    req.session.data.flashRenamedIds = renamedEntries.map(entry => String(entry.item.id));
 
     if (renamedEntries.length) {
         const locationPaths = [...new Set(renamedEntries.map(entry => getFolderPathLabel(materials, entry.item.parentId)))];
@@ -2942,6 +2940,12 @@ router.post('/B-off-system-MVP/rename-multiple-save', function (req, res) {
                 }
             ]
         });
+    }
+
+    if (blockedRenameEntries.length) {
+        req.session.data.renameBlockedLoadingName = blockedRenameEntries.map(item => item.name).join(', ');
+        const blockedFolderId = blockedRenameEntries[0].parentId ?? 0;
+        return res.redirect(`/ur-may-2026/B-off-system-MVP/03-case-overview?activeTab=tab-2-content&folderId=${encodeURIComponent(blockedFolderId)}`);
     }
 
     return res.redirect('/ur-may-2026/B-off-system-MVP/03-case-overview');
