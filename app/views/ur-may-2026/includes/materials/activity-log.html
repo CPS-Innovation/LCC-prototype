@@ -1,7 +1,7 @@
 <h2 class="govuk-heading-m" id="">Activity log</h2>
 {% set activityLog = data.materialsActivityLog | default([]) %}
 <p><span class="govuk-caption-m govuk-!-margin-bottom-0" style="display: inline-block;">Last updated <span
-            id="materials-audit">{% if activityLog.length > 0 %}{{ activityLog[0].dateLabel }}{% else %}yesterday at 4:00pm{% endif %}</span></span></p>
+            id="materials-audit">{% if activityLog.length > 0 %}{{ activityLog[0].dateLabel | replace("Today at", "today at") }}{% else %}yesterday at 4:00pm{% endif %}</span></span></p>
 
 <style>
     .materials-activity-details__summary {
