@@ -47,7 +47,7 @@ router.use((req, res, next) => {
 function getStaticMaterialsActivityEntries(materials = []) {
     const source = String.raw`Items deleted
 Yesterday at 4:00pm by meredith.palmer@cps.gov.uk
-Location: Home: Thundercat > 7. Finance
+Location: Home: Thundercat > 4. Counsel
 • file_0_1.docx
 • file_0_2.docx
 • file_0_3.docx
@@ -114,7 +114,7 @@ To: Home: Thundercat > 11. Media
 
 Items deleted
 06 May 2026 at 4:45pm by meredith.palmer@cps.gov.uk
-Location: Home: Thundercat > 7. Finance
+Location: Home: Thundercat > 12. Victims and Witnesses
 • file_10_1.docx
 • file_10_2.docx
 • file_10_3.docx
@@ -316,7 +316,7 @@ To: Home: Thundercat > 11. Media
 • file_37_1.docx
 
 Items moved
-23 April 2026 at 4:15pm by wight_schrute@cps.gov.uk
+23 April 2026 at 4:15pm by dwight_schrute@cps.gov.uk
 From: Home: Thundercat > 12. Victims and Witnesses
 To: Home: Thundercat > 10. Police
 • file_38_1.docx
@@ -375,7 +375,7 @@ Location: Home: Thundercat > 11. Media
 
 Items renamed
 22 April 2026 at 2:30pm by kevin.malone@cps.gov.uk
-Location: Home: Thundercat > 7. Finance
+Location: Home: Thundercat > 1. Case management
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 • file_3.docx → file_3_v2.docx
@@ -403,7 +403,7 @@ To: Home: Thundercat > 6. Disclosure
 
 Items deleted
 21 April 2026 at 6:30pm by kelly.kapoor@cps.gov.uk
-Location: Home: Thundercat > 7. Finance
+Location: Home: Thundercat > 10. Police
 • file_50_1.docx
 • file_50_2.docx
 • file_50_3.docx
@@ -451,7 +451,7 @@ Location: Home: Thundercat > 15. IDPC
 
 Items renamed
 21 April 2026 at 10:30am by pam.beesly@cps.gov.uk
-Location: Home: Thundercat > 7. Finance
+Location: Home: Thundercat > 10. Police
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 • file_3.docx → file_3_v2.docx
@@ -477,7 +477,7 @@ Location: Home: Thundercat > 4. Counsel
 
 Items deleted
 21 April 2026 at 5:12pm by creed.bratton@cps.gov.uk
-Location: Home: Thundercat > 7. Finance
+Location: Home: Thundercat > 10. Police
 • budget_summary.xlsx`;
 
     const lines = source.split(/\r?\n/).map(line => line.trimEnd());
@@ -534,7 +534,7 @@ Location: Home: Thundercat > 7. Finance
         description: '200 files were transferred.',
         sourceLines: [
             { label: 'Original location:', value: 'Egress > Investigator' },
-            { label: 'New location:', value: 'Home: Thundercat', href: '/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=0' }
+            { label: 'New location:', value: 'Home: Thundercat', href: getManageMaterialsFolderHref(0) }
         ]
     });
 
@@ -565,15 +565,38 @@ Location: Home: Thundercat > 7. Finance
     return entries;
 }
 
+function getManageMaterialsFolderHref(folderId = 0) {
+    return `/ur-may-2026/B-off-system-MVP/03-case-overview?activeTab=tab-2-content&folderId=${encodeURIComponent(folderId)}`;
+}
+
+function normaliseActivityFolderHref(href) {
+    if (!href || typeof href !== 'string' || href.includes('activeTab=tab-2-content')) return href;
+
+    return href.replace(
+        '/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=',
+        '/ur-may-2026/B-off-system-MVP/03-case-overview?activeTab=tab-2-content&folderId='
+    );
+}
+
+function normaliseActivityFolderLinks(entry = {}) {
+    return {
+        ...entry,
+        sourceLines: (entry.sourceLines || []).map(line => ({
+            ...line,
+            href: normaliseActivityFolderHref(line.href)
+        }))
+    };
+}
+
 function getStaticActivityFolderHref(materials = [], pathLabel = '') {
     if (!pathLabel || pathLabel === 'Home: Thundercat') {
-        return '/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=0';
+        return getManageMaterialsFolderHref(0);
     }
 
     const normalisedPath = String(pathLabel).replace(/^Home:\s*Thundercat\s*>\s*/, '');
     const parts = normalisedPath.split('>').map(part => part.trim()).filter(Boolean);
     if (!parts.length) {
-        return '/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=0';
+        return getManageMaterialsFolderHref(0);
     }
 
     let parentId = 0;
@@ -592,7 +615,7 @@ function getStaticActivityFolderHref(materials = [], pathLabel = '') {
     }
 
     return currentFolder
-        ? `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${currentFolder.id}`
+        ? getManageMaterialsFolderHref(currentFolder.id)
         : null;
 }
 
@@ -2260,16 +2283,22 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     }
 
     const activityEntries = [
-        ...(data.materialsActivityLog || []).map(entry => ({
-            ...entry,
-            metaLine: `${entry.dateLabel} by ${entry.byEmail}`,
-            displayItems: entry.listItems || []
-        })),
-        ...(res.locals.data.materialsStaticActivityEntries || []).map(entry => ({
-            ...entry,
-            metaLine: entry.dateBy,
-            displayItems: entry.items || []
-        }))
+        ...(data.materialsActivityLog || []).map(entry => {
+            const normalisedEntry = normaliseActivityFolderLinks(entry);
+            return {
+                ...normalisedEntry,
+                metaLine: `${normalisedEntry.dateLabel} by ${normalisedEntry.byEmail}`,
+                displayItems: normalisedEntry.listItems || []
+            };
+        }),
+        ...(res.locals.data.materialsStaticActivityEntries || []).map(entry => {
+            const normalisedEntry = normaliseActivityFolderLinks(entry);
+            return {
+                ...normalisedEntry,
+                metaLine: normalisedEntry.dateBy,
+                displayItems: normalisedEntry.items || []
+            };
+        })
     ];
 
     const materialsActivityPaginationBase = paginateItems(activityEntries, activityPage, 10);
@@ -2508,7 +2537,7 @@ router.post('/B-off-system-MVP/new-folder', function (req, res) {
             {
                 label: 'New folder:',
                 value: getItemPathLabel(materials, newFolder),
-                href: `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${newFolder.id}`
+                href: getManageMaterialsFolderHref(newFolder.id)
             }
         ]
     });
@@ -2669,7 +2698,7 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
                 {
                     label: sourceParents.length === 1 ? 'Location:' : 'Locations:',
                     value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
-                    href: sourceParents.length === 1 ? `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
+                    href: sourceParents.length === 1 ? getManageMaterialsFolderHref(sourceParentIds[0]) : null
                 }
             ]
         });
@@ -2742,7 +2771,7 @@ router.post('/B-off-system-MVP/p-material', function (req, res) {
                 {
                     label: sourceParents.length === 1 ? 'Location:' : 'Locations:',
                     value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
-                    href: sourceParents.length === 1 ? `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
+                    href: sourceParents.length === 1 ? getManageMaterialsFolderHref(sourceParentIds[0]) : null
                 }
             ]
         });
@@ -2910,7 +2939,7 @@ router.post('/B-off-system-MVP/rename-multiple-save', function (req, res) {
                 {
                     label: locationPaths.length === 1 ? 'Location:' : 'Locations:',
                     value: locationPaths.length === 1 ? locationPaths[0] : 'Multiple locations',
-                    href: locationPaths.length === 1 ? `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${locationIds[0]}` : null
+                    href: locationPaths.length === 1 ? getManageMaterialsFolderHref(locationIds[0]) : null
                 }
             ]
         });
@@ -2991,7 +3020,7 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
             {
                 label: 'Location:',
                 value: getFolderPathLabel(materials, item.parentId),
-                href: `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${item.parentId ?? 0}`
+                href: getManageMaterialsFolderHref(item.parentId ?? 0)
             }
         ]
     });
@@ -3359,12 +3388,12 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
                 {
                     label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
                     value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
-                    href: sourceParents.length === 1 ? `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
+                    href: sourceParents.length === 1 ? getManageMaterialsFolderHref(sourceParentIds[0]) : null
                 },
                 {
                     label: 'New location:',
                     value: getFolderPathLabel(materials, destinationFolderId),
-                    href: `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
+                    href: getManageMaterialsFolderHref(destinationFolderId)
                 }
             ]
         });
@@ -3383,12 +3412,12 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
                 {
                     label: conflictSourceParents.length === 1 ? 'From:' : 'From:',
                     value: conflictSourceParents.length === 1 ? conflictSourceParents[0] : 'Multiple locations',
-                    href: conflictSourceParents.length === 1 ? `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${conflictSourceParentIds[0]}` : null
+                    href: conflictSourceParents.length === 1 ? getManageMaterialsFolderHref(conflictSourceParentIds[0]) : null
                 },
                 {
                     label: 'To:',
                     value: getFolderPathLabel(materials, destinationFolderId),
-                    href: `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
+                    href: getManageMaterialsFolderHref(destinationFolderId)
                 }
             ]
         });
@@ -3509,12 +3538,12 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
                 {
                     label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
                     value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
-                    href: sourceParents.length === 1 ? `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
+                    href: sourceParents.length === 1 ? getManageMaterialsFolderHref(sourceParentIds[0]) : null
                 },
                 {
                     label: 'New location:',
                     value: getFolderPathLabel(materials, destinationFolderId),
-                    href: `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
+                    href: getManageMaterialsFolderHref(destinationFolderId)
                 }
             ]
         });
@@ -3533,12 +3562,12 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
                 {
                     label: 'From:',
                     value: conflictSourceParents.length === 1 ? conflictSourceParents[0] : 'Multiple locations',
-                    href: conflictSourceParents.length === 1 ? `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${conflictSourceParentIds[0]}` : null
+                    href: conflictSourceParents.length === 1 ? getManageMaterialsFolderHref(conflictSourceParentIds[0]) : null
                 },
                 {
                     label: 'To:',
                     value: getFolderPathLabel(materials, destinationFolderId),
-                    href: `/ur-may-2026/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
+                    href: getManageMaterialsFolderHref(destinationFolderId)
                 }
             ]
         });
