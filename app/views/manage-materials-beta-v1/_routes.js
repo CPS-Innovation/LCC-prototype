@@ -1175,7 +1175,7 @@ function formatActivityTimestamp(value) {
         date.getMonth() === yesterday.getMonth() &&
         date.getFullYear() === yesterday.getFullYear();
 
-    if (isToday) return `today at ${time}`;
+    if (isToday) return `Today at ${time}`;
     if (isYesterday) return `yesterday at ${time}`;
 
     const day = date.toLocaleDateString('en-GB', {
