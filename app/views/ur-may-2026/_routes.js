@@ -1742,29 +1742,31 @@ function getActivityActor(data) {
 function formatActivityTimestamp(value) {
     const date = value instanceof Date ? value : new Date(value || Date.now());
     const now = new Date();
-    const yesterday = new Date(now);
-    yesterday.setDate(now.getDate() - 1);
+    const yesterday = new Date(now.getTime() - (24 * 60 * 60 * 1000));
+    const ukDateFormatter = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Europe/London',
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric'
+    });
 
     const time = date.toLocaleTimeString('en-GB', {
+        timeZone: 'Europe/London',
         hour: 'numeric',
         minute: '2-digit',
         hour12: true
     }).toLowerCase().replace(' ', '');
 
-    const isToday =
-        date.getDate() === now.getDate() &&
-        date.getMonth() === now.getMonth() &&
-        date.getFullYear() === now.getFullYear();
+    const dateKey = ukDateFormatter.format(date);
+    const isToday = dateKey === ukDateFormatter.format(now);
 
-    const isYesterday =
-        date.getDate() === yesterday.getDate() &&
-        date.getMonth() === yesterday.getMonth() &&
-        date.getFullYear() === yesterday.getFullYear();
+    const isYesterday = dateKey === ukDateFormatter.format(yesterday);
 
     if (isToday) return `Today at ${time}`;
     if (isYesterday) return `yesterday at ${time}`;
 
     const day = date.toLocaleDateString('en-GB', {
+        timeZone: 'Europe/London',
         day: 'numeric',
         month: 'long',
         year: 'numeric'
@@ -1821,6 +1823,11 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const materials = data.materials || [];
     const transferMaterials = data.transferMaterials || [];
     const pageSizeOptions = [20, 50, 100];
+
+    data.materialsActivityLog = (data.materialsActivityLog || []).map(entry => ({
+        ...entry,
+        dateLabel: entry.createdAt ? formatActivityTimestamp(entry.createdAt) : entry.dateLabel
+    }));
 
     function normalisePageSize(value) {
         const parsed = Number(value);
