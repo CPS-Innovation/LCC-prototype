@@ -10,6 +10,81 @@
         .transfer-actions-row .materials-toolbar {
             margin-bottom: 0 !important;
         }
+
+        #transfer_materials_column .transfer-actions-row {
+            margin-left: 30px !important;
+            margin-right: 15px;
+        }
+
+        #transfer_materials_column .transfer-actions-row>.govuk-grid-column-full,
+        #transfer_materials_column .transfer-actions-row .govuk-grid-column-one-half:first-child {
+            padding-left: 0;
+        }
+
+        #transfer_materials_column .version-15-transfer-table {
+            margin-left: 30px;
+            margin-right: 15px;
+        }
+
+        .version-15-transfer-table #transfer_materials_table .transfer-select-column {
+            width: 48px;
+            min-width: 48px;
+            padding-right: 0;
+            white-space: nowrap;
+        }
+
+        .version-15-transfer-table #transfer_materials_table .transfer-select-column .govuk-checkboxes,
+        .version-15-transfer-table #transfer_materials_table .transfer-select-column .govuk-checkboxes--small {
+            margin-left: 0 !important;
+            padding-left: 0 !important;
+        }
+
+        .version-15-transfer-table #transfer_materials_table th.title_column,
+        .version-15-transfer-table #transfer_materials_table td.title_column {
+            padding-left: 12px;
+        }
+
+        .version-15-transfer-table #transfer_materials_table .folder-name-and-tags {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .version-15-transfer-table #transfer_materials_table .folder-inline-wrapper {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .version-15-transfer-table #transfer_materials_table .folder-open {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 19px !important;
+        }
+
+        .version-15-transfer-table #transfer_materials_table .folder-open .folder-name {
+            color: #1d70b8;
+            text-decoration: underline;
+            text-decoration-thickness: max(1px, .0625rem);
+            text-underline-offset: .1em;
+        }
+
+        .transfer-view-shared-drive {
+            font-size: 19px !important;
+            align-self: center;
+            margin-left: 24px;
+        }
+
+        #transfer_materials_column #transfer_Actions.hidden_buttons {
+            left: 0;
+            right: auto;
+            min-width: 0;
+            width: 272px;
+        }
+
+        #transfer_materials_column #transfer_Actions.hidden_buttons button {
+            box-sizing: border-box;
+        }
     </style>
 
     {% set transferItems = data.transferEgress | default([]) %}
@@ -21,8 +96,8 @@
         </h2>
 
         <p class="govuk-body govuk-!-margin-left-3 govuk-!-margin-bottom-3">
-            Select the files or folders you want to transfer and where you want to put them.<br>
-            You can also transfer <a class="govuk-link">from the Shared Drive to Egress.</a>
+            Select the files or folders you want to transfer. Then choose where to save them on the Shared Drive.<br>
+            <!-- You can also transfer <a class="govuk-link">from the Shared Drive to Egress.</a> -->
         </p>
 
         <div class="materials-aligned">
@@ -36,7 +111,7 @@
             <div class="govuk-grid-row govuk-!-margin-left-3">
                 <nav class="govuk-breadcrumbs govuk-!-margin-left-3" aria-label="Breadcrumb">
                     <ol class="govuk-breadcrumbs__list">
-                        <li class="govuk-breadcrumbs__list-item">Egress</li>
+                        <li class="govuk-breadcrumbs__list-item">Egress: Thundercat</li>
                         <li class="govuk-breadcrumbs__list-item">Investigator</li>
                     </ol>
                 </nav>
@@ -62,13 +137,24 @@
                                         <div class="hidden_buttons" id="transfer_Actions">
                                             <button id="transferNowButton" class="govuk-button govuk-button--disabled"
                                                 type="button" disabled>
-                                                Copy
+                                                Copy to Shared Drive
                                             </button>
                                             <button id="transferNowButton" class="govuk-button govuk-button--disabled"
                                                 type="button" disabled>
-                                                Move
+                                                Move to Shared Drive
                                             </button>
                                         </div>
+
+                                        <button type="button" class="govuk-link govuk-button--link transfer-view-shared-drive"
+                                            onclick="document.querySelector('.tab-2-content').click();">
+                                            View Shared Drive
+                                        </button>
+
+                                        <!-- <button type="button" class="govuk-button govuk-button--secondary"
+                                            onclick="document.querySelector('.tab-2-content').click();">
+                                            View Shared Drive
+                                        </button> -->
+
                                     </div>
                                 </div>
                             </div>
@@ -76,7 +162,8 @@
                     </div>
                     <div class="govuk-grid-column-one-half transfer-disconnect-panel">
                         <div class="materials-toolbar govuk-!-margin-top-3 govuk-!-margin-bottom-4">
-                            <button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                            <button type="button" class="govuk-button govuk-button--secondary"
+                                data-module="govuk-button">
                                 Disconnect Shared Drive
                             </button>
                         </div>
@@ -85,12 +172,12 @@
                 </div>
             </div>
 
-            <div class="materials-aligned">
+            <div class="materials-aligned version-15-transfer-table">
                 <div class="materials-table-wrapper">
                     <table class="govuk-table sortable" id="transfer_materials_table">
                         <thead class="govuk-table__head">
                             <tr class="govuk-table__row">
-                                <th scope="col" class="govuk-table__header">
+                                <th scope="col" class="govuk-table__header transfer-select-column">
                                     <div class="govuk-checkboxes govuk-checkboxes--small MT-15">
                                         <div class="govuk-checkboxes__item">
                                             <input class="govuk-checkboxes__input js-transfer-select-all"
@@ -100,7 +187,7 @@
                                         </div>
                                     </div>
                                 </th>
-                                <th scope="col" class="govuk-table__header">
+                                <th scope="col" class="govuk-table__header title_column">
                                     <button type="button" class="govuk-link govuk-link--no-visited-state table-sort"
                                         data-sort="name">
                                         File or folder
@@ -125,7 +212,7 @@
                         <tbody class="govuk-table__body">
                             {% for item in transferItems %}
                             <tr class="govuk-table__row">
-                                <td class="govuk-table__cell">
+                                <td class="govuk-table__cell transfer-select-column">
                                     <div class="govuk-checkboxes govuk-checkboxes--small">
                                         <div class="govuk-checkboxes__item">
                                             <input class="govuk-checkboxes__input js-transfer-checkbox"
@@ -139,9 +226,13 @@
                                 </td>
                                 <td class="govuk-table__cell title_column">
                                     {% if item.folder %}
-                                    <span class="folder-name-and-tags">
-                                        <span class="icon-new folder"></span>
-                                        <span class="folder-name">{{ item.name }}</span>
+                                    <span class="folder-inline-wrapper">
+                                        <span class="folder-open">
+                                            <span class="icon-new folder"></span>
+                                            <span class="folder-name-and-tags">
+                                                <span class="folder-name">{{ item.name }}</span>
+                                            </span>
+                                        </span>
                                     </span>
                                     {% else %}
                                     <span class="file-tags">

@@ -1,6 +1,19 @@
 <!-- ///////////////////////////////// TAB 2 - CONTENT - START ///////////////////////////////// -->
 <div class="tab-manage-materials-page">
 
+    <style>
+        #materials_column_2 #materials_Actions.hidden_buttons {
+            left: 0;
+            right: auto;
+            min-width: 0;
+            width: 272px;
+        }
+
+        #materials_column_2 #materials_Actions.hidden_buttons button {
+            box-sizing: border-box;
+        }
+    </style>
+
     {% set searchTerm = data.filtersSearch | default('') %}
     {% set isSearchResults = (searchTerm | trim | length > 0) %}
 
