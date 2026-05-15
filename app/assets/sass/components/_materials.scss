@@ -4738,3 +4738,151 @@ thead th .govuk-button {
 }
 
 // End of 12 March 2026
+
+
+// Version 15 transfer materials
+
+.transfer-disconnect-panel {
+     display: flex;
+     justify-content: flex-end;
+     align-items: center;
+}
+
+.transfer-actions-row .materials-toolbar {
+     margin-bottom: 0 !important;
+}
+
+.transfer-actions-row > .govuk-grid-column-full {
+     display: flex;
+     align-items: center;
+}
+
+#transfer_materials_column .transfer-actions-row {
+     margin-left: 30px !important;
+     margin-right: 15px;
+}
+
+#transfer_materials_column .transfer-actions-row > .govuk-grid-column-full,
+#transfer_materials_column .transfer-actions-row .govuk-grid-column-one-half:first-child {
+     padding-left: 0;
+}
+
+#transfer_materials_column .version-15-transfer-table {
+     margin-left: 30px;
+     margin-right: 15px;
+}
+
+.version-15-transfer-table {
+     #transfer_materials_table .transfer-select-column,
+     #transfer_shared_drive_table .transfer-select-column {
+          width: 48px;
+          min-width: 48px;
+          padding-right: 0;
+          white-space: nowrap;
+     }
+
+     table {
+          table-layout: fixed;
+     }
+
+     .transfer-title-column {
+          width: auto;
+     }
+
+     .transfer-date-column {
+          width: 205px;
+     }
+
+     .transfer-size-column {
+          width: 90px;
+     }
+
+     .transfer-preview-column {
+          width: 90px;
+     }
+
+     #transfer_materials_table .transfer-select-column .govuk-checkboxes,
+     #transfer_materials_table .transfer-select-column .govuk-checkboxes--small,
+     #transfer_shared_drive_table .transfer-select-column .govuk-checkboxes,
+     #transfer_shared_drive_table .transfer-select-column .govuk-checkboxes--small {
+          margin-left: 0 !important;
+          padding-left: 0 !important;
+     }
+
+     #transfer_materials_table th.title_column,
+     #transfer_materials_table td.title_column,
+     #transfer_shared_drive_table th.title_column,
+     #transfer_shared_drive_table td.title_column {
+          padding-left: 12px;
+     }
+
+     #transfer_materials_table .folder-name-and-tags,
+     #transfer_shared_drive_table .folder-name-and-tags {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+     }
+
+     #transfer_materials_table .folder-inline-wrapper,
+     #transfer_shared_drive_table .folder-inline-wrapper {
+          display: inline-flex;
+          align-items: center;
+     }
+
+     #transfer_materials_table .folder-open,
+     #transfer_shared_drive_table .folder-open {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 19px !important;
+     }
+
+     #transfer_materials_table .folder-open .folder-name,
+     #transfer_shared_drive_table .folder-open .folder-name {
+          color: #1d70b8;
+          text-decoration: underline;
+          text-decoration-thickness: max(1px, .0625rem);
+          text-underline-offset: .1em;
+     }
+}
+
+.transfer-view-shared-drive {
+     font-size: 19px !important;
+     align-self: center;
+     margin-left: 24px;
+}
+
+#transfer-move-selected[hidden] {
+     display: none;
+}
+
+#transfer_materials_column #transfer_Actions.hidden_buttons {
+     left: 0;
+     right: auto;
+     min-width: 0;
+     width: 272px;
+}
+
+#transfer_materials_column #transfer_Actions.hidden_buttons button {
+     box-sizing: border-box;
+}
+
+#transfer_shared_drive_table .title_column .govuk-button--link {
+     font-size: 19px !important;
+}
+
+#transfer_shared_drive_table .title_column form {
+     margin: 0;
+}
+
+#transfer_shared_drive_table .title_column .folder-open.govuk-button--link {
+     padding: 0;
+     border: 0;
+     background: none;
+}
+
+.transfer-table-panel[hidden] {
+     display: none;
+}
+
+// End of version 15 transfer materials

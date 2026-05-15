@@ -148,7 +148,7 @@
                         {% if crumb.id == data.folderId %}
                         {{ crumb.name }}
                         {% else %}
-                        <form method="post" action="/ur-may-2026/B-off-system-MVP/case-overview-folder"
+                        <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/case-overview-folder"
                             style="display:inline;">
                             <input type="hidden" name="folderId" value="{{ crumb.id }}">
                             <input type="hidden" name="folderName" value="{{ crumb.name }}">
@@ -185,7 +185,7 @@
 
                 {% if data.materialsMode == "copy" %}
                 <span class="govuk-!-margin-top-1">Select
-                    <form method="post" action="/ur-may-2026/B-off-system-MVP/{{ data.materialsMode }}-material"
+                    <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/{{ data.materialsMode }}-material"
                         class="inline-action-form">
                         <input type="hidden" name="selected_ids" value="{{ data.materialsSelected }}">
                         <input type="hidden" name="destinationFolder" value="{{ item.id }}">
@@ -207,7 +207,7 @@
                 {% if showHomeOption %}
                 <!-- <li class="govuk-!-margin-bottom-0 govuk-!-margin-top-0">Select -->
                 <span class="govuk-!-margin-top-1">Select
-                    <form method="post" action="/ur-may-2026/B-off-system-MVP/{{ data.materialsMode }}-material"
+                    <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/{{ data.materialsMode }}-material"
                         class="inline-action-form">
                         <input type="hidden" name="selected_ids" value="{{ data.materialsSelected }}">
                         <input type="hidden" name="destinationFolder" value="{{ item.id }}">
@@ -224,7 +224,7 @@
                 <!-- </ul> -->
 
                 <p class="govuk-body govuk-!-margin-bottom-1">
-                <form method="post" action="/ur-may-2026/B-off-system-MVP/set-materials-mode" style="display:inline;">
+                <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/set-materials-mode" style="display:inline;">
                     <input type="hidden" name="mode" value="">
                     <input type="hidden" name="selected_ids" value="">
                     <button type="submit" class="govuk-link govuk-link--no-visited-state suspect govuk-!-margin-top-2">
@@ -256,7 +256,7 @@
 
                             <div class="hidden_buttons" id="materials_Actions">
 
-                                <form method="post" action="/ur-may-2026/B-off-system-MVP/start-copy" id="copyForm">
+                                <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/start-copy" id="copyForm">
                                     <input type="hidden" name="mode" value="copy">
                                     <input type="hidden" name="selected_ids" id="copy_selected_ids">
                                     <button id="copyButton" class="govuk-button" type="submit">
@@ -264,7 +264,7 @@
                                     </button>
                                 </form>
 
-                                <form method="post" action="/ur-may-2026/B-off-system-MVP/set-materials-mode"
+                                <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/set-materials-mode"
                                     id="moveForm">
                                     <input type="hidden" name="mode" value="move">
                                     <input type="hidden" name="selected_ids" id="move_selected_ids">
@@ -273,7 +273,7 @@
                                     </button>
                                 </form>
 
-                                <form method="post" action="/ur-may-2026/B-off-system-MVP/rename-from-list"
+                                <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/rename-from-list"
                                     id="renameForm">
                                     <!-- <input type="hidden" name="material_selected" id="rename_selected"> -->
                                     <button id="renameButton" class="govuk-button govuk-button--disabled"
@@ -295,7 +295,7 @@
                                 </button>
 
                                 <form id="discardForm" method="post"
-                                    action="../../../ur-may-2026/B-off-system-MVP/B-discard_material">
+                                    action="../../../ur-may-2026-closed/B-off-system-MVP/B-discard_material">
                                     <input id="material_selected" name="material_selected" type="hidden" value="">
                                     <button id="discardButton" class="govuk-button govuk-button--disabled"
                                         type="submit">
@@ -306,14 +306,14 @@
                             </div>
 
                             <button type="button" class="govuk-button govuk-button--secondary"
-                                onclick="window.location.href='/ur-may-2026/B-off-system-MVP/new-folder';">
+                                onclick="window.location.href='/ur-may-2026-closed/B-off-system-MVP/new-folder';">
                                 New folder
                             </button>
                         </div>
                     </div>
 
                 </div>
-                <form id="bulkActionForm" method="post" action="/ur-may-2026/B-off-system-MVP/materials-action"
+                <form id="bulkActionForm" method="post" action="/ur-may-2026-closed/B-off-system-MVP/materials-action"
                     class="govuk-!-display-none">
                     <input type="hidden" name="action" id="bulkActionType" value="">
                     <input type="hidden" name="selectedId" id="bulkSelectedId" value="">
@@ -516,7 +516,7 @@
                             data.materialsSelected) %}
 
                             {% if data.materialsMode == "copy" %}
-                            <form method="post" action="/ur-may-2026/B-off-system-MVP/copy-material"
+                            <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/copy-material"
                                 class="inline-action-form">
                                 <input type="hidden" name="selected_ids" value="{{ data.materialsSelected }}">
                                 <input type="hidden" name="destinationFolder" value="{{ item.id }}">
@@ -526,7 +526,7 @@
                             </form>
 
                             {% elseif data.materialsMode == "move" %}
-                            <form method="post" action="/ur-may-2026/B-off-system-MVP/move-material"
+                            <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/move-material"
                                 class="inline-action-form">
                                 <input type="hidden" name="selected_ids" value="{{ data.materialsSelected }}">
                                 <input type="hidden" name="destinationFolder" value="{{ item.id }}">
@@ -538,7 +538,7 @@
 
                             {% endif %}
 
-                            <form method="post" action="/ur-may-2026/B-off-system-MVP/case-overview-folder">
+                            <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/case-overview-folder">
                                 <input type="hidden" name="folderId" value="{{ item.id }}">
                                 <input type="hidden" name="folderName" value="{{ item.name }}">
                                 <button type="submit"
