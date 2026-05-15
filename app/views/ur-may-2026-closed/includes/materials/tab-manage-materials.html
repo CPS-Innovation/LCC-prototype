@@ -17,8 +17,8 @@
         </h2>
 
         <p class="govuk-body govuk-!-margin-left-3 govuk-!-margin-bottom-3">
-            You can add, rename or remove materials and folders. You can also
-            <a class="govuk-link">manage materials and folders on Egress</a>.
+            You can add, rename or remove materials and folders. 
+            <!-- You can also <a class="govuk-link">manage materials and folders on Egress</a>. -->
         </p>
         <!-- <p class="govuk-!-margin-left-3">To rename multiple items, select them and choose 'Rename selected items' from Actions on selection.</p> -->
         <div class="materials-aligned">
@@ -42,32 +42,155 @@
         <div class="govuk-grid-column-full" id="materials_column_2">
 
             <!-- Success banner -->
+            {% macro renderTreeItems(nodes, prefix='') %}
+                {% for node in nodes %}
+                    {% if node.isFolder %}
+                        {% if node.renamedTo %}
+                            {% set folderLabel = node.name ~ ' → ' ~ node.renamedTo %}
+                        {% else %}
+                            {% set folderLabel = node.name %}
+                        {% endif %}
+                        {% if prefix %}
+                            {% set folderPath = prefix ~ ' > ' ~ folderLabel %}
+                        {% else %}
+                            {% set folderPath = folderLabel %}
+                        {% endif %}
+                        <li class="no-bullet" style="list-style-type:none; margin-left:-1em; margin-bottom: 6px;">
+                            <span class="icon-new folder"></span>
+                            <strong>{{ folderPath }}</strong>
+                        </li>
+                        {% if node.children and (node.children | length) > 0 %}
+                            {{ renderTreeItems(node.children, folderPath) }}
+                        {% endif %}
+                    {% else %}
+                        <li>{{ node.name }}</li>
+                    {% endif %}
+                {% endfor %}
+            {% endmacro %}
+
             {% macro renderTree(nodes) %}
             <ul class="govuk-list govuk-list--bullet">
-                {% for node in nodes %}
-
-                {% if node.isFolder %}
-                <li class="no-bullet" style="list-style-type:none; margin-left:-1em;">
-
-                    <span class="icon-new folder"></span>
-                    <strong>{{ node.name }}</strong>
-
-                    {% if node.children and (node.children | length) > 0 %}
-                    {{ renderTree(node.children) }}
-                    {% endif %}
-                </li>
-
-                {% else %}
-                <li>
-                    {{ node.name }}
-                </li>
-                {% endif %}
-
-                {% endfor %}
+                {{ renderTreeItems(nodes) }}
             </ul>
             {% endmacro %}
 
-            {% if copySuccess %}
+            {% if copyConflictLoading %}
+            <meta http-equiv="refresh" content="10;url=/ur-may-2026-closed/B-off-system-MVP/copy-conflict-result">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <div id="copy-conflict-loading" class="govuk-notification-banner materials-notification--white govuk-!-margin-bottom-4"
+                        role="status" aria-live="polite">
+                        <div class="govuk-notification-banner__content">
+                            <div class="hods-loading-spinner govuk-!-margin-bottom-3">
+                                <div class="hods-loading-spinner__spinner" aria-hidden="true"></div>
+                            </div>
+                            <h3 class="govuk-notification-banner__heading">Copying materials</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% elseif copyConflictPending %}
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-three-quarters">
+                    <div id="copy-conflict-error" class="govuk-error-summary govuk-!-margin-bottom-4" data-module="govuk-error-summary">
+                        <div role="alert">
+                            <h2 class="govuk-error-summary__title" style="color:#d4351c;">Some materials already exist</h2>
+                            <div style="color:#0b0c0c; padding: 0 20px 20px;">
+                                <p class="govuk-body govuk-!-margin-bottom-2 govuk-!-margin-top-3" style="color:#0b0c0c;">{{ copyConflictMessage }}</p>
+                                <p class="govuk-body govuk-!-margin-bottom-0" style="color:#0b0c0c;">To continue, you can:</p>
+                                <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-1 govuk-!-margin-bottom-4" style="color:#0b0c0c; padding-left: 20px; margin-left: 0; line-height: 1.2;">
+                                    <li style="margin-bottom: 0; padding-bottom: 0; line-height: 1.2;">rename the files</li>
+                                    <li style="line-height: 1.2;">choose a different location</li>
+                                </ul>
+                                {% if copyConflictItems and (copyConflictItems | length > 0) %}
+                                <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-4" style="color:#0b0c0c;">The items that already exist:</p>
+                                <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-1 govuk-!-margin-bottom-0" style="color:#0b0c0c; padding-left: 20px; margin-left: 0;">
+                                    {% for itemName in copyConflictItems %}
+                                    <li style="margin-bottom: 0;">{{ itemName }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% elseif moveConflictLoading %}
+            <meta http-equiv="refresh" content="10;url=/ur-may-2026-closed/B-off-system-MVP/move-conflict-result">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <div class="govuk-notification-banner materials-notification--white govuk-!-margin-bottom-4"
+                        role="status" aria-live="polite">
+                        <div class="govuk-notification-banner__content">
+                            <div class="hods-loading-spinner govuk-!-margin-bottom-3">
+                                <div class="hods-loading-spinner__spinner" aria-hidden="true"></div>
+                            </div>
+                            <h3 class="govuk-notification-banner__heading">Moving materials</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% elseif moveConflictPending %}
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-three-quarters">
+                    <div class="govuk-error-summary govuk-!-margin-bottom-4" data-module="govuk-error-summary">
+                        <div role="alert">
+                            <h2 class="govuk-error-summary__title" style="color:#d4351c;">Some materials already exist</h2>
+                            <div style="color:#0b0c0c; padding: 0 20px 20px;">
+                                <p class="govuk-body govuk-!-margin-bottom-2 govuk-!-margin-top-3" style="color:#0b0c0c;">{{ moveConflictMessage }}</p>
+                                <p class="govuk-body govuk-!-margin-bottom-0" style="color:#0b0c0c;">To continue, you can:</p>
+                                <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-1 govuk-!-margin-bottom-4" style="color:#0b0c0c; padding-left: 20px; margin-left: 0; line-height: 1.2;">
+                                    <li style="margin-bottom: 0; padding-bottom: 0; line-height: 1.2;">rename the files</li>
+                                    <li style="margin-bottom: 0; padding-bottom: 0; line-height: 1.2;">choose a different location</li>
+                                </ul>
+                                {% if moveConflictItems and (moveConflictItems | length > 0) %}
+                                <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-4" style="color:#0b0c0c;">The items that already exist:</p>
+                                <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-1 govuk-!-margin-bottom-0" style="color:#0b0c0c; padding-left: 20px; margin-left: 0;">
+                                    {% for itemName in moveConflictItems %}
+                                    <li style="margin-bottom: 0;">{{ itemName }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if renameBlockedLoadingName %}
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <div class="govuk-notification-banner materials-notification--white govuk-!-margin-bottom-4"
+                        role="status" aria-live="polite" id="rename-blocked-loading-panel">
+                        <div class="govuk-notification-banner__content">
+                            <div class="hods-loading-spinner govuk-!-margin-bottom-3" id="rename-blocked-loading-spinner">
+                                <div class="hods-loading-spinner__spinner" aria-hidden="true"></div>
+                            </div>
+                            <h3 class="govuk-notification-banner__heading" id="rename-blocked-loading-heading">Renaming</h3>
+                            <div id="rename-blocked-loading-message"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                window.setTimeout(function () {
+                    var panel = document.getElementById('rename-blocked-loading-panel');
+                    var spinner = document.getElementById('rename-blocked-loading-spinner');
+                    var heading = document.getElementById('rename-blocked-loading-heading');
+                    var message = document.getElementById('rename-blocked-loading-message');
+
+                    if (panel) panel.setAttribute('role', 'alert');
+                    if (spinner) spinner.style.display = 'none';
+                    if (heading) heading.textContent = 'Material in use';
+                    if (message) {
+                        message.innerHTML = '<p class="govuk-body">Some materials cannot be renamed because they are in use.</p><p class="govuk-body">Close the items and then try again.</p><ul class="govuk-list govuk-list--bullet"><li>{{ renameBlockedLoadingName }}</li></ul>';
+                    }
+                }, 10000);
+            </script>
+            {% endif %}
+
+            {% if copySuccess and not copyConflictLoading %}
             <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white govuk-!-margin-bottom-4"
                 role="alert" data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
@@ -82,7 +205,7 @@
                     <p class="govuk-body">
                         They are in:
                         <a class="govuk-link"
-                            href="/ur-may-2026/B-off-system-MVP/03-case-overview?activeTab=tab-2-content&folderId={{ copyDestinationId }}">
+                            href="/ur-may-2026-closed/B-off-system-MVP/03-case-overview?activeTab=tab-2-content&folderId={{ copyDestinationId }}">
                             {{ copyDestinationName }}
                         </a>
                     </p>
@@ -108,7 +231,7 @@
                 </div>
             </div>
 
-            {% elseif moveSuccess %}
+            {% elseif moveSuccess and not moveConflictLoading %}
             <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white govuk-!-margin-bottom-4"
                 role="alert" data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
@@ -123,7 +246,7 @@
                     <p class="govuk-body">
                         They are in:
                         <a class="govuk-link"
-                            href="/ur-may-2026/B-off-system-MVP/03-case-overview?activeTab=tab-2-content&folderId={{ moveDestinationId }}">
+                            href="/ur-may-2026-closed/B-off-system-MVP/03-case-overview?activeTab=tab-2-content&folderId={{ moveDestinationId }}">
                             {{ moveDestinationName }}
                         </a>
                     </p>
@@ -191,7 +314,7 @@
                             {# Special override:
                             If we're on Home AND in search mode, make Home clickable to clear search #}
                             {% if isHome and inSearchMode %}
-                            <form method="post" action="/ur-may-2026/B-off-system-MVP/clear-search"
+                            <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/clear-search"
                                 style="display:inline;">
                                 <button type="submit" class="govuk-breadcrumbs__link breadcrumb-button">
                                     {{ crumb.name }}
@@ -204,7 +327,7 @@
 
                             {# Otherwise: clickable crumb goes to that folder #}
                             {% else %}
-                            <form method="post" action="/ur-may-2026/B-off-system-MVP/case-overview-folder"
+                            <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/case-overview-folder"
                                 style="display:inline;">
                                 <input type="hidden" name="folderId" value="{{ crumb.id }}">
                                 <input type="hidden" name="folderName" value="{{ crumb.name }}">
@@ -247,7 +370,7 @@
 
                                 <div class="govuk-details__text govuk-!-margin-left-0">
                                     <form method="post"
-                                        action="/ur-may-2026/B-off-system-MVP/materials-search" novalidate>
+                                        action="/ur-may-2026-closed/B-off-system-MVP/materials-search" novalidate>
                                         <div class="govuk-form-group govuk-!-margin-bottom-2">
                                             <label class="govuk-label govuk-label--s govuk-!-margin-bottom-3"
                                                 for="materialsSearch">Search</label>
@@ -263,10 +386,10 @@
                                         </div>
                                     </form>
                                     {% if data.filtersSearch and data.filtersSearch | trim | length > 0 %}
-                                    <form method="post" action="/ur-may-2026/B-off-system-MVP/clear-search"
+                                    <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/clear-search"
                                         class="govuk-!-margin-top-2">
                                         <button type="submit"
-                                            formaction="/ur-may-2026/B-off-system-MVP/clear-search"
+                                            formaction="/ur-may-2026-closed/B-off-system-MVP/clear-search"
                                             class="govuk-link clear-search-button">
                                             Clear search
                                         </button>
@@ -292,7 +415,7 @@
                                     <div class="hidden_buttons" id="materials_Actions">
 
                                         <form method="post"
-                                            action="/ur-may-2026/B-off-system-MVP/start-copy"
+                                            action="/ur-may-2026-closed/B-off-system-MVP/start-copy"
                                             id="copyForm">
                                             <input type="hidden" name="mode" value="copy">
                                             <input type="hidden" name="selected_ids" id="copy_selected_ids">
@@ -302,7 +425,7 @@
                                         </form>
 
                                         <form method="post"
-                                            action="/ur-may-2026/B-off-system-MVP/start-move"
+                                            action="/ur-may-2026-closed/B-off-system-MVP/start-move"
                                             id="moveForm">
                                             <input type="hidden" name="mode" value="move">
                                             <input type="hidden" name="selected_ids" id="move_selected_ids">
@@ -312,7 +435,7 @@
                                         </form>
 
                                         <form method="post"
-                                            action="/ur-may-2026/B-off-system-MVP/rename-from-list"
+                                            action="/ur-may-2026-closed/B-off-system-MVP/rename-from-list"
                                             id="renameForm">
                                             <input type="hidden" name="selected_ids" id="rename_selected_ids" value="">
                                             <button id="renameButton" class="govuk-button govuk-button--disabled"
@@ -326,7 +449,7 @@
                                             Update
                                         </button>
 
-                                        <form method="post" action="/ur-may-2026/B-off-system-MVP/mark-as-read">
+                                        <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/mark-as-read">
                                             <input type="hidden" name="selected_ids" id="mark_read_selected_ids"
                                                 value="">
                                             <button type="submit" id="markReadButton"
@@ -335,7 +458,7 @@
                                             </button>
                                         </form>
 
-                                        <form method="post" action="/ur-may-2026/B-off-system-MVP/mark-as-unread">
+                                        <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/mark-as-unread">
                                             <input type="hidden" name="selected_ids" id="mark_unread_selected_ids"
                                                 value="">
                                             <button type="submit" id="markUnreadButton"
@@ -345,7 +468,7 @@
                                         </form> -->
 
                                         <form id="discardForm" method="post"
-                                            action="../../../ur-may-2026/B-off-system-MVP/B-discard_material">
+                                            action="../../../ur-may-2026-closed/B-off-system-MVP/delete">
                                             <input id="material_selected" name="material_selected" type="hidden"
                                                 value="">
                                             <button id="discardButton" class="govuk-button govuk-button--disabled"
@@ -357,7 +480,7 @@
                                     </div>
 
                                     <button type="button" class="govuk-button govuk-button--secondary"
-                                        onclick="window.location.href='/ur-may-2026/B-off-system-MVP/new-folder';"
+                                        onclick="window.location.href='/ur-may-2026-closed/B-off-system-MVP/new-folder';"
                                         {% if isSearchResults %}disabled aria-disabled="true" {% endif %}>
                                         New folder
                                     </button>
@@ -375,7 +498,7 @@
 
                                     <div class="hidden_buttons hidden_buttons--general" id="general_Actions" hidden>
 
-                                        <form method="get" action="/ur-may-2026/B-off-system-MVP/order-materials"
+                                        <form method="get" action="/ur-may-2026-closed/B-off-system-MVP/order-materials"
                                             id="orderMaterialsForm">
                                             <input type="hidden" name="folderId"
                                                 value="{{ data.folderId | default(0) }}">
@@ -384,7 +507,7 @@
                                             </button>
                                         </form>
 
-                                        <form method="get" action="/ur-may-2026/B-off-system-MVP/new-folder"
+                                        <form method="get" action="/ur-may-2026-closed/B-off-system-MVP/new-folder"
                                             id="newFolderForm">
                                             <button id="newFolderButton" class="govuk-button" type="submit">
                                                 Create new folder
@@ -399,7 +522,7 @@
                     <div class="materials-toolbar__spacer" aria-hidden="true"></div>
                 </div>
                 <form id="bulkActionForm" method="post"
-                    action="/ur-may-2026/B-off-system-MVP/materials-action" class="govuk-!-display-none">
+                    action="/ur-may-2026-closed/B-off-system-MVP/materials-action" class="govuk-!-display-none">
                     <input type="hidden" name="action" id="bulkActionType" value="">
                     <input type="hidden" name="selectedId" id="bulkSelectedId" value="">
                     <input type="hidden" name="selectedName" id="bulkSelectedName" value="">
@@ -427,6 +550,28 @@
 
     {% else %}
 
+{% if pagination and pagination.showPagination %}
+<div class="govuk-!-margin-left-6 govuk-!-margin-bottom-4">
+    <div style="max-width: 33.3333%;">
+        <form method="get" action="/ur-may-2026-closed/B-off-system-MVP/03-case-overview">
+            <input type="hidden" name="page" value="1">
+            <input type="hidden" name="activityPage" value="{{ materialsActivityPagination.page if materialsActivityPagination else 1 }}">
+            <div class="govuk-form-group govuk-!-margin-bottom-0" style="display:flex; align-items:center; gap:16px;">
+                <label class="govuk-label govuk-!-margin-bottom-0" for="manage-materials-page-size">
+                    Display
+                </label>
+                <select class="govuk-select" id="manage-materials-page-size" name="pageSize" onchange="this.form.submit()">
+                    {% for option in pageSizeOptions %}
+                    <option value="{{ option }}" {% if pagination.pageSize == option %}selected{% endif %}>{{ option }} results per page</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endif %}
+
     <!-- <div class="govuk-inset-text govuk-!-margin-left-6 govuk-!-margin-top-0"> -->
     {% set folderId = data.folderId | default(0) %}
     {% set meta = (data.orderMeta and data.orderMeta[folderId | string]) %}
@@ -435,14 +580,14 @@
     {% if meta %}
     <p class="govuk-body govuk-!-margin-left-6">
         {{ meta.person }} last changed the order of this folder on {{ meta.date }}.
-        <a class="govuk-link" href="/ur-may-2026/B-off-system-MVP/order-materials?folderId={{ folderId }}">
+        <a class="govuk-link" href="/ur-may-2026-closed/B-off-system-MVP/order-materials?folderId={{ folderId }}">
             Change order
         </a>
     </p>
     {% else %}
     <p class="govuk-body govuk-!-margin-left-6">
         This folder has not been ordered yet.
-        <a class="govuk-link" href="/ur-may-2026/B-off-system-MVP/order-materials?folderId={{ folderId }}">
+        <a class="govuk-link" href="/ur-may-2026-closed/B-off-system-MVP/order-materials?folderId={{ folderId }}">
             Change order
         </a>
     </p>
@@ -489,14 +634,6 @@
                             File or folder
                         </button>
                     </th>
-
-                    <th scope="col" class="govuk-table__header">
-                        <button type="button" class="govuk-link govuk-link--no-visited-state table-sort"
-                            data-sort="type">
-                            Type
-                        </button>
-                    </th>
-
 
                     <th scope="col" class="govuk-table__header"></th>
                 </tr>
@@ -545,7 +682,7 @@
                         <div class="folder-inline-wrapper">
 
                             <form method="post"
-                                action="/ur-may-2026/B-off-system-MVP/case-overview-folder">
+                                action="/ur-may-2026-closed/B-off-system-MVP/case-overview-folder">
                                 <input type="hidden" name="folderId" value="{{ item.id }}">
                                 <input type="hidden" name="folderName" value="{{ item.name }}">
 
@@ -569,19 +706,6 @@
                                 </button>
                             </form>
                         </div>
-                    </td>
-
-                    <!-- Status (usually blank or basic tag for folders) -->
-                    <td class="govuk-table__cell category_column">
-                        {% if item.type %}
-                        {% set itemTypeParts = item.type.split(' – ') %}
-                        {% if itemTypeParts.length > 1 %}
-                        <div class="govuk-hint folder-path">{{ itemTypeParts[itemTypeParts.length - 1] }}</div>
-                        <div>{{ itemTypeParts[0] }}</div>
-                        {% else %}
-                        <div>{{ item.type }}</div>
-                        {% endif %}
-                        {% endif %}
                     </td>
 
                     <!-- Copy / Move here action -->
@@ -635,19 +759,6 @@
                         </div>
                     </td>
 
-                    <!-- Status -->
-                    <td class="govuk-table__cell">
-                        {% if item.type %}
-                        {% set itemTypeParts = item.type.split(' – ') %}
-                        {% if itemTypeParts.length > 1 %}
-                        <div class="govuk-hint folder-path">{{ itemTypeParts[itemTypeParts.length - 1] }}</div>
-                        <div>{{ itemTypeParts[0] }}</div>
-                        {% else %}
-                        <div>{{ item.type }}</div>
-                        {% endif %}
-                        {% endif %}
-                    </td>
-
                     <!-- Preview for files -->
                     <td class="govuk-table__cell toggle-panel">
                         <button type="button" class="govuk-button show_material_actions show-case"
@@ -663,7 +774,7 @@
                 {% if not item.folder %}
                 <tr class="govuk-table__row hidden_row sortable-ignore" data-row_id="{{ item.id }}"
                     style="display:none;">
-                    <td colspan="{{ 6 if showOrderColumn else 4 }}">
+                    <td colspan="3">
                         <div class="document_holder">
                             <embed src="{{ item.previewLink }}" type="application/pdf">
                         </div>
@@ -684,6 +795,58 @@
         </table>
     </div>
 </div>
+{% if pagination and pagination.showPagination %}
+<div class="govuk-!-margin-left-6">
+    <nav class="govuk-pagination govuk-!-margin-top-6" aria-label="Pagination">
+        {% if pagination.page > 1 %}
+        <div class="govuk-pagination__prev">
+            <a class="govuk-link govuk-pagination__link"
+                href="/ur-may-2026-closed/B-off-system-MVP/03-case-overview?page={{ pagination.page - 1 }}&pageSize={{ pagination.pageSize }}&activityPage={{ materialsActivityPagination.page if materialsActivityPagination else 1 }}"
+                rel="prev">
+                <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                    <path d="m6.5938-0.0078125-6.4688 6.4688 6.4688 6.4688 1.4141-1.4141-4.0625-4.0547h11.102v-2h-11.102l4.0625-4.0625-1.4141-1.4062z"></path>
+                </svg>
+                <span class="govuk-pagination__link-title">Previous</span>
+            </a>
+        </div>
+        {% endif %}
+
+        <ul class="govuk-pagination__list">
+            {% for item in pagination.pageItems %}
+            {% if item.ellipsis %}
+            <li class="govuk-pagination__item govuk-pagination__item--ellipses">
+                &ctdot;
+            </li>
+            {% else %}
+            <li class="govuk-pagination__item {% if item.number == pagination.page %}govuk-pagination__item--current{% endif %}">
+                {% if item.number == pagination.page %}
+                <span class="govuk-pagination__link">{{ item.number }}</span>
+                {% else %}
+                <a class="govuk-link govuk-pagination__link"
+                    href="/ur-may-2026-closed/B-off-system-MVP/03-case-overview?page={{ item.number }}&pageSize={{ pagination.pageSize }}&activityPage={{ materialsActivityPagination.page if materialsActivityPagination else 1 }}">
+                    {{ item.number }}
+                </a>
+                {% endif %}
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+
+        {% if pagination.page < pagination.totalPages %}
+        <div class="govuk-pagination__next">
+            <a class="govuk-link govuk-pagination__link"
+                href="/ur-may-2026-closed/B-off-system-MVP/03-case-overview?page={{ pagination.page + 1 }}&pageSize={{ pagination.pageSize }}&activityPage={{ materialsActivityPagination.page if materialsActivityPagination else 1 }}"
+                rel="next">
+                <span class="govuk-pagination__link-title">Next</span>
+                <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                    <path d="m8.4062-0.0078125-1.4141 1.4062 4.0625 4.0625h-11.102v2h11.102l-4.0625 4.0547 1.4141 1.4141 6.4688-6.4688-6.4688-6.4688z"></path>
+                </svg>
+            </a>
+        </div>
+        {% endif %}
+    </nav>
+</div>
+{% endif %}
 {% endif %}
 
 <div class="govuk-grid-row govuk-!-margin-left-2">
@@ -702,7 +865,7 @@
 
                         <div class="hidden_buttons" id="materials_Actions">
 
-                            <form method="post" action="/ur-may-2026/B-off-system-MVP/start-copy"
+                            <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/start-copy"
                                 id="copyForm">
                                 <input type="hidden" name="mode" value="copy">
                                 <input type="hidden" name="selected_ids" id="copy_selected_ids">
@@ -711,7 +874,7 @@
                                 </button>
                             </form>
 
-                            <form method="post" action="/ur-may-2026/B-off-system-MVP/start-move"
+                            <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/start-move"
                                 id="moveForm">
                                 <input type="hidden" name="mode" value="move">
                                 <input type="hidden" name="selected_ids" id="move_selected_ids">
@@ -720,7 +883,7 @@
                                 </button>
                             </form>
 
-                            <form method="post" action="/ur-may-2026/B-off-system-MVP/rename-from-list"
+                            <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/rename-from-list"
                                 id="renameForm">
                                 <input type="hidden" name="selected_ids" id="rename_selected_ids" value="">
                                 <button id="renameButton" class="govuk-button govuk-button--disabled" type="submit">
@@ -729,7 +892,7 @@
                             </form>
 
                             <form id="discardForm" method="post"
-                                action="../../../ur-may-2026/B-off-system-MVP/B-discard_material">
+                                action="../../../ur-may-2026-closed/B-off-system-MVP/delete">
                                 <input id="material_selected" name="material_selected" type="hidden" value="">
                                 <button id="discardButton" class="govuk-button govuk-button--disabled" type="submit">
                                     Delete
@@ -739,7 +902,7 @@
                         </div>
 
                         <button type="button" class="govuk-button govuk-button--secondary"
-                            onclick="window.location.href='/ur-may-2026/B-off-system-MVP/new-folder';" {%
+                            onclick="window.location.href='/ur-may-2026-closed/B-off-system-MVP/new-folder';" {%
                             if isSearchResults %}disabled aria-disabled="true" {% endif %}>
                             New folder
                         </button>

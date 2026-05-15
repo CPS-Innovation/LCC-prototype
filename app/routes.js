@@ -58,7 +58,7 @@ router.use('/version-14', require('./views/version-14/_routes'))
 router.use('/manage-materials-beta-v1', require('./views/manage-materials-beta-v1/_routes'))
 router.use('/ur-apr-2026-closed', require('./views/ur-apr-2026-closed/_routes'))
 router.use('/version-15', require('./views/version-15/_routes'))
-router.use('/ur-may-2026', require('./views/ur-may-2026/_routes'))
+router.use('/ur-may-2026-closed', require('./views/ur-may-2026-closed/_routes'))
 
 
 module.exports = router

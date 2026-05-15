@@ -18,7 +18,7 @@ Rename files or folders – {{ serviceName }} – Prototype
 {% set folderId = folderId | default(data.folderId | default(0)) %}
 {% set breadcrumbs = breadcrumbs | default([]) %}
 
-<div class="govuk-grid-row ur-may-2026 order-materials-page">
+<div class="govuk-grid-row ur-may-2026-closed order-materials-page">
     <div class="govuk-grid-column-full">
 
         <h1 class="govuk-heading-l">Order materials for {{ data.folderName }}</h1>
@@ -39,7 +39,7 @@ Rename files or folders – {{ serviceName }} – Prototype
         {% endif %}
 
 
-        <form method="post" action="/ur-may-2026/B-off-system-MVP/order-materials" novalidate>
+        <form method="post" action="/ur-may-2026-closed/B-off-system-MVP/order-materials" novalidate>
             <!-- <p class="govuk-body govuk-!-margin-bottom-7">You are renaming {{ data.renameCount }} {% if data.renameCount == 1 %}item{% else %}items{% endif %}. Changes will apply when you save.</p> -->
 
 
@@ -122,7 +122,7 @@ Rename files or folders – {{ serviceName }} – Prototype
                                 <td class="govuk-table__cell title_column">
                                     <div class="folder-inline-wrapper">
 
-                                        <!-- <form method="get" action="/ur-may-2026/B-off-system-MVP/order-materials">
+                                        <!-- <form method="get" action="/ur-may-2026-closed/B-off-system-MVP/order-materials">
                                             <input type="hidden" name="folderId" value="{{ item.id }}">
                                             <input type="hidden" name="folderName" value="{{ item.name }}">
                                             <button type="submit"
@@ -150,7 +150,7 @@ Rename files or folders – {{ serviceName }} – Prototype
                                         {% for item in children %}
                                         {% if item.folder %}
                                         <form id="open-folder-{{ item.id }}" method="get"
-                                            action="/ur-may-2026/B-off-system-MVP/order-materials">
+                                            action="/ur-may-2026-closed/B-off-system-MVP/order-materials">
                                             <input type="hidden" name="folderId" value="{{ item.id }}">
                                             <input type="hidden" name="folderName" value="{{ item.name }}">
                                         </form>
