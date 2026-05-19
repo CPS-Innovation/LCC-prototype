@@ -4221,9 +4221,7 @@ router.post('/B-off-system-MVP/disconnect-shared-drive', (req, res) => {
 
     if (choice === 'Yes') {
         pushMaterialsActivity(data, {
-            tag: 'Shared drive',
-            title: 'Shared Drive folder Thunderstruck disconnected from this case',
-            description: 'The Shared Drive folder Thunderstruck has been disconnected from this case.'
+            title: 'Shared Drive folder Thunderstruck disconnected from this case'
         });
         return res.redirect('/ur-may-2026-closed/B-off-system-MVP/disconnect-shared-drive-confirmation');
     }
