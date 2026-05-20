@@ -104,14 +104,22 @@
 
                 {% for entry in activityLog %}
                 <div class="hods-timeline__item">
-                    {% if entry.tag %}
+                    {% set isTransferEntry = (entry.tag == 'Transfer') or (entry.title == 'Transfer from Egress to Shared Drive') %}
+                    {% if entry.tag and not isTransferEntry %}
                     <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">{{ entry.tag }}</strong>
                     {% endif %}
-                    {% if entry.statusTag %}
+                    {% if entry.statusTag and not isTransferEntry %}
                     <strong class="govuk-tag govuk-tag--green" style="display: inline-block;">{{ entry.statusTag
                         }}</strong>
                     {% endif %}
-                    <h2 class="hods-timeline__title">{{ entry.title }}</h2>
+                    <h2 class="hods-timeline__title"{% if isTransferEntry %} style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;"{% endif %}>
+                        <span>{{ entry.title }}</span>
+                        {% if isTransferEntry and entry.statusTag %}
+                        <strong class="govuk-tag govuk-tag--green" style="display: inline-block; vertical-align: middle;">
+                            {{ entry.statusTag }}
+                        </strong>
+                        {% endif %}
+                    </h2>
                     <div style="clear: both; display: block; margin-top: 4px; margin-bottom: 10px;">
                         <p class="govuk-body-s" style="margin: 0; color: #484949;">{{ entry.dateLabel }} by {{ entry.byEmail }}</p>
                     </div>
@@ -134,7 +142,7 @@
                     {% endif %}
                     {% if entry.listItems and (entry.listItems | length > 0) %}
                     {% set useTree = entry.previewTree and (entry.previewTree | length > 0) %}
-                    {% if (entry.type == 'copy' or entry.type == 'move' or entry.type == 'delete' or entry.type == 'rename') and (entry.listItems | length > 5) %}
+                    {% if isTransferEntry or ((entry.type == 'copy' or entry.type == 'move' or entry.type == 'delete' or entry.type == 'rename') and (entry.listItems | length > 5)) %}
                     <details class="govuk-details govuk-!-margin-bottom-2 materials-activity-details">
                         <summary class="govuk-details__summary materials-activity-details__summary">
                             <span class="govuk-details__summary-text" style="font-size: 17px;">
@@ -315,7 +323,7 @@
                     <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
                     {% if data['file_locked_transfer'] == 'Try again' or data['file_locked_transfer'] == 'Duplicate
                     file' %}
-                    <p class="hods-timeline__description">1 file was transferred.</p>
+                    <p class="hods-timeline__description">1 item was transferred.</p>
                     {% elseif data['file_locked_transfer'] == 'Ignore files' %}
                     <p class="hods-timeline__description">1 file failed to transfer.</p>
                     {% endif %}
@@ -361,7 +369,7 @@
                     <p class="hods-timeline__by">by {{ data['offCMS_Username'] }} usability.testing.session@cps.gov.uk
                     </p>
                     <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
-                    <p class="hods-timeline__description">75 files were transferred.</p>
+                    <p class="hods-timeline__description">75 items were transferred.</p>
                     <p class="hods-timeline__source">
                         <span class="url-text title">Source:</span> <span class="url-text">Egress >
                             Investigator</span><br>
@@ -492,11 +500,11 @@
                     </p>
                     <p class="hods-timeline__date"><span id="">Today, 12:05pm</span></p>
                     {% if data['duplicate_files_transfer'] == 'Overwrite existing files' %}
-                    <p class="hods-timeline__description">75 files were transferred.</p>
+                    <p class="hods-timeline__description">75 items were transferred.</p>
                     {% elseif data['duplicate_files_transfer'] == 'Ignore files' %}
-                    <p class="hods-timeline__description">71 files were transferred.</p>
+                    <p class="hods-timeline__description">71 items were transferred.</p>
                     {% elseif data['duplicate_files_transfer'] == 'Duplicate files' %}
-                    <p class="hods-timeline__description">75 files were transferred.</p>
+                    <p class="hods-timeline__description">75 items were transferred.</p>
                     {% endif %}
                     <p class="hods-timeline__source">
                         <span class="url-text title">Source:</span> <span class="url-text">Egress >
@@ -639,14 +647,14 @@
                     <p class="hods-timeline__by">
                     </p>
                     <p class="hods-timeline__date"><span id="">Yesterday at 12:05pm by {{ data['offCMS_Username'] }} usability.testing.session@cps.gov.uk</span></p>
-                    <p class="hods-timeline__description">200 files were transferred.</p>
+                    <p class="hods-timeline__description">200 items were transferred.</p>
                     <div class="govuk-!-margin-bottom-2">
                         <p class="govuk-body-s govuk-!-margin-bottom-1">
                             <strong>Original location:</strong> Egress&nbsp;&nbsp;›&nbsp;&nbsp;Investigator
                         </p>
                         <p class="govuk-body-s govuk-!-margin-bottom-1">
                             <strong>New location:</strong>
-                            <a class="govuk-link" href="/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=0">Home: Thundercat</a>
+                            <a class="govuk-link" href="/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=0">Shared Drive: Thundercat</a>
                         </p>
                     </div>
                     <details class="govuk-details govuk-!-margin-bottom-2 materials-activity-details" id="activity_listing">

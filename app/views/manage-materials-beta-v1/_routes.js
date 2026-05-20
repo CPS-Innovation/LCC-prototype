@@ -1064,7 +1064,7 @@ router.post('/includes/materials/materials-filter', function (req, res) {
         const groups = {};
 
         function getFolderPath(materials, folderId) {
-            // Build "Home: Thundercat > Case management > Police" etc
+            // Build "Shared Drive: Thundercat > Case management > Police" etc
             const parts = [];
             let currentId = folderId;
 
@@ -1082,7 +1082,7 @@ router.post('/includes/materials/materials-filter', function (req, res) {
             }
 
             // Choose your preferred "root" label
-            return parts.length ? `Home: Thundercat > ${parts.join(' > ')}` : 'Home: Thundercat';
+            return parts.length ? `Shared Drive: Thundercat > ${parts.join(' > ')}` : 'Shared Drive: Thundercat';
         }
 
         materials.forEach(item => {
@@ -1200,7 +1200,7 @@ function getFolderPathLabel(materials, folderId) {
         currentId = folder.parentId;
     }
 
-    return parts.length ? `Home: Thundercat > ${parts.join(' > ')}` : 'Home: Thundercat';
+    return parts.length ? `Shared Drive: Thundercat > ${parts.join(' > ')}` : 'Shared Drive: Thundercat';
 }
 
 function getItemPathLabel(materials, item, nameOverride) {
@@ -1494,7 +1494,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
             currentId = folder.parentId;
         }
 
-        return parts.length ? `Home: Thundercat > ${parts.join(' > ')}` : 'Home: Thundercat';
+        return parts.length ? `Shared Drive: Thundercat > ${parts.join(' > ')}` : 'Shared Drive: Thundercat';
     }
 
     function buildGroupedSearchResults(materials, search) {
@@ -2656,7 +2656,7 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
         pushMaterialsActivity(req.session.data, {
             type: 'copy',
             title: 'Items copied',
-            // title: `${copiedNames.length === 1 ? copiedNames[0] : `${copiedNames.length} items`} ${copiedNames.length === 1 ? 'has' : 'have'} been copied to ${destinationFolderName || 'Home: Thundercat'} on the shared drive`,
+            // title: `${copiedNames.length === 1 ? copiedNames[0] : `${copiedNames.length} items`} ${copiedNames.length === 1 ? 'has' : 'have'} been copied to ${destinationFolderName || 'Shared Drive: Thundercat'} on the shared drive`,
             // description: 'Below is a list of documents and folders copied:',
             listItems: copiedNames,
             previewTree: copyPreviewTree,
@@ -2759,7 +2759,7 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
         pushMaterialsActivity(req.session.data, {
             type: 'move',
             title: 'Items moved',
-            // title: `${movedNames.length === 1 ? movedNames[0] : `${movedNames.length} items`} ${movedNames.length === 1 ? 'has' : 'have'} been moved to ${destinationFolderName || 'Home: Thundercat'} on the shared drive`,
+            // title: `${movedNames.length === 1 ? movedNames[0] : `${movedNames.length} items`} ${movedNames.length === 1 ? 'has' : 'have'} been moved to ${destinationFolderName || 'Shared Drive: Thundercat'} on the shared drive`,
             // description: 'Below is a list of documents and folders moved:',
             listItems: movedNames,
             previewTree: movePreviewTree,

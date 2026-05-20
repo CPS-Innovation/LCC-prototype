@@ -34,7 +34,7 @@ module.exports = function (materials) {
     }
 
     if (!crumbs.length || crumbs[0].id !== 0) {
-      crumbs.unshift({ id: 0, name: "Home: Thundercat" });
+      crumbs.unshift({ id: 0, name: "Shared Drive: Thundercat" });
     }
 
     return crumbs;

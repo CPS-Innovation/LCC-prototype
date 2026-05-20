@@ -47,20 +47,20 @@ router.use((req, res, next) => {
 function getStaticMaterialsActivityEntries(materials = []) {
     const source = String.raw`Items deleted
 Yesterday at 4:00pm by meredith.palmer@cps.gov.uk
-Location: Home: Thundercat > 4. Counsel
+Location: Shared Drive: Thundercat > 4. Counsel
 • file_0_1.docx
 • file_0_2.docx
 • file_0_3.docx
 
 Items renamed
 Yesterday at 1:45pm by pam.beesly@cps.gov.uk
-Location: Home: Thundercat > 4. Counsel
+Location: Shared Drive: Thundercat > 4. Counsel
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 
 Items deleted
 Yesterday at 1:00pm by pam.beesly@cps.gov.uk
-Location: Home: Thundercat > 4. Counsel
+Location: Shared Drive: Thundercat > 4. Counsel
 • file_2_1.docx
 • file_2_2.docx
 • file_2_3.docx
@@ -69,52 +69,52 @@ Location: Home: Thundercat > 4. Counsel
 
 Item deleted
 Yesterday at 12:00pm by dwight_schrute@cps.gov.uk
-Location: Home: Thundercat > 1. Case management
+Location: Shared Drive: Thundercat > 1. Case management
 • file_3_1.docx
 
 Items renamed
 Yesterday at 11:00am by jordan.ellis@cps.gov.uk
-Location: Home: Thundercat > 15. IDPC
+Location: Shared Drive: Thundercat > 15. IDPC
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 
 Items renamed
 Yesterday at 8:45am by sarah.khan@cps.gov.uk
-Location: Home: Thundercat > 10. Police
+Location: Shared Drive: Thundercat > 10. Police
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 • file_3.docx → file_3_v2.docx
 
 Items renamed
 Yesterday at 8:30am by sarah.khan@cps.gov.uk
-Location: Home: Thundercat > 3. Experts
+Location: Shared Drive: Thundercat > 3. Experts
 • file_1.docx → file_1_v2.docx
 
 Items not copied
 08 May 2026 at 11.05am by kelly.kapoor@cps.gov.uk
 Files with the same name already exist in the destination.
-From: Home: Thundercat > 6. Disclosure
-To: Home: Thundercat > 12. Victims and Witnesses
+From: Shared Drive: Thundercat > 6. Disclosure
+To: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_7_1.docx
 • file_7_2.docx
 
 Items moved
 08 May 2026 at 10:45am by pam.beesly@cps.gov.uk
-From: Home: Thundercat > 5. Correspondence
-To: Home: Thundercat > 3. Experts
+From: Shared Drive: Thundercat > 5. Correspondence
+To: Shared Drive: Thundercat > 3. Experts
 • file_8_1.docx
 • file_8_2.docx
 
 Items copied
 07 May 2026 at 1:15pm by sarah.khan@cps.gov.uk
-From: Home: Thundercat > 3. Experts
-To: Home: Thundercat > 11. Media
+From: Shared Drive: Thundercat > 3. Experts
+To: Shared Drive: Thundercat > 11. Media
 • file_9_1.docx
 • file_9_2.docx
 
 Items deleted
 06 May 2026 at 4:45pm by meredith.palmer@cps.gov.uk
-Location: Home: Thundercat > 12. Victims and Witnesses
+Location: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_10_1.docx
 • file_10_2.docx
 • file_10_3.docx
@@ -122,7 +122,7 @@ Location: Home: Thundercat > 12. Victims and Witnesses
 
 Items deleted
 05 May 2026 at 1:15pm by sarah.khan@cps.gov.uk
-Location: Home: Thundercat > 12. Victims and Witnesses
+Location: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_11_1.docx
 • file_11_2.docx
 • file_11_3.docx
@@ -131,36 +131,36 @@ Location: Home: Thundercat > 12. Victims and Witnesses
 
 Items copied
 04 May 2026 at 3:30pm by oscar.martinez@cps.gov.uk
-From: Home: Thundercat > 6. Disclosure
-To: Home: Thundercat > 11. Media
+From: Shared Drive: Thundercat > 6. Disclosure
+To: Shared Drive: Thundercat > 11. Media
 • file_12_1.docx
 • file_12_2.docx
 • file_12_3.docx
 
 Items deleted
 04 May 2026 at 11:30am by meredith.palmer@cps.gov.uk
-Location: Home: Thundercat > 4. Counsel
+Location: Shared Drive: Thundercat > 4. Counsel
 • file_13_1.docx
 
 Items moved
 04 May 2026 at 8:15am by kevin.malone@cps.gov.uk
-From: Home: Thundercat > 1. Case management
-To: Home: Thundercat > 6. Disclosure
+From: Shared Drive: Thundercat > 1. Case management
+To: Shared Drive: Thundercat > 6. Disclosure
 • file_14_1.docx
 • file_14_2.docx
 • file_14_3.docx
 
 Items moved
 04 May 2026 at 8:00am by sarah.khan@cps.gov.uk
-From: Home: Thundercat > 15. IDPC
-To: Home: Thundercat > 7. Finance
+From: Shared Drive: Thundercat > 15. IDPC
+To: Shared Drive: Thundercat > 7. Finance
 • file_15_1.docx
 • file_15_2.docx
 
 Items copied
 03 May 2026 at 5:00pm by meredith.palmer@cps.gov.uk
-From: Home: Thundercat > 12. Victims and Witnesses
-To: Home: Thundercat > 14. Magistrates Court
+From: Shared Drive: Thundercat > 12. Victims and Witnesses
+To: Shared Drive: Thundercat > 14. Magistrates Court
 • file_16_1.docx
 • file_16_2.docx
 • file_16_3.docx
@@ -168,18 +168,18 @@ To: Home: Thundercat > 14. Magistrates Court
 
 Items renamed
 03 May 2026 at 9:00am by pam.beesly@cps.gov.uk
-Location: Home: Thundercat > 6. Disclosure
+Location: Shared Drive: Thundercat > 6. Disclosure
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 
 Items renamed
 01 May 2026 at 6:30pm by kelly.kapoor@cps.gov.uk
-Location: Home: Thundercat > 10. Police
+Location: Shared Drive: Thundercat > 10. Police
 • file_1.docx → file_1_v2.docx
 
 Items deleted
 01 May 2026 at 6:00pm by jordan.ellis@cps.gov.uk
-Location: Home: Thundercat > 12. Victims and Witnesses
+Location: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_19_1.docx
 • file_19_2.docx
 • file_19_3.docx
@@ -187,14 +187,14 @@ Location: Home: Thundercat > 12. Victims and Witnesses
 
 Items renamed
 01 May 2026 at 2:30pm by dwight_schrute@cps.gov.uk
-Location: Home: Thundercat > 11. Media
+Location: Shared Drive: Thundercat > 11. Media
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 
 Items moved
 01 May 2026 at 1:30pm by dwight_schrute@cps.gov.uk
-From: Home: Thundercat > 4. Counsel
-To: Home: Thundercat > 12. Victims and Witnesses
+From: Shared Drive: Thundercat > 4. Counsel
+To: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_21_1.docx
 • file_21_2.docx
 • file_21_3.docx
@@ -202,7 +202,7 @@ To: Home: Thundercat > 12. Victims and Witnesses
 
 Items deleted
 01 May 2026 at 8:45am by oscar.martinez@cps.gov.uk
-Location: Home: Thundercat > 6. Disclosure
+Location: Shared Drive: Thundercat > 6. Disclosure
 • file_22_1.docx
 • file_22_2.docx
 • file_22_3.docx
@@ -211,16 +211,16 @@ Location: Home: Thundercat > 6. Disclosure
 
 Items moved
 30 April 2026 at 11:00am by kelly.kapoor@cps.gov.uk
-From: Home: Thundercat > 3. Experts
-To: Home: Thundercat > 7. Finance
+From: Shared Drive: Thundercat > 3. Experts
+To: Shared Drive: Thundercat > 7. Finance
 • file_23_1.docx
 • file_23_2.docx
 • file_23_3.docx
 
 Items moved
 29 April 2026 at 6:30pm by angela.martin@cps.gov.uk
-From: Home: Thundercat > 10. Police
-To: Home: Thundercat > 8. Lawyer working copies
+From: Shared Drive: Thundercat > 10. Police
+To: Shared Drive: Thundercat > 8. Lawyer working copies
 • file_24_1.docx
 • file_24_2.docx
 • file_24_3.docx
@@ -229,65 +229,65 @@ To: Home: Thundercat > 8. Lawyer working copies
 
 Items deleted
 29 April 2026 at 2:30pm by meredith.palmer@cps.gov.uk
-Location: Home: Thundercat > 15. IDPC
+Location: Shared Drive: Thundercat > 15. IDPC
 • file_25_1.docx
 • file_25_2.docx
 
 Items moved
 28 April 2026 at 4:45pm by jordan.ellis@cps.gov.uk
-From: Home: Thundercat > 7. Finance
-To: Home: Thundercat > 12. Victims and Witnesses
+From: Shared Drive: Thundercat > 7. Finance
+To: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_26_1.docx
 • file_26_2.docx
 
 Items copied
 28 April 2026 at 9:45am by kevin.malone@cps.gov.uk
-From: Home: Thundercat > 1. Case management
-To: Home: Thundercat > 11. Media
+From: Shared Drive: Thundercat > 1. Case management
+To: Shared Drive: Thundercat > 11. Media
 • file_27_1.docx
 
 Items copied
 27 April 2026 at 4:30pm by jordan.ellis@cps.gov.uk
-From: Home: Thundercat > 12. Victims and Witnesses
-To: Home: Thundercat > 8. Lawyer working copies
+From: Shared Drive: Thundercat > 12. Victims and Witnesses
+To: Shared Drive: Thundercat > 8. Lawyer working copies
 • file_28_1.docx
 
 Items moved
 27 April 2026 at 3:45pm by pam.beesly@cps.gov.uk
-From: Home: Thundercat > 5. Correspondence
-To: Home: Thundercat > 9. PO working copies
+From: Shared Drive: Thundercat > 5. Correspondence
+To: Shared Drive: Thundercat > 9. PO working copies
 • file_29_1.docx
 • file_29_2.docx
 
 Items deleted
 27 April 2026 at 2:15pm by kelly.kapoor@cps.gov.uk
-Location: Home: Thundercat > 6. Disclosure
+Location: Shared Drive: Thundercat > 6. Disclosure
 • file_30_1.docx
 • file_30_2.docx
 
 Items deleted
 27 April 2026 at 8:00am by kelly.kapoor@cps.gov.uk
-Location: Home: Thundercat > 1. Case management
+Location: Shared Drive: Thundercat > 1. Case management
 • file_31_1.docx
 • file_31_2.docx
 • file_31_3.docx
 
 Items copied
 24 April 2026 at 12:00pm by meredith.palmer@cps.gov.uk
-From: Home: Thundercat > 14. Magistrates Court
-To: Home: Thundercat > 5. Correspondence
+From: Shared Drive: Thundercat > 14. Magistrates Court
+To: Shared Drive: Thundercat > 5. Correspondence
 • file_32_1.docx
 
 Items moved
 24 April 2026 at 11:30am by jordan.ellis@cps.gov.uk
-From: Home: Thundercat > 10. Police
-To: Home: Thundercat > 1. Case management
+From: Shared Drive: Thundercat > 10. Police
+To: Shared Drive: Thundercat > 1. Case management
 • file_33_1.docx
 • file_33_2.docx
 
 Items renamed
 24 April 2026 at 10:15am by sarah.khan@cps.gov.uk
-Location: Home: Thundercat > 9. PO working copies
+Location: Shared Drive: Thundercat > 9. PO working copies
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 • file_3.docx → file_3_v2.docx
@@ -295,7 +295,7 @@ Location: Home: Thundercat > 9. PO working copies
 
 Items deleted
 24 April 2026 at 9:45am by dwight_schrute@cps.gov.uk
-Location: Home: Thundercat > 7. Finance
+Location: Shared Drive: Thundercat > 7. Finance
 • file_35_1.docx
 • file_35_2.docx
 • file_35_3.docx
@@ -304,35 +304,35 @@ Location: Home: Thundercat > 7. Finance
 
 Items copied
 23 April 2026 at 7:45pm by jordan.ellis@cps.gov.uk
-From: Home: Thundercat > 12. Victims and Witnesses
-To: Home: Thundercat > 4. Counsel
+From: Shared Drive: Thundercat > 12. Victims and Witnesses
+To: Shared Drive: Thundercat > 4. Counsel
 • file_36_1.docx
 • file_36_2.docx
 
 Items moved
 23 April 2026 at 7:00pm by kevin.malone@cps.gov.uk
-From: Home: Thundercat > 9. PO working copies
-To: Home: Thundercat > 11. Media
+From: Shared Drive: Thundercat > 9. PO working copies
+To: Shared Drive: Thundercat > 11. Media
 • file_37_1.docx
 
 Items moved
 23 April 2026 at 4:15pm by dwight_schrute@cps.gov.uk
-From: Home: Thundercat > 12. Victims and Witnesses
-To: Home: Thundercat > 10. Police
+From: Shared Drive: Thundercat > 12. Victims and Witnesses
+To: Shared Drive: Thundercat > 10. Police
 • file_38_1.docx
 • file_38_2.docx
 
 Items moved
 23 April 2026 at 3:30pm by oscar.martinez@cps.gov.uk
-From: Home: Thundercat > 9. PO working copies
-To: Home: Thundercat > 12. Victims and Witnesses
+From: Shared Drive: Thundercat > 9. PO working copies
+To: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_39_1.docx
 • file_39_2.docx
 • file_39_3.docx
 
 Items renamed
 23 April at 3:15pm by pam.beesly@cps.gov.uk
-Location: Home: Thundercat > 15. IDPC
+Location: Shared Drive: Thundercat > 15. IDPC
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 • file_3.docx → file_3_v2.docx
@@ -340,19 +340,19 @@ Location: Home: Thundercat > 15. IDPC
 
 Items renamed
 23 April 2026 at 2:30pm by kelly.kapoor@cps.gov.uk
-Location: Home: Thundercat > 12. Victims and Witnesses
+Location: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 • file_3.docx → file_3_v2.docx
 
 Items renamed
 23 April 2026 at 2:00pm by oscar.martinez@cps.gov.uk
-Location: Home: Thundercat > 1. Case management
+Location: Shared Drive: Thundercat > 1. Case management
 • file_1.docx → file_1_v2.docx
 
 Items deleted
 23 April 2026 at 1:30pm by oscar.martinez@cps.gov.uk
-Location: Home: Thundercat > 11. Media
+Location: Shared Drive: Thundercat > 11. Media
 • file_43_1.docx
 • file_43_2.docx
 • file_43_3.docx
@@ -361,12 +361,12 @@ Location: Home: Thundercat > 11. Media
 
 Items renamed
 22 April 2026 at 4:00pm by jordan.ellis@cps.gov.uk
-Location: Home: Thundercat > 3. Experts
+Location: Shared Drive: Thundercat > 3. Experts
 • file_1.docx → file_1_v2.docx
 
 Items deleted
 22 April 2026 at 3:00pm by jordan.ellis@cps.gov.uk
-Location: Home: Thundercat > 11. Media
+Location: Shared Drive: Thundercat > 11. Media
 • file_45_1.docx
 • file_45_2.docx
 • file_45_3.docx
@@ -375,20 +375,20 @@ Location: Home: Thundercat > 11. Media
 
 Items renamed
 22 April 2026 at 2:30pm by kevin.malone@cps.gov.uk
-Location: Home: Thundercat > 1. Case management
+Location: Shared Drive: Thundercat > 1. Case management
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 • file_3.docx → file_3_v2.docx
 
 Items deleted
 22 April 2026 at 12:15pm by dwight_schrute@cps.gov.uk
-Location: Home: Thundercat > 1. Case management
+Location: Shared Drive: Thundercat > 1. Case management
 • file_47_1.docx
 • file_47_2.docx
 
 Items deleted
 22 April 2026 at 11:30am by angela.martin@cps.gov.uk
-Location: Home: Thundercat > 9. PO working copies
+Location: Shared Drive: Thundercat > 9. PO working copies
 • file_48_1.docx
 • file_48_2.docx
 • file_48_3.docx
@@ -397,20 +397,20 @@ Location: Home: Thundercat > 9. PO working copies
 
 Items moved
 22 April 2026 at 9:00am by kevin.malone@cps.gov.uk
-From: Home: Thundercat > 14. Magistrates Court
-To: Home: Thundercat > 6. Disclosure
+From: Shared Drive: Thundercat > 14. Magistrates Court
+To: Shared Drive: Thundercat > 6. Disclosure
 • file_49_1.docx
 
 Items deleted
 21 April 2026 at 6:30pm by kelly.kapoor@cps.gov.uk
-Location: Home: Thundercat > 10. Police
+Location: Shared Drive: Thundercat > 10. Police
 • file_50_1.docx
 • file_50_2.docx
 • file_50_3.docx
 
 Items deleted
 21 April 2026 at 3:00pm by kevin.malone@cps.gov.uk
-Location: Home: Thundercat > 10. Police
+Location: Shared Drive: Thundercat > 10. Police
 • file_51_1.docx
 • file_51_2.docx
 • file_51_3.docx
@@ -419,16 +419,16 @@ Location: Home: Thundercat > 10. Police
 
 Items copied
 21 April 2026 at 2:45pm by pam.beesly@cps.gov.uk
-From: Home: Thundercat > 14. Magistrates Court
-To: Home: Thundercat > 4. Counsel
+From: Shared Drive: Thundercat > 14. Magistrates Court
+To: Shared Drive: Thundercat > 4. Counsel
 • file_52_1.docx
 • file_52_2.docx
 • file_52_3.docx
 
 Items moved
 21 April 2026 at 2:15pm by sarah.khan@cps.gov.uk
-From: Home: Thundercat > 6. Disclosure
-To: Home: Thundercat > 7. Finance
+From: Shared Drive: Thundercat > 6. Disclosure
+To: Shared Drive: Thundercat > 7. Finance
 • file_53_1.docx
 • file_53_2.docx
 • file_53_3.docx
@@ -437,13 +437,13 @@ To: Home: Thundercat > 7. Finance
 
 Items renamed
 21 April 2026 at 11:30am by kevin.malone@cps.gov.uk
-Location: Home: Thundercat > 5. Correspondence
+Location: Shared Drive: Thundercat > 5. Correspondence
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 
 Items renamed
 21 April 2026 at 11:00am by meredith.palmer@cps.gov.uk
-Location: Home: Thundercat > 15. IDPC
+Location: Shared Drive: Thundercat > 15. IDPC
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 • file_3.docx → file_3_v2.docx
@@ -451,33 +451,33 @@ Location: Home: Thundercat > 15. IDPC
 
 Items renamed
 21 April 2026 at 10:30am by pam.beesly@cps.gov.uk
-Location: Home: Thundercat > 10. Police
+Location: Shared Drive: Thundercat > 10. Police
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 • file_3.docx → file_3_v2.docx
 
 Items renamed
 21 April 2026 at 9:00am by meredith.palmer@cps.gov.uk
-Location: Home: Thundercat > 11. Media
+Location: Shared Drive: Thundercat > 11. Media
 • file_1.docx → file_1_v2.docx
 
 Items copied
 21 April 2026 at 7:15am by oscar.martinez@cps.gov.uk
-From: Home: Thundercat > 8. Lawyer working copies
-To: Home: Thundercat > 7. Finance
+From: Shared Drive: Thundercat > 8. Lawyer working copies
+To: Shared Drive: Thundercat > 7. Finance
 • file_58_1.docx
 • file_58_2.docx
 • file_58_3.docx
 
 Items deleted
 20 April 2026 at 7:15pm by kevin.malone@cps.gov.uk
-Location: Home: Thundercat > 4. Counsel
+Location: Shared Drive: Thundercat > 4. Counsel
 • file_59_1.docx
 • file_59_2.docx
 
 Items deleted
 21 April 2026 at 5:12pm by creed.bratton@cps.gov.uk
-Location: Home: Thundercat > 10. Police
+Location: Shared Drive: Thundercat > 10. Police
 • budget_summary.xlsx`;
 
     const lines = source.split(/\r?\n/).map(line => line.trimEnd());
@@ -534,7 +534,7 @@ Location: Home: Thundercat > 10. Police
         description: '200 files were transferred.',
         sourceLines: [
             { label: 'Original location:', value: 'Egress > Investigator' },
-            { label: 'New location:', value: 'Home: Thundercat', href: getManageMaterialsFolderHref(0) }
+            { label: 'New location:', value: 'Shared Drive: Thundercat', href: getManageMaterialsFolderHref(0) }
         ]
     });
 
@@ -589,7 +589,7 @@ function normaliseActivityFolderLinks(entry = {}) {
 }
 
 function getStaticActivityFolderHref(materials = [], pathLabel = '') {
-    if (!pathLabel || pathLabel === 'Home: Thundercat') {
+    if (!pathLabel || pathLabel === 'Shared Drive: Thundercat') {
         return getManageMaterialsFolderHref(0);
     }
 
@@ -1650,7 +1650,7 @@ router.post('/includes/materials/materials-filter', function (req, res) {
         const groups = {};
 
         function getFolderPath(materials, folderId) {
-            // Build "Home: Thundercat > Case management > Police" etc
+            // Build "Shared Drive: Thundercat > Case management > Police" etc
             const parts = [];
             let currentId = folderId;
 
@@ -1668,7 +1668,7 @@ router.post('/includes/materials/materials-filter', function (req, res) {
             }
 
             // Choose your preferred "root" label
-            return parts.length ? `Home: Thundercat > ${parts.join(' > ')}` : 'Home: Thundercat';
+            return parts.length ? `Shared Drive: Thundercat > ${parts.join(' > ')}` : 'Shared Drive: Thundercat';
         }
 
         materials.forEach(item => {
@@ -1788,7 +1788,7 @@ function getFolderPathLabel(materials, folderId) {
         currentId = folder.parentId;
     }
 
-    return parts.length ? `Home: Thundercat > ${parts.join(' > ')}` : 'Home: Thundercat';
+    return parts.length ? `Shared Drive: Thundercat > ${parts.join(' > ')}` : 'Shared Drive: Thundercat';
 }
 
 function getItemPathLabel(materials, item, nameOverride) {
@@ -2116,7 +2116,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
             currentId = folder.parentId;
         }
 
-        return parts.length ? `Home: Thundercat > ${parts.join(' > ')}` : 'Home: Thundercat';
+        return parts.length ? `Shared Drive: Thundercat > ${parts.join(' > ')}` : 'Shared Drive: Thundercat';
     }
 
     function buildGroupedSearchResults(materials, search) {
@@ -3390,7 +3390,7 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
         pushMaterialsActivity(req.session.data, {
             type: 'copy',
             title: 'Items copied',
-            // title: `${copiedNames.length === 1 ? copiedNames[0] : `${copiedNames.length} items`} ${copiedNames.length === 1 ? 'has' : 'have'} been copied to ${destinationFolderName || 'Home: Thundercat'} on the shared drive`,
+            // title: `${copiedNames.length === 1 ? copiedNames[0] : `${copiedNames.length} items`} ${copiedNames.length === 1 ? 'has' : 'have'} been copied to ${destinationFolderName || 'Shared Drive: Thundercat'} on the shared drive`,
             // description: 'Below is a list of documents and folders copied:',
             listItems: copiedNames,
             previewTree: copyPreviewTree,
@@ -3540,7 +3540,7 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
         pushMaterialsActivity(req.session.data, {
             type: 'move',
             title: 'Items moved',
-            // title: `${movedNames.length === 1 ? movedNames[0] : `${movedNames.length} items`} ${movedNames.length === 1 ? 'has' : 'have'} been moved to ${destinationFolderName || 'Home: Thundercat'} on the shared drive`,
+            // title: `${movedNames.length === 1 ? movedNames[0] : `${movedNames.length} items`} ${movedNames.length === 1 ? 'has' : 'have'} been moved to ${destinationFolderName || 'Shared Drive: Thundercat'} on the shared drive`,
             // description: 'Below is a list of documents and folders moved:',
             listItems: movedNames,
             previewTree: movePreviewTree,
