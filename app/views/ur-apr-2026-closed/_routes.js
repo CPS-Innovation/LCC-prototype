@@ -1670,7 +1670,7 @@ router.post('/includes/materials/materials-filter', function (req, res) {
         const groups = {};
 
         function getFolderPath(materials, folderId) {
-            // Build "Home: Thundercat > Case management > Police" etc
+            // Build "Shared Drive: Thundercat > Case management > Police" etc
             const parts = [];
             let currentId = folderId;
 
@@ -1688,7 +1688,7 @@ router.post('/includes/materials/materials-filter', function (req, res) {
             }
 
             // Choose your preferred "root" label
-            return parts.length ? `Home: Thundercat > ${parts.join(' > ')}` : 'Home: Thundercat';
+            return parts.length ? `Shared Drive: Thundercat > ${parts.join(' > ')}` : 'Shared Drive: Thundercat';
         }
 
         materials.forEach(item => {
@@ -1806,7 +1806,7 @@ function getFolderPathLabel(materials, folderId) {
         currentId = folder.parentId;
     }
 
-    return parts.length ? `Home: Thundercat > ${parts.join(' > ')}` : 'Home: Thundercat';
+    return parts.length ? `Shared Drive: Thundercat > ${parts.join(' > ')}` : 'Shared Drive: Thundercat';
 }
 
 function getItemPathLabel(materials, item, nameOverride) {
@@ -2017,7 +2017,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
             currentId = folder.parentId;
         }
 
-        return parts.length ? `Home: Thundercat > ${parts.join(' > ')}` : 'Home: Thundercat';
+        return parts.length ? `Shared Drive: Thundercat > ${parts.join(' > ')}` : 'Shared Drive: Thundercat';
     }
 
     function buildGroupedSearchResults(materials, search) {

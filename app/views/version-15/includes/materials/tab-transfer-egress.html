@@ -2,6 +2,13 @@
 {% set currentTransferEgressFolderId = transferEgressFolderId | default(data.transferEgressFolderId | default(100)) %}
 {% set transferIsTopLevelEgress = ((transferItems | length) > 0 and transferItems[0].level == 1) %}
 
+<style>
+    .transfer-egress-action-form {
+        display: inline-block;
+        margin: 0;
+    }
+</style>
+
 <div class="govuk-grid-row">
 
     <h2 class="govuk-heading-m govuk-!-margin-left-3 govuk-!-margin-top-0 govuk-!-margin-bottom-4">
@@ -20,6 +27,52 @@
 
 <div class="govuk-grid-row govuk-!-margin-top-2">
     <div class="govuk-grid-column-full" id="transfer_materials_column">
+
+{% if data.transferEgressCopySuccess or data.transferEgressMoveSuccess %}
+<div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white govuk-!-margin-left-3 govuk-!-margin-bottom-4"
+    role="alert" data-module="govuk-notification-banner">
+    <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title">Success</h2>
+    </div>
+    <div class="govuk-notification-banner__content">
+        <h3 class="govuk-notification-banner__heading">
+            The materials have been {{ "moved" if data.transferEgressMoveSuccess else "copied" }}
+        </h3>
+
+        {% if data.transferEgressDestinationName %}
+        <p class="govuk-body">
+            They are in:
+            <a class="govuk-link"
+                href="/version-15/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=shared-drive&transferSharedDriveFolderId={{ data.transferEgressDestinationId }}">
+                {{ data.transferEgressDestinationName }}
+            </a>
+        </p>
+        {% else %}
+        <p class="govuk-body">
+            They are in:
+            <strong>Shared Drive: Thundercat</strong>
+        </p>
+        {% endif %}
+
+        {% if data.transferEgressList and (data.transferEgressList | length) > 0 %}
+        <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    Show {{ "moved" if data.transferEgressMoveSuccess else "copied" }} materials
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                <ul class="govuk-list govuk-list--bullet">
+                    {% for itemName in data.transferEgressList %}
+                    <li>{{ itemName }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </details>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
 
 <div class="govuk-grid-row govuk-!-margin-left-3">
     <nav class="govuk-breadcrumbs govuk-!-margin-left-3" aria-label="Breadcrumb">
@@ -56,21 +109,27 @@
                 <div class="materials-toolbar__actions">
                     <div class="actions_holder">
                         <div class="moj-button-menu transfer-egress-actions">
-                            <button type="button"
-                                class="govuk-button govuk-button--secondary govuk-button--disabled"
-                                id="transfer-copy-selected"
-                                onclick="document.querySelector('.tab-2-content').click();"
-                                disabled aria-disabled="true">
-                                Copy selected
-                            </button>
+                            <form method="post" action="/version-15/B-off-system-MVP/start-transfer-egress-copy"
+                                class="transfer-egress-action-form">
+                                <input type="hidden" name="selected_ids" class="js-transfer-selected-ids" value="">
+                                <button type="submit"
+                                    class="govuk-button govuk-button--secondary govuk-button--disabled"
+                                    id="transfer-copy-selected"
+                                    disabled aria-disabled="true">
+                                    Copy selected
+                                </button>
+                            </form>
 
-                            <button type="button"
-                                class="govuk-button govuk-button--secondary govuk-button--disabled"
-                                id="transfer-move-selected"
-                                onclick="document.querySelector('.tab-2-content').click();"
-                                disabled aria-disabled="true">
-                                Move selected
-                            </button>
+                            <form method="post" action="/version-15/B-off-system-MVP/start-transfer-egress-move"
+                                class="transfer-egress-action-form">
+                                <input type="hidden" name="selected_ids" class="js-transfer-selected-ids" value="">
+                                <button type="submit"
+                                    class="govuk-button govuk-button--secondary govuk-button--disabled"
+                                    id="transfer-move-selected"
+                                    disabled aria-disabled="true">
+                                    Move selected
+                                </button>
+                            </form>
 
                             <a class="govuk-link govuk-button--link transfer-view-shared-drive"
                                 href="/version-15/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=shared-drive">
@@ -204,8 +263,16 @@
             return Array.prototype.slice.call(panel.querySelectorAll('input.js-transfer-checkbox'));
         }
 
+        function getSelectedIds() {
+            return getRowCheckboxes().filter(function (checkbox) {
+                return checkbox.checked;
+            }).map(function (checkbox) {
+                return checkbox.value;
+            });
+        }
+
         function updateTransferActions() {
-            var hasSelection = !!panel.querySelector('input.js-transfer-checkbox:checked');
+            var hasSelection = getSelectedIds().length > 0;
 
             if (copySelected) {
                 copySelected.disabled = !hasSelection;
@@ -251,6 +318,21 @@
             }
 
             updateTransferActions();
+        });
+
+        Array.prototype.slice.call(document.querySelectorAll('.transfer-egress-action-form')).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                var selectedIds = getSelectedIds();
+                if (!selectedIds.length) {
+                    event.preventDefault();
+                    return;
+                }
+
+                var input = form.querySelector('.js-transfer-selected-ids');
+                if (input) {
+                    input.value = selectedIds.join(',');
+                }
+            });
         });
     })();
 </script>
