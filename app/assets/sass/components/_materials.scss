@@ -4763,6 +4763,10 @@ thead th .govuk-button {
      gap: 12px;
 }
 
+.transfer-actions-row .transfer-egress-actions {
+     gap: 8px;
+}
+
 .transfer-actions-row > .govuk-grid-column-full {
      display: flex;
      align-items: flex-start;
@@ -4860,7 +4864,7 @@ thead th .govuk-button {
 .transfer-view-shared-drive {
      font-size: 19px !important;
      align-self: center;
-     margin-left: 28px;
+     margin-left: 0;
 }
 
 #transfer-move-selected[hidden] {

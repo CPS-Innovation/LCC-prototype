@@ -1841,6 +1841,14 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const data = req.session.data;
     const materials = data.materials || [];
     const pageSizeOptions = [20, 50, 100];
+    const validActiveTabs = ['tab-1-content', 'tab-2-content', 'tab-3-content'];
+    const validTransferViews = ['egress', 'shared-drive'];
+    if (validActiveTabs.includes(req.query.activeTab)) {
+        req.session.data.activeTab = req.query.activeTab;
+    }
+    if (validTransferViews.includes(req.query.transferView)) {
+        req.session.data.transferView = req.query.transferView;
+    }
 
     function normalisePageSize(value) {
         const parsed = Number(value);
@@ -1901,6 +1909,31 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
             endItem: Math.min(startIndex + pageSize, totalItems),
             showPagination: totalItems > 20
         };
+    }
+
+    const transferEgressData = (
+        data.transferEgress && data.transferEgress.length
+            ? data.transferEgress
+            : res.locals.data.transferEgress
+    ) || [];
+
+    function getTransferEgressChildren(folderId) {
+        return transferEgressData.filter(item => Number(item.parentId) === Number(folderId));
+    }
+
+    function getTransferEgressBreadcrumbs(folderId) {
+        const rootCrumb = { id: 100, name: 'Egress: Thundercat' };
+        const crumbs = [];
+        let currentId = Number(folderId);
+
+        while (currentId && currentId !== 100) {
+            const folder = transferEgressData.find(item => Number(item.id) === currentId && item.folder);
+            if (!folder) break;
+            crumbs.unshift({ id: folder.id, name: folder.name });
+            currentId = Number(folder.parentId);
+        }
+
+        return [rootCrumb, ...crumbs];
     }
 
     // ✅ Seed default "last ordered" metadata (prototype baseline)
@@ -1966,6 +1999,9 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
 
     // Current folder
     const folderId = Number(data.folderId ?? 0);
+    const transferEgressFolderId = Number(data.transferEgressFolderId ?? 100);
+    const transferEgressItems = getTransferEgressChildren(transferEgressFolderId);
+    const transferEgressBreadcrumbs = getTransferEgressBreadcrumbs(transferEgressFolderId);
 
     // ================================
     // 1. Get the raw children of this folder
@@ -2013,7 +2049,9 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         children = children.filter(m => statusFilters.includes(m.status));
     }
     // Breadcrumbs unaffected
-    const breadcrumbs = utils.getBreadcrumbs(folderId);
+    const breadcrumbs = utils.getBreadcrumbs(folderId).map(crumb => (
+        Number(crumb.id) === 0 ? { ...crumb, name: 'Shared Drive: Thundercat' } : crumb
+    ));
 
 
     // ================================
@@ -2271,7 +2309,10 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         movePreviewTree,
         deletePreviewTree,
         copyDestinationId,
-        moveDestinationId
+        moveDestinationId,
+        transferEgressFolderId,
+        transferEgressItems,
+        transferEgressBreadcrumbs
     });
 
     req.session.data.lastRenamedId = null;
@@ -2302,12 +2343,18 @@ router.get('/version-15/manage-materials', function (req, res) {
 router.post('/B-off-system-MVP/case-overview-folder', function (req, res) {
     const materials = req.session.data.materials || res.locals.data.materials || [];
     let parentFolder = null;
+    const validActiveTabs = ['tab-1-content', 'tab-2-content', 'tab-3-content'];
+    const activeTab = validActiveTabs.includes(req.body.activeTab) ? req.body.activeTab : 'tab-2-content';
+    const validTransferViews = ['egress', 'shared-drive'];
+    const transferView = validTransferViews.includes(req.body.transferView) ? req.body.transferView : 'egress';
 
     // req.session.data.currentLevel = req.body['currentLevel']
     // req.session.data.selectedFolder = req.body['selectedFolder']
     req.session.data.searchLabel = req.body['searchLabel']
     req.session.data.folderId = req.body['folderId']
     req.session.data.folderName = req.body['folderName']
+    req.session.data.activeTab = activeTab;
+    req.session.data.transferView = transferView;
     //    req.session.data.breadcrumbs.push(req.session.data.folderName)
     console.log("Selected folder id:", req.session.data.folderId)
     console.log("Selected folder name:", req.session.data.folderName)
@@ -2323,8 +2370,18 @@ router.post('/B-off-system-MVP/case-overview-folder', function (req, res) {
     console.log("Selected folder ID:", parentId)
     req.session.data.filtersSearch = ""
     console.log("Cleared search term", req.session.data.filtersSearch)
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview')
+    const transferViewQuery = activeTab === 'tab-1-content' ? `&transferView=${encodeURIComponent(transferView)}` : '';
+    res.redirect(`/version-15/B-off-system-MVP/03-case-overview?activeTab=${encodeURIComponent(activeTab)}${transferViewQuery}`)
 })
+
+router.post('/B-off-system-MVP/transfer-egress-folder', function (req, res) {
+    req.session.data.transferEgressFolderId = req.body.folderId || 100;
+    req.session.data.transferEgressFolderName = req.body.folderName || '';
+    req.session.data.activeTab = 'tab-1-content';
+    req.session.data.transferView = 'egress';
+
+    res.redirect('/version-15/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=egress');
+});
 
 
 router.post('/B-off-system-MVP/case-overview-search-folder', function (req, res) {
@@ -3898,6 +3955,29 @@ router.post('/B-off-system-MVP/order-interrupt', (req, res) => {
 
     // Clean up the delayed save payload
     delete req.session.data.pendingOrderSave;
+
+    return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+});
+
+router.post('/B-off-system-MVP/disconnect-shared-drive', (req, res) => {
+    const choice = req.body['disconnect-shared-drive-choice'];
+    const data = req.session.data;
+    req.session.data['disconnect-shared-drive-choice'] = choice;
+
+    if (!choice) {
+        return res.render('version-15/B-off-system-MVP/disconnect-shared-drive', {
+            disconnectSharedDriveError: 'Select whether you want to disconnect the Shared Drive'
+        });
+    }
+
+    req.session.data.sharedDriveDisconnected = choice === 'Yes' ? 'Yes' : 'No';
+
+    if (choice === 'Yes') {
+        pushMaterialsActivity(data, {
+            title: 'Shared Drive folder Thunderstruck disconnected from this case'
+        });
+        return res.redirect('/version-15/B-off-system-MVP/disconnect-shared-drive-confirmation');
+    }
 
     return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
 });

@@ -108,7 +108,7 @@
                     {% else %}
                     <p class="govuk-body">
                         They are in:
-                        <strong>Home: Thundercat</strong>
+                        <strong>Shared Drive: Thundercat</strong>
                     </p>
                     {% endif %}
 
@@ -149,7 +149,7 @@
                     {% else %}
                     <p class="govuk-body">
                         They are in:
-                        <strong>Home: Thundercat</strong>
+                        <strong>Shared Drive: Thundercat</strong>
                     </p>
                     {% endif %}
 
@@ -227,6 +227,7 @@
                                 style="display:inline;">
                                 <input type="hidden" name="folderId" value="{{ crumb.id }}">
                                 <input type="hidden" name="folderName" value="{{ crumb.name }}">
+                                <input type="hidden" name="activeTab" value="tab-2-content">
                                 <button type="submit" class="govuk-breadcrumbs__link breadcrumb-button">
                                     {{ crumb.name }}
                                 </button>
@@ -592,6 +593,7 @@
                                 <form method="post" action="/version-15/B-off-system-MVP/case-overview-folder">
                                     <input type="hidden" name="folderId" value="{{ item.id }}">
                                     <input type="hidden" name="folderName" value="{{ item.name }}">
+                                    <input type="hidden" name="activeTab" value="tab-2-content">
 
                                     <button type="submit"
                                         class="govuk-link govuk-link--no-visited-state govuk-button--link folder-open">

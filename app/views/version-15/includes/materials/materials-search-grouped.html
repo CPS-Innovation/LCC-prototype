@@ -120,6 +120,7 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
                             <input type="hidden" name="flag" value="1">
                             <input type="hidden" name="folderName" value="{{ folder.name }}">
                             <input type="hidden" name="level" value="{{ folder.level + 1 }}">
+                            <input type="hidden" name="activeTab" value="tab-2-content">
                             <button type="submit" name="folderId" value="{{ folder.id }}"
                                 class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-regular govuk-button--link">
                                 {{ folder.name | highlight(data['filtersSearch']) | safe }}
@@ -180,6 +181,7 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
                             <input type="hidden" name="flag" value="1">
                             <input type="hidden" name="folderName" value="{{ folder.name }}">
                             <input type="hidden" name="level" value="{{ folder.level + 1 }}">
+                            <input type="hidden" name="activeTab" value="tab-2-content">
                             <!-- <button type="submit" name="folderId" value="{{ folder.id }}" class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-regular govuk-button--link">
                             {{ folder.name | highlight(data['filtersSearch']) | safe }}
                         </button> -->
