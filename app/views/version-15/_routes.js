@@ -545,6 +545,43 @@ router.post('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) 
 
 
 // Suspect details – date of birth
+router.get('/B-off-system-MVP/create-case/03-suspect-details-dob-unknown', function (req, res) {
+    count = req.session.data.suspectDetailsCount
+
+    req.session.data.suspectDOB[count] = ''
+    req.session.data.suspectDayBirth[count] = ''
+    req.session.data.suspectMonthBirth[count] = ''
+    req.session.data.suspectYearBirth[count] = ''
+
+    if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
+        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type')
+    }
+    else if (req.session.data.suspectGender[count] != undefined) {
+        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-gender')
+    }
+    else if (req.session.data.suspectDisability[count] != undefined) {
+        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-disability')
+    }
+    else if (req.session.data.suspectReligion[count] != undefined) {
+        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-religion')
+    }
+    else if (req.session.data.suspectEthnicity[count] != undefined) {
+        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-ethnicity')
+    }
+    else if (req.session.data.suspectAlias[count] != undefined) {
+        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias')
+    }
+    else if (req.session.data.suspectSDO[count] != undefined) {
+        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo')
+    }
+    else if (req.session.data.suspectArrestSummons[count] != undefined) {
+        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
+    }
+    else {
+        res.redirect('/version-15/B-off-system-MVP/create-case/03B-suspect-summary')
+    }
+})
+
 router.post('/B-off-system-MVP/create-case/03-suspect-details-dob', function (req, res) {
     count = req.session.data.suspectDetailsCount
     const day = trimString(req.body['date-of-birth-day'])
@@ -1852,6 +1889,9 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     if (req.query.transferSharedDriveFolderId !== undefined) {
         req.session.data.transferSharedDriveFolderId = Number(req.query.transferSharedDriveFolderId) || 0;
     }
+    if (req.query.transferEgressFolderId !== undefined) {
+        req.session.data.transferEgressFolderId = Number(req.query.transferEgressFolderId) || 100;
+    }
 
     function normalisePageSize(value) {
         const parsed = Number(value);
@@ -2338,6 +2378,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     req.session.data.transferSharedDriveToEgressPreviewTree = [];
     req.session.data.transferSharedDriveToEgressDestinationId = null;
     req.session.data.transferSharedDriveToEgressDestinationName = null;
+    req.session.data.transferSharedDriveToEgressDestinationHref = null;
 });
 
 
@@ -3095,6 +3136,10 @@ function getTransferEgressPathLabel(transferEgress, folderId) {
     return parts.length ? `Egress: Thundercat > ${parts.join(' > ')}` : 'Egress: Thundercat';
 }
 
+function getTransferEgressFolderHref(folderId) {
+    return `/version-15/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=egress&transferEgressFolderId=${encodeURIComponent(folderId || 100)}`;
+}
+
 function transferEgressToSharedDrive(data, defaultsData, ids, destinationFolderId, shouldMove) {
     const materials = (data.materials && data.materials.length ? data.materials : defaultsData.materials || []);
     const transferEgress = (Array.isArray(data.transferEgress) ? data.transferEgress : defaultsData.transferEgress || []);
@@ -3152,23 +3197,26 @@ function transferEgressToSharedDrive(data, defaultsData, ids, destinationFolderI
     data.transferView = 'egress';
 
     if (transferredNames.length) {
+        const transferAction = shouldMove ? 'moved' : 'copied';
         const selectedItems = ids
             .map(id => originalTransferEgress.find(item => String(item.id) === String(id)))
             .filter(Boolean);
         const sourceParents = [...new Set(selectedItems.map(item => getTransferEgressPathLabel(originalTransferEgress, item.parentId)))];
+        const sourceParentIds = [...new Set(selectedItems.map(item => String(item.parentId ?? 100)))];
 
         pushMaterialsActivity(data, {
             type: shouldMove ? 'move' : 'copy',
             tag: 'Transfer',
             statusTag: 'Completed',
             title: 'Transfer from Egress to Shared Drive',
-            description: `${transferredNames.length} ${transferredNames.length === 1 ? 'item was' : 'items were'} transferred.`,
+            description: `${transferredNames.length} ${transferredNames.length === 1 ? 'item was' : 'items were'} ${transferAction}`,
             listItems: transferredNames,
             previewTree,
             sourceLines: [
                 {
                     label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
-                    value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations'
+                    value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
+                    href: sourceParents.length === 1 ? getTransferEgressFolderHref(sourceParentIds[0]) : null
                 },
                 {
                     label: 'New location:',
@@ -3264,6 +3312,7 @@ function transferSharedDriveToEgress(data, defaultsData, ids, destinationFolderI
     data.transferSharedDriveToEgressPreviewTree = previewTree;
     data.transferSharedDriveToEgressDestinationId = destinationFolderId;
     data.transferSharedDriveToEgressDestinationName = getTransferEgressPathLabel(transferEgress, destinationFolderId);
+    data.transferSharedDriveToEgressDestinationHref = getTransferEgressFolderHref(destinationFolderId);
     data.transferSharedDriveToEgressCopySuccess = true;
     data.activeTab = 'tab-1-content';
     data.transferView = 'shared-drive';
@@ -3280,7 +3329,7 @@ function transferSharedDriveToEgress(data, defaultsData, ids, destinationFolderI
             tag: 'Transfer',
             statusTag: 'Completed',
             title: 'Transfer from Shared Drive to Egress',
-            description: `${copiedNames.length} ${copiedNames.length === 1 ? 'item was' : 'items were'} transferred.`,
+            description: `${copiedNames.length} ${copiedNames.length === 1 ? 'item was' : 'items were'} copied`,
             listItems: copiedNames,
             previewTree,
             sourceLines: [
@@ -3291,7 +3340,8 @@ function transferSharedDriveToEgress(data, defaultsData, ids, destinationFolderI
                 },
                 {
                     label: 'New location:',
-                    value: getTransferEgressPathLabel(transferEgress, destinationFolderId)
+                    value: getTransferEgressPathLabel(transferEgress, destinationFolderId),
+                    href: getTransferEgressFolderHref(destinationFolderId)
                 }
             ]
         });

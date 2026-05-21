@@ -22,6 +22,11 @@
                             {% for error in errorList %}
                             <li>
                                 <a href="{{ error.href }}">{{ error.text }}</a>
+                                {% if error.text == "Enter the date of birth" %}
+                                <div class="govuk-!-margin-top-3">
+                                    <a class="govuk-link" style="font-weight: normal;" href="/version-15/B-off-system-MVP/create-case/03-suspect-details-dob-unknown">I do not have the date of birth</a>
+                                </div>
+                                {% endif %}
                             </li>
                             {% endfor %}
                         </ul>
