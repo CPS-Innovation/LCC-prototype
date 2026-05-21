@@ -28,6 +28,33 @@
 <div class="govuk-grid-row govuk-!-margin-top-2">
     <div class="govuk-grid-column-full" id="transfer_materials_column">
 
+{% macro renderTransferTreeItems(nodes, prefix='') %}
+    {% for node in nodes %}
+        {% if node.isFolder %}
+            {% if prefix %}
+                {% set folderPath = prefix ~ ' > ' ~ node.name %}
+            {% else %}
+                {% set folderPath = node.name %}
+            {% endif %}
+            <li class="no-bullet" style="list-style-type:none; margin-left:-1em; margin-bottom: 6px;">
+                <span class="icon-new folder"></span>
+                <strong>{{ folderPath }}</strong>
+            </li>
+            {% if node.children and (node.children | length) > 0 %}
+                {{ renderTransferTreeItems(node.children, folderPath) }}
+            {% endif %}
+        {% else %}
+            <li>{{ node.name }}</li>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+{% macro renderTransferTree(nodes) %}
+<ul class="govuk-list govuk-list--bullet">
+    {{ renderTransferTreeItems(nodes) }}
+</ul>
+{% endmacro %}
+
 {% if data.transferSharedDriveToEgressCopySuccess %}
 <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white govuk-!-margin-left-3 govuk-!-margin-bottom-4"
     role="alert" data-module="govuk-notification-banner">
@@ -42,7 +69,13 @@
         {% if data.transferSharedDriveToEgressDestinationName %}
         <p class="govuk-body">
             They are in:
+            {% if data.transferSharedDriveToEgressDestinationHref %}
+            <a class="govuk-link" href="{{ data.transferSharedDriveToEgressDestinationHref }}">
+                {{ data.transferSharedDriveToEgressDestinationName }}
+            </a>
+            {% else %}
             <strong>{{ data.transferSharedDriveToEgressDestinationName }}</strong>
+            {% endif %}
         </p>
         {% endif %}
 
@@ -54,11 +87,15 @@
                 </span>
             </summary>
             <div class="govuk-details__text">
+                {% if data.transferSharedDriveToEgressPreviewTree and (data.transferSharedDriveToEgressPreviewTree | length) > 0 %}
+                {{ renderTransferTree(data.transferSharedDriveToEgressPreviewTree) }}
+                {% else %}
                 <ul class="govuk-list govuk-list--bullet">
                     {% for itemName in data.transferSharedDriveToEgressList %}
                     <li>{{ itemName }}</li>
                     {% endfor %}
                 </ul>
+                {% endif %}
             </div>
         </details>
         {% endif %}
