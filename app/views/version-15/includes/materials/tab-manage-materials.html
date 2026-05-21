@@ -488,6 +488,7 @@
     {% set currentFolderId = data.folderId | default(0) %}
     {% set showOrderColumn = (currentFolderId != 0) %}
     {% set isSeededFolder = (currentFolderId == 1007) %}
+    {% set currentFolderIsEmpty = (currentFolderId != 0 and (not children or (children | length) == 0)) %}
 
     <!-- MAIN TABLE -->
     <div class="materials-aligned">
@@ -549,6 +550,14 @@
 
                 <!-- Children rendering from helper -->
                 <tbody class="govuk-table__body">
+
+                    {% if currentFolderIsEmpty %}
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell" colspan="{{ 6 if showOrderColumn else 5 }}" style="border-bottom: 0;">
+                            <p class="govuk-body govuk-!-margin-bottom-0">This folder is empty</p>
+                        </td>
+                    </tr>
+                    {% endif %}
 
                     {% for item in children %}
                     {% set rowNumber = loop.index %}
@@ -729,7 +738,7 @@
             </table>
         </div>
 
-        {% if pagination and pagination.showPagination %}
+        {% if pagination and pagination.showPagination and not currentFolderIsEmpty %}
         <div class="materials-aligned">
             <nav class="govuk-pagination govuk-!-margin-top-6" aria-label="Pagination">
                 {% if pagination.page > 1 %}
@@ -782,6 +791,7 @@
         </div>
         {% endif %}
 
+        {% if not currentFolderIsEmpty %}
         <div class="materials-toolbar govuk-!-margin-top-4 govuk-!-margin-bottom-2">
             <div class="materials-toolbar__actions">
                 <div class="actions_holder">
@@ -868,6 +878,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
     {% endif %}
 

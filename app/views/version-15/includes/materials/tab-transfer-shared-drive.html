@@ -1,6 +1,7 @@
 {% set transferSharedDriveItems = transferSharedDriveItems | default(children | default([])) %}
 {% set transferSharedDriveBreadcrumbs = transferSharedDriveBreadcrumbs | default(breadcrumbs | default([])) %}
 {% set currentTransferSharedDriveFolderId = transferSharedDriveFolderId | default(data.transferSharedDriveFolderId | default(0)) %}
+{% set transferSharedDriveFolderIsEmpty = (currentTransferSharedDriveFolderId != 0 and (not transferSharedDriveItems or (transferSharedDriveItems | length) == 0)) %}
 
 <style>
     .transfer-shared-drive-action-form {
@@ -63,7 +64,7 @@
     </div>
     <div class="govuk-notification-banner__content">
         <h3 class="govuk-notification-banner__heading">
-            The materials have been copied
+            The materials have been transferred
         </h3>
 
         {% if data.transferSharedDriveToEgressDestinationName %}
@@ -139,7 +140,7 @@
                                 class="transfer-shared-drive-action-form">
                                 <input type="hidden" name="selected_ids" class="js-transfer-shared-drive-selected-ids" value="">
                                 <button type="submit"
-                                    class="govuk-button govuk-button--secondary govuk-button--disabled"
+                                    class="govuk-button govuk-button--secondary govuk-button--disabled js-transfer-shared-drive-copy-selected"
                                     id="transfer-copy-selected"
                                     disabled aria-disabled="true">
                                     Copy selected
@@ -215,6 +216,14 @@
             </thead>
 
             <tbody class="govuk-table__body">
+                {% if transferSharedDriveFolderIsEmpty %}
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell" colspan="4" style="border-bottom: 0;">
+                        <p class="govuk-body govuk-!-margin-bottom-0">This folder is empty</p>
+                    </td>
+                </tr>
+                {% endif %}
+
                 {% for item in transferSharedDriveItems %}
                 {% if item.folder %}
                 <tr class="govuk-table__row" data-id="{{ item.id }}" data-folder="true">
@@ -309,10 +318,38 @@
     </div>
 </div>
 
+{% if transferSharedDriveItems and (transferSharedDriveItems | length) > 0 %}
+<div class="materials-aligned transfer-actions-row">
+    <div class="materials-toolbar govuk-!-margin-top-4 govuk-!-margin-bottom-2">
+        <div class="materials-toolbar__actions">
+            <div class="actions_holder">
+                <div class="moj-button-menu">
+                    <form method="post" action="/version-15/B-off-system-MVP/start-transfer-shared-drive-copy"
+                        class="transfer-shared-drive-action-form">
+                        <input type="hidden" name="selected_ids" class="js-transfer-shared-drive-selected-ids" value="">
+                        <button type="submit"
+                            class="govuk-button govuk-button--secondary govuk-button--disabled js-transfer-shared-drive-copy-selected"
+                            disabled aria-disabled="true">
+                            Copy selected
+                        </button>
+                    </form>
+
+                    <a class="govuk-link govuk-button--link transfer-view-shared-drive"
+                        href="/version-15/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=egress">
+                        View Egress
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
 <script>
     (function () {
         var panel = document.getElementById('transfer-shared-drive-table-panel');
-        var copySelected = document.getElementById('transfer-copy-selected');
+        var copySelectedButtons = Array.prototype.slice.call(document.querySelectorAll('.js-transfer-shared-drive-copy-selected'));
 
         if (!panel) return;
 
@@ -331,11 +368,11 @@
         function updateTransferActions() {
             var hasSelection = getSelectedIds().length > 0;
 
-            if (copySelected) {
-                copySelected.disabled = !hasSelection;
-                copySelected.setAttribute('aria-disabled', String(!hasSelection));
-                copySelected.classList.toggle('govuk-button--disabled', !hasSelection);
-            }
+            copySelectedButtons.forEach(function (button) {
+                button.disabled = !hasSelection;
+                button.setAttribute('aria-disabled', String(!hasSelection));
+                button.classList.toggle('govuk-button--disabled', !hasSelection);
+            });
         }
 
         function syncSelectAll() {
