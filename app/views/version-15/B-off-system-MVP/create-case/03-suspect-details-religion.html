@@ -20,7 +20,14 @@
                     <div class="govuk-error-summary__body">
                         <ul class="govuk-list govuk-error-summary__list">
                             {% for error in errorList %}
-                            <li><a href="{{ error.href }}">{{ error.text }}</a></li>
+                            <li>
+                                <a href="{{ error.href }}">{{ error.text }}</a>
+                                {% if error.skipHref and error.skipText %}
+                                <div class="govuk-!-margin-top-3">
+                                    <a class="govuk-link" style="font-weight: normal;" href="{{ error.skipHref }}">{{ error.skipText }}</a>
+                                </div>
+                                {% endif %}
+                            </li>
                             {% endfor %}
                         </ul>
                     </div>
