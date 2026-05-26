@@ -541,6 +541,32 @@ router.post('/B-off-system-MVP/create-case/02-first-hearing-details', function (
 
 // ************************************************** Suspects **************************************************
 // Add suspects
+router.get('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) {
+    const data = req.session.data;
+    const isEditing = data.editSuspect !== undefined && Number(data.editSuspect) !== 999;
+    const count = Number(data.suspectCount || 0);
+
+    if (!isEditing) {
+        data.editSuspect = 999;
+        data.displaySuspect = 999;
+        data.suspectType[count] = undefined;
+        data.suspectFirstName[count] = undefined;
+        data.suspectLastName[count] = undefined;
+        data.suspectCompanyName[count] = undefined;
+        data.suspectDOB[count] = undefined;
+        data.suspectGender[count] = undefined;
+        data.suspectDisability[count] = undefined;
+        data.suspectReligion[count] = undefined;
+        data.suspectEthnicity[count] = undefined;
+        data.suspectSDO[count] = undefined;
+        data.suspectArrestSummons[count] = undefined;
+        data.suspectOffenderType[count] = undefined;
+        data.suspectAlias[count] = undefined;
+    }
+
+    res.render('version-15/B-off-system-MVP/create-case/03-add-suspect');
+})
+
 router.post('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) {
     count = req.session.data.suspectCount
     const suspectType = req.body['suspect-type']
