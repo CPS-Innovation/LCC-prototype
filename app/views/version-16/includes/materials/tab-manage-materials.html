@@ -101,7 +101,7 @@
                     <p class="govuk-body">
                         They are in:
                         <a class="govuk-link"
-                            href="/version-16/B-off-system-MVP/03-case-overview?folderId={{ copyDestinationId }}">
+                            href="/version-16/lcc/materials/manage-materials?folderId={{ copyDestinationId }}">
                             {{ copyDestinationName }}
                         </a>
                     </p>
@@ -142,7 +142,7 @@
                     <p class="govuk-body">
                         They are in:
                         <a class="govuk-link"
-                            href="/version-16/B-off-system-MVP/03-case-overview?folderId={{ moveDestinationId }}">
+                            href="/version-16/lcc/materials/manage-materials?folderId={{ moveDestinationId }}">
                             {{ moveDestinationName }}
                         </a>
                     </p>
@@ -210,7 +210,7 @@
                             {# Special override:
                             If we're on Home AND in search mode, make Home clickable to clear search #}
                             {% if isHome and inSearchMode %}
-                            <form method="post" action="/version-16/B-off-system-MVP/clear-search"
+                            <form method="post" action="/version-16/lcc/materials/clear-search"
                                 style="display:inline;">
                                 <button type="submit" class="govuk-breadcrumbs__link breadcrumb-button">
                                     {{ crumb.name }}
@@ -223,7 +223,7 @@
 
                             {# Otherwise: clickable crumb goes to that folder #}
                             {% else %}
-                            <form method="post" action="/version-16/B-off-system-MVP/case-overview-folder"
+                            <form method="post" action="/version-16/lcc/materials/case-overview-folder"
                                 style="display:inline;">
                                 <input type="hidden" name="folderId" value="{{ crumb.id }}">
                                 <input type="hidden" name="folderName" value="{{ crumb.name }}">
@@ -266,7 +266,7 @@
                                 </summary>
 
                                 <div class="govuk-details__text govuk-!-margin-left-0">
-                                    <form method="post" action="/version-16/B-off-system-MVP/materials-search"
+                                    <form method="post" action="/version-16/lcc/materials/materials-search"
                                         novalidate>
                                         <div class="govuk-form-group govuk-!-margin-bottom-2">
                                             <label class="govuk-label govuk-label--s govuk-!-margin-bottom-3"
@@ -283,9 +283,9 @@
                                         </div>
                                     </form>
                                     {% if data.filtersSearch and data.filtersSearch | trim | length > 0 %}
-                                    <form method="post" action="/version-16/B-off-system-MVP/clear-search"
+                                    <form method="post" action="/version-16/lcc/materials/clear-search"
                                         class="govuk-!-margin-top-2">
-                                        <button type="submit" formaction="/version-16/B-off-system-MVP/clear-search"
+                                        <button type="submit" formaction="/version-16/lcc/materials/clear-search"
                                             class="govuk-link clear-search-button">
                                             Clear search
                                         </button>
@@ -310,7 +310,7 @@
 
                                     <div class="hidden_buttons" id="materials_Actions">
 
-                                        <form method="post" action="/version-16/B-off-system-MVP/start-copy"
+                                        <form method="post" action="/version-16/lcc/materials/start-copy"
                                             id="copyForm">
                                             <input type="hidden" name="mode" value="copy">
                                             <input type="hidden" name="selected_ids" id="copy_selected_ids">
@@ -319,7 +319,7 @@
                                             </button>
                                         </form>
 
-                                        <form method="post" action="/version-16/B-off-system-MVP/start-move"
+                                        <form method="post" action="/version-16/lcc/materials/start-move"
                                             id="moveForm">
                                             <input type="hidden" name="mode" value="move">
                                             <input type="hidden" name="selected_ids" id="move_selected_ids">
@@ -328,7 +328,7 @@
                                             </button>
                                         </form>
 
-                                        <form method="post" action="/version-16/B-off-system-MVP/rename-from-list"
+                                        <form method="post" action="/version-16/lcc/materials/rename-from-list"
                                             id="renameForm">
                                             <input type="hidden" name="selected_ids" id="rename_selected_ids" value="">
                                             <button id="renameButton" class="govuk-button govuk-button--disabled"
@@ -342,7 +342,7 @@
                                             Update
                                         </button>
 
-                                        <form method="post" action="/version-16/B-off-system-MVP/mark-as-read">
+                                        <form method="post" action="/version-16/lcc/materials/mark-as-read">
                                             <input type="hidden" name="selected_ids" id="mark_read_selected_ids"
                                                 value="">
                                             <button type="submit" id="markReadButton"
@@ -351,7 +351,7 @@
                                             </button>
                                         </form>
 
-                                        <form method="post" action="/version-16/B-off-system-MVP/mark-as-unread">
+                                        <form method="post" action="/version-16/lcc/materials/mark-as-unread">
                                             <input type="hidden" name="selected_ids" id="mark_unread_selected_ids"
                                                 value="">
                                             <button type="submit" id="markUnreadButton"
@@ -361,7 +361,7 @@
                                         </form>
 
                                         <form id="discardForm" method="post"
-                                            action="/version-16/B-off-system-MVP/delete">
+                                            action="/version-16/lcc/materials/delete">
                                             <input id="material_selected" name="material_selected" type="hidden"
                                                 value="">
                                             <button id="discardButton" class="govuk-button govuk-button--disabled"
@@ -373,7 +373,7 @@
                                     </div>
 
                                     <button type="button" class="govuk-button govuk-button--secondary"
-                                        onclick="window.location.href='/version-16/B-off-system-MVP/new-folder';" {% if
+                                        onclick="window.location.href='/version-16/lcc/materials/new-folder';" {% if
                                         isSearchResults %}disabled aria-disabled="true" {% endif %}>
                                         New folder
                                     </button>
@@ -391,7 +391,7 @@
 
                                     <div class="hidden_buttons hidden_buttons--general" id="general_Actions" hidden>
 
-                                        <form method="get" action="/version-16/B-off-system-MVP/order-materials"
+                                        <form method="get" action="/version-16/lcc/materials/order-materials"
                                             id="orderMaterialsForm">
                                             <input type="hidden" name="folderId"
                                                 value="{{ data.folderId | default(0) }}">
@@ -400,7 +400,7 @@
                                             </button>
                                         </form>
 
-                                        <form method="get" action="/version-16/B-off-system-MVP/new-folder"
+                                        <form method="get" action="/version-16/lcc/materials/new-folder"
                                             id="newFolderForm">
                                             <button id="newFolderButton" class="govuk-button" type="submit">
                                                 Create new folder
@@ -414,7 +414,7 @@
                     </div>
                     <div class="materials-toolbar__spacer" aria-hidden="true"></div>
                 </div>
-                <form id="bulkActionForm" method="post" action="/version-16/B-off-system-MVP/materials-action"
+                <form id="bulkActionForm" method="post" action="/version-16/lcc/materials/materials-action"
                     class="govuk-!-display-none">
                     <input type="hidden" name="action" id="bulkActionType" value="">
                     <input type="hidden" name="selectedId" id="bulkSelectedId" value="">
@@ -446,7 +446,7 @@
 {% if pagination and pagination.showPagination %}
 <div class="govuk-grid-row govuk-!-margin-left-3 govuk-!-margin-bottom-4">
     <div class="govuk-grid-column-one-third">
-        <form method="get" action="/version-16/B-off-system-MVP/03-case-overview">
+        <form method="get" action="/version-16/lcc/materials/manage-materials">
             <input type="hidden" name="page" value="1">
             <div class="govuk-form-group govuk-!-margin-bottom-0" style="display:flex; align-items:center; gap:16px;">
                 <label class="govuk-label govuk-!-margin-bottom-0" for="manage-materials-page-size">
@@ -471,14 +471,14 @@
     {% if meta %}
     <!-- <p class="govuk-body govuk-!-margin-left-6">
         {{ meta.person }} last changed the order of this folder on {{ meta.date }}.
-        <a class="govuk-link" href="/version-16/B-off-system-MVP/order-materials?folderId={{ folderId }}">
+        <a class="govuk-link" href="/version-16/lcc/materials/order-materials?folderId={{ folderId }}">
             Change order
         </a>
     </p> -->
     {% else %}
     <p class="govuk-body govuk-!-margin-left-6">
         This folder has not been ordered yet.
-        <a class="govuk-link" href="/version-16/B-off-system-MVP/order-materials?folderId={{ folderId }}">
+        <a class="govuk-link" href="/version-16/lcc/materials/order-materials?folderId={{ folderId }}">
             Change order
         </a>
     </p>
@@ -599,7 +599,7 @@
                         <td class="govuk-table__cell title_column">
                             <div class="folder-inline-wrapper">
 
-                                <form method="post" action="/version-16/B-off-system-MVP/case-overview-folder">
+                                <form method="post" action="/version-16/lcc/materials/case-overview-folder">
                                     <input type="hidden" name="folderId" value="{{ item.id }}">
                                     <input type="hidden" name="folderName" value="{{ item.name }}">
                                     <input type="hidden" name="activeTab" value="tab-2-content">
@@ -744,7 +744,7 @@
                 {% if pagination.page > 1 %}
                 <div class="govuk-pagination__prev">
                     <a class="govuk-link govuk-pagination__link"
-                        href="/version-16/B-off-system-MVP/03-case-overview?page={{ pagination.page - 1 }}&pageSize={{ pagination.pageSize }}"
+                        href="/version-16/lcc/materials/manage-materials?page={{ pagination.page - 1 }}&pageSize={{ pagination.pageSize }}"
                         rel="prev">
                         <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
                             <path d="m6.5938-0.0078125-6.4688 6.4688 6.4688 6.4688 1.4141-1.4141-4.0625-4.0547h11.102v-2h-11.102l4.0625-4.0625-1.4141-1.4062z"></path>
@@ -766,7 +766,7 @@
                         <span class="govuk-pagination__link">{{ item.number }}</span>
                         {% else %}
                         <a class="govuk-link govuk-pagination__link"
-                            href="/version-16/B-off-system-MVP/03-case-overview?page={{ item.number }}&pageSize={{ pagination.pageSize }}">
+                            href="/version-16/lcc/materials/manage-materials?page={{ item.number }}&pageSize={{ pagination.pageSize }}">
                             {{ item.number }}
                         </a>
                         {% endif %}
@@ -778,7 +778,7 @@
                 {% if pagination.page < pagination.totalPages %}
                 <div class="govuk-pagination__next">
                     <a class="govuk-link govuk-pagination__link"
-                        href="/version-16/B-off-system-MVP/03-case-overview?page={{ pagination.page + 1 }}&pageSize={{ pagination.pageSize }}"
+                        href="/version-16/lcc/materials/manage-materials?page={{ pagination.page + 1 }}&pageSize={{ pagination.pageSize }}"
                         rel="next">
                         <span class="govuk-pagination__link-title">Next</span>
                         <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
@@ -807,7 +807,7 @@
 
                         <div class="hidden_buttons" id="materials_Actions">
 
-                            <form method="post" action="/version-16/B-off-system-MVP/start-copy"
+                            <form method="post" action="/version-16/lcc/materials/start-copy"
                                 id="copyForm">
                                 <input type="hidden" name="mode" value="copy">
                                 <input type="hidden" name="selected_ids" id="copy_selected_ids">
@@ -816,7 +816,7 @@
                                 </button>
                             </form>
 
-                            <form method="post" action="/version-16/B-off-system-MVP/start-move"
+                            <form method="post" action="/version-16/lcc/materials/start-move"
                                 id="moveForm">
                                 <input type="hidden" name="mode" value="move">
                                 <input type="hidden" name="selected_ids" id="move_selected_ids">
@@ -825,7 +825,7 @@
                                 </button>
                             </form>
 
-                            <form method="post" action="/version-16/B-off-system-MVP/rename-from-list"
+                            <form method="post" action="/version-16/lcc/materials/rename-from-list"
                                 id="renameForm">
                                 <input type="hidden" name="selected_ids" id="rename_selected_ids" value="">
                                 <button id="renameButton" class="govuk-button govuk-button--disabled"
@@ -839,7 +839,7 @@
                                 Update
                             </button>
 
-                            <form method="post" action="/version-16/B-off-system-MVP/mark-as-read">
+                            <form method="post" action="/version-16/lcc/materials/mark-as-read">
                                 <input type="hidden" name="selected_ids" id="mark_read_selected_ids"
                                     value="">
                                 <button type="submit" id="markReadButton"
@@ -848,7 +848,7 @@
                                 </button>
                             </form>
 
-                            <form method="post" action="/version-16/B-off-system-MVP/mark-as-unread">
+                            <form method="post" action="/version-16/lcc/materials/mark-as-unread">
                                 <input type="hidden" name="selected_ids" id="mark_unread_selected_ids"
                                     value="">
                                 <button type="submit" id="markUnreadButton"
@@ -858,7 +858,7 @@
                             </form>
 
                             <form id="discardForm" method="post"
-                                action="/version-16/B-off-system-MVP/delete">
+                                action="/version-16/lcc/materials/delete">
                                 <input id="material_selected" name="material_selected" type="hidden"
                                     value="">
                                 <button id="discardButton" class="govuk-button govuk-button--disabled"
@@ -870,7 +870,7 @@
                         </div>
 
                         <button type="button" class="govuk-button govuk-button--secondary"
-                            onclick="window.location.href='/version-16/B-off-system-MVP/new-folder';" {% if
+                            onclick="window.location.href='/version-16/lcc/materials/new-folder';" {% if
                             isSearchResults %}disabled aria-disabled="true" {% endif %}>
                             New folder
                         </button>

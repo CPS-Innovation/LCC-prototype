@@ -71,7 +71,7 @@
         <p class="govuk-body">
             They are in:
             <a class="govuk-link"
-                href="/version-16/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=shared-drive&transferSharedDriveFolderId={{ data.transferEgressDestinationId }}">
+                href="/version-16/lcc/materials/transfer-materials?transferView=shared-drive&transferSharedDriveFolderId={{ data.transferEgressDestinationId }}">
                 {{ data.transferEgressDestinationName }}
             </a>
         </p>
@@ -117,7 +117,7 @@
                 {% if isCurrent %}
                 {{ crumb.name }}
                 {% else %}
-                <form method="post" action="/version-16/B-off-system-MVP/transfer-egress-folder" style="display:inline;">
+                <form method="post" action="/version-16/lcc/materials/transfer-egress-folder" style="display:inline;">
                     <input type="hidden" name="folderId" value="{{ crumb.id }}">
                     <input type="hidden" name="folderName" value="{{ crumb.name }}">
                     <button type="submit" class="govuk-breadcrumbs__link breadcrumb-button">
@@ -141,7 +141,7 @@
                 <div class="materials-toolbar__actions">
                     <div class="actions_holder">
                         <div class="moj-button-menu transfer-egress-actions">
-                            <form method="post" action="/version-16/B-off-system-MVP/start-transfer-egress-copy"
+                            <form method="post" action="/version-16/lcc/materials/start-transfer-egress-copy"
                                 class="transfer-egress-action-form">
                                 <input type="hidden" name="selected_ids" class="js-transfer-selected-ids" value="">
                                 <button type="submit"
@@ -152,7 +152,7 @@
                                 </button>
                             </form>
 
-                            <form method="post" action="/version-16/B-off-system-MVP/start-transfer-egress-move"
+                            <form method="post" action="/version-16/lcc/materials/start-transfer-egress-move"
                                 class="transfer-egress-action-form">
                                 <input type="hidden" name="selected_ids" class="js-transfer-selected-ids" value="">
                                 <button type="submit"
@@ -164,7 +164,7 @@
                             </form>
 
                             <a class="govuk-link govuk-button--link transfer-view-shared-drive"
-                                href="/version-16/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=shared-drive">
+                                href="/version-16/lcc/materials/transfer-materials?transferView=shared-drive">
                                 View Shared Drive
                             </a>
                         </div>
@@ -174,7 +174,7 @@
         </div>
         <div class="govuk-grid-column-one-half transfer-disconnect-panel">
             <div class="materials-toolbar govuk-!-margin-top-3 govuk-!-margin-bottom-4">
-                <form method="get" action="/version-16/B-off-system-MVP/disconnect-shared-drive">
+                <form method="get" action="/version-16/lcc/materials/disconnect-shared-drive">
                     <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
                         Disconnect Shared Drive
                     </button>
@@ -184,7 +184,7 @@
     </div>
 </div>
 
-<div class="materials-aligned version-16-transfer-table transfer-table-panel" id="transfer-egress-table-panel">
+<div class="materials-aligned version-15-transfer-table version-16-transfer-table transfer-table-panel" id="transfer-egress-table-panel">
     <div class="materials-table-wrapper">
         <table class="govuk-table sortable" id="transfer_materials_table">
             <colgroup>
@@ -257,7 +257,7 @@
                     <td class="govuk-table__cell title_column">
                         {% if item.folder %}
                         <span class="folder-inline-wrapper">
-                            <form method="post" action="/version-16/B-off-system-MVP/transfer-egress-folder">
+                            <form method="post" action="/version-16/lcc/materials/transfer-egress-folder">
                                 <input type="hidden" name="folderId" value="{{ item.id }}">
                                 <input type="hidden" name="folderName" value="{{ item.name }}">
 
@@ -291,7 +291,7 @@
         <div class="materials-toolbar__actions">
             <div class="actions_holder">
                 <div class="moj-button-menu transfer-egress-actions">
-                    <form method="post" action="/version-16/B-off-system-MVP/start-transfer-egress-copy"
+                    <form method="post" action="/version-16/lcc/materials/start-transfer-egress-copy"
                         class="transfer-egress-action-form">
                         <input type="hidden" name="selected_ids" class="js-transfer-selected-ids" value="">
                         <button type="submit"
@@ -301,7 +301,7 @@
                         </button>
                     </form>
 
-                    <form method="post" action="/version-16/B-off-system-MVP/start-transfer-egress-move"
+                    <form method="post" action="/version-16/lcc/materials/start-transfer-egress-move"
                         class="transfer-egress-action-form">
                         <input type="hidden" name="selected_ids" class="js-transfer-selected-ids" value="">
                         <button type="submit"
@@ -312,7 +312,7 @@
                     </form>
 
                     <a class="govuk-link govuk-button--link transfer-view-shared-drive"
-                        href="/version-16/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=shared-drive">
+                        href="/version-16/lcc/materials/transfer-materials?transferView=shared-drive">
                         View Shared Drive
                     </a>
                 </div>
