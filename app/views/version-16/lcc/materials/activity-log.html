@@ -1,0 +1,37 @@
+{% extends "layoutCPS-OFF-V11.html" %}
+
+{% block header %}
+{% include "../../includes/banner-OFF-V6.html" %}
+{% endblock %}
+
+{% block beforeContent %}
+{% endblock %}
+
+{% block v11Content %}
+{% set activePage = 'activity-log' %}
+
+<div class="govuk-grid-row">
+
+    <div class="govuk-grid-column-full main_Case_Title">
+        <div class="title-wrapper">
+            <h1 class="govuk-heading-xl govuk-!-margin-bottom-0 govuk-!-margin-top-4">
+                Thundercat
+            </h1>
+            <span class="govuk-caption-m govuk-!-margin-bottom-4">
+                87AA65432/25
+            </span>
+        </div>
+    </div>
+
+    <div class="govuk-grid-column-full">
+        <div class="govuk-tabs off-cms-overview" id="new-tabs">
+            {% include "../../includes/materials/case-tabs.html" %}
+
+            <div class="panel" id="activity-log">
+                {% include "../../includes/materials/activity-log.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

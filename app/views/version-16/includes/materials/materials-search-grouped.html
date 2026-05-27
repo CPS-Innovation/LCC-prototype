@@ -11,7 +11,7 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
     </p>
 
     {% if pagination and pagination.showPagination %}
-    <form action="/version-16/B-off-system-MVP/03-case-overview" method="get" class="govuk-!-margin-bottom-0">
+    <form action="/version-16/lcc/materials/manage-materials" method="get" class="govuk-!-margin-bottom-0">
         <input type="hidden" name="page" value="1">
         <div class="govuk-form-group govuk-!-margin-bottom-0" style="display:flex; align-items:center; gap:16px;">
             <label class="govuk-label govuk-!-margin-bottom-0" for="search-results-page-size">
@@ -32,7 +32,7 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
 
 
 <!-- <div class="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-4 govuk-!-margin-left-6">
-    <form action="/version-16/B-off-system-MVP/clear-search" method="post" novalidate>
+    <form action="/version-16/lcc/materials/clear-search" method="post" novalidate>
         Showing results for: <strong>{{ data.filtersSearch }}</strong>
         <button class="govuk-link govuk-link--no-visited-state suspect govuk-!-margin-left-2" type="submit">Clear
             search</button>
@@ -109,7 +109,7 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
                 </div>
             </td>
             <td class="govuk-table__cell title_column">
-                <form action="/version-16/B-off-system-MVP/case-overview-folder" method="post">
+                <form action="/version-16/lcc/materials/case-overview-folder" method="post">
                     <div class="openMe">
                         {% if folder.folderPath %}
                         <div class="govuk-hint folder-path">({{ folder.folderPath }})</div>
@@ -173,7 +173,7 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
 
             <td class="govuk-table__cell title_column">
                 <span class="material-title">
-                    <form action="/version-16/B-off-system-MVP/case-overview-folder" method="post">
+                    <form action="/version-16/lcc/materials/case-overview-folder" method="post">
                         <div class="openMe">
                             <!-- {% if folder.name %}
                         <span class="icon-new folder"></span>
@@ -247,7 +247,7 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
     {% if pagination.page > 1 %}
     <div class="govuk-pagination__prev">
         <a class="govuk-link govuk-pagination__link"
-            href="/version-16/B-off-system-MVP/03-case-overview?page={{ pagination.page - 1 }}&pageSize={{ pagination.pageSize }}"
+            href="/version-16/lcc/materials/manage-materials?page={{ pagination.page - 1 }}&pageSize={{ pagination.pageSize }}"
             rel="prev">
             <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg"
                 height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
@@ -274,7 +274,7 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
             <span class="govuk-pagination__link">{{ item.number }}</span>
             {% else %}
             <a class="govuk-link govuk-pagination__link"
-                href="/version-16/B-off-system-MVP/03-case-overview?page={{ item.number }}&pageSize={{ pagination.pageSize }}">
+                href="/version-16/lcc/materials/manage-materials?page={{ item.number }}&pageSize={{ pagination.pageSize }}">
                 {{ item.number }}
             </a>
             {% endif %}
@@ -286,7 +286,7 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
     {% if pagination.page < pagination.totalPages %}
     <div class="govuk-pagination__next">
         <a class="govuk-link govuk-pagination__link"
-            href="/version-16/B-off-system-MVP/03-case-overview?page={{ pagination.page + 1 }}&pageSize={{ pagination.pageSize }}"
+            href="/version-16/lcc/materials/manage-materials?page={{ pagination.page + 1 }}&pageSize={{ pagination.pageSize }}"
             rel="next">
             <span class="govuk-pagination__link-title">Next</span>
             <svg class="govuk-pagination__icon govuk-pagination__icon--next" xmlns="http://www.w3.org/2000/svg"
