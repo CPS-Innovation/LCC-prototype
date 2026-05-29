@@ -4653,4 +4653,27 @@ router.post('/lcc/materials/disconnect-shared-drive', (req, res) => {
     return res.redirect('/version-16/lcc/materials/03-case-overview');
 });
 
+router.post('/lcc/materials/disconnect-egress', (req, res) => {
+    const choice = req.body['disconnect-egress-choice'];
+    const data = req.session.data;
+    req.session.data['disconnect-egress-choice'] = choice;
+
+    if (!choice) {
+        return res.render('version-16/lcc/materials/disconnect-egress', {
+            disconnectEgressError: 'Select whether you want to disconnect Egress'
+        });
+    }
+
+    req.session.data.egressDisconnected = choice === 'Yes' ? 'Yes' : 'No';
+
+    if (choice === 'Yes') {
+        pushMaterialsActivity(data, {
+            title: 'Egress disconnected from this case'
+        });
+        return res.redirect('/version-16/lcc/materials/disconnect-egress-confirmation');
+    }
+
+    return res.redirect('/version-16/lcc/materials/transfer-materials');
+});
+
 module.exports = router
