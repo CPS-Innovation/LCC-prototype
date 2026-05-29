@@ -4767,6 +4767,25 @@ thead th .govuk-button {
      gap: 8px;
 }
 
+.transfer-actions-row .transfer-disconnect-menu {
+     display: inline-block;
+     position: relative;
+     gap: 0;
+}
+
+.transfer-disconnect-menu > #show_Transfer_Actions {
+     margin-bottom: 0;
+}
+
+.transfer-disconnect-menu > #show_Transfer_Actions svg {
+     transform: rotate(180deg);
+     margin-bottom: 0.15em;
+}
+
+.transfer-disconnect-menu > #show_Transfer_Actions.active svg {
+     transform: rotate(0deg);
+}
+
 .transfer-actions-row > .govuk-grid-column-full {
      display: flex;
      align-items: flex-start;
@@ -4785,6 +4804,11 @@ thead th .govuk-button {
 #transfer_materials_column .version-15-transfer-table {
      margin-left: 30px;
      margin-right: 15px;
+}
+
+.version-16-transfer-actions-row {
+     margin-bottom: 0 !important;
+     padding-bottom: 32px;
 }
 
 .version-15-transfer-table {
@@ -4878,8 +4902,50 @@ thead th .govuk-button {
      width: 272px;
 }
 
-#transfer_materials_column #transfer_Actions.hidden_buttons button {
+#transfer_Actions.hidden_buttons form {
+     margin: 0;
+}
+
+#transfer_materials_column #transfer_Actions.hidden_buttons button,
+.transfer-disconnect-menu #transfer_Actions.hidden_buttons button {
      box-sizing: border-box;
+}
+
+.transfer-disconnect-menu #transfer_Actions.hidden_buttons {
+     display: none;
+     position: absolute;
+     top: 100%;
+     left: auto !important;
+     right: 0 !important;
+     min-width: 272px;
+     width: max-content;
+     z-index: 1000;
+}
+
+.transfer-disconnect-menu #transfer_Actions.hidden_buttons form {
+     display: block;
+     width: 100%;
+}
+
+.transfer-disconnect-menu #transfer_Actions.hidden_buttons button {
+     display: block;
+     width: 100%;
+     min-height: 48px;
+     margin: 0;
+     padding: 10px 20px;
+     border: 0;
+     border-bottom: 1px solid #b1b4b6;
+     box-shadow: none;
+     background: #f3f2f1;
+     color: #0b0c0c;
+     text-align: left;
+}
+
+.transfer-disconnect-menu #transfer_Actions.hidden_buttons button:hover,
+.transfer-disconnect-menu #transfer_Actions.hidden_buttons button:active,
+.transfer-disconnect-menu #transfer_Actions.hidden_buttons button:focus {
+     background: #b1b4b6;
+     color: #0b0c0c;
 }
 
 #transfer_shared_drive_table .title_column .govuk-button--link {

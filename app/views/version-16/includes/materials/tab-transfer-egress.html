@@ -134,7 +134,7 @@
     </nav>
 </div>
 
-<div class="govuk-grid-row govuk-!-margin-left-3 transfer-actions-row">
+<div class="govuk-grid-row govuk-!-margin-left-3 transfer-actions-row version-16-transfer-actions-row">
     <div class="govuk-grid-column-full">
         <div class="govuk-grid-column-one-half">
             <div class="materials-toolbar govuk-!-margin-top-3 govuk-!-margin-bottom-4">
@@ -174,11 +174,29 @@
         </div>
         <div class="govuk-grid-column-one-half transfer-disconnect-panel">
             <div class="materials-toolbar govuk-!-margin-top-3 govuk-!-margin-bottom-4">
-                <form method="get" action="/version-16/lcc/materials/disconnect-shared-drive">
-                    <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
-                        Disconnect Shared Drive
+                <div class="moj-button-menu transfer-disconnect-menu">
+                    <button type="button" id="show_Transfer_Actions"
+                        class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                        Disconnect
+                        <svg width="11" height="5" viewBox="0 0 11 5"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.5 0L11 5L0 5L5.5 0Z" fill="currentColor"></path>
+                        </svg>
                     </button>
-                </form>
+
+                    <div class="hidden_buttons transfer-disconnect-actions" id="transfer_Actions">
+                        <form method="get" action="/version-16/lcc/materials/disconnect-shared-drive">
+                            <button type="submit" class="govuk-button">
+                                Disconnect Shared Drive
+                            </button>
+                        </form>
+                        <form method="get" action="/version-16/lcc/materials/disconnect-egress">
+                            <button type="submit" class="govuk-button">
+                                Disconnect Egress
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
