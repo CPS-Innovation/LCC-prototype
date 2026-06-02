@@ -1729,7 +1729,7 @@ router.post('/lcc/register-case/07-cps-staff', function (req, res) {
     req.session.data.policeUnit = req.body['newCase_Police_Unit']
 
 
-    res.redirect('/version-16/lcc/register-case/08-check-answers')
+    res.redirect('/version-16/lcc/register-case/071-setup-folders')
 
 
     // If user is LCC check if there are materials. If not, go to check your answers.
@@ -1743,15 +1743,22 @@ router.post('/lcc/register-case/07-cps-staff', function (req, res) {
 
 
 // Materials
-router.post('/lcc/register-case/09-confirmation', function (req, res) {
+router.post('/lcc/register-case/071-setup-folders', function (req, res) {
     req.session.data.addMaterials = req.body['add-materials']
     if (req.session.data.addMaterials === 'Yes') {
         res.redirect('/version-16/lcc/materials/04A-create-or-link-folders')
     }
     else {
-        res.redirect('/version-16/lcc/register-case/case-details-placeholder')
-        // res.redirect('/version-16/lcc/materials/03-case-overview')
+        res.redirect('/version-16/lcc/register-case/08-check-answers')
     }
+})
+
+router.get('/lcc/register-case/case-details-placeholder', function (req, res) {
+    res.redirect('/version-16/lcc/register-case/08-check-answers')
+})
+
+router.post('/lcc/register-case/case-details-placeholder', function (req, res) {
+    res.redirect('/version-16/lcc/register-case/08-check-answers')
 })
 
 
@@ -1795,8 +1802,7 @@ router.post('/lcc/materials/04A-create-or-link-folders', function (req, res) {
     }
 
     else {
-        res.redirect('/version-16/lcc/register-case/case-details-placeholder')
-        // res.redirect('/version-16/lcc/materials/03-case-overview')
+        res.redirect('/version-16/lcc/register-case/08-check-answers')
     }
 
 })
@@ -1813,8 +1819,7 @@ router.post('/lcc/materials/04A-create-egress-folder', function (req, res) {
         res.redirect('/version-16/lcc/materials/05A-p-drive-files')
     }
     else {
-        res.redirect('/version-16/lcc/register-case/case-details-placeholder')
-        // res.redirect('/version-16/lcc/materials/03-case-overview')
+        res.redirect('/version-16/lcc/register-case/08-check-answers')
     }
 
 })
