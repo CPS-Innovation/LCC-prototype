@@ -1763,10 +1763,17 @@ router.post('/lcc/register-case/case-details-placeholder', function (req, res) {
 
 
 router.post('/lcc/materials/04A-create-or-link-folders', function (req, res) {
+    req.session.data.newEgressFolder = 0
+    req.session.data.existingEgressFolder = 0
+    req.session.data.newDriveFolder = 0
+    req.session.data.existingDriveFolder = 0
+    req.session.data.egress_file_link = ''
+    req.session.data.pdrive_file_link = ''
+
     if (req.body['egress-folders'] != undefined) {
         if (req.body['egress-folder-options'] === 'Create new Egress folders') {
             req.session.data.newEgressFolder = 1
-            req.session.data.existinEgressFolder = 0
+            req.session.data.existingEgressFolder = 0
         }
         else if (req.body['egress-folder-options'] === 'Connect Egress folders') {
             req.session.data.existingEgressFolder = 1
@@ -1805,6 +1812,27 @@ router.post('/lcc/materials/04A-create-or-link-folders', function (req, res) {
         res.redirect('/version-16/lcc/register-case/08-check-answers')
     }
 
+})
+
+router.post('/lcc/materials/05A-create-shared-drive-folder', function (req, res) {
+    req.session.data.sharedDriveTemplate = req.body['shared-drive-template']
+    res.redirect('/version-16/lcc/register-case/08-check-answers')
+})
+
+router.post('/lcc/materials/04A-egress-files-connected', function (req, res) {
+    if (req.session.data.newDriveFolder === 1) {
+        res.redirect('/version-16/lcc/materials/05A-create-shared-drive-folder')
+    }
+    else if (req.session.data.existingDriveFolder === 1) {
+        res.redirect('/version-16/lcc/materials/05A-p-drive-files')
+    }
+    else {
+        res.redirect('/version-16/lcc/register-case/08-check-answers')
+    }
+})
+
+router.post('/lcc/materials/05A-p-drive-files-connected', function (req, res) {
+    res.redirect('/version-16/lcc/register-case/08-check-answers')
 })
 
 

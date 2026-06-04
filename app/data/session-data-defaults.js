@@ -5296,7 +5296,7 @@ module.exports = {
   "transferEgress": [
     {
       id: 1,
-      name: 'ABEs for transport',
+      name: 'ABEs for transcript',
       order: '',
       description: '',
       category: '',
