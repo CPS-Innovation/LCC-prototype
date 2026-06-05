@@ -1851,6 +1851,27 @@ router.post('/lcc/materials/05A-p-drive-files-connected', function (req, res) {
     }
 })
 
+router.post('/lcc/materials/05A-create-shared-drive-folder', function (req, res) {
+    req.session.data.sharedDriveTemplate = req.body['shared-drive-template']
+    res.redirect('/version-16/lcc/register-case/08-check-answers')
+})
+
+router.post('/lcc/materials/04A-egress-files-connected', function (req, res) {
+    if (req.session.data.newDriveFolder === 1) {
+        res.redirect('/version-16/lcc/materials/05A-create-shared-drive-folder')
+    }
+    else if (req.session.data.existingDriveFolder === 1) {
+        res.redirect('/version-16/lcc/materials/05A-p-drive-files')
+    }
+    else {
+        res.redirect('/version-16/lcc/register-case/08-check-answers')
+    }
+})
+
+router.post('/lcc/materials/05A-p-drive-files-connected', function (req, res) {
+    res.redirect('/version-16/lcc/register-case/08-check-answers')
+})
+
 
 
 router.post('/lcc/materials/04A-create-egress-folder', function (req, res) {
