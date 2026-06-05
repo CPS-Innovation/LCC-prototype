@@ -37,9 +37,9 @@
                     <dt class="govuk-summary-list__key">URN</dt>
                     <dd class="govuk-summary-list__value">
                         {% if data['URN1'] %}
-                        {{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}/{{ data['URN4'] }}
+                        {{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}{{ data['URN4'] }}
                         {% else %}
-                        87AA65432/26
+                        87AA6543226
                         {% endif %}
                     </dd>
                     <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state"
@@ -918,88 +918,6 @@
 
             </dl>
             <!-- //////////////////////////////////////////////////// SECTION 4 - END //////////////////////////////////////////////////// -->
-
-            <!-- //////////////////////////////////////////////////// SECTION 5 - START //////////////////////////////////////////////////// -->
-            <h2 class="govuk-heading-m">Materials folders</h2>
-            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
-
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Set up folders for materials</dt>
-                    <dd class="govuk-summary-list__value">
-                        {% if data['addMaterials'] %}
-                            {{ data['addMaterials'] }}
-                        {% elseif data['add-materials'] %}
-                            {{ data['add-materials'] }}
-                        {% else %}
-                            Not entered
-                        {% endif %}
-                    </dd>
-                    <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state"
-                            href="071-setup-folders">Change<span class="govuk-visually-hidden"> set up folders for materials</span></a></dd>
-                </div>
-
-                {% if data['addMaterials'] == 'Yes' or data['add-materials'] == 'Yes' %}
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Egress</dt>
-                    <dd class="govuk-summary-list__value">
-                        {% if data['newEgressFolder'] == 1 %}
-                            Create a new Egress case
-                        {% elseif data['existingEgressFolder'] == 1 %}
-                            Connect Egress
-                            {% if data['egress_file_link'] %}
-                                <br>{{ data['egress_file_link'] }}
-                            {% else %}
-                                <br>Not entered
-                            {% endif %}
-                        {% else %}
-                            Not selected
-                        {% endif %}
-                    </dd>
-                    <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state"
-                            href="/version-16/lcc/materials/04A-create-or-link-folders">Change<span class="govuk-visually-hidden"> Egress folder choice</span></a></dd>
-                </div>
-
-                {% if data['newEgressFolder'] == 1 %}
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Egress template</dt>
-                    <dd class="govuk-summary-list__value">{% if data['egressTemplate'] %}{{ data['egressTemplate'] }}{% else %}Not entered{% endif %}</dd>
-                    <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state"
-                            href="/version-16/lcc/materials/04A-create-egress-folder">Change<span class="govuk-visually-hidden"> Egress template</span></a></dd>
-                </div>
-                {% endif %}
-
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Shared Drive</dt>
-                    <dd class="govuk-summary-list__value">
-                        {% if data['newDriveFolder'] == 1 %}
-                            Create new Shared Drive folders
-                        {% elseif data['existingDriveFolder'] == 1 %}
-                            Connect Shared Drive folders
-                            {% if data['pdrive_file_link'] %}
-                                <br>{{ data['pdrive_file_link'] }}
-                            {% else %}
-                                <br>Not entered
-                            {% endif %}
-                        {% else %}
-                            Not selected
-                        {% endif %}
-                    </dd>
-                    <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state"
-                            href="/version-16/lcc/materials/04A-create-or-link-folders">Change<span class="govuk-visually-hidden"> Shared Drive folder choice</span></a></dd>
-                </div>
-
-                {% if data['newDriveFolder'] == 1 %}
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Shared Drive template</dt>
-                    <dd class="govuk-summary-list__value">{% if data['sharedDriveTemplate'] %}{{ data['sharedDriveTemplate'] }}{% else %}Not entered{% endif %}</dd>
-                    <dd class="govuk-summary-list__actions"><a class="govuk-link govuk-link--no-visited-state"
-                            href="/version-16/lcc/materials/05A-create-shared-drive-folder">Change<span class="govuk-visually-hidden"> Shared Drive template</span></a></dd>
-                </div>
-                {% endif %}
-                {% endif %}
-
-            </dl>
-            <!-- //////////////////////////////////////////////////// SECTION 5 - END //////////////////////////////////////////////////// -->
 
             <form method="get" action="09-confirmation.html" id="newCase_Form-H">
 

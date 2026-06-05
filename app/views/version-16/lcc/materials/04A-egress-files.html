@@ -13,15 +13,15 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
             {% if data['createCaseStarted'] == 'true' %}
-                <h1 class="govuk-heading-l">Link an Egress case</h1>
+                <h1 class="govuk-heading-l">Link Egress to this case</h1>
             {% else %}
-                <h1 class="govuk-heading-l">Select an Egress case</h1>
+                <h1 class="govuk-heading-l">Link Egress to this case</h1>
             {% endif %}
 
-            <div class="govuk-inset-text">
-                If the case you need is not listed, check that you have the correct permissions in Egress or contact the product team for support.
+            <!-- <div class="govuk-inset-text">
+                Search for the Egress case you want to link.
             </div>
-
+ -->
             <form method="get" action="04A-egress-files" class="confirm_egress_search">
                 <fieldset>
                     <div class="govuk-form-group">
@@ -30,7 +30,7 @@
                         <button type="submit" class="govuk-button govuk-!-margin-bottom-0" style="margin-left: 10px;">Search</button>
                     </div>
                     <p class="search_headline">
-                        <span class="line_1">There are <strong>4 folders</strong> matching <strong>{{ egressSearchTerm }}</strong> on Egress.</span>
+                        <span class="line_1">4 cases found for <strong>{{ egressSearchTerm }}</strong></span>
                         <span class="line_2">There are <strong>20 folders</strong> on Egress.</span>
                     </p>
                 </fieldset> 
@@ -40,9 +40,8 @@
                 <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
                         <th scope="col" class="govuk-table__header govuk-!-text-align-left sorttable_nosort" width="10%"></th>
-                        <th scope="col" class="govuk-table__header"><button class="govuk-button" data-module="govuk-button" type="button">Folder name</button></th>
+                        <th scope="col" class="govuk-table__header"><button class="govuk-button" data-module="govuk-button" type="button">Name</button></th>
                         <th scope="col" class="govuk-table__header"><button class="govuk-button" data-module="govuk-button" type="button">Status</button></th>
-                        <th scope="col" class="govuk-table__header"><button class="govuk-button" data-module="govuk-button" type="button">Last modified</button></th>
                     </tr>
                 </thead>
                 <tbody class="govuk-table__body">
@@ -52,7 +51,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_1" name="egress_file_link" type="text" value="Barbarossa" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -60,7 +59,6 @@
                             <span class="operation_name">Barbarossa</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
-                        <td class="govuk-table__cell">24 January 2019</td>
                         
                     </tr>
                     <!-- CASE 1 - END --> 
@@ -70,7 +68,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_2" name="egress_file_link" type="text" value="Beastmaster" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -78,7 +76,6 @@
                             <span class="operation_name">Beastmaster</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
-                        <td class="govuk-table__cell">26 June 2021</td>
                         
                     </tr>
                     <!-- CASE 2 - END --> 
@@ -88,7 +85,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_3" name="egress_file_link" type="text" value="Captain {{ egressSearchTerm }}" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -99,7 +96,6 @@
                         {% else %}
                             <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
                         {% endif %}
-                        <td class="govuk-table__cell">18 August 2024</td>
                     </tr>
                     <!-- CASE 3 - END --> 
 
@@ -108,7 +104,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_4" name="egress_file_link" type="text" value="Chopper Harris" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -116,7 +112,6 @@
                             <span class="operation_name">Chopper Harris</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Connected</strong></td>
-                        <td class="govuk-table__cell">1 March 2023</td>
                         
                     </tr>
                     <!-- CASE 4 - END --> 
@@ -126,7 +121,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_5" name="egress_file_link" type="text" value="Crescent Wind" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -134,7 +129,6 @@
                             <span class="operation_name">Crescent Wind</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
-                        <td class="govuk-table__cell">15 March 2024</td>
                         
                     </tr>
                     <!-- CASE 5 - END --> 
@@ -144,7 +138,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_6" name="egress_file_link" type="text" value="Desert Storm" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -152,7 +146,6 @@
                             <span class="operation_name">Desert Storm</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Connected</strong></td>
-                        <td class="govuk-table__cell">4 January 2017</td>
                         
                     </tr>
                     <!-- CASE 6 - END --> 
@@ -162,7 +155,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_7" name="egress_file_link" type="text" value="Enduring Freedom" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -170,7 +163,6 @@
                             <span class="operation_name">Enduring Freedom</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
-                        <td class="govuk-table__cell">24 July 2024</td>
                         
                     </tr>
                     <!-- CASE 7 - END --> 
@@ -180,7 +172,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_8" name="egress_file_link" type="text" value="Enduring Peace" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -188,7 +180,6 @@
                             <span class="operation_name">Enduring Peace</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Connected</strong></td>
-                        <td class="govuk-table__cell">24 June 2019</td>
                         
                     </tr>
                     <!-- CASE 8 - END --> 
@@ -198,7 +189,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_9" name="egress_file_link" type="text" value="Game of Thrones" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -206,7 +197,6 @@
                             <span class="operation_name">Game of Thrones</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
-                        <td class="govuk-table__cell">8 August 2024</td>
                         
                     </tr>
                     <!-- CASE 9 - END --> 
@@ -216,7 +206,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_10" name="egress_file_link" type="text" value="Groundhog day" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -224,7 +214,6 @@
                             <span class="operation_name">Groundhog day</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
-                        <td class="govuk-table__cell">21 September 2024</td>
                         
                     </tr>
                     <!-- CASE 10 - END --> 
@@ -234,7 +223,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_11" name="egress_file_link" type="text" value="Mincemeat" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -242,7 +231,6 @@
                             <span class="operation_name">Mincemeat</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
-                        <td class="govuk-table__cell">25 December 2021</td>
                         
                     </tr>
                     <!-- CASE 11 - END --> 
@@ -252,7 +240,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_12" name="egress_file_link" type="text" value="Overlord" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -260,7 +248,6 @@
                             <span class="operation_name">Overlord</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
-                        <td class="govuk-table__cell">28 October 2019</td>
                         
                     </tr>
                     <!-- CASE 12 - END --> 
@@ -270,7 +257,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_13" name="egress_file_link" type="text" value="Red Dawn" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -278,7 +265,6 @@
                             <span class="operation_name">Red Dawn</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Connected</strong></td>
-                        <td class="govuk-table__cell">3 September 2021</td>
                         
                     </tr>
                     <!-- CASE 13 - END --> 
@@ -288,7 +274,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_14" name="egress_file_link" type="text" value="{{ egressSearchTerm }}" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -299,7 +285,6 @@
                         {% else %}
                             <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Connected</strong></td>
                         {% endif %}
-                        <td class="govuk-table__cell">8 August 2021</td>
                     </tr>
                     <!-- CASE 14 - END --> 
 
@@ -308,7 +293,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id=""> 
                                 <input id="egress_file_link_15" name="egress_file_link" type="text" value="{{ egressSearchTerm }} Office" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -319,7 +304,6 @@
                         {% else %}
                             <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Connected</strong></td>
                         {% endif %}
-                        <td class="govuk-table__cell">17 July 2024</td>
                     </tr>
                     <!-- CASE 15 - END --> 
 
@@ -328,7 +312,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_16" name="egress_file_link" type="text" value="{{ egressSearchTerm }} Traffic" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -343,7 +327,6 @@
                                 <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
                             {% endif %}
                         {% endif %}
-                        <td class="govuk-table__cell">8 August 2021</td>
                     </tr>
                     <!-- CASE 16 - END --> 
 
@@ -352,7 +335,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_17" name="egress_file_link" type="text" value="Top Gun" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -360,7 +343,6 @@
                             <span class="operation_name">Top Gun</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Connected</strong></td>
-                        <td class="govuk-table__cell">8 December 2021</td>
                         
                     </tr>
                     <!-- CASE 17 - END --> 
@@ -370,7 +352,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_18" name="egress_file_link" type="text" value="Urgent Fury" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -378,7 +360,6 @@
                             <span class="operation_name">Urgent Fury</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Connected</strong></td>
-                        <td class="govuk-table__cell">1 February 2025</td>
                         
                     </tr>
                     <!-- CASE 18 - END --> 
@@ -388,7 +369,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_19" name="egress_file_link" type="text" value="Vittles" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -396,7 +377,6 @@
                             <span class="operation_name">Vittles</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
-                        <td class="govuk-table__cell">5 January 2025</td>
                         
                     </tr>
                     <!-- CASE 19 - END --> 
@@ -406,7 +386,7 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
                                 <input id="egress_file_link_20" name="egress_file_link" type="text" value="Wrath of God" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
@@ -414,7 +394,6 @@
                             <span class="operation_name">Wrath of God</span>
                         </td>
                         <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
-                        <td class="govuk-table__cell">4 April 2003</td>
                         
                     </tr>
                     <!-- CASE 20 - END --> 

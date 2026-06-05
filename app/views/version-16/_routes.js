@@ -1729,7 +1729,7 @@ router.post('/lcc/register-case/07-cps-staff', function (req, res) {
     req.session.data.policeUnit = req.body['newCase_Police_Unit']
 
 
-    res.redirect('/version-16/lcc/register-case/071-setup-folders')
+    res.redirect('/version-16/lcc/register-case/08-check-answers')
 
 
     // If user is LCC check if there are materials. If not, go to check your answers.
@@ -1750,6 +1750,17 @@ router.post('/lcc/register-case/071-setup-folders', function (req, res) {
     }
     else {
         res.redirect('/version-16/lcc/register-case/08-check-answers')
+    }
+})
+
+router.post('/lcc/register-case/09-confirmation', function (req, res) {
+    req.session.data.addMaterials = req.body['add-materials']
+
+    if (req.session.data.addMaterials === 'Yes') {
+        res.redirect('/version-16/lcc/materials/04A-create-or-link-folders')
+    }
+    else {
+        res.redirect('/version-16/lcc/register-case/00-homepage')
     }
 })
 
@@ -1792,11 +1803,7 @@ router.post('/lcc/materials/04A-create-or-link-folders', function (req, res) {
         }
     }
 
-    if (req.session.data.newEgressFolder === 1) {
-        res.redirect('/version-16/lcc/materials/04A-create-egress-folder')
-    }
-
-    else if (req.session.data.existingEgressFolder === 1) {
+    if (req.session.data.existingEgressFolder === 1) {
         res.redirect('/version-16/lcc/materials/04A-egress-files')
     }
 
@@ -1808,15 +1815,19 @@ router.post('/lcc/materials/04A-create-or-link-folders', function (req, res) {
         res.redirect('/version-16/lcc/materials/05A-create-shared-drive-folder')
     }
 
+    else if (req.session.data.newEgressFolder === 1) {
+        res.redirect('/version-16/lcc/register-case/create-both-confirmation')
+    }
+
     else {
-        res.redirect('/version-16/lcc/register-case/08-check-answers')
+        res.redirect('/version-16/lcc/register-case/create-both-confirmation')
     }
 
 })
 
 router.post('/lcc/materials/05A-create-shared-drive-folder', function (req, res) {
     req.session.data.sharedDriveTemplate = req.body['shared-drive-template']
-    res.redirect('/version-16/lcc/register-case/08-check-answers')
+    res.redirect('/version-16/lcc/register-case/create-both-confirmation')
 })
 
 router.post('/lcc/materials/04A-egress-files-connected', function (req, res) {
@@ -1827,12 +1838,17 @@ router.post('/lcc/materials/04A-egress-files-connected', function (req, res) {
         res.redirect('/version-16/lcc/materials/05A-p-drive-files')
     }
     else {
-        res.redirect('/version-16/lcc/register-case/08-check-answers')
+        res.redirect('/version-16/lcc/register-case/create-both-confirmation')
     }
 })
 
 router.post('/lcc/materials/05A-p-drive-files-connected', function (req, res) {
-    res.redirect('/version-16/lcc/register-case/08-check-answers')
+    if (req.session.data.existingEgressFolder === 1 && req.session.data.existingDriveFolder === 1) {
+        res.redirect('/version-16/lcc/register-case/connect-both-confirmation')
+    }
+    else {
+        res.redirect('/version-16/lcc/register-case/create-both-confirmation')
+    }
 })
 
 
@@ -1847,7 +1863,7 @@ router.post('/lcc/materials/04A-create-egress-folder', function (req, res) {
         res.redirect('/version-16/lcc/materials/05A-p-drive-files')
     }
     else {
-        res.redirect('/version-16/lcc/register-case/08-check-answers')
+        res.redirect('/version-16/lcc/register-case/create-both-confirmation')
     }
 
 })
