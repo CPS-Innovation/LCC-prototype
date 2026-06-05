@@ -1,60 +1,60 @@
-{% extends "layoutCPS-NEW-INDEX.html" %}
+{% extends "layoutCPS-OFF.html" %}
 {% block header %}
     {% include "../../includes/banner-OFF-V6.html" %}
 {% endblock %}
 {% block beforeContent %}
-<a class="govuk-back-link" href="javascript:history.back()">Back</a>
+    <a class="govuk-back-link" href="javascript:history.back()">Back</a>
 {% endblock %}
 {% block content %}
 
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <form action="/version-16/lcc/materials/05A-create-shared-drive-folder" method="post" novalidate>
+    <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-l govuk-!-margin-bottom-0">Choose where to create the Shared Drive folder</h2>
 
-      <div class="govuk-form-group">
-        <fieldset class="govuk-fieldset" aria-describedby="signIn-hint">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading">
-              Which Shared Drive folder template do you want to use?
-            </h1>
-          </legend>
+        <div class="govuk-inset-text">
+            Select the Shared Drive location where the new folder will be created. You will only see locations that you have permission to use.
+        </div>
 
-          <div class="govuk-radios" data-module="govuk-radios">
-            <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="shared-drive-template-pre-charge" name="shared-drive-template" type="radio" value="Pre-charge" aria-describedby="sharedDrive template ccs" {% if data['sharedDriveTemplate'] == 'Pre-charge' %} checked {% endif %}>
-              <label class="govuk-label govuk-radios__label" for="shared-drive-template-pre-charge">
-                Pre-charge
-              </label>
-              <div id="signIn-item-hint" class="govuk-hint govuk-radios__hint">
-                For cases before a charging decision
-              </div>
-            </div>
-            <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="shared-drive-template-charged" name="shared-drive-template" type="radio" value="Charged" aria-describedby="sharedDrive template ccs" {% if data['sharedDriveTemplate'] == 'Charged' %} checked {% endif %}>
-              <label class="govuk-label govuk-radios__label" for="shared-drive-template-pre-charge">
-                Charged
-              </label>
-              <div id="signIn-item-hint" class="govuk-hint govuk-radios__hint">
-                For cases where charges have been made
-              </div>
-            </div>
-            <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="shared-drive-template-appeal" name="shared-drive-template" type="radio" value="Appeal" aria-describedby="sharedDrive template cps areas" {% if data['sharedDriveTemplate'] == 'Appeal' %} checked {% endif %}>
-              <label class="govuk-label govuk-radios__label" for="shared-drive-template-cps-areas">
-                Appeal
-              </label>
-              <div id="signIn-2-item-hint" class="govuk-hint govuk-radios__hint">
-                For appeal cases
-              </div>
-            </div>
-          </div>
-        </fieldset>
-      </div>
+        <table class="govuk-table" id="pdrive-create-table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header" width="10%"></th>
+                    <th scope="col" class="govuk-table__header" width="90%"><button type="button" class="govuk-button" data-module="govuk-button">Folder name</button></th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+                <tr class="govuk-table__row pdrive_stage_3 pdrive_items">
+                    <td class="govuk-table__cell govuk-!-text-align-left">
+                        <form method="post" action="/version-16/lcc/materials/05A-create-shared-drive-folder" id="">
+                            <input id="shared-drive-template-pre-charge" name="shared-drive-template" type="text" value="Pre-charge" style="display: none;">
+                            <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Create</button>
+                        </form>
+                    </td>
+                    <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_3 pdrive_items">Pre-charge</a></td>
+                </tr>
 
-      {% include "../../includes/buttons.html" %}
+                <tr class="govuk-table__row pdrive_stage_3 pdrive_items">
+                    <td class="govuk-table__cell govuk-!-text-align-left">
+                        <form method="post" action="/version-16/lcc/materials/05A-create-shared-drive-folder" id="">
+                            <input id="shared-drive-template-charged" name="shared-drive-template" type="text" value="Charged" style="display: none;">
+                            <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Create</button>
+                        </form>
+                    </td>
+                    <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_3 pdrive_items">Charged</a></td>
+                </tr>
 
-    </form>
-  </div>
+                <tr class="govuk-table__row pdrive_stage_3 pdrive_items">
+                    <td class="govuk-table__cell govuk-!-text-align-left">
+                        <form method="post" action="/version-16/lcc/materials/05A-create-shared-drive-folder" id="">
+                            <input id="shared-drive-template-appeal" name="shared-drive-template" type="text" value="Appeal" style="display: none;">
+                            <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Create</button>
+                        </form>
+                    </td>
+                    <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_3 pdrive_items">Appeal</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 {% endblock %}

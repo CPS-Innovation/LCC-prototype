@@ -13,27 +13,26 @@
       <div class="govuk-grid-column-two-thirds">
         <div class="govuk-panel govuk-panel--confirmation">
           <h1 class="govuk-panel__title">
-            Case registered successfully
+            Case registered
           </h1>
           <div class="govuk-panel__body">
             URN<br><strong>
               {% if data['URN1'] %}
-                {{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}{{ data['URN4'] }}
+              {{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}{{ data['URN4'] }}
               {% else %}
-                87AA6543226
+              87AA6543226
               {% endif %}
             </strong>
           </div>
         </div>
-        <!-- <p class="govuk-body">We have sent you a confirmation email.</p> -->
+        <p class="govuk-body">Save the URN as you will need it to find or update the case.</p>
         <h2 class="govuk-heading-m">Next steps</h2>
-        <p class="govuk-body">
-          Use the URN to find the case.
-        </p>
-        <p class="govuk-body">
-          <a href="00-homepage.html" class="govuk-link">Continue to the homepage</a> to view your tasks, cases or find a
-          case.
-        </p>
+        <p class="govuk-body">You can:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li><a href="../materials/04A-create-or-link-folders" class="govuk-link">set up Egress and the Shared Drive</a></li>
+          <li><a href="Û" class="govuk-link">update the case on CMS Classic</a></li>
+          <li><a href="00-homepage" class="govuk-link">go to the homepage</a> to view your cases and tasks</li>
+        </ul>
 
       </div>
     </div>

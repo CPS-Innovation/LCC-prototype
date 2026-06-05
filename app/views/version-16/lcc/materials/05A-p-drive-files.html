@@ -10,7 +10,7 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-            <h2 class="govuk-heading-l govuk-!-margin-bottom-0" style="">Link a Shared Drive folder to the case</h2>
+            <h2 class="govuk-heading-l govuk-!-margin-bottom-0" style="">Link a Shared Drive folder to this case</h2>
 <!--             {% if data['mvp_Case_3'] == 'true' %}
                 {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
                     <h2 class="govuk-heading-xl govuk-!-margin-bottom-0" style="">Link <span class="operation_name">{{ data['searchOFF_Operation_VALUE'] }}struck Office</span> case to the Shared Drive</h2>
@@ -33,12 +33,12 @@
                 {% endif %}
             {% endif %}
  -->
-            <div class="my-cases-filter govuk-!-margin-bottom-8">
+            <!-- <div class="my-cases-filter govuk-!-margin-bottom-8">
                 <p class="total"><span class="govuk-caption-m">Last updated <span id="my-cases-timestamp">today 12:04pm</span></span></p>
             </div>
-
+ -->
             <div class="govuk-inset-text">
-                If the folder you need is not listed, check that you have the correct permissions or contact the product team for support.
+                Select a folder to link it to this case.
             </div>       
 
             <!-- NAV - START -->
@@ -69,10 +69,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_1" name="pdrive_file_link" type="text" value="Live Cases" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_3 pdrive_items">Live Cases</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_3 pdrive_items">Live Cases</a></td>
                         <!-- <td class="govuk-table__cell">24/01/2010</td> -->
                     </tr>
                     <!-- FOLDER 1 - END --> 
@@ -82,10 +82,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_2" name="pdrive_file_link" type="text" value="Archive Cases" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_3 pdrive_items">Archive Cases</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_3 pdrive_items">Archive Cases</a></td>
                         <!-- <td class="govuk-table__cell">24/01/2010</td> -->
                     </tr>
                     <!-- FOLDER 2 - END --> 
@@ -97,10 +97,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_3" name="pdrive_file_link" type="text" value="Barbarossa 98576243/19" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Barbarossa 98576243919</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Barbarossa 98576243919</a></td>
                         <!-- <td class="govuk-table__cell">24/01/2019</td> -->
                     </tr>
                     <!-- FOLDER 1 - END --> 
@@ -125,25 +125,25 @@
                                             <input id="pdrive_file_link_4" name="pdrive_file_link" type="text" value="Captain {{ data['searchOFF_Defendant_VALUE'] }} 68975426824" style="display: none;">
                                         {% endif %}
                                     {% endif %}
-                                    <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                    <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                                 </form>                            
                             </td>
-                        <th scope="row" class="govuk-table__header">
+                        <td class="govuk-table__cell">
                                 <span class="icon-new folder"></span>
                                 {% if data['createCaseStarted'] == 'true' %}
-                                    <a href="#" class="operation_name pdrive_stage_4 pdrive_items">Captain {{ data['newCase_OperationName'] }} 68975426824</strong>
+                                    <a href="#" class="operation_name pdrive_stage_4 pdrive_items">Captain {{ data['newCase_OperationName'] }} 68975426824</a>
                                 {% else %}
                                     {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
-                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">Captain {{ data['searchOFF_Operation_VALUE'] }}struck 68975426824</strong>
+                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">Captain {{ data['searchOFF_Operation_VALUE'] }}struck 68975426824</a>
                                     {% elseif data['searchOFF_Defendant_VALUE'] == 'Thunder' or data['searchOFF_Defendant_VALUE'] == 'thunder' %}
-                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">Captain {{ data['searchOFF_Defendant_VALUE'] }}struck 68975426824</strong>
+                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">Captain {{ data['searchOFF_Defendant_VALUE'] }}struck 68975426824</a>
                                     {% elseif data['searchOFF_Operation_VALUE'] %}
-                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">Captain {{ data['searchOFF_Operation_VALUE'] }} 68975426824</strong>
+                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">Captain {{ data['searchOFF_Operation_VALUE'] }} 68975426824</a>
                                     {% elseif data['searchOFF_Defendant_VALUE'] %}
-                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">Captain {{ data['searchOFF_Defendant_VALUE'] }} 68975426824</strong>
+                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">Captain {{ data['searchOFF_Defendant_VALUE'] }} 68975426824</a>
                                     {% endif %}
                                 {% endif %}
-                            </th>
+                            </td>
                             <!-- <td class="govuk-table__cell">18/08/2024</td> -->
                         </tr>
                     {% endif %}
@@ -154,10 +154,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_5" name="pdrive_file_link" type="text" value="Chopper Harris 12012093323" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Chopper Harris 12012093323</strong></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Chopper Harris 12012093323</a></td>
                         <!-- <td class="govuk-table__cell">01/03/2023</td> -->
                     </tr>
                     <!-- FOLDER 3 - END --> 
@@ -167,10 +167,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_6" name="pdrive_file_link" type="text" value="Crescent Wind 12052094424" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Crescent Wind 12052094424</strong></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Crescent Wind 12052094424</a></td>
                         <!-- <td class="govuk-table__cell">15/03/2024</td> -->
                     </tr>
                     <!-- FOLDER 4 - END --> 
@@ -180,10 +180,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_7" name="pdrive_file_link" type="text" value="Desert Storm 68798547217" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Desert Storm 68798547217</strong></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Desert Storm 68798547217</a></td>
                         <!-- <td class="govuk-table__cell">04/01/2017</td> -->
                     </tr>
                     <!-- FOLDER 5 - END --> 
@@ -193,10 +193,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_8" name="pdrive_file_link" type="text" value="Enduring Freedom 67894572P199" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Enduring Freedom 67894572P19</strong></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Enduring Freedom 67894572P19</a></td>
                         <!-- <td class="govuk-table__cell">24/06/2019</td> -->
                     </tr>
                     <!-- FOLDER 6 - END --> 
@@ -206,10 +206,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_9" name="pdrive_file_link" type="text" value="Game of Thrones 12072095224" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Game of Thrones 12072095224</strong></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Game of Thrones 12072095224</a></td>
                         <!-- <td class="govuk-table__cell">08/08/2024</td> -->
                     </tr>
                     <!-- FOLDER 7 - END --> 
@@ -219,10 +219,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_10" name="pdrive_file_link" type="text" value="Groundhog day 92062095224" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Groundhog day 92062095224</strong></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Groundhog day 92062095224</a></td>
                         <!-- <td class="govuk-table__cell">21/09/2024</td> -->
                     </tr>
                     <!-- FOLDER 8 - END --> 
@@ -232,10 +232,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_11" name="pdrive_file_link" type="text" value="Mincemeat 58786984821" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Mincemeat 58786984821</strong></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Mincemeat 58786984821</a></td>
                         <!-- <td class="govuk-table__cell">25/12/2021</td> -->
                     </tr>
                     <!-- FOLDER 9 - END --> 
@@ -245,10 +245,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_12" name="pdrive_file_link" type="text" value="Overlord 84032099919" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Overlord 84032099919</strong></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Overlord 84032099919</a></td>
                         <!-- <td class="govuk-table__cell">28/10/2019</td> -->
                     </tr>
                     <!-- FOLDER 10 - END --> 
@@ -271,25 +271,25 @@
                                             <input id="pdrive_file_link_13" name="pdrive_file_link" type="text" value="{{ data['searchOFF_URN'] }} 45AA2098221" style="display: none;">
                                         {% endif %}                            
                                     {% endif %}
-                                    <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                    <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                                 </form>                            
                             </td>
-                        <th scope="row" class="govuk-table__header">
+                        <td class="govuk-table__cell">
                                 <span class="icon-new folder"></span>
                                 {% if data['createCaseStarted'] == 'true' %}
                                     {% if data['newCase_URN-Compass_ID'] %}
-                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['newCase_OperationName'] }} 842620982/25</strong>
+                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['newCase_OperationName'] }} 842620982/25</a>
                                     {% else %}
-                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['newCase_OperationName'] }} {{ data['newCase_URN-A'] }}{{ data['newCase_URN-B'] }}{{ data['newCase_URN-C'] }}/{{ data['newCase_URN-D'] }}</strong>
+                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['newCase_OperationName'] }} {{ data['newCase_URN-A'] }}{{ data['newCase_URN-B'] }}{{ data['newCase_URN-C'] }}/{{ data['newCase_URN-D'] }}</a>
                                     {% endif %}        
                                 {% else %}
                                     {% if data['searchOFF_URN'] == 'Thunder' or data['searchOFF_URN'] == 'thunder' %}
-                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_URN'] }}struck 45AA2098221</strong>
+                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_URN'] }}struck 45AA2098221</a>
                                     {% else %}
-                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_URN'] }} 45AA2098221</strong>
+                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_URN'] }} 45AA2098221</a>
                                     {% endif %}                            
                                 {% endif %}
-                            </th>
+                            </td>
                             <!-- <td class="govuk-table__cell">08/08/2021</td> -->
                             </tr>
                     {% else %}
@@ -321,29 +321,29 @@
                                             <input id="pdrive_file_link_14" name="pdrive_file_link" type="text" value="{{ data['searchOFF_Defendant_VALUE'] }} Office 64GB2457624" style="display: none;">
                                         {% endif %}
                                     {% endif %}
-                                    <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                    <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                                 </form>                            
                             </td>
-                        <th scope="row" class="govuk-table__header">
+                        <td class="govuk-table__cell">
                                 <span class="icon-new folder"></span>
                                 {% if data['createCaseStarted'] == 'true' %}
                                     {% if data['newCase_URN-Compass_ID'] %}
-                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['newCase_OperationName'] }} 842620982/25</strong>
+                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['newCase_OperationName'] }} 842620982/25</a>
                                     {% else %}
-                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['newCase_OperationName'] }} {{ data['newCase_URN-A'] }}{{ data['newCase_URN-B'] }}{{ data['newCase_URN-C'] }}/{{ data['newCase_URN-D'] }}</strong>
+                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['newCase_OperationName'] }} {{ data['newCase_URN-A'] }}{{ data['newCase_URN-B'] }}{{ data['newCase_URN-C'] }}/{{ data['newCase_URN-D'] }}</a>
                                     {% endif %}        
                                 {% else %}
                                     {% if data['searchOFF_Operation_VALUE'] == 'Thunder' or data['searchOFF_Operation_VALUE'] == 'thunder' %}
-                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_Operation_VALUE'] }}struck Office 64GB2457624</strong>
+                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_Operation_VALUE'] }}struck Office 64GB2457624</a>
                                     {% elseif data['searchOFF_Defendant_VALUE'] == 'Thunder' or data['searchOFF_Defendant_VALUE'] == 'thunder' %}
-                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_Defendant_VALUE'] }}struck Office 64GB2457624</strong>
+                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_Defendant_VALUE'] }}struck Office 64GB2457624</a>
                                     {% elseif data['searchOFF_Operation_VALUE'] %}
-                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_Operation_VALUE'] }} Office 64GB2457624</strong>
+                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_Operation_VALUE'] }} Office 64GB2457624</a>
                                     {% elseif data['searchOFF_Defendant_VALUE'] %}
-                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_Defendant_VALUE'] }} Office 64GB2457624</strong>
+                                        <a href="#" class="operation_name pdrive_stage_4 pdrive_items">{{ data['searchOFF_Defendant_VALUE'] }} Office 64GB2457624</a>
                                     {% endif %}
                                 {% endif %}
-                            </th>
+                            </td>
                             <!-- <td class="govuk-table__cell">17/07/2024</td> -->
                         </tr>
                     {% endif %}
@@ -354,10 +354,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_15" name="pdrive_file_link" type="text" value="Urgent Fury 68795472625" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Urgent Fury 68795472625</strong></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Urgent Fury 68795472625</a></td>
                         <!-- <td class="govuk-table__cell">01/02/2025</td> -->
                     </tr>
                     <!-- FOLDER 13 - END --> 
@@ -367,10 +367,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_16" name="pdrive_file_link" type="text" value="Vittles 98642573325" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Vittles 98642573325</strong></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Vittles 98642573325</a></td>
                         <!-- <td class="govuk-table__cell">05/01/2025</td> -->
                     </tr>
                     <!-- FOLDER 14 - END --> 
@@ -380,10 +380,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_17" name="pdrive_file_link" type="text" value="Wrath of God 68974512303" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Wrath of God 68974512303</strong></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_4 pdrive_items">Wrath of God 68974512303</a></td>
                         <!-- <td class="govuk-table__cell">04/04/2003</td> -->
                     </tr>
                     <!-- FOLDER 15 - END --> 
@@ -395,10 +395,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_18" name="pdrive_file_link" type="text" value="1. Case Management" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">1. Case Management</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">1. Case Management</a></td>
                         <!-- <td class="govuk-table__cell">11/12/2016</td> -->
                     </tr>
                     <!-- FOLDER 1 - END --> 
@@ -408,10 +408,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_19" name="pdrive_file_link" type="text" value="2. Conference Hearing Notes" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">2. Conference Hearing Notes</strong></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">2. Conference Hearing Notes</a></td>
                         <!-- <td class="govuk-table__cell">18/08/2024</td> -->
                     </tr>
                     <!-- FOLDER 2 - END --> 
@@ -421,10 +421,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_20" name="pdrive_file_link" type="text" value="3. Experts" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">3. Experts</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">3. Experts</a></td>
                         <!-- <td class="govuk-table__cell">18/08/2024</td> -->
                     </tr>
                     <!-- FOLDER 3 - END --> 
@@ -434,10 +434,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_21" name="pdrive_file_link" type="text" value="4. Counsel" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">4. Counsel</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">4. Counsel</a></td>
                         <!-- <td class="govuk-table__cell">18/08/2024</td> -->
                     </tr>
                     <!-- FOLDER 4 - END --> 
@@ -447,10 +447,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_22" name="pdrive_file_link" type="text" value="5. Correspondence" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">5. Correspondence</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">5. Correspondence</a></td>
                         <!-- <td class="govuk-table__cell">18/08/2024</td> -->
                     </tr>
                     <!-- FOLDER 5 - END --> 
@@ -460,10 +460,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_23" name="pdrive_file_link" type="text" value="6. Disclosuree" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">6. Disclosure</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">6. Disclosure</a></td>
                         <!-- <td class="govuk-table__cell">18/08/2024</td> -->
                     </tr>
                     <!-- FOLDER 6 - END --> 
@@ -473,10 +473,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_24" name="pdrive_file_link" type="text" value="7. Finance" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">7. Finance</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">7. Finance</a></td>
                         <!-- <td class="govuk-table__cell">18/08/2024</td> -->
                     </tr>
                     <!-- FOLDER 7 - END --> 
@@ -486,10 +486,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_25" name="pdrive_file_link" type="text" value="8. Lawyer Working copies" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">8. Lawyer Working copies</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">8. Lawyer Working copies</a></td>
                         <!-- <td class="govuk-table__cell">18/08/2024</td> -->
                     </tr>
                     <!-- FOLDER 8 - END --> 
@@ -499,10 +499,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_26" name="pdrive_file_link" type="text" value="9. PO Working copies" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">9. PO Working copies</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">9. PO Working copies</a></td>
                         <!-- <td class="govuk-table__cell">18/08/2024</td> -->
                     </tr>
                     <!-- FOLDER 9 - END --> 
@@ -512,10 +512,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_27" name="pdrive_file_link" type="text" value="10. Police" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">10. Police</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">10. Police</a></td>
                         <!-- <td class="govuk-table__cell">18/08/2024</td> -->
                     </tr>
                     <!-- FOLDER 10 - END --> 
@@ -525,10 +525,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_28" name="pdrive_file_link" type="text" value="11. Media" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">11. Media</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">11. Media</a></td>
                         <!-- <td class="govuk-table__cell">18/08/2024</td> -->
                     </tr>
                     <!-- FOLDER 11 - END --> 
@@ -538,10 +538,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_29" name="pdrive_file_link" type="text" value="12. Victims & Witnesses" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">12. Victims & Witnesses</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">12. Victims & Witnesses</a></td>
                         <!-- <td class="govuk-table__cell">18/08/2024</td> -->
                     </tr>
                     <!-- FOLDER 12 - END --> 
@@ -551,10 +551,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_30" name="pdrive_file_link" type="text" value="13. DCS" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">13. DCS</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">13. DCS</a></td>
                         <!-- <td class="govuk-table__cell">18/08/2024</td> -->
                     </tr>
                     <!-- FOLDER 13 - END --> 
@@ -564,10 +564,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_31" name="pdrive_file_link" type="text" value="14. Mags Ct" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">14. Mags Ct</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">14. Mags Ct</a></td>
                         <!-- <td class="govuk-table__cell">18/08/2024</td> -->
                     </tr>
                     <!-- FOLDER 14 - END --> 
@@ -577,10 +577,10 @@
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/05A-p-drive-files-connected" id="">  
                                 <input id="pdrive_file_link_32" name="pdrive_file_link" type="text" value="15. IDPC" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
-                        <th scope="row" class="govuk-table__header"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">15. IDPC</a></th>
+                        <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_5 pdrive_items">15. IDPC</a></td>
                         <!-- <td class="govuk-table__cell">18/08/2024</td> -->
                     </tr>
                     <!-- FOLDER 15 - END --> 
