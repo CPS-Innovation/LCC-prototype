@@ -2941,7 +2941,7 @@ html {
 }
 
 
-#egress-table, #pdrive-table {
+#egress-table, #pdrive-table, #pdrive-create-table {
      thead {
           tr {
                th {
@@ -2985,9 +2985,9 @@ html {
                     }
                }
                td {
-                    &:first-of-type, &:nth-of-type(2n) {
-                         padding-top: 15px;
-                    }
+                   &:first-of-type, &:nth-of-type(2n) {
+                        padding-top: 15px;
+                   }
                     &:last-of-type {
                          padding-top: 10px;
                     }
@@ -3000,6 +3000,24 @@ html {
                }
           }
      }
+}
+
+#pdrive-create-table tbody tr td.govuk-table__cell {
+     padding-top: 10px;
+     vertical-align: middle;
+}
+
+#pdrive-table tbody tr td.govuk-table__cell {
+     padding-top: 10px;
+     vertical-align: middle;
+}
+
+#pdrive-create-table tbody tr td button {
+     float: none;
+}
+
+#pdrive-table tbody tr td button {
+     float: none;
 }
 
 .uppercase {
