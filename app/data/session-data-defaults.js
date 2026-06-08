@@ -415,6 +415,135 @@ module.exports = {
   "sharedDriveTemplate": "",
   "addMaterials": "",
 
+  "sharedDriveFolders": [
+    {
+      id: 2000,
+      name: 'Live Cases',
+      parentId: null,
+      folder: true,
+      level: 1
+    },
+    {
+      id: 2001,
+      name: 'Archive Cases',
+      parentId: null,
+      folder: true,
+      level: 1
+    },
+    {
+      id: 2002,
+      name: 'Barbarossa 98576243919',
+      parentId: 2000,
+      folder: true,
+      level: 2
+    },
+    {
+      id: 2003,
+      name: 'Captain Thundercat 68975426824',
+      parentId: 2000,
+      folder: true,
+      level: 2
+    },
+    {
+      id: 2004,
+      name: 'Chopper Harris 12012093323',
+      parentId: 2000,
+      folder: true,
+      level: 2
+    },
+    {
+      id: 2005,
+      name: 'Crescent Wind 12052094424',
+      parentId: 2000,
+      folder: true,
+      level: 2
+    },
+    {
+      id: 2006,
+      name: 'Desert Storm 68798547217',
+      parentId: 2000,
+      folder: true,
+      level: 2
+    },
+    {
+      id: 2007,
+      name: 'Enduring Freedom 67894572P19',
+      parentId: 2000,
+      folder: true,
+      level: 2
+    },
+    {
+      id: 2008,
+      name: 'Game of Thrones 12072095224',
+      parentId: 2000,
+      folder: true,
+      level: 2
+    },
+    {
+      id: 2009,
+      name: 'Groundhog day 92062095224',
+      parentId: 2000,
+      folder: true,
+      level: 2
+    },
+    {
+      id: 2010,
+      name: 'Mincemeat 58786984821',
+      parentId: 2000,
+      folder: true,
+      level: 2
+    },
+    {
+      id: 2011,
+      name: 'Overlord 84032099919',
+      parentId: 2000,
+      folder: true,
+      level: 2
+    },
+    {
+      id: 2012,
+      name: 'Urgent Fury 68795472625',
+      parentId: 2000,
+      folder: true,
+      level: 2
+    },
+    {
+      id: 2013,
+      name: 'Vittles 98642573325',
+      parentId: 2000,
+      folder: true,
+      level: 2
+    },
+    {
+      id: 2014,
+      name: 'Wrath of God 68974512303',
+      parentId: 2000,
+      folder: true,
+      level: 2
+    },
+    {
+      id: 2015,
+      name: 'Barbarossa 98576243919',
+      parentId: 2001,
+      folder: true,
+      level: 2
+    },
+    {
+      id: 2016,
+      name: 'Chopper Harris 12012093323',
+      parentId: 2001,
+      folder: true,
+      level: 2
+    },
+    {
+      id: 2017,
+      name: 'Crescent Wind 12052094424',
+      parentId: 2001,
+      folder: true,
+      level: 2
+    }
+  ],
+
 
   "newFilter": "",
   "filterStatusUsed": "",

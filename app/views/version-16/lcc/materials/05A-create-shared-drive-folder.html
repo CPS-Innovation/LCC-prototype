@@ -9,11 +9,20 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h2 class="govuk-heading-l govuk-!-margin-bottom-0">Choose where to create the Shared Drive folder</h2>
+        <h2 class="govuk-heading-l govuk-!-margin-bottom-0">Create a Shared Drive folder for this case</h2>
 
         <div class="govuk-inset-text">
-            Select the Shared Drive location where the new folder will be created. You will only see locations that you have permission to use.
+            Select a folder to create the new folder in.
         </div>
+
+        <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
+            <ol class="govuk-breadcrumbs__list">
+                <li class="govuk-breadcrumbs__list-item pdrive_nav_1 pdrive_nav_items"><a class="govuk-breadcrumbs__link pdrive_nav_1" href="#">Shared Drive</a></li>
+                <li class="govuk-breadcrumbs__list-item pdrive_nav_2 pdrive_nav_items"><a class="govuk-breadcrumbs__link pdrive_nav_2" href="#">RCTCaseData</a></li>
+                <li class="govuk-breadcrumbs__list-item pdrive_nav_3 pdrive_nav_items"><a class="govuk-breadcrumbs__link selected pdrive_nav_3" href="#">SCCTD</a></li>
+                <li class="govuk-breadcrumbs__list-item pdrive_nav_4 pdrive_nav_items"><a class="govuk-breadcrumbs__link pdrive_nav_4" href="#">Live cases</a></li>
+            </ol>
+        </nav>
 
         <table class="govuk-table" id="pdrive-create-table">
             <thead class="govuk-table__head">
@@ -23,37 +32,44 @@
                 </tr>
             </thead>
             <tbody class="govuk-table__body">
-                <tr class="govuk-table__row pdrive_stage_3 pdrive_items">
-                    <td class="govuk-table__cell govuk-!-text-align-left">
-                        <form method="post" action="/version-16/lcc/materials/05A-create-shared-drive-folder" id="">
-                            <input id="shared-drive-template-pre-charge" name="shared-drive-template" type="text" value="Pre-charge" style="display: none;">
-                            <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Create</button>
-                        </form>
-                    </td>
-                    <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_3 pdrive_items">Pre-charge</a></td>
-                </tr>
+                {% for folder in data['sharedDriveFolders'] %}
+                    {% if folder.folder and folder.level == 1 %}
+                        <tr class="govuk-table__row pdrive_stage_3 pdrive_items">
+                            <td class="govuk-table__cell govuk-!-text-align-left">
+                                <form method="post" action="/version-16/lcc/materials/05A-create-shared-drive-folder" id="">
+                                    <input id="shared-drive-template-{{ folder.id }}" name="shared-drive-template" type="text" value="{{ folder.name }}" style="display: none;">
+                                    <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Create</button>
+                                </form>
+                            </td>
+                            <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="govuk-link--no-visited-state operation_name pdrive_stage_3 pdrive_items">{{ folder.name }}</a></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
 
-                <tr class="govuk-table__row pdrive_stage_3 pdrive_items">
-                    <td class="govuk-table__cell govuk-!-text-align-left">
-                        <form method="post" action="/version-16/lcc/materials/05A-create-shared-drive-folder" id="">
-                            <input id="shared-drive-template-charged" name="shared-drive-template" type="text" value="Charged" style="display: none;">
-                            <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Create</button>
-                        </form>
-                    </td>
-                    <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_3 pdrive_items">Charged</a></td>
-                </tr>
-
-                <tr class="govuk-table__row pdrive_stage_3 pdrive_items">
-                    <td class="govuk-table__cell govuk-!-text-align-left">
-                        <form method="post" action="/version-16/lcc/materials/05A-create-shared-drive-folder" id="">
-                            <input id="shared-drive-template-appeal" name="shared-drive-template" type="text" value="Appeal" style="display: none;">
-                            <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Create</button>
-                        </form>
-                    </td>
-                    <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="operation_name pdrive_stage_3 pdrive_items">Appeal</a></td>
-                </tr>
+                {% for folder in data['sharedDriveFolders'] %}
+                    {% if folder.folder and folder.level == 2 %}
+                        <tr class="govuk-table__row pdrive_stage_4 pdrive_items">
+                            <td class="govuk-table__cell govuk-!-text-align-left">
+                                <form method="post" action="/version-16/lcc/materials/05A-create-shared-drive-folder" id="">
+                                    <input id="shared-drive-template-{{ folder.id }}" name="shared-drive-template" type="text" value="{{ folder.name }}" style="display: none;">
+                                    <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Create</button>
+                                </form>
+                            </td>
+                            <td class="govuk-table__cell"><span class="icon-new folder"></span><a href="#" class="govuk-link--no-visited-state operation_name pdrive_stage_4 pdrive_items">{{ folder.name }}</a></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
             </tbody>
         </table>
+
+        <script>
+            window.addEventListener('load', function () {
+                var pdriveCreateTable = document.getElementById('pdrive-create-table');
+                if (pdriveCreateTable && typeof SortableTable !== 'undefined') {
+                    new SortableTable(pdriveCreateTable);
+                }
+            });
+        </script>
     </div>
 </div>
 
