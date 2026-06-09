@@ -115,6 +115,7 @@ function trimString(value) {
 function resetCreateCaseSuspectsAndCharges(req) {
     req.session.data.suspectCount = 0;
     req.session.data.suspectDetailsCount = 0;
+    req.session.data.pendingSuspectId = undefined;
     req.session.data.suspectId = [];
     req.session.data.suspectType = [];
     req.session.data.suspectFirstName = [];
@@ -178,6 +179,41 @@ function resetCreateCaseSuspectsAndCharges(req) {
     req.session.data.victims = JSON.parse(JSON.stringify(victims));
     req.session.data.countVictims = 0;
     req.session.data.preCharge = 'No';
+}
+
+const suspectSummaryPath = '/version-16/lcc/register-case/03B-suspect-summary';
+
+function commitPendingSuspect(data) {
+    const pendingSuspectId = Number(data.pendingSuspectId);
+
+    if (!Number.isInteger(pendingSuspectId) || pendingSuspectId < 0) {
+        return;
+    }
+
+    if (!Array.isArray(data.suspectId)) {
+        data.suspectId = [];
+    }
+
+    if (!data.suspectId.map(String).includes(String(pendingSuspectId))) {
+        data.suspectId.push(pendingSuspectId);
+    }
+
+    data.suspectCount = Math.max(Number(data.suspectCount || 0), pendingSuspectId + 1);
+    data.suspectDetailsYesNo = 'Yes';
+    data.pendingSuspectId = undefined;
+}
+
+function redirectToSuspectSummary(req, res) {
+    commitPendingSuspect(req.session.data);
+    res.redirect(suspectSummaryPath);
+}
+
+function redirectToSuspectRoute(req, res, route) {
+    if (route === suspectSummaryPath) {
+        return redirectToSuspectSummary(req, res);
+    }
+
+    res.redirect(route);
 }
 
 function getCreateCaseReturnTo(req) {
@@ -345,7 +381,7 @@ function skipSuspectDetail(req, res, detail) {
         }
     }
 
-    res.redirect(nextSuspectDetailsRouteAfter(data, count, detail));
+    redirectToSuspectRoute(req, res, nextSuspectDetailsRouteAfter(data, count, detail));
 }
 
 // Make session data available in all Nunjucks templates as "data"
@@ -572,8 +608,10 @@ router.get('/lcc/register-case/03-add-suspect', function (req, res) {
     const data = req.session.data;
     const isEditing = data.editSuspect !== undefined && Number(data.editSuspect) !== 999;
     const count = Number(data.suspectCount || 0);
+    const pendingSuspectId = Number(data.pendingSuspectId);
+    const hasPendingSuspect = Number.isInteger(pendingSuspectId) && pendingSuspectId >= 0;
 
-    if (!isEditing) {
+    if (!isEditing && !hasPendingSuspect) {
         data.editSuspect = 999;
         data.displaySuspect = 999;
         data.suspectType[count] = undefined;
@@ -595,15 +633,27 @@ router.get('/lcc/register-case/03-add-suspect', function (req, res) {
 })
 
 router.post('/lcc/register-case/03-add-suspect', function (req, res) {
-    count = req.session.data.suspectCount
+    const data = req.session.data
+    const pendingSuspectId = Number(data.pendingSuspectId)
+    const postedSuspectIndex = Number(req.body['suspect-index'])
+    let count = Number(data.suspectCount || 0)
+
+    if (Number.isInteger(postedSuspectIndex) && postedSuspectIndex >= 0) {
+        count = postedSuspectIndex
+    }
+
+    if (Number.isInteger(pendingSuspectId) && pendingSuspectId >= 0) {
+        count = pendingSuspectId
+    }
     const suspectType = req.body['suspect-type']
     const suspectFirstName = trimString(req.body['suspect-person-first-name'])
     const suspectLastName = trimString(req.body['suspect-person-last-name'])
     const suspectCompanyName = trimString(req.body['suspect-company-name'])
 
-    req.session.data.suspectFirstName[count] = suspectFirstName
-    req.session.data.suspectLastName[count] = suspectLastName
-    req.session.data.suspectCompanyName[count] = suspectCompanyName
+    data.pendingSuspectId = count
+    data.suspectFirstName[count] = suspectFirstName
+    data.suspectLastName[count] = suspectLastName
+    data.suspectCompanyName[count] = suspectCompanyName
 
     const errors = {}
     const errorList = []
@@ -641,7 +691,7 @@ router.post('/lcc/register-case/03-add-suspect', function (req, res) {
     }
 
     if (errorList.length > 0) {
-        req.session.data.suspectType[count] = suspectType
+        data.suspectType[count] = suspectType
 
         return res.render('version-16/lcc/register-case/03-add-suspect', {
             errors,
@@ -649,71 +699,65 @@ router.post('/lcc/register-case/03-add-suspect', function (req, res) {
         })
     }
 
-    req.session.data.suspectType[count] = suspectType
-    req.session.data.suspectId[count] = count
-    req.session.data.aliasTempSuspectId = count
+    data.suspectType[count] = suspectType
+    data.aliasTempSuspectId = count
 
     if (suspectType == 'Person') {
-        req.session.data.suspectFirstName[count] = suspectFirstName
-        req.session.data.suspectLastName[count] = suspectLastName
-        req.session.data.suspectDOB[count] = req.body['suspect-person-dob']
-        req.session.data.suspectGender[count] = req.body['suspect-person-gender']
-        req.session.data.suspectDisability[count] = req.body['suspect-person-disability']
-        req.session.data.suspectReligion[count] = req.body['suspect-person-religion']
-        req.session.data.suspectEthnicity[count] = req.body['suspect-person-ethnicity']
-        req.session.data.suspectSDO[count] = req.body['suspect-person-sdo']
-        req.session.data.suspectArrestSummons[count] = req.body['suspect-person-arrest-summons']
-        req.session.data.suspectOffenderType[count] = req.body['suspect-person-offender-type']
-        req.session.data.suspectAlias[count] = req.body['suspect-person-alias']
-        console.log("Arrest summons:", req.session.data.suspectArrestSummons[count])
-        console.log("Alias:", req.session.data.suspectAlias[count])
-        console.log("SDO:", req.session.data.suspectSDO[count])
+        data.suspectFirstName[count] = suspectFirstName
+        data.suspectLastName[count] = suspectLastName
+        data.suspectDOB[count] = req.body['suspect-person-dob']
+        data.suspectGender[count] = req.body['suspect-person-gender']
+        data.suspectDisability[count] = req.body['suspect-person-disability']
+        data.suspectReligion[count] = req.body['suspect-person-religion']
+        data.suspectEthnicity[count] = req.body['suspect-person-ethnicity']
+        data.suspectSDO[count] = req.body['suspect-person-sdo']
+        data.suspectArrestSummons[count] = req.body['suspect-person-arrest-summons']
+        data.suspectOffenderType[count] = req.body['suspect-person-offender-type']
+        data.suspectAlias[count] = req.body['suspect-person-alias']
+        console.log("Arrest summons:", data.suspectArrestSummons[count])
+        console.log("Alias:", data.suspectAlias[count])
+        console.log("SDO:", data.suspectSDO[count])
     }
     else {
-        req.session.data.suspectCompanyName[count] = suspectCompanyName
+        data.suspectCompanyName[count] = suspectCompanyName
     }
 
-    req.session.data.suspectDetailsCount = count
-    req.session.data.suspectCount = count + 1
+    data.suspectDetailsCount = count
 
-    if (req.session.data.suspectCount > 0) {
-        req.session.data.suspectDetailsYesNo = 'Yes'
-    }
+    id = data.suspectDetailsCount
 
-    id = req.session.data.suspectDetailsCount
-
-    if (req.session.data.suspectDOB[id] != undefined) {
+    if (data.suspectDOB[id] != undefined) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-dob')
     }
-    else if (shouldAskOffenderType(req.session.data.suspectOffenderType[id])) {
+    else if (shouldAskOffenderType(data.suspectOffenderType[id])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-offender-type')
     }
-    else if (req.session.data.suspectGender[id] != undefined) {
+    else if (data.suspectGender[id] != undefined) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-gender')
     }
-    else if (req.session.data.suspectDisability[id] != undefined) {
+    else if (data.suspectDisability[id] != undefined) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-disability')
     }
-    else if (req.session.data.suspectReligion[id] != undefined) {
+    else if (data.suspectReligion[id] != undefined) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-religion')
     }
-    else if (req.session.data.suspectEthnicity[id] != undefined) {
+    else if (data.suspectEthnicity[id] != undefined) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-ethnicity')
     }
-    else if (req.session.data.suspectAlias[id] != undefined) {
+    else if (data.suspectAlias[id] != undefined) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[id] != undefined) {
+    else if (data.suspectSDO[id] != undefined) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[id] != undefined) {
+    else if (data.suspectArrestSummons[id] != undefined) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-arrest-summons')
     }
     else {
-        res.redirect('/version-16/lcc/register-case/03B-suspect-summary')
+        redirectToSuspectSummary(req, res)
     }
 
-    // res.redirect('/version-16/lcc/register-case/03B-suspect-summary')
+    // redirectToSuspectSummary(req, res)
 })
 
 
@@ -850,7 +894,7 @@ router.post('/lcc/register-case/03-suspect-details-dob', function (req, res) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-arrest-summons')
     }
     else {
-        res.redirect('/version-16/lcc/register-case/03B-suspect-summary')
+        redirectToSuspectSummary(req, res)
     }
 })
 
@@ -898,7 +942,7 @@ router.post('/lcc/register-case/03-suspect-details-gender', function (req, res) 
         res.redirect('/version-16/lcc/register-case/03-suspect-details-offender-type')
     }
     else {
-        res.redirect('/version-16/lcc/register-case/03B-suspect-summary')
+        redirectToSuspectSummary(req, res)
     }
 })
 
@@ -943,7 +987,7 @@ router.post('/lcc/register-case/03-suspect-details-disability', function (req, r
         res.redirect('/version-16/lcc/register-case/03-suspect-details-offender-type')
     }
     else {
-        res.redirect('/version-16/lcc/register-case/03B-suspect-summary')
+        redirectToSuspectSummary(req, res)
     }
 })
 
@@ -985,7 +1029,7 @@ router.post('/lcc/register-case/03-suspect-details-religion', function (req, res
         res.redirect('/version-16/lcc/register-case/03-suspect-details-offender-type')
     }
     else {
-        res.redirect('/version-16/lcc/register-case/03B-suspect-summary')
+        redirectToSuspectSummary(req, res)
     }
 })
 
@@ -1024,7 +1068,7 @@ router.post('/lcc/register-case/03-suspect-details-ethnicity', function (req, re
         res.redirect('/version-16/lcc/register-case/03-suspect-details-offender-type')
     }
     else {
-        res.redirect('/version-16/lcc/register-case/03B-suspect-summary')
+        redirectToSuspectSummary(req, res)
     }
 })
 
@@ -1108,7 +1152,7 @@ router.post('/lcc/register-case/03-suspect-details-alias-summary', function (req
             res.redirect('/version-16/lcc/register-case/03-suspect-details-offender-type')
         }
         else {
-            res.redirect('/version-16/lcc/register-case/03B-suspect-summary')
+            redirectToSuspectSummary(req, res)
         }
     }
 })
@@ -1128,7 +1172,7 @@ router.post('/lcc/register-case/03-suspect-details-sdo', function (req, res) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-offender-type')
     }
     else {
-        res.redirect('/version-16/lcc/register-case/03B-suspect-summary')
+        redirectToSuspectSummary(req, res)
     }
 })
 
@@ -1151,7 +1195,7 @@ router.post('/lcc/register-case/03-suspect-details-arrest-summons', function (re
         res.redirect('/version-16/lcc/register-case/03-suspect-details-offender-type')
     }
     else {
-        res.redirect('/version-16/lcc/register-case/03B-suspect-summary')
+        redirectToSuspectSummary(req, res)
     }
 })
 
@@ -1193,7 +1237,7 @@ router.post('/lcc/register-case/03-suspect-details-offender-type', function (req
         req.session.data.forceOffenderTypeAfterDob[count] = false
     }
 
-    res.redirect(nextSuspectDetailsRouteAfterOffenderType(req.session.data, count))
+    redirectToSuspectRoute(req, res, nextSuspectDetailsRouteAfterOffenderType(req.session.data, count))
 })
 
 
@@ -1268,7 +1312,7 @@ router.post('/lcc/register-case/03-remove-suspect', function (req, res) {
         }
     }
 
-    res.redirect('/version-16/lcc/register-case/03B-suspect-summary')
+    redirectToSuspectSummary(req, res)
 })
 
 
@@ -1296,7 +1340,7 @@ router.post('/lcc/register-case/03-edit-suspect', function (req, res) {
     req.session.data.displaySuspect = 999
     req.session.data.editSuspect = 999
 
-    res.redirect('/version-16/lcc/register-case/03B-suspect-summary')
+    redirectToSuspectSummary(req, res)
 })
 // End of suspect summary
 

@@ -8,7 +8,7 @@
 {% endblock %}
 {% block content %}
 
-{% set egressSearchTerm = data['searchOFF_EGRESS_VALUE'] or 'Thundercat' %}
+{% set egressSearchTerm = data['searchOFF_EGRESS_VALUE'] or data['operationName'] or 'Thundercat' %}
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -80,24 +80,7 @@
                     </tr>
                     <!-- CASE 2 - END --> 
 
-                    <!-- CASE 3 - START --> 
-                    <tr class="govuk-table__row">
-                        <td class="govuk-table__cell govuk-!-text-align-left">
-                            <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
-                                <input id="egress_file_link_3" name="egress_file_link" type="text" value="Captain {{ egressSearchTerm }}" style="display: none;">
-                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
-                            </form>                            
-                        </td>
-                        <td class="govuk-table__cell">
-                            Captain {{ egressSearchTerm }}
-                        </td> 
-                        {% if data['offCMS_Egress_files_V2'] == 'Yes' %}
-                            <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Connected</strong></td>
-                        {% else %}
-                            <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
-                        {% endif %}
-                    </tr>
-                    <!-- CASE 3 - END --> 
+ 
 
                     <!-- CASE 4 - START --> 
                     <tr class="govuk-table__row hidden_row">
@@ -280,11 +263,7 @@
                         <td class="govuk-table__cell">
                             {{ egressSearchTerm }}
                         </td>
-                        {% if data['createCaseStarted'] == 'true' %}
-                            <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
-                        {% else %}
-                            <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Connected</strong></td>
-                        {% endif %}
+                        <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
                     </tr>
                     <!-- CASE 14 - END --> 
 
@@ -292,12 +271,12 @@
                     <tr class="govuk-table__row"> 
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id=""> 
-                                <input id="egress_file_link_15" name="egress_file_link" type="text" value="{{ egressSearchTerm }} Office" style="display: none;">
+                                <input id="egress_file_link_15" name="egress_file_link" type="text" value="{{ egressSearchTerm }} office" style="display: none;">
                                 <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
-                            {{ egressSearchTerm }} Office
+                            {{ egressSearchTerm }} office
                         </td>
                         {% if data['createCaseStarted'] == 'true' %}
                             <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
@@ -311,12 +290,12 @@
                     <tr class="govuk-table__row">
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
-                                <input id="egress_file_link_16" name="egress_file_link" type="text" value="{{ egressSearchTerm }} Traffic" style="display: none;">
+                                <input id="egress_file_link_16" name="egress_file_link" type="text" value="{{ egressSearchTerm }} traffic" style="display: none;">
                                 <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
                             </form>                            
                         </td>
                         <td class="govuk-table__cell">
-                            {{ egressSearchTerm }} Traffic
+                            {{ egressSearchTerm }} traffic
                         </td>
                         {% if data['createCaseStarted'] == 'true' %}
                             <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
@@ -329,6 +308,25 @@
                         {% endif %}
                     </tr>
                     <!-- CASE 16 - END --> 
+
+                    <!-- CASE 3 - START --> 
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell govuk-!-text-align-left">
+                            <form method="post" action="/version-16/lcc/materials/04A-egress-files-connected" id="">  
+                                <input id="egress_file_link_3" name="egress_file_link" type="text" value="Captain {{ egressSearchTerm }}" style="display: none;">
+                                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Link</button>
+                            </form>                            
+                        </td>
+                        <td class="govuk-table__cell">
+                            Captain {{ egressSearchTerm }}
+                        </td> 
+                        {% if data['offCMS_Egress_files_V2'] == 'Yes' %}
+                            <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Connected</strong></td>
+                        {% else %}
+                            <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--grey">Inactive</strong></td>
+                        {% endif %}
+                    </tr>
+                    <!-- CASE 3 - END -->
 
                     <!-- CASE 17 - START --> 
                     <tr class="govuk-table__row hidden_row">
