@@ -8,7 +8,7 @@
 {% block content %}
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-full">
         <div class="gov-pages">
             <style>
                 .create-case-heading-with-tag {
@@ -46,6 +46,7 @@
                 </fieldset>
             </form>
             <form method="post" action="/version-16/lcc/register-case/04-charges-offence-search-results">
+                <div class="charges-results-table-wrap">
                 <span class="govuk-label">{{ data['currentResultsId'].length }} results for <strong>{{data['chargeSearch']}}</strong></span>
                 <hr>
 
@@ -70,6 +71,36 @@
                     .govuk-pagination__item--current a.govuk-link {
                         color: #ffffff !important;
                         text-decoration: none !important;
+                    }
+
+                    .charges-results-table {
+                        width: auto;
+                    }
+
+                    .charges-results-table-wrap {
+                        display: inline-block;
+                    }
+
+                    .charges-results-table__actions {
+                        width: 5rem;
+                    }
+
+                    .charges-results-table__code {
+                        width: 7rem;
+                        white-space: nowrap;
+                    }
+
+                    .charges-results-table__description {
+                        max-width: 24rem;
+                    }
+
+                    .charges-results-table__statute {
+                        max-width: 27rem;
+                    }
+
+                    .charges-results-table__dates {
+                        width: 11rem;
+                        white-space: nowrap;
                     }
                 </style>
 
@@ -96,15 +127,15 @@
                     </tr>
                 </thead> -->
 
-                <table class="govuk-table">
+                <table class="govuk-table charges-results-table">
                 <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header">CJS code</th>
-                    <th scope="col" class="govuk-table__header">Description</th>
-                    <th scope="col" class="govuk-table__header">Statute name and section</th>
-                    <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Effective dates</th>
+                    <th scope="col" class="govuk-table__header charges-results-table__actions">Actions</th>
+                    <th scope="col" class="govuk-table__header charges-results-table__code">CJS code</th>
+                    <th scope="col" class="govuk-table__header charges-results-table__description">Description</th>
+                    <th scope="col" class="govuk-table__header charges-results-table__statute">Statute name and section</th>
+                    <th scope="col" class="govuk-table__header charges-results-table__dates">Effective dates</th>
                     <!-- <th scope="col" class="govuk-table__header">Effective to date</th> -->
-                    <th scope="col" class="govuk-table__header govuk-table__header--numeric">Actions</th>
                     <!-- <th scope="col" class="govuk-table__header govuk-!-width-one-eight">CJS code</th>
                     <th scope="col" class="govuk-table__header govuk-!-width-one-third">Description</th>
                     <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Statute name and section</th>
@@ -116,26 +147,28 @@
                 <tbody class="govuk-table__body">
                     {% for id in data['currentResultsId'] %}            
                         <tr class="govuk-table__row">
-                        <td class="govuk-table__cell">{{ data['currentResultsChargeCode'][id]}}</th>
-                        <td class="govuk-table__cell">{{ data['currentResultsChargeDescription'][id]}}</td>
-                        <td class="govuk-table__cell">
-                            {{ data['currentResultsStatute'][id]}}
-                            <br>{{ data['currentResultsSection'][id]}}
-                        </td>
-                        <td class="govuk-table__cell">
-                            From {{ data['currentResultsFromDate'][id]}}
-                            {% if data['currentResultsToDate'][id] %}<br> to {{data['currentResultsToDate'][id]}} {% endif %}
-                        </td>
-                        <!-- <td class="govuk-table__cell">{{ data['resultsToDate'][id]}}</td> -->
-                        <td class="govuk-table__cell  govuk-table__header--numeric">
+                        <td class="govuk-table__cell charges-results-table__actions">
                             <form action="/version-16/lcc/register-case/04-charges-offence-search-results" method="post" novalidate>
                                 <input type="hidden" name="add-charge" value="{{ id }}">
                                 <button class="govuk-link govuk-link--no-visited-state suspect" type="submit">Add</button>
                             </form>
+                        </td>
+                        <td class="govuk-table__cell charges-results-table__code">{{ data['currentResultsChargeCode'][id]}}</th>
+                        <td class="govuk-table__cell charges-results-table__description">{{ data['currentResultsChargeDescription'][id]}}</td>
+                        <td class="govuk-table__cell charges-results-table__statute">
+                            {{ data['currentResultsStatute'][id]}}
+                            <br>{{ data['currentResultsSection'][id]}}
+                        </td>
+                        <td class="govuk-table__cell charges-results-table__dates">
+                            From {{ data['currentResultsFromDate'][id]}}
+                            {% if data['currentResultsToDate'][id] %}<br> to {{data['currentResultsToDate'][id]}} {% endif %}
+                        </td>
+                        <!-- <td class="govuk-table__cell">{{ data['resultsToDate'][id]}}</td> -->
                         </tr>
                     {% endfor %}
                 </tbody>
                 </table>
+                </div>
 
                 {% if data['currentResultsId'].length > 20 %}
                 <nav class="govuk-pagination" aria-label="Pagination">

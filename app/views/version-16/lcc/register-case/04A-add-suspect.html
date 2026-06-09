@@ -7,6 +7,8 @@
 {% endblock %}
 {% block content %}
 
+{% set hasPersonName = data['suspectFirstName'][data['editSuspect']] and data['suspectLastName'][data['editSuspect']] %}
+
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     {% if data['editSuspect'] == 999 %}
@@ -28,12 +30,12 @@
           </div> -->
           <div class="govuk-radios" data-module="govuk-radios">
             <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="suspect-type-person" name="suspect-type" type="radio" value="Person" data-aria-controls="conditional-contact" {% if data['suspectType'][data['editSuspect']] == 'Person' %} checked {% endif %}>
+              <input class="govuk-radios__input" id="suspect-type-person" name="suspect-type" type="radio" value="Person" data-aria-controls="suspect-type-person-details" {% if data['suspectType'][data['editSuspect']] == 'Person' or hasPersonName %} checked {% endif %}>
               <label class="govuk-label govuk-radios__label" for="suspect-type-person">
                 Person
               </label>
             </div>
-            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact">
+            <div class="govuk-radios__conditional{% if data['suspectType'][data['editSuspect']] != 'Person' and not hasPersonName %} govuk-radios__conditional--hidden{% endif %}" id="suspect-type-person-details">
               <div class="govuk-form-group">
                 <label class="govuk-label govuk-!-font-weight-bold" for="suspect-type-person-first-name">
                   First name
@@ -142,12 +144,12 @@
 
 
             <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="suspect-type-company" name="suspect-type" type="radio" value="Company" data-aria-controls="conditional-contact-2" {% if data['suspectType']['editSuspect'] == 'Company' %} checked {% endif %}>
+              <input class="govuk-radios__input" id="suspect-type-company" name="suspect-type" type="radio" value="Company" data-aria-controls="suspect-type-company-details" {% if data['suspectType'][data['editSuspect']] == 'Company' %} checked {% endif %}>
               <label class="govuk-label govuk-radios__label" for="suspect-type-company">
                 Company
               </label>
             </div>
-            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-2">
+            <div class="govuk-radios__conditional{% if data['suspectType'][data['editSuspect']] != 'Company' %} govuk-radios__conditional--hidden{% endif %}" id="suspect-type-company-details">
               <div class="govuk-form-group">
                 <label class="govuk-label govuk-!-font-weight-bold" for="suspect-company-name">
                   Company name
@@ -170,4 +172,59 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+  (function () {
+    var radios = document.querySelectorAll('input[name="suspect-type"][data-aria-controls]')
+    var personRadio = document.getElementById('suspect-type-person')
+    var companyRadio = document.getElementById('suspect-type-company')
+    var firstNameInput = document.getElementById('suspect-person-first-name')
+    var lastNameInput = document.getElementById('suspect-person-last-name')
+    var companyNameInput = document.getElementById('suspect-company-name')
+
+    function hasValue (input) {
+      return input && input.value.trim() !== ''
+    }
+
+    function updateSuspectTypePanels () {
+      if (hasValue(firstNameInput) && hasValue(lastNameInput) && personRadio) {
+        personRadio.checked = true
+      } else if (hasValue(companyNameInput) && companyRadio) {
+        companyRadio.checked = true
+      }
+
+      radios.forEach(function (radio) {
+        var panel = document.getElementById(radio.getAttribute('data-aria-controls'))
+
+        if (!panel) {
+          return
+        }
+
+        if (radio.checked) {
+          panel.removeAttribute('hidden')
+          panel.classList.remove('govuk-radios__conditional--hidden')
+          panel.style.display = ''
+        } else {
+          panel.setAttribute('hidden', 'hidden')
+          panel.classList.add('govuk-radios__conditional--hidden')
+          panel.style.display = 'none'
+        }
+      })
+    }
+
+    radios.forEach(function (radio) {
+      radio.addEventListener('change', updateSuspectTypePanels)
+    })
+
+    document.addEventListener('DOMContentLoaded', updateSuspectTypePanels)
+    window.addEventListener('pageshow', updateSuspectTypePanels)
+
+    updateSuspectTypePanels()
+    window.setTimeout(updateSuspectTypePanels, 0)
+    window.setTimeout(updateSuspectTypePanels, 100)
+    window.setTimeout(updateSuspectTypePanels, 300)
+  })()
+</script>
 {% endblock %}

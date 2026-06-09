@@ -7,7 +7,8 @@
 {% endblock %}
 {% block content %}
 
-{% set suspectIndex = data['editSuspect'] if data['editSuspect'] != 999 else data['suspectCount'] %}
+{% set suspectIndex = data['editSuspect'] if data['editSuspect'] != 999 else (data['pendingSuspectId'] if data['pendingSuspectId'] != undefined else data['suspectCount']) %}
+{% set hasPersonName = data['suspectFirstName'][suspectIndex] and data['suspectLastName'][suspectIndex] %}
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -54,12 +55,12 @@
           </div> -->
           <div class="govuk-radios" data-module="govuk-radios">
             <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="suspect-type-person" name="suspect-type" type="radio" value="Person" data-aria-controls="conditional-contact" {% if data['suspectType'][suspectIndex] == 'Person' %} checked {% endif %} {% if errors and errors.suspectType %}aria-describedby="suspect-type-error"{% endif %}>
+              <input class="govuk-radios__input" id="suspect-type-person" name="suspect-type" type="radio" value="Person" data-aria-controls="suspect-type-person-details" {% if data['suspectType'][suspectIndex] == 'Person' or hasPersonName %} checked {% endif %} {% if errors and errors.suspectType %}aria-describedby="suspect-type-error"{% endif %}>
               <label class="govuk-label govuk-radios__label" for="suspect-type-person">
                 Person
               </label>
             </div>
-            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact">
+            <div class="govuk-radios__conditional{% if data['suspectType'][suspectIndex] != 'Person' and not hasPersonName %} govuk-radios__conditional--hidden{% endif %}" id="suspect-type-person-details">
               <div class="govuk-form-group{% if errors and errors.firstName %} govuk-form-group--error{% endif %}">
                 <label class="govuk-label govuk-!-font-weight-bold" for="suspect-type-person-first-name">
                   First name
@@ -157,12 +158,12 @@
 
 
             <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="suspect-type-company" name="suspect-type" type="radio" value="Company" data-aria-controls="conditional-contact-2" {% if data['suspectType'][suspectIndex] == 'Company' %} checked {% endif %} {% if errors and errors.suspectType %}aria-describedby="suspect-type-error"{% endif %}>
+              <input class="govuk-radios__input" id="suspect-type-company" name="suspect-type" type="radio" value="Company" data-aria-controls="suspect-type-company-details" {% if data['suspectType'][suspectIndex] == 'Company' %} checked {% endif %} {% if errors and errors.suspectType %}aria-describedby="suspect-type-error"{% endif %}>
               <label class="govuk-label govuk-radios__label" for="suspect-type-company">
                 Company
               </label>
             </div>
-            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-2">
+            <div class="govuk-radios__conditional{% if data['suspectType'][suspectIndex] != 'Company' %} govuk-radios__conditional--hidden{% endif %}" id="suspect-type-company-details">
               <div class="govuk-form-group{% if errors and errors.companyName %} govuk-form-group--error{% endif %}">
                 <label class="govuk-label govuk-!-font-weight-bold" for="suspect-company-name">
                   Company name
@@ -180,6 +181,7 @@
 
         <input type="hidden" name="id" value="{{ data['suspectId'][data['id']]}}">
         <input type="hidden" name="update" value="{{data['id']}}">
+        <input type="hidden" name="suspect-index" value="{{ suspectIndex }}">
 
       </div>
 
@@ -190,4 +192,59 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+  (function () {
+    var radios = document.querySelectorAll('input[name="suspect-type"][data-aria-controls]')
+    var personRadio = document.getElementById('suspect-type-person')
+    var companyRadio = document.getElementById('suspect-type-company')
+    var firstNameInput = document.getElementById('suspect-person-first-name')
+    var lastNameInput = document.getElementById('suspect-person-last-name')
+    var companyNameInput = document.getElementById('suspect-company-name')
+
+    function hasValue (input) {
+      return input && input.value.trim() !== ''
+    }
+
+    function updateSuspectTypePanels () {
+      if (hasValue(firstNameInput) && hasValue(lastNameInput) && personRadio) {
+        personRadio.checked = true
+      } else if (hasValue(companyNameInput) && companyRadio) {
+        companyRadio.checked = true
+      }
+
+      radios.forEach(function (radio) {
+        var panel = document.getElementById(radio.getAttribute('data-aria-controls'))
+
+        if (!panel) {
+          return
+        }
+
+        if (radio.checked) {
+          panel.removeAttribute('hidden')
+          panel.classList.remove('govuk-radios__conditional--hidden')
+          panel.style.display = ''
+        } else {
+          panel.setAttribute('hidden', 'hidden')
+          panel.classList.add('govuk-radios__conditional--hidden')
+          panel.style.display = 'none'
+        }
+      })
+    }
+
+    radios.forEach(function (radio) {
+      radio.addEventListener('change', updateSuspectTypePanels)
+    })
+
+    document.addEventListener('DOMContentLoaded', updateSuspectTypePanels)
+    window.addEventListener('pageshow', updateSuspectTypePanels)
+
+    updateSuspectTypePanels()
+    window.setTimeout(updateSuspectTypePanels, 0)
+    window.setTimeout(updateSuspectTypePanels, 100)
+    window.setTimeout(updateSuspectTypePanels, 300)
+  })()
+</script>
 {% endblock %}
