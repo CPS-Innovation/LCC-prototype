@@ -439,7 +439,7 @@ module.exports = {
     },
     {
       id: 2003,
-      name: 'Captain Thundercat 68975426824',
+      name: 'Thundercat',
       parentId: 2000,
       folder: true,
       level: 2
