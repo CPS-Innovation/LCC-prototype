@@ -9,6 +9,21 @@
 
 {% set suspectIndex = data['editSuspect'] if data['editSuspect'] != 999 else (data['pendingSuspectId'] if data['pendingSuspectId'] != undefined else data['suspectCount']) %}
 {% set hasPersonName = data['suspectFirstName'][suspectIndex] and data['suspectLastName'][suspectIndex] %}
+{% set hasDobDetails = data['suspectDOB'][suspectIndex] or data['suspectDayBirth'][suspectIndex] or data['suspectMonthBirth'][suspectIndex] or data['suspectYearBirth'][suspectIndex] %}
+{% set hasOffenderTypeDetails = data['suspectOffenderType'][suspectIndex] %}
+{% set hasGenderDetails = data['suspectGender'][suspectIndex] %}
+{% set hasDisabilityDetails = data['suspectDisability'][suspectIndex] %}
+{% set hasReligionDetails = data['suspectReligion'][suspectIndex] %}
+{% set hasEthnicityDetails = data['suspectEthnicity'][suspectIndex] %}
+{% set hasAliasDetails = data['suspectAlias'][suspectIndex] %}
+{% set hasArrestSummonsDetails = data['suspectArrestSummons'][suspectIndex] %}
+
+<style>
+  .govuk-radios:has(#suspect-type-person:checked) #suspect-type-person-details,
+  .govuk-radios:has(#suspect-type-company:checked) #suspect-type-company-details {
+    display: block !important;
+  }
+</style>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -95,44 +110,44 @@
                   </div>
                   <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                     <div class="govuk-checkboxes__item">
-                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-0" name="suspect-person-dob" type="checkbox" value="Date of birth">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-0" name="suspect-person-dob" type="checkbox" value="Date of birth" {% if hasDobDetails %}checked{% endif %}>
                       <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-0">
                         Date of birth
                       </label>
                     </div>
                     <div class="govuk-checkboxes__item">
-                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-7" name="suspect-person-offender-type" type="checkbox" value="Type of offender">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-7" name="suspect-person-offender-type" type="checkbox" value="Type of offender" {% if hasOffenderTypeDetails %}checked{% endif %}>
                       <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-7">
                         Type of offender
                       </label>
                     </div>
 
                     <div class="govuk-checkboxes__item">
-                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details" name="suspect-person-gender" type="checkbox" value="Gender">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details" name="suspect-person-gender" type="checkbox" value="Gender" {% if hasGenderDetails %}checked{% endif %}>
                       <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details">
                         Gender
                       </label>
                     </div>
                     <div class="govuk-checkboxes__item">
-                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-2" name="suspect-person-disability" type="checkbox" value="Disability">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-2" name="suspect-person-disability" type="checkbox" value="Disability" {% if hasDisabilityDetails %}checked{% endif %}>
                       <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-2">
                         Disability
                       </label>
                     </div>
                     <div class="govuk-checkboxes__item">
-                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-3" name="suspect-person-religion" type="checkbox" value="Religion">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-3" name="suspect-person-religion" type="checkbox" value="Religion" {% if hasReligionDetails %}checked{% endif %}>
                       <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-3">
                         Religion
                       </label>
                     </div>
                     <div class="govuk-checkboxes__item">
-                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-4" name="suspect-person-ethnicity" type="checkbox" value="Ethnicity">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-4" name="suspect-person-ethnicity" type="checkbox" value="Ethnicity" {% if hasEthnicityDetails %}checked{% endif %}>
                       <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-4">
                         Ethnicity
                       </label>
                     </div>
                     <div class="govuk-checkboxes__item">
-                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-8" name="suspect-person-alias" type="checkbox" value="Alias details">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-8" name="suspect-person-alias" type="checkbox" value="Alias details" {% if hasAliasDetails %}checked{% endif %}>
                       <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-8">
                         Alias details
                       </label>
@@ -144,7 +159,7 @@
                       </label>
                     </div> -->
                     <div class="govuk-checkboxes__item">
-                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-6" name="suspect-person-arrest-summons" type="checkbox" value="Arrest summons">
+                      <input class="govuk-checkboxes__input" id="suspect-person-additional-details-6" name="suspect-person-arrest-summons" type="checkbox" value="Arrest summons" {% if hasArrestSummonsDetails %}checked{% endif %}>
                       <label class="govuk-label govuk-checkboxes__label" for="suspect-person-additional-details-6">
                         Arrest summons number (ASN)
                       </label>
@@ -198,23 +213,8 @@
 <script>
   (function () {
     var radios = document.querySelectorAll('input[name="suspect-type"][data-aria-controls]')
-    var personRadio = document.getElementById('suspect-type-person')
-    var companyRadio = document.getElementById('suspect-type-company')
-    var firstNameInput = document.getElementById('suspect-person-first-name')
-    var lastNameInput = document.getElementById('suspect-person-last-name')
-    var companyNameInput = document.getElementById('suspect-company-name')
-
-    function hasValue (input) {
-      return input && input.value.trim() !== ''
-    }
 
     function updateSuspectTypePanels () {
-      if (hasValue(firstNameInput) && hasValue(lastNameInput) && personRadio) {
-        personRadio.checked = true
-      } else if (hasValue(companyNameInput) && companyRadio) {
-        companyRadio.checked = true
-      }
-
       radios.forEach(function (radio) {
         var panel = document.getElementById(radio.getAttribute('data-aria-controls'))
 
@@ -245,6 +245,7 @@
     window.setTimeout(updateSuspectTypePanels, 0)
     window.setTimeout(updateSuspectTypePanels, 100)
     window.setTimeout(updateSuspectTypePanels, 300)
+    window.setTimeout(updateSuspectTypePanels, 750)
   })()
 </script>
 {% endblock %}

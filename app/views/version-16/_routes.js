@@ -205,6 +205,15 @@ function commitPendingSuspect(data) {
 
 function redirectToSuspectSummary(req, res) {
     commitPendingSuspect(req.session.data);
+    req.session.data.displaySuspect = 999;
+    req.session.data.editSuspect = 999;
+
+    const returnTo = getCreateCaseReturnTo(req);
+    if (returnTo) {
+        clearCreateCaseReturnTo(req);
+        return res.redirect(returnTo);
+    }
+
     res.redirect(suspectSummaryPath);
 }
 
@@ -214,6 +223,59 @@ function redirectToSuspectRoute(req, res, route) {
     }
 
     res.redirect(route);
+}
+
+function hasSuspectDetail(value) {
+    return value !== undefined && value !== null && value !== '';
+}
+
+function firstSuspectDetailsRoute(data, count) {
+    if (
+        hasSuspectDetail(data.suspectDOB[count]) ||
+        hasSuspectDetail(data.suspectDayBirth[count]) ||
+        hasSuspectDetail(data.suspectMonthBirth[count]) ||
+        hasSuspectDetail(data.suspectYearBirth[count])
+    ) {
+        return '/version-16/lcc/register-case/03-suspect-details-dob';
+    }
+    if (shouldAskOffenderType(data.suspectOffenderType[count])) {
+        return '/version-16/lcc/register-case/03-suspect-details-offender-type';
+    }
+    if (hasSuspectDetail(data.suspectGender[count])) {
+        return '/version-16/lcc/register-case/03-suspect-details-gender';
+    }
+    if (hasSuspectDetail(data.suspectDisability[count])) {
+        return '/version-16/lcc/register-case/03-suspect-details-disability';
+    }
+    if (hasSuspectDetail(data.suspectReligion[count])) {
+        return '/version-16/lcc/register-case/03-suspect-details-religion';
+    }
+    if (hasSuspectDetail(data.suspectEthnicity[count])) {
+        return '/version-16/lcc/register-case/03-suspect-details-ethnicity';
+    }
+    if (hasSuspectDetail(data.suspectAlias[count])) {
+        return '/version-16/lcc/register-case/03-suspect-details-add-alias';
+    }
+    if (hasSuspectDetail(data.suspectSDO[count])) {
+        return '/version-16/lcc/register-case/03-suspect-details-sdo';
+    }
+    if (hasSuspectDetail(data.suspectArrestSummons[count])) {
+        return '/version-16/lcc/register-case/03-suspect-details-arrest-summons';
+    }
+
+    return suspectSummaryPath;
+}
+
+function selectedSuspectDetail(bodyValue, currentValue, placeholder) {
+    if (bodyValue === undefined) {
+        return undefined;
+    }
+
+    if (hasSuspectDetail(currentValue) && currentValue !== placeholder) {
+        return currentValue;
+    }
+
+    return placeholder;
 }
 
 function getCreateCaseReturnTo(req) {
@@ -239,25 +301,25 @@ function clearCreateCaseReturnTo(req) {
 }
 
 function nextSuspectDetailsRouteAfterOffenderType(data, count) {
-    if (data.suspectGender[count] != undefined) {
+    if (hasSuspectDetail(data.suspectGender[count])) {
         return '/version-16/lcc/register-case/03-suspect-details-gender';
     }
-    if (data.suspectDisability[count] != undefined) {
+    if (hasSuspectDetail(data.suspectDisability[count])) {
         return '/version-16/lcc/register-case/03-suspect-details-disability';
     }
-    if (data.suspectReligion[count] != undefined) {
+    if (hasSuspectDetail(data.suspectReligion[count])) {
         return '/version-16/lcc/register-case/03-suspect-details-religion';
     }
-    if (data.suspectEthnicity[count] != undefined) {
+    if (hasSuspectDetail(data.suspectEthnicity[count])) {
         return '/version-16/lcc/register-case/03-suspect-details-ethnicity';
     }
-    if (data.suspectAlias[count] != undefined) {
+    if (hasSuspectDetail(data.suspectAlias[count])) {
         return '/version-16/lcc/register-case/03-suspect-details-add-alias';
     }
-    if (data.suspectSDO[count] != undefined) {
+    if (hasSuspectDetail(data.suspectSDO[count])) {
         return '/version-16/lcc/register-case/03-suspect-details-sdo';
     }
-    if (data.suspectArrestSummons[count] != undefined) {
+    if (hasSuspectDetail(data.suspectArrestSummons[count])) {
         return '/version-16/lcc/register-case/03-suspect-details-arrest-summons';
     }
 
@@ -268,13 +330,13 @@ function nextSuspectDetailsRouteAfter(data, count, currentDetail) {
     const remainingRoutes = {
         dob: [
             ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/version-16/lcc/register-case/03-suspect-details-offender-type'],
-            ['gender', () => data.suspectGender[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-gender'],
-            ['disability', () => data.suspectDisability[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-disability'],
-            ['religion', () => data.suspectReligion[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-religion'],
-            ['ethnicity', () => data.suspectEthnicity[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-ethnicity'],
-            ['alias', () => data.suspectAlias[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-add-alias'],
-            ['sdo', () => data.suspectSDO[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-sdo'],
-            ['arrestSummons', () => data.suspectArrestSummons[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-arrest-summons']
+            ['gender', () => hasSuspectDetail(data.suspectGender[count]), '/version-16/lcc/register-case/03-suspect-details-gender'],
+            ['disability', () => hasSuspectDetail(data.suspectDisability[count]), '/version-16/lcc/register-case/03-suspect-details-disability'],
+            ['religion', () => hasSuspectDetail(data.suspectReligion[count]), '/version-16/lcc/register-case/03-suspect-details-religion'],
+            ['ethnicity', () => hasSuspectDetail(data.suspectEthnicity[count]), '/version-16/lcc/register-case/03-suspect-details-ethnicity'],
+            ['alias', () => hasSuspectDetail(data.suspectAlias[count]), '/version-16/lcc/register-case/03-suspect-details-add-alias'],
+            ['sdo', () => hasSuspectDetail(data.suspectSDO[count]), '/version-16/lcc/register-case/03-suspect-details-sdo'],
+            ['arrestSummons', () => hasSuspectDetail(data.suspectArrestSummons[count]), '/version-16/lcc/register-case/03-suspect-details-arrest-summons']
         ],
         offenderType: [
             ['gender', () => data.suspectGender[count] === 'Gender', '/version-16/lcc/register-case/03-suspect-details-gender'],
@@ -286,42 +348,42 @@ function nextSuspectDetailsRouteAfter(data, count, currentDetail) {
             ['arrestSummons', () => data.suspectArrestSummons[count] === 'Arrest summons', '/version-16/lcc/register-case/03-suspect-details-arrest-summons']
         ],
         gender: [
-            ['disability', () => data.suspectDisability[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-disability'],
-            ['religion', () => data.suspectReligion[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-religion'],
-            ['ethnicity', () => data.suspectEthnicity[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-ethnicity'],
-            ['alias', () => data.suspectAlias[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-add-alias'],
-            ['sdo', () => data.suspectSDO[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-sdo'],
-            ['arrestSummons', () => data.suspectArrestSummons[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-arrest-summons'],
+            ['disability', () => hasSuspectDetail(data.suspectDisability[count]), '/version-16/lcc/register-case/03-suspect-details-disability'],
+            ['religion', () => hasSuspectDetail(data.suspectReligion[count]), '/version-16/lcc/register-case/03-suspect-details-religion'],
+            ['ethnicity', () => hasSuspectDetail(data.suspectEthnicity[count]), '/version-16/lcc/register-case/03-suspect-details-ethnicity'],
+            ['alias', () => hasSuspectDetail(data.suspectAlias[count]), '/version-16/lcc/register-case/03-suspect-details-add-alias'],
+            ['sdo', () => hasSuspectDetail(data.suspectSDO[count]), '/version-16/lcc/register-case/03-suspect-details-sdo'],
+            ['arrestSummons', () => hasSuspectDetail(data.suspectArrestSummons[count]), '/version-16/lcc/register-case/03-suspect-details-arrest-summons'],
             ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/version-16/lcc/register-case/03-suspect-details-offender-type']
         ],
         disability: [
-            ['religion', () => data.suspectReligion[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-religion'],
-            ['ethnicity', () => data.suspectEthnicity[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-ethnicity'],
-            ['alias', () => data.suspectAlias[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-add-alias'],
-            ['sdo', () => data.suspectSDO[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-sdo'],
-            ['arrestSummons', () => data.suspectArrestSummons[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-arrest-summons'],
+            ['religion', () => hasSuspectDetail(data.suspectReligion[count]), '/version-16/lcc/register-case/03-suspect-details-religion'],
+            ['ethnicity', () => hasSuspectDetail(data.suspectEthnicity[count]), '/version-16/lcc/register-case/03-suspect-details-ethnicity'],
+            ['alias', () => hasSuspectDetail(data.suspectAlias[count]), '/version-16/lcc/register-case/03-suspect-details-add-alias'],
+            ['sdo', () => hasSuspectDetail(data.suspectSDO[count]), '/version-16/lcc/register-case/03-suspect-details-sdo'],
+            ['arrestSummons', () => hasSuspectDetail(data.suspectArrestSummons[count]), '/version-16/lcc/register-case/03-suspect-details-arrest-summons'],
             ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/version-16/lcc/register-case/03-suspect-details-offender-type']
         ],
         religion: [
-            ['ethnicity', () => data.suspectEthnicity[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-ethnicity'],
-            ['alias', () => data.suspectAlias[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-add-alias'],
-            ['sdo', () => data.suspectSDO[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-sdo'],
-            ['arrestSummons', () => data.suspectArrestSummons[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-arrest-summons'],
+            ['ethnicity', () => hasSuspectDetail(data.suspectEthnicity[count]), '/version-16/lcc/register-case/03-suspect-details-ethnicity'],
+            ['alias', () => hasSuspectDetail(data.suspectAlias[count]), '/version-16/lcc/register-case/03-suspect-details-add-alias'],
+            ['sdo', () => hasSuspectDetail(data.suspectSDO[count]), '/version-16/lcc/register-case/03-suspect-details-sdo'],
+            ['arrestSummons', () => hasSuspectDetail(data.suspectArrestSummons[count]), '/version-16/lcc/register-case/03-suspect-details-arrest-summons'],
             ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/version-16/lcc/register-case/03-suspect-details-offender-type']
         ],
         ethnicity: [
-            ['alias', () => data.suspectAlias[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-add-alias'],
-            ['sdo', () => data.suspectSDO[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-sdo'],
-            ['arrestSummons', () => data.suspectArrestSummons[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-arrest-summons'],
+            ['alias', () => hasSuspectDetail(data.suspectAlias[count]), '/version-16/lcc/register-case/03-suspect-details-add-alias'],
+            ['sdo', () => hasSuspectDetail(data.suspectSDO[count]), '/version-16/lcc/register-case/03-suspect-details-sdo'],
+            ['arrestSummons', () => hasSuspectDetail(data.suspectArrestSummons[count]), '/version-16/lcc/register-case/03-suspect-details-arrest-summons'],
             ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/version-16/lcc/register-case/03-suspect-details-offender-type']
         ],
         alias: [
-            ['sdo', () => data.suspectSDO[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-sdo'],
-            ['arrestSummons', () => data.suspectArrestSummons[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-arrest-summons'],
+            ['sdo', () => hasSuspectDetail(data.suspectSDO[count]), '/version-16/lcc/register-case/03-suspect-details-sdo'],
+            ['arrestSummons', () => hasSuspectDetail(data.suspectArrestSummons[count]), '/version-16/lcc/register-case/03-suspect-details-arrest-summons'],
             ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/version-16/lcc/register-case/03-suspect-details-offender-type']
         ],
         sdo: [
-            ['arrestSummons', () => data.suspectArrestSummons[count] != undefined, '/version-16/lcc/register-case/03-suspect-details-arrest-summons'],
+            ['arrestSummons', () => hasSuspectDetail(data.suspectArrestSummons[count]), '/version-16/lcc/register-case/03-suspect-details-arrest-summons'],
             ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/version-16/lcc/register-case/03-suspect-details-offender-type']
         ],
         arrestSummons: [
@@ -705,15 +767,28 @@ router.post('/lcc/register-case/03-add-suspect', function (req, res) {
     if (suspectType == 'Person') {
         data.suspectFirstName[count] = suspectFirstName
         data.suspectLastName[count] = suspectLastName
-        data.suspectDOB[count] = req.body['suspect-person-dob']
-        data.suspectGender[count] = req.body['suspect-person-gender']
-        data.suspectDisability[count] = req.body['suspect-person-disability']
-        data.suspectReligion[count] = req.body['suspect-person-religion']
-        data.suspectEthnicity[count] = req.body['suspect-person-ethnicity']
-        data.suspectSDO[count] = req.body['suspect-person-sdo']
-        data.suspectArrestSummons[count] = req.body['suspect-person-arrest-summons']
-        data.suspectOffenderType[count] = req.body['suspect-person-offender-type']
-        data.suspectAlias[count] = req.body['suspect-person-alias']
+        data.suspectDOB[count] = selectedSuspectDetail(req.body['suspect-person-dob'], data.suspectDOB[count], 'Date of birth')
+        data.suspectGender[count] = selectedSuspectDetail(req.body['suspect-person-gender'], data.suspectGender[count], 'Gender')
+        data.suspectDisability[count] = selectedSuspectDetail(req.body['suspect-person-disability'], data.suspectDisability[count], 'Disability')
+        data.suspectReligion[count] = selectedSuspectDetail(req.body['suspect-person-religion'], data.suspectReligion[count], 'Religion')
+        data.suspectEthnicity[count] = selectedSuspectDetail(req.body['suspect-person-ethnicity'], data.suspectEthnicity[count], 'Ethnicity')
+        data.suspectSDO[count] = selectedSuspectDetail(req.body['suspect-person-sdo'], data.suspectSDO[count], 'Serious Dangerous Offender (SDO)')
+        data.suspectArrestSummons[count] = selectedSuspectDetail(req.body['suspect-person-arrest-summons'], data.suspectArrestSummons[count], 'Arrest summons')
+        data.suspectOffenderType[count] = selectedSuspectDetail(req.body['suspect-person-offender-type'], data.suspectOffenderType[count], 'Type of offender')
+        data.suspectAlias[count] = selectedSuspectDetail(req.body['suspect-person-alias'], data.suspectAlias[count], 'Alias details')
+
+        if (data.suspectDOB[count] == undefined) {
+            data.suspectDayBirth[count] = undefined
+            data.suspectMonthBirth[count] = undefined
+            data.suspectYearBirth[count] = undefined
+            if (Array.isArray(data.forceOffenderTypeAfterDob)) {
+                data.forceOffenderTypeAfterDob[count] = false
+            }
+        }
+
+        if (data.suspectAlias[count] == undefined) {
+            removeAliasesForCurrentSuspect(data, count)
+        }
         console.log("Arrest summons:", data.suspectArrestSummons[count])
         console.log("Alias:", data.suspectAlias[count])
         console.log("SDO:", data.suspectSDO[count])
@@ -726,36 +801,7 @@ router.post('/lcc/register-case/03-add-suspect', function (req, res) {
 
     id = data.suspectDetailsCount
 
-    if (data.suspectDOB[id] != undefined) {
-        res.redirect('/version-16/lcc/register-case/03-suspect-details-dob')
-    }
-    else if (shouldAskOffenderType(data.suspectOffenderType[id])) {
-        res.redirect('/version-16/lcc/register-case/03-suspect-details-offender-type')
-    }
-    else if (data.suspectGender[id] != undefined) {
-        res.redirect('/version-16/lcc/register-case/03-suspect-details-gender')
-    }
-    else if (data.suspectDisability[id] != undefined) {
-        res.redirect('/version-16/lcc/register-case/03-suspect-details-disability')
-    }
-    else if (data.suspectReligion[id] != undefined) {
-        res.redirect('/version-16/lcc/register-case/03-suspect-details-religion')
-    }
-    else if (data.suspectEthnicity[id] != undefined) {
-        res.redirect('/version-16/lcc/register-case/03-suspect-details-ethnicity')
-    }
-    else if (data.suspectAlias[id] != undefined) {
-        res.redirect('/version-16/lcc/register-case/03-suspect-details-add-alias')
-    }
-    else if (data.suspectSDO[id] != undefined) {
-        res.redirect('/version-16/lcc/register-case/03-suspect-details-sdo')
-    }
-    else if (data.suspectArrestSummons[id] != undefined) {
-        res.redirect('/version-16/lcc/register-case/03-suspect-details-arrest-summons')
-    }
-    else {
-        redirectToSuspectSummary(req, res)
-    }
+    redirectToSuspectRoute(req, res, firstSuspectDetailsRoute(data, id))
 
     // redirectToSuspectSummary(req, res)
 })
@@ -872,25 +918,25 @@ router.post('/lcc/register-case/03-suspect-details-dob', function (req, res) {
     if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-offender-type')
     }
-    else if (req.session.data.suspectGender[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectGender[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-gender')
     }
-    else if (req.session.data.suspectDisability[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectDisability[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-disability')
     }
-    else if (req.session.data.suspectReligion[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectReligion[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-religion')
     }
-    else if (req.session.data.suspectEthnicity[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectEthnicity[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-ethnicity')
     }
-    else if (req.session.data.suspectAlias[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectAlias[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectSDO[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectArrestSummons[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-arrest-summons')
     }
     else {
@@ -920,22 +966,22 @@ router.post('/lcc/register-case/03-suspect-details-gender', function (req, res) 
 
     req.session.data.suspectGender[count] = gender
 
-    if (req.session.data.suspectDisability[count] != undefined) {
+    if (hasSuspectDetail(req.session.data.suspectDisability[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-disability')
     }
-    else if (req.session.data.suspectReligion[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectReligion[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-religion')
     }
-    else if (req.session.data.suspectEthnicity[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectEthnicity[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-ethnicity')
     }
-    else if (req.session.data.suspectAlias[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectAlias[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectSDO[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectArrestSummons[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-arrest-summons')
     }
     else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
@@ -968,19 +1014,19 @@ router.post('/lcc/register-case/03-suspect-details-disability', function (req, r
 
     req.session.data.suspectDisability[count] = disability
 
-    if (req.session.data.suspectReligion[count] != undefined) {
+    if (hasSuspectDetail(req.session.data.suspectReligion[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-religion')
     }
-    else if (req.session.data.suspectEthnicity[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectEthnicity[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-ethnicity')
     }
-    else if (req.session.data.suspectAlias[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectAlias[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectSDO[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectArrestSummons[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-arrest-summons')
     }
     else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
@@ -1013,16 +1059,16 @@ router.post('/lcc/register-case/03-suspect-details-religion', function (req, res
 
     req.session.data.suspectReligion[count] = religion
 
-    if (req.session.data.suspectEthnicity[count] != undefined) {
+    if (hasSuspectDetail(req.session.data.suspectEthnicity[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-ethnicity')
     }
-    else if (req.session.data.suspectAlias[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectAlias[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectSDO[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectArrestSummons[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-arrest-summons')
     }
     else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
@@ -1055,13 +1101,13 @@ router.post('/lcc/register-case/03-suspect-details-ethnicity', function (req, re
 
     req.session.data.suspectEthnicity[count] = ethnicity
 
-    if (req.session.data.suspectAlias[count] != undefined) {
+    if (hasSuspectDetail(req.session.data.suspectAlias[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectSDO[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[count] != undefined) {
+    else if (hasSuspectDetail(req.session.data.suspectArrestSummons[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-arrest-summons')
     }
     else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
@@ -1165,7 +1211,7 @@ router.post('/lcc/register-case/03-suspect-details-sdo', function (req, res) {
 
     req.session.data.suspectSDO[count] = req.body['sdo']
 
-    if (req.session.data.suspectArrestSummons[count] != undefined) {
+    if (hasSuspectDetail(req.session.data.suspectArrestSummons[count])) {
         res.redirect('/version-16/lcc/register-case/03-suspect-details-arrest-summons')
     }
     else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
@@ -1323,27 +1369,74 @@ router.post('/lcc/register-case/03-edit-suspect', function (req, res) {
     console.log("Edit suspect ID:", req.session.data.editSuspect)
     console.log("Display suspect ID:", req.session.data.displaySuspect)
 
+    const data = req.session.data
     var x = Number(req.session.data.editSuspect)
 
     if (req.body['suspect-type'] == 'Person') {
-        req.session.data.suspectFirstName[x] = req.body['suspect-person-first-name']
-        req.session.data.suspectLastName[x] = req.body['suspect-person-last-name']
-        // req.session.data.suspectDOB[x] = req.body['suspect-date-of-birth']
-        req.session.data.suspectDayBirth[x] = req.body['date-of-birth-day']
-        req.session.data.suspectMonthBirth[x] = Number(req.body['date-of-birth-month'])
-        req.session.data.suspectYearBirth[x] = req.body['date-of-birth-year']
+        data.suspectType[x] = req.body['suspect-type']
+        data.suspectFirstName[x] = trimString(req.body['suspect-person-first-name'])
+        data.suspectLastName[x] = trimString(req.body['suspect-person-last-name'])
+        data.suspectCompanyName[x] = ''
+        data.suspectDOB[x] = selectedSuspectDetail(req.body['suspect-person-dob'], data.suspectDOB[x], 'Date of birth')
+        data.suspectGender[x] = selectedSuspectDetail(req.body['suspect-person-gender'], data.suspectGender[x], 'Gender')
+        data.suspectDisability[x] = selectedSuspectDetail(req.body['suspect-person-disability'], data.suspectDisability[x], 'Disability')
+        data.suspectReligion[x] = selectedSuspectDetail(req.body['suspect-person-religion'], data.suspectReligion[x], 'Religion')
+        data.suspectEthnicity[x] = selectedSuspectDetail(req.body['suspect-person-ethnicity'], data.suspectEthnicity[x], 'Ethnicity')
+        data.suspectSDO[x] = selectedSuspectDetail(req.body['suspect-person-sdo'], data.suspectSDO[x], 'Serious Dangerous Offender (SDO)')
+        data.suspectArrestSummons[x] = selectedSuspectDetail(req.body['suspect-person-arrest-summons'], data.suspectArrestSummons[x], 'Arrest summons')
+        data.suspectOffenderType[x] = selectedSuspectDetail(req.body['suspect-person-offender-type'], data.suspectOffenderType[x], 'Type of offender')
+        data.suspectAlias[x] = selectedSuspectDetail(req.body['suspect-person-alias'], data.suspectAlias[x], 'Alias details')
+
+        if (data.suspectDOB[x] == undefined) {
+            data.suspectDayBirth[x] = undefined
+            data.suspectMonthBirth[x] = undefined
+            data.suspectYearBirth[x] = undefined
+            if (Array.isArray(data.forceOffenderTypeAfterDob)) {
+                data.forceOffenderTypeAfterDob[x] = false
+            }
+        }
+
+        if (data.suspectAlias[x] == undefined) {
+            removeAliasesForCurrentSuspect(data, x)
+        }
     }
     else {
-        req.session.data.suspectCompanyName[x] = req.body['suspect-company-name']
+        data.suspectType[x] = req.body['suspect-type']
+        data.suspectCompanyName[x] = trimString(req.body['suspect-company-name'])
+        data.suspectFirstName[x] = ''
+        data.suspectLastName[x] = ''
+        data.suspectDOB[x] = undefined
+        data.suspectDayBirth[x] = undefined
+        data.suspectMonthBirth[x] = undefined
+        data.suspectYearBirth[x] = undefined
+        data.suspectGender[x] = undefined
+        data.suspectDisability[x] = undefined
+        data.suspectReligion[x] = undefined
+        data.suspectEthnicity[x] = undefined
+        data.suspectSDO[x] = undefined
+        data.suspectArrestSummons[x] = undefined
+        data.suspectOffenderType[x] = undefined
+        data.suspectAlias[x] = undefined
+        removeAliasesForCurrentSuspect(data, x)
     }
 
-    req.session.data.displaySuspect = 999
-    req.session.data.editSuspect = 999
+    data.suspectDetailsCount = x
 
-    redirectToSuspectSummary(req, res)
+    redirectToSuspectRoute(req, res, firstSuspectDetailsRoute(data, x))
 })
 // End of suspect summary
 
+router.get('/lcc/register-case/03-edit-suspect/:id', function (req, res) {
+    const suspectId = Number(req.params.id)
+
+    if (!Number.isInteger(suspectId) || suspectId < 0) {
+        return res.redirect('/version-16/lcc/register-case/08-check-answers')
+    }
+
+    req.session.data.editSuspect = suspectId
+    req.session.data.displaySuspect = suspectId + 1
+    res.redirect('/version-16/lcc/register-case/03-add-suspect')
+})
 
 router.post('/lcc/register-case/03-edit-suspect-router', function (req, res) {
     req.session.data.editSuspect = Number(req.body['edit-suspect'])
@@ -1998,6 +2091,7 @@ router.post('/includes/materials/materials-filter', function (req, res) {
 
     const materials = data.materials || [];
     const search = (data.filtersSearch || "").trim().toLowerCase();
+    const sharedDriveRootLabel = getSharedDriveRootLabel(data);
 
     // -------------------------------------------------------------------
     // Build grouped search results (MATCHES BOTH FOLDERS AND FILES)
@@ -2010,7 +2104,7 @@ router.post('/includes/materials/materials-filter', function (req, res) {
         const groups = {};
 
         function getFolderPath(materials, folderId) {
-            // Build "Shared Drive: Thundercat > Case management > Police" etc
+            // Build "Shared Drive: [case name] > Case management > Police" etc
             const parts = [];
             let currentId = folderId;
 
@@ -2028,7 +2122,7 @@ router.post('/includes/materials/materials-filter', function (req, res) {
             }
 
             // Choose your preferred "root" label
-            return parts.length ? `Shared Drive: Thundercat > ${parts.join(' > ')}` : 'Shared Drive: Thundercat';
+            return parts.length ? `${sharedDriveRootLabel} > ${parts.join(' > ')}` : sharedDriveRootLabel;
         }
 
         materials.forEach(item => {
@@ -2133,10 +2227,23 @@ function formatActivityTimestamp(value) {
     return `${day} at ${time}`;
 }
 
-function getFolderPathLabel(materials, folderId) {
+function getMaterialsCaseName(data = {}) {
+    return trimString(data.operationName) || 'Thundercat';
+}
+
+function getSharedDriveRootLabel(data = {}) {
+    return `Shared Drive: ${getMaterialsCaseName(data)}`;
+}
+
+function getEgressRootLabel(data = {}) {
+    return `Egress: ${getMaterialsCaseName(data)}`;
+}
+
+function getFolderPathLabel(materials, folderId, data = {}) {
     const parts = [];
     let currentId = folderId;
     const seen = new Set();
+    const rootLabel = getSharedDriveRootLabel(data);
 
     while (currentId !== null && currentId !== undefined && !seen.has(String(currentId))) {
         seen.add(String(currentId));
@@ -2146,11 +2253,11 @@ function getFolderPathLabel(materials, folderId) {
         currentId = folder.parentId;
     }
 
-    return parts.length ? `Shared Drive: Thundercat > ${parts.join(' > ')}` : 'Shared Drive: Thundercat';
+    return parts.length ? `${rootLabel} > ${parts.join(' > ')}` : rootLabel;
 }
 
-function getItemPathLabel(materials, item, nameOverride) {
-    const parentPath = getFolderPathLabel(materials, item.parentId);
+function getItemPathLabel(materials, item, nameOverride, data = {}) {
+    const parentPath = getFolderPathLabel(materials, item.parentId, data);
     const itemName = nameOverride || item.name || 'Unnamed item';
     return `${parentPath} > ${itemName}`;
 }
@@ -2177,6 +2284,8 @@ function pushMaterialsActivity(data, entry) {
 function renderCaseOverviewPage(pageView, activeTab) {
     return function (req, res) {
     const data = req.session.data;
+    const sharedDriveRootLabel = getSharedDriveRootLabel(data);
+    const egressRootLabel = getEgressRootLabel(data);
     const materials = data.materials || [];
     const pageSizeOptions = [20, 50, 100];
     const validTransferViews = ['egress', 'shared-drive'];
@@ -2263,7 +2372,7 @@ function renderCaseOverviewPage(pageView, activeTab) {
     }
 
     function getTransferEgressBreadcrumbs(folderId) {
-        const rootCrumb = { id: 100, name: 'Egress: Thundercat' };
+        const rootCrumb = { id: 100, name: egressRootLabel };
         const crumbs = [];
         let currentId = Number(folderId);
 
@@ -2343,7 +2452,7 @@ function renderCaseOverviewPage(pageView, activeTab) {
     const transferSharedDriveFolderId = Number(data.transferSharedDriveFolderId ?? 0);
     const transferSharedDriveItems = utils.getChildren(transferSharedDriveFolderId);
     const transferSharedDriveBreadcrumbs = utils.getBreadcrumbs(transferSharedDriveFolderId).map(crumb => (
-        Number(crumb.id) === 0 ? { ...crumb, name: 'Shared Drive: Thundercat' } : crumb
+        Number(crumb.id) === 0 ? { ...crumb, name: sharedDriveRootLabel } : crumb
     ));
     const transferEgressFolderId = Number(data.transferEgressFolderId ?? 100);
     const transferEgressItems = getTransferEgressChildren(transferEgressFolderId);
@@ -2396,7 +2505,7 @@ function renderCaseOverviewPage(pageView, activeTab) {
     }
     // Breadcrumbs unaffected
     const breadcrumbs = utils.getBreadcrumbs(folderId).map(crumb => (
-        Number(crumb.id) === 0 ? { ...crumb, name: 'Shared Drive: Thundercat' } : crumb
+        Number(crumb.id) === 0 ? { ...crumb, name: sharedDriveRootLabel } : crumb
     ));
 
 
@@ -2466,7 +2575,7 @@ function renderCaseOverviewPage(pageView, activeTab) {
             currentId = folder.parentId;
         }
 
-        return parts.length ? `Shared Drive: Thundercat > ${parts.join(' > ')}` : 'Shared Drive: Thundercat';
+        return parts.length ? `${sharedDriveRootLabel} > ${parts.join(' > ')}` : sharedDriveRootLabel;
     }
 
     function buildGroupedSearchResults(materials, search) {
@@ -2908,7 +3017,7 @@ router.post('/lcc/materials/new-folder', function (req, res) {
         sourceLines: [
             {
                 label: 'New folder:',
-                value: getItemPathLabel(materials, newFolder),
+                value: getItemPathLabel(materials, newFolder, null, data),
                 href: `/version-16/lcc/materials/manage-materials?folderId=${newFolder.id}`
             }
         ]
@@ -3014,7 +3123,7 @@ router.post('/lcc/materials/discard-material', function (req, res) {
     req.session.data.deleteSuccess = removedItems.length > 0;
 
     if (removedItems.length) {
-        const sourceParents = [...new Set(removedItems.map(item => getFolderPathLabel(materials, item.parentId)))];
+        const sourceParents = [...new Set(removedItems.map(item => getFolderPathLabel(materials, item.parentId, req.session.data)))];
         const sourceParentIds = [...new Set(removedItems.map(item => String(item.parentId ?? 0)))];
 
         pushMaterialsActivity(req.session.data, {
@@ -3153,7 +3262,7 @@ router.post('/lcc/materials/rename-multiple-save', function (req, res) {
     req.session.data.flashRenamedIds = Object.keys(updates).filter(id => updates[id]);
 
     if (renamedEntries.length) {
-        const locationPaths = [...new Set(renamedEntries.map(entry => getFolderPathLabel(materials, entry.item.parentId)))];
+        const locationPaths = [...new Set(renamedEntries.map(entry => getFolderPathLabel(materials, entry.item.parentId, req.session.data)))];
         const locationIds = [...new Set(renamedEntries.map(entry => String(entry.item.parentId ?? 0)))];
         const renameNameMap = Object.fromEntries(
             renamedEntries.map(entry => [
@@ -3260,7 +3369,7 @@ router.post('/lcc/materials/rename', function (req, res) {
         sourceLines: [
             {
                 label: 'Location:',
-                value: getFolderPathLabel(materials, item.parentId),
+                value: getFolderPathLabel(materials, item.parentId, req.session.data),
                 href: `/version-16/lcc/materials/03-case-overview?folderId=${item.parentId ?? 0}`
             }
         ]
@@ -3441,10 +3550,11 @@ function buildTransferEgressPreviewTree(transferEgress, rootIds) {
         .map(buildNode);
 }
 
-function getTransferEgressPathLabel(transferEgress, folderId) {
+function getTransferEgressPathLabel(transferEgress, folderId, data = {}) {
     const parts = [];
     let currentId = folderId;
     const seen = new Set();
+    const rootLabel = getEgressRootLabel(data);
 
     while (currentId && String(currentId) !== '100' && !seen.has(String(currentId))) {
         seen.add(String(currentId));
@@ -3454,7 +3564,7 @@ function getTransferEgressPathLabel(transferEgress, folderId) {
         currentId = folder.parentId;
     }
 
-    return parts.length ? `Egress: Thundercat > ${parts.join(' > ')}` : 'Egress: Thundercat';
+    return parts.length ? `${rootLabel} > ${parts.join(' > ')}` : rootLabel;
 }
 
 function getTransferEgressFolderHref(folderId) {
@@ -3522,7 +3632,7 @@ function transferEgressToSharedDrive(data, defaultsData, ids, destinationFolderI
         const selectedItems = ids
             .map(id => originalTransferEgress.find(item => String(item.id) === String(id)))
             .filter(Boolean);
-        const sourceParents = [...new Set(selectedItems.map(item => getTransferEgressPathLabel(originalTransferEgress, item.parentId)))];
+        const sourceParents = [...new Set(selectedItems.map(item => getTransferEgressPathLabel(originalTransferEgress, item.parentId, data)))];
         const sourceParentIds = [...new Set(selectedItems.map(item => String(item.parentId ?? 100)))];
 
         pushMaterialsActivity(data, {
@@ -3541,7 +3651,7 @@ function transferEgressToSharedDrive(data, defaultsData, ids, destinationFolderI
                 },
                 {
                     label: 'New location:',
-                    value: getFolderPathLabel(materials, destinationFolderId),
+                    value: getFolderPathLabel(materials, destinationFolderId, data),
                     href: `/version-16/lcc/materials/transfer-materials?transferView=shared-drive&transferSharedDriveFolderId=${destinationFolderId}`
                 }
             ]
@@ -3632,7 +3742,7 @@ function transferSharedDriveToEgress(data, defaultsData, ids, destinationFolderI
     data.transferSharedDriveToEgressList = copiedNames;
     data.transferSharedDriveToEgressPreviewTree = previewTree;
     data.transferSharedDriveToEgressDestinationId = destinationFolderId;
-    data.transferSharedDriveToEgressDestinationName = getTransferEgressPathLabel(transferEgress, destinationFolderId);
+    data.transferSharedDriveToEgressDestinationName = getTransferEgressPathLabel(transferEgress, destinationFolderId, data);
     data.transferSharedDriveToEgressDestinationHref = getTransferEgressFolderHref(destinationFolderId);
     data.transferSharedDriveToEgressCopySuccess = true;
     data.activeTab = 'tab-1-content';
@@ -3642,7 +3752,7 @@ function transferSharedDriveToEgress(data, defaultsData, ids, destinationFolderI
         const selectedItems = ids
             .map(id => originalMaterials.find(item => String(item.id) === String(id)))
             .filter(Boolean);
-        const sourceParents = [...new Set(selectedItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const sourceParents = [...new Set(selectedItems.map(item => getFolderPathLabel(originalMaterials, item.parentId, data)))];
         const sourceParentIds = [...new Set(selectedItems.map(item => String(item.parentId ?? 0)))];
 
         pushMaterialsActivity(data, {
@@ -3661,7 +3771,7 @@ function transferSharedDriveToEgress(data, defaultsData, ids, destinationFolderI
                 },
                 {
                     label: 'New location:',
-                    value: getTransferEgressPathLabel(transferEgress, destinationFolderId),
+                    value: getTransferEgressPathLabel(transferEgress, destinationFolderId, data),
                     href: getTransferEgressFolderHref(destinationFolderId)
                 }
             ]
@@ -3746,7 +3856,7 @@ router.post('/lcc/materials/copy-material-old', function (req, res) {
         const sourceItems = ids
             .map(id => originalMaterials.find(m => String(m.id) === String(id)))
             .filter(Boolean);
-        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId, data)))];
         const sourceParentIds = [...new Set(sourceItems.map(item => String(item.parentId ?? 0)))];
 
         pushMaterialsActivity(req.session.data, {
@@ -3762,7 +3872,7 @@ router.post('/lcc/materials/copy-material-old', function (req, res) {
                 },
                 {
                     label: 'New location:',
-                    value: getFolderPathLabel(materials, destinationFolderId),
+                    value: getFolderPathLabel(materials, destinationFolderId, data),
                     href: `/version-16/lcc/materials/03-case-overview?folderId=${destinationFolderId}`
                 }
             ]
@@ -3969,7 +4079,7 @@ router.post('/lcc/materials/copy-material', function (req, res) {
         const sourceItems = ids
             .map(id => originalMaterials.find(m => String(m.id) === String(id)))
             .filter(Boolean);
-        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId, data)))];
         const sourceParentIds = [...new Set(sourceItems.map(item => String(item.parentId ?? 0)))];
 
         pushMaterialsActivity(req.session.data, {
@@ -3985,7 +4095,7 @@ router.post('/lcc/materials/copy-material', function (req, res) {
                 },
                 {
                     label: 'New location:',
-                    value: getFolderPathLabel(materials, destinationFolderId),
+                    value: getFolderPathLabel(materials, destinationFolderId, data),
                     href: `/version-16/lcc/materials/03-case-overview?folderId=${destinationFolderId}`
                 }
             ]
@@ -4086,7 +4196,7 @@ router.post('/lcc/materials/move-material', function (req, res) {
         const sourceItems = ids
             .map(id => originalMaterials.find(m => String(m.id) === String(id)))
             .filter(Boolean);
-        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId, data)))];
         const sourceParentIds = [...new Set(sourceItems.map(item => String(item.parentId ?? 0)))];
 
         pushMaterialsActivity(req.session.data, {
@@ -4102,7 +4212,7 @@ router.post('/lcc/materials/move-material', function (req, res) {
                 },
                 {
                     label: 'New location:',
-                    value: getFolderPathLabel(materials, destinationFolderId),
+                    value: getFolderPathLabel(materials, destinationFolderId, data),
                     href: `/version-16/lcc/materials/03-case-overview?folderId=${destinationFolderId}`
                 }
             ]

@@ -64,7 +64,7 @@
                                     <span class="govuk-visually-hidden">Error:</span> {{ errors.day }}
                                 </span>
                                 {% endif %}
-                                <input class="govuk-input govuk-date-input__input govuk-input--width-2{% if errors and errors.day %} govuk-input--error{% endif %}" id="date-of-birth-day" name="date-of-birth-day" type="text" inputmode="numeric" value="{{ data['suspectDayBirth'][data['editSuspect']]}}" {% if errors and (errors.dateOfBirth or errors.day) %}aria-describedby="{% if errors.day %}date-of-birth-day-error{% else %}date-of-birth-error{% endif %}"{% endif %}>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2{% if errors and errors.day %} govuk-input--error{% endif %}" id="date-of-birth-day" name="date-of-birth-day" type="text" inputmode="numeric" value="{{ data['suspectDayBirth'][data['suspectDetailsCount']]}}" {% if errors and (errors.dateOfBirth or errors.day) %}aria-describedby="{% if errors.day %}date-of-birth-day-error{% else %}date-of-birth-error{% endif %}"{% endif %}>
                                 </div>
                             </div>
                             <div class="govuk-date-input__item">
@@ -77,7 +77,7 @@
                                     <span class="govuk-visually-hidden">Error:</span> {{ errors.month }}
                                 </span>
                                 {% endif %}
-                                <input class="govuk-input govuk-date-input__input govuk-input--width-2{% if errors and errors.month %} govuk-input--error{% endif %}" id="date-of-birth-month" name="date-of-birth-month" type="text" inputmode="numeric" value="{{ data['suspectMonthBirth'][data['editSuspect']]}}" {% if errors and (errors.dateOfBirth or errors.month) %}aria-describedby="{% if errors.month %}date-of-birth-month-error{% else %}date-of-birth-error{% endif %}"{% endif %}>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2{% if errors and errors.month %} govuk-input--error{% endif %}" id="date-of-birth-month" name="date-of-birth-month" type="text" inputmode="numeric" value="{{ data['suspectMonthBirth'][data['suspectDetailsCount']]}}" {% if errors and (errors.dateOfBirth or errors.month) %}aria-describedby="{% if errors.month %}date-of-birth-month-error{% else %}date-of-birth-error{% endif %}"{% endif %}>
                                 </div>
                             </div>
                             <div class="govuk-date-input__item">
@@ -90,7 +90,7 @@
                                     <span class="govuk-visually-hidden">Error:</span> {{ errors.year }}
                                 </span>
                                 {% endif %}
-                                <input class="govuk-input govuk-date-input__input govuk-input--width-4{% if errors and errors.year %} govuk-input--error{% endif %}" id="date-of-birth-year" name="date-of-birth-year" type="text" inputmode="numeric" value="{{ data['suspectYearBirth'][data['editSuspect']]}}" {% if errors and (errors.dateOfBirth or errors.year) %}aria-describedby="{% if errors.year %}date-of-birth-year-error{% else %}date-of-birth-error{% endif %}"{% endif %}>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-4{% if errors and errors.year %} govuk-input--error{% endif %}" id="date-of-birth-year" name="date-of-birth-year" type="text" inputmode="numeric" value="{{ data['suspectYearBirth'][data['suspectDetailsCount']]}}" {% if errors and (errors.dateOfBirth or errors.year) %}aria-describedby="{% if errors.year %}date-of-birth-year-error{% else %}date-of-birth-error{% endif %}"{% endif %}>
                                 </div>
                             </div>
                         </div>
