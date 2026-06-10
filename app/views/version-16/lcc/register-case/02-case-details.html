@@ -66,7 +66,7 @@
                         <div class="form-wrapper">
                             <input class="govuk-input govuk-input--width-2{% if errors and errors.urn and not data['URN1'] %} create-case-input-error{% endif %}" id="newCase_URN-A" name="newCase_URN-A" type="text" value="{{ data['URN1'] }}">
                             <input class="govuk-input govuk-input--width-2{% if errors and errors.urn %} create-case-input-error{% endif %}" id="newCase_URN-B" name="newCase_URN-B" type="text" value="{{ data['URN2'] }}" {% if errors and errors.urn %}aria-describedby="newCase_URN_Error"{% endif %}>
-                            <input class="govuk-input govuk-input--width-4{% if errors and errors.urn and not data['URN3'] %} create-case-input-error{% endif %}" id="newCase_URN-C" name="newCase_URN-C" type="text" value="{{ data['URN3'] }}">
+                            <input class="govuk-input govuk-input--width-5{% if errors and errors.urn and not data['URN3'] %} create-case-input-error{% endif %}" id="newCase_URN-C" name="newCase_URN-C" type="text" value="{{ data['URN3'] }}">
                             <input class="govuk-input govuk-input--width-2{% if errors and errors.urn and not data['URN4'] %} create-case-input-error{% endif %}" id="newCase_URN-D" name="newCase_URN-D" type="text" value="{{ data['URN4'] }}">
                         </div>
 

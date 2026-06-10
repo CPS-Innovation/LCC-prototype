@@ -581,6 +581,7 @@ router.post('/lcc/register-case/02-case-details', function (req, res) {
     const URN2 = (req.body['newCase_URN-B'] || '').trim()
     const URN3 = (req.body['newCase_URN-C'] || '').trim()
     const URN4 = (req.body['newCase_URN-D'] || '').trim()
+    const caseUrn = `${URN1}${URN2}${URN3}${URN4}`
     const registeringUnit = (req.body['newCase_RegisteringUnit'] || '').trim()
     const WCU = (req.body['newCase_WCU'] || '').trim()
 
@@ -588,6 +589,7 @@ router.post('/lcc/register-case/02-case-details', function (req, res) {
     req.session.data.URN2 = URN2
     req.session.data.URN3 = URN3
     req.session.data.URN4 = URN4
+    req.session.data.caseUrn = caseUrn
     req.session.data.registeringUnit = registeringUnit
     req.session.data.WCU = WCU
 
