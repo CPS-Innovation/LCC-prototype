@@ -1881,6 +1881,17 @@ router.post('/lcc/register-case/07-cps-staff', function (req, res) {
 })
 
 
+function setRegisterCaseTimestamp(data, key) {
+    if (!data[key]) {
+        data[key] = new Date().toISOString();
+    }
+}
+
+function setRegisterCaseRegistered(data) {
+    data.createCase_H_Complete = 'true';
+    setRegisterCaseTimestamp(data, 'registerCaseRegisteredAt');
+}
+
 // Materials
 router.post('/lcc/register-case/071-setup-folders', function (req, res) {
     req.session.data.addMaterials = req.body['add-materials']
@@ -1892,7 +1903,18 @@ router.post('/lcc/register-case/071-setup-folders', function (req, res) {
     }
 })
 
+router.get('/lcc/register-case/09-confirmation', function (req, res) {
+    setRegisterCaseRegistered(req.session.data)
+    res.render('ur-jun-2026/lcc/register-case/09-confirmation')
+})
+
+router.get('/lcc/register-case/09-confirmation.html', function (req, res) {
+    setRegisterCaseRegistered(req.session.data)
+    res.render('ur-jun-2026/lcc/register-case/09-confirmation')
+})
+
 router.post('/lcc/register-case/09-confirmation', function (req, res) {
+    setRegisterCaseRegistered(req.session.data)
     req.session.data.addMaterials = req.body['add-materials']
 
     if (req.session.data.addMaterials === 'Yes') {
@@ -1924,6 +1946,7 @@ router.post('/lcc/materials/04A-create-or-link-folders', function (req, res) {
         if (req.body['egress-folder-options'] === 'Create new Egress folders') {
             req.session.data.newEgressFolder = 1
             req.session.data.existingEgressFolder = 0
+            setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressCreatedAt')
         }
         else if (req.body['egress-folder-options'] === 'Connect Egress folders') {
             req.session.data.existingEgressFolder = 1
@@ -1966,10 +1989,12 @@ router.post('/lcc/materials/04A-create-or-link-folders', function (req, res) {
 
 router.post('/lcc/materials/05A-create-shared-drive-folder', function (req, res) {
     req.session.data.sharedDriveTemplate = req.body['shared-drive-template']
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseSharedDriveCreatedAt')
     res.redirect('/ur-jun-2026/lcc/register-case/create-both-confirmation')
 })
 
 router.post('/lcc/materials/04A-egress-files-connected', function (req, res) {
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressLinkedAt')
     if (req.session.data.newDriveFolder === 1) {
         res.redirect('/ur-jun-2026/lcc/materials/05A-create-shared-drive-folder')
     }
@@ -1982,6 +2007,7 @@ router.post('/lcc/materials/04A-egress-files-connected', function (req, res) {
 })
 
 router.post('/lcc/materials/05A-p-drive-files-connected', function (req, res) {
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseSharedDriveLinkedAt')
     if (req.session.data.existingEgressFolder === 1 && req.session.data.existingDriveFolder === 1) {
         res.redirect('/ur-jun-2026/lcc/register-case/connect-both-confirmation')
     }
@@ -1992,10 +2018,12 @@ router.post('/lcc/materials/05A-p-drive-files-connected', function (req, res) {
 
 router.post('/lcc/materials/05A-create-shared-drive-folder', function (req, res) {
     req.session.data.sharedDriveTemplate = req.body['shared-drive-template']
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseSharedDriveCreatedAt')
     res.redirect('/ur-jun-2026/lcc/register-case/08-check-answers')
 })
 
 router.post('/lcc/materials/04A-egress-files-connected', function (req, res) {
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressLinkedAt')
     if (req.session.data.newDriveFolder === 1) {
         res.redirect('/ur-jun-2026/lcc/materials/05A-create-shared-drive-folder')
     }
@@ -2008,6 +2036,7 @@ router.post('/lcc/materials/04A-egress-files-connected', function (req, res) {
 })
 
 router.post('/lcc/materials/05A-p-drive-files-connected', function (req, res) {
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseSharedDriveLinkedAt')
     res.redirect('/ur-jun-2026/lcc/register-case/08-check-answers')
 })
 
@@ -2015,6 +2044,7 @@ router.post('/lcc/materials/05A-p-drive-files-connected', function (req, res) {
 
 router.post('/lcc/materials/04A-create-egress-folder', function (req, res) {
     req.session.data.egressTemplate = req.body['egress-template']
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressCreatedAt')
 
     if (req.session.data.newDriveFolder === 1) {
         res.redirect('/ur-jun-2026/lcc/materials/05A-create-shared-drive-folder')
@@ -2282,10 +2312,77 @@ function pushMaterialsActivity(data, entry) {
     });
 }
 
+function getRegisterCaseActivity(data = {}) {
+    const hasRegisteredCase = data.createCase_H_Complete === 'true' || data.createCase_H_Complete === true;
+    if (!hasRegisteredCase) {
+        return {
+            entries: [],
+            lastUpdatedLabel: ''
+        };
+    }
+
+    setRegisterCaseTimestamp(data, 'registerCaseRegisteredAt');
+    const registerCaseActor = data.urUser;
+
+    const registeredEntry = {
+        title: 'Case registered',
+        timestamp: data.registerCaseRegisteredAt,
+        dateLabel: formatActivityTimestamp(data.registerCaseRegisteredAt),
+        byEmail: registerCaseActor
+    };
+
+    const folderEntries = [];
+
+    if (data.registerCaseEgressCreatedAt) {
+        folderEntries.push({
+            title: 'Case created on Egress',
+            timestamp: data.registerCaseEgressCreatedAt,
+            dateLabel: formatActivityTimestamp(data.registerCaseEgressCreatedAt),
+            byEmail: registerCaseActor
+        });
+    }
+
+    if (data.registerCaseSharedDriveCreatedAt) {
+        folderEntries.push({
+            title: 'Folder created on Shared Drive',
+            timestamp: data.registerCaseSharedDriveCreatedAt,
+            dateLabel: formatActivityTimestamp(data.registerCaseSharedDriveCreatedAt),
+            byEmail: registerCaseActor
+        });
+    }
+
+    if (data.registerCaseEgressLinkedAt) {
+        folderEntries.push({
+            title: 'Case linked to Egress',
+            timestamp: data.registerCaseEgressLinkedAt,
+            dateLabel: formatActivityTimestamp(data.registerCaseEgressLinkedAt),
+            byEmail: registerCaseActor
+        });
+    }
+
+    if (data.registerCaseSharedDriveLinkedAt) {
+        folderEntries.push({
+            title: 'Folder linked to Shared Drive',
+            timestamp: data.registerCaseSharedDriveLinkedAt,
+            dateLabel: formatActivityTimestamp(data.registerCaseSharedDriveLinkedAt),
+            byEmail: registerCaseActor
+        });
+    }
+
+    folderEntries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    const entries = [...folderEntries, registeredEntry];
+
+    return {
+        entries,
+        lastUpdatedLabel: entries.length ? entries[0].dateLabel : ''
+    };
+}
+
 
 function renderCaseOverviewPage(pageView, activeTab) {
     return function (req, res) {
     const data = req.session.data;
+    const registerCaseActivity = getRegisterCaseActivity(data);
     const sharedDriveRootLabel = getSharedDriveRootLabel(data);
     const egressRootLabel = getEgressRootLabel(data);
     const materials = data.materials || [];
@@ -2772,7 +2869,8 @@ function renderCaseOverviewPage(pageView, activeTab) {
         transferSharedDriveBreadcrumbs,
         transferEgressFolderId,
         transferEgressItems,
-        transferEgressBreadcrumbs
+        transferEgressBreadcrumbs,
+        registerCaseActivity
     });
 
     req.session.data.lastRenamedId = null;

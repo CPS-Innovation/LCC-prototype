@@ -1,7 +1,9 @@
 <h2 class="govuk-heading-m" id="">Activity log</h2>
 {% set activityLog = data.materialsActivityLog | default([]) %}
+{% set registerCaseEntries = registerCaseActivity.entries | default([]) %}
+{% set hasRegisterCaseActivity = registerCaseEntries.length > 0 %}
 <p><span class="govuk-caption-m govuk-!-margin-bottom-0" style="display: inline-block;">Last updated <span
-            id="materials-audit">{% if activityLog.length > 0 %}{{ activityLog[0].dateLabel }}{% else %}yesterday at 12:05pm{% endif %}</span></span></p>
+            id="materials-audit">{% if activityLog.length > 0 %}{{ activityLog[0].dateLabel | replace("Today", "today") }}{% elseif hasRegisterCaseActivity %}{{ registerCaseActivity.lastUpdatedLabel | replace("Today", "today") }}{% else %}yesterday at 12:05pm{% endif %}</span></span></p>
 
 <style>
     .materials-activity-details__summary {
@@ -176,6 +178,14 @@
                     {% endif %}
                 </div>
                 {% endfor %}
+                {% if hasRegisterCaseActivity %}
+                {% for entry in registerCaseEntries %}
+                <div class="hods-timeline__item">
+                    <h2 class="hods-timeline__title">{{ entry.title }}</h2>
+                    <p class="hods-timeline__date"><span id="">{{ entry.dateLabel }} by {{ entry.byEmail }}</span></p>
+                </div>
+                {% endfor %}
+                {% else %}
                 <!-- Transfer - move documents -->
                 <!-- <div class="hods-timeline__item" id="audit_documents_moved">
                     <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">Transfer</strong>
@@ -975,6 +985,7 @@
                     <h2 class="hods-timeline__title">Case registered</h2>
                     <p class="hods-timeline__date"><span id="">22 March 2026 at 9:05am by dwight_schrute@cps.gov.uk</span></p>
                 </div>
+                {% endif %}
 
 
 
