@@ -78,7 +78,7 @@
         {% else %}
         <p class="govuk-body">
             They are in:
-            <strong>Shared Drive: Thundercat</strong>
+            <strong>Shared Drive: {{ caseName | default('Thundercat') }}</strong>
         </p>
         {% endif %}
 
@@ -128,7 +128,7 @@
             </li>
             {% endfor %}
             {% else %}
-            <li class="govuk-breadcrumbs__list-item">Egress: Thundercat</li>
+            <li class="govuk-breadcrumbs__list-item">Egress: {{ caseName | default('Thundercat') }}</li>
             {% endif %}
         </ol>
     </nav>

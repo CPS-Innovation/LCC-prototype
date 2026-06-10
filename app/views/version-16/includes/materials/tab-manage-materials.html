@@ -108,7 +108,7 @@
                     {% else %}
                     <p class="govuk-body">
                         They are in:
-                        <strong>Shared Drive: Thundercat</strong>
+                        <strong>Shared Drive: {{ caseName | default('Thundercat') }}</strong>
                     </p>
                     {% endif %}
 
@@ -149,7 +149,7 @@
                     {% else %}
                     <p class="govuk-body">
                         They are in:
-                        <strong>Shared Drive: Thundercat</strong>
+                        <strong>Shared Drive: {{ caseName | default('Thundercat') }}</strong>
                     </p>
                     {% endif %}
 

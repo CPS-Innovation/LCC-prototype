@@ -150,7 +150,7 @@
                                 <label class="govuk-label govuk-!-font-weight-bold" for="newCase_FirstHearing_Date">Arrest date (optional)</label>
                                 <div class="govuk-hint">For example, 17/05/2024.</div>
                                 <div class="date_range_wrapper create_case">
-                                    <input class="govuk-input moj-js-datepicker-input create-case-arrest-date__text" id="arrest-date-pyo" name="arrest-date-pyo" type="text" aria-describedby="date-hint" autocomplete="off">
+                                    <input class="govuk-input moj-js-datepicker-input create-case-arrest-date__text" id="arrest-date-pyo" name="arrest-date-pyo" type="text" aria-describedby="date-hint" autocomplete="off" value="{% if data['suspectOffenderType'][data['suspectDetailsCount']] == 'Prolific youth offender (PYO)' %}{{ data['arrestDate'][data['suspectDetailsCount']] }}{% endif %}">
                                     <input class="create-case-arrest-date__native" id="arrest-date-pyo-native" type="date" tabindex="-1" aria-hidden="true">
                                     <button class="moj-datepicker__toggle create-case-arrest-date__toggle" type="button" aria-label="Choose arrest date">
                                         <span class="govuk-visually-hidden">Choose date</span>
@@ -178,7 +178,7 @@
                                 <label class="govuk-label govuk-!-font-weight-bold" for="newCase_FirstHearing_Date">Arrest date (optional)</label>
                                 <div class="govuk-hint">For example, 17/05/2024.</div>
                                 <div class="date_range_wrapper create_case">
-                                    <input class="govuk-input moj-js-datepicker-input create-case-arrest-date__text" id="arrest-date-ppo-pyo" name="arrest-date-ppo-pyo" type="text" aria-describedby="date-hint" autocomplete="off">
+                                    <input class="govuk-input moj-js-datepicker-input create-case-arrest-date__text" id="arrest-date-ppo-pyo" name="arrest-date-ppo-pyo" type="text" aria-describedby="date-hint" autocomplete="off" value="{% if data['suspectOffenderType'][data['suspectDetailsCount']] == 'Both prolific priority offender (PPO) and prolific youth offender (PYO)' %}{{ data['arrestDate'][data['suspectDetailsCount']] }}{% endif %}">
                                     <input class="create-case-arrest-date__native" id="arrest-date-ppo-pyo-native" type="date" tabindex="-1" aria-hidden="true">
                                     <button class="moj-datepicker__toggle create-case-arrest-date__toggle" type="button" aria-label="Choose arrest date">
                                         <span class="govuk-visually-hidden">Choose date</span>
@@ -206,7 +206,7 @@
                                 <label class="govuk-label govuk-!-font-weight-bold" for="newCase_FirstHearing_Date">Arrest date (optional)</label>
                                 <div class="govuk-hint">For example, 17/05/2024.</div>
                                 <div class="date_range_wrapper create_case">
-                                    <input class="govuk-input moj-js-datepicker-input create-case-arrest-date__text" id="arrest-date-yo" name="arrest-date-yo" type="text" aria-describedby="date-hint" autocomplete="off">
+                                    <input class="govuk-input moj-js-datepicker-input create-case-arrest-date__text" id="arrest-date-yo" name="arrest-date-yo" type="text" aria-describedby="date-hint" autocomplete="off" value="{% if data['suspectOffenderType'][data['suspectDetailsCount']] == 'Youth offender (YO)' %}{{ data['arrestDate'][data['suspectDetailsCount']] }}{% endif %}">
                                     <input class="create-case-arrest-date__native" id="arrest-date-yo-native" type="date" tabindex="-1" aria-hidden="true">
                                     <button class="moj-datepicker__toggle create-case-arrest-date__toggle" type="button" aria-label="Choose arrest date">
                                         <span class="govuk-visually-hidden">Choose date</span>

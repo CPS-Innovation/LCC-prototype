@@ -86,7 +86,7 @@
                     }
 
                     .charges-results-table__code {
-                        width: 7rem;
+                        min-width: 8rem;
                         white-space: nowrap;
                     }
 
@@ -154,7 +154,18 @@
                             </form>
                         </td>
                         <td class="govuk-table__cell charges-results-table__code">{{ data['currentResultsChargeCode'][id]}}</th>
-                        <td class="govuk-table__cell charges-results-table__description">{{ data['currentResultsChargeDescription'][id]}}</td>
+                        <td class="govuk-table__cell charges-results-table__description">
+                            {{ data['currentResultsChargeDescription'][id]}}
+                            {% if data['currentResultsToDate'][id] %}
+                            <div class="govuk-warning-text">
+                                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                                <strong class="govuk-warning-text__text">
+                                    <span class="govuk-visually-hidden">Warning</span>
+                                    Repealed
+                                </strong>
+                            </div>
+                            {% endif %}
+                        </td>
                         <td class="govuk-table__cell charges-results-table__statute">
                             {{ data['currentResultsStatute'][id]}}
                             <br>{{ data['currentResultsSection'][id]}}
