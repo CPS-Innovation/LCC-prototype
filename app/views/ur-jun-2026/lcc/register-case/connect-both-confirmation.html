@@ -1,0 +1,32 @@
+{% extends "layoutCPS-OFF.html" %}
+{% block header %}
+{% include "../../includes/banner-OFF-V7.html" %}
+{% endblock %}
+{% block beforeContent %}
+
+{% endblock %}
+{% block content %}
+
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-panel govuk-panel--confirmation">
+          <h1 class="govuk-panel__title">
+            Egress and Shared Drive linked
+          </h1>
+        </div>
+        <p class="govuk-body">You have linked Egress and the Shared Drive folders successfully.</p>
+        <h2 class="govuk-heading-m">Next steps</h2>
+        <p class="govuk-body">You can:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li><a href="../materials/manage-materials" class="govuk-link">manage materials and folders on the Shared Drive</a></li>
+          <li><a href="../materials/transfer-materials" class="govuk-link">transfer materials between Egress and the Shared Drive</a></li>
+          <li><a href="" class="govuk-link">update the case on CMS Classic</a></li>
+          <li><a href="00-homepage" class="govuk-link">view your cases and tasks from the homepage</a></li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

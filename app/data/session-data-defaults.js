@@ -37,6 +37,7 @@ module.exports = {
   "URN2": "",
   "URN3": "",
   "URN4": 26,
+  "caseUrn": "",
   "registeringUnit": "",
   "WCU": "",
 

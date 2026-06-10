@@ -9,7 +9,7 @@
 {% block content %}
 
 {% set egressSearchTerm = data['searchOFF_EGRESS_VALUE'] or data['operationName'] or 'Thundercat' %}
-{% set egressCaseUrn = data['URN1'] ~ data['URN2'] ~ data['URN3'] ~ data['URN4'] if data['URN1'] else '87AA6543226' %}
+{% set egressCaseUrn = data['caseUrn'] or (data['URN1'] ~ data['URN2'] ~ data['URN3'] ~ data['URN4'] if data['URN1'] else '87AA6543226') %}
 {% set egressExactMatchName = egressSearchTerm ~ ' ' ~ egressCaseUrn %}
 
 <div class="govuk-grid-row">
