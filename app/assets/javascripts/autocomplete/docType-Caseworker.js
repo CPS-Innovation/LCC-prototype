@@ -112,6 +112,7 @@ $(function() {
         { value: "Robert Ross" },
         { value: "Rosie Russell" },
         { value: "Ryan Scott" },
+        { value: "Sam Lee" },
         { value: "Samantha Shaw" },
         { value: "Samuel Simpson" },
         { value: "Sarah Smith" },
