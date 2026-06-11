@@ -2335,7 +2335,7 @@ function getRegisterCaseActivity(data = {}) {
 
     if (data.registerCaseEgressCreatedAt) {
         folderEntries.push({
-            title: 'Case created on Egress',
+            title: 'Egress created for case',
             timestamp: data.registerCaseEgressCreatedAt,
             dateLabel: formatActivityTimestamp(data.registerCaseEgressCreatedAt),
             byEmail: registerCaseActor
@@ -2344,7 +2344,7 @@ function getRegisterCaseActivity(data = {}) {
 
     if (data.registerCaseSharedDriveCreatedAt) {
         folderEntries.push({
-            title: 'Folder created on Shared Drive',
+            title: 'Shared Drive folder created for case',
             timestamp: data.registerCaseSharedDriveCreatedAt,
             dateLabel: formatActivityTimestamp(data.registerCaseSharedDriveCreatedAt),
             byEmail: registerCaseActor
@@ -2353,7 +2353,7 @@ function getRegisterCaseActivity(data = {}) {
 
     if (data.registerCaseEgressLinkedAt) {
         folderEntries.push({
-            title: 'Case linked to Egress',
+            title: 'Egress linked to case',
             timestamp: data.registerCaseEgressLinkedAt,
             dateLabel: formatActivityTimestamp(data.registerCaseEgressLinkedAt),
             byEmail: registerCaseActor
@@ -2362,7 +2362,7 @@ function getRegisterCaseActivity(data = {}) {
 
     if (data.registerCaseSharedDriveLinkedAt) {
         folderEntries.push({
-            title: 'Folder linked to Shared Drive',
+            title: 'Shared Drive folder linked to case',
             timestamp: data.registerCaseSharedDriveLinkedAt,
             dateLabel: formatActivityTimestamp(data.registerCaseSharedDriveLinkedAt),
             byEmail: registerCaseActor
