@@ -4971,10 +4971,10 @@ router.post('/lcc/materials/disconnect-shared-drive', (req, res) => {
         pushMaterialsActivity(data, {
             title: 'Shared Drive folder Thunderstruck disconnected from this case'
         });
-        return res.redirect('/version-16/lcc/materials/disconnect-shared-drive-confirmation');
+        return res.redirect('disconnect-shared-drive-confirmation');
     }
 
-    return res.redirect('/version-16/lcc/materials/03-case-overview');
+    return res.redirect('transfer-materials');
 });
 
 router.post('/lcc/materials/disconnect-egress', (req, res) => {
@@ -4997,7 +4997,7 @@ router.post('/lcc/materials/disconnect-egress', (req, res) => {
         return res.redirect('/version-16/lcc/materials/disconnect-egress-confirmation');
     }
 
-    return res.redirect('/version-16/lcc/materials/transfer-materials');
+    return res.redirect('transfer-materials');
 });
 
 module.exports = router
