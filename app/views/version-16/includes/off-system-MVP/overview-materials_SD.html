@@ -6,7 +6,7 @@
                 <div class="hods-loading-spinner__spinner" aria-live="polite" role="status"></div>
             </div>
             <div class="indexing_files">
-                <p class="govuk-!-margin-bottom-0 govuk-!-margin-top-4">Indexing transfer from <strong>Shared drive</strong> > <img src="../../../public/images/egress-logo.png" alt="Egress" class="egress-logo x-small">...</p>
+                <p class="govuk-!-margin-bottom-0 govuk-!-margin-top-4">Indexing transfer from <strong>Shared Drive</strong> > <img src="../../../public/images/egress-logo.png" alt="Egress" class="egress-logo x-small">...</p>
             </div>
         </div>
     </div>
@@ -22,7 +22,7 @@
                 <div class="hods-loading-spinner__spinner" aria-live="polite" role="status"></div>
             </div>
             <div class="indexing_files">
-                <p class="govuk-!-margin-bottom-0 govuk-!-margin-top-4">Completing transfer from <strong>Shared drive</strong> > <img src="../../../public/images/egress-logo.png" alt="Egress" class="egress-logo x-small">...</p>
+                <p class="govuk-!-margin-bottom-0 govuk-!-margin-top-4">Completing transfer from <strong>Shared Drive</strong> > <img src="../../../public/images/egress-logo.png" alt="Egress" class="egress-logo x-small">...</p>
                 <p class="govuk-caption-m govuk-!-margin-bottom-0"><span>Progress: <span class="loading_transfer_completed_V1">37</span> of 151 documents transferred...</span></p>
             </div>
         </div>
@@ -34,7 +34,7 @@
 <!-- /////////////////////////////////////////////////////////////// COPYING - START /////////////////////////////////////////////////////////////// -->
 {% if data['shared_Drive_Copying'] == 'true' %}
     <div class="shared_drive_to_egress_SD">
-        <h2 class="govuk-heading-m" id="">Transfer folders and files between the shared drive and <img src="../../../public/images/egress-logo.png" alt="Egress" class="egress-logo small"></h2>
+        <h2 class="govuk-heading-m" id="">Transfer folders and files between the Shared Drive and <img src="../../../public/images/egress-logo.png" alt="Egress" class="egress-logo small"></h2>
         <p><span class="govuk-caption-m govuk-!-margin-bottom-0" style="display: inline-block;">Last updated <span id="materials-timestamp_V2"></span></span></p>
         <div class="govuk-inset-text govuk-!-margin-top-0">
             Select the folders and files you want to transfer, then choose a destination.<br>You can switch the source and destination if needed. <a href="#" class="switch_direction_2">Switch source</a>
@@ -47,7 +47,7 @@
 
             {% if data['searchOFF_Operation_VALUE'] == 'Dumper Truck' or data['searchOFF_Operation_VALUE'] == 'Dumper truck' or data['searchOFF_Operation_VALUE'] == 'dumper truck'  or data['searchOFF_Operation_VALUE'] == 'Dumpertruck' %}
                 <div class="title-wrapper">
-                    <h3 class="govuk-heading-s">Shared drive</h3>
+                    <h3 class="govuk-heading-s">Shared Drive</h3>
                 </div>
 
                 <div class="govuk-warning-text" id="character_limit">
@@ -99,7 +99,7 @@
                 <!-- ////////////////////////////// ACCORDIONS - END ////////////////////////////// -->
             {% elseif data['searchOFF_Defendant_VALUE'] == 'Dumper Truck' or data['searchOFF_Defendant_VALUE'] == 'Dumper truck' or data['searchOFF_Defendant_VALUE'] == 'dumper truck'  or data['searchOFF_Defendant_VALUE'] == 'Dumpertruck' %}
                 <div class="title-wrapper">
-                    <h3 class="govuk-heading-s">Shared drive</h3>
+                    <h3 class="govuk-heading-s">Shared Drive</h3>
                 </div>
 
                 <div class="govuk-warning-text" id="character_limit">
@@ -154,7 +154,7 @@
             {% elseif data['searchOFF_Operation_VALUE'] or data['searchOFF_Defendant_VALUE'] %}
                 {% if data['mvp_Case_1'] == 'true' %}
                     <div class="title-wrapper">
-                        <h3 class="govuk-heading-s">Shared drive</h3>
+                        <h3 class="govuk-heading-s">Shared Drive</h3>
                         <!-- <a href="#">Edit folder</a> -->
                     </div>
 
@@ -209,7 +209,7 @@
                     <!-- ////////////////////////////// ACCORDIONS - END ////////////////////////////// -->
                 {% elseif data['mvp_Case_2'] == 'true' %}
                     <div class="title-wrapper">
-                        <h3 class="govuk-heading-s">Shared drive</h3>
+                        <h3 class="govuk-heading-s">Shared Drive</h3>
                         <!-- <a href="#">Edit folder</a> -->
                     </div>
 
@@ -265,7 +265,7 @@
                 {% elseif data['mvp_Case_3'] == 'true' %}
                     {% if data['offCMS_PDrive_files'] %}
                         <div class="title-wrapper">
-                            <h3 class="govuk-heading-s">Shared drive</h3>
+                            <h3 class="govuk-heading-s">Shared Drive</h3>
                             <!-- <a href="#">Edit folder</a> -->
                         </div>
 
@@ -320,17 +320,17 @@
                         <!-- ////////////////////////////// ACCORDIONS - END ////////////////////////////// -->
                     {% else %}
                         <div class="title-wrapper">
-                            <h3 class="govuk-heading-s">Shared drive</h3>
+                            <h3 class="govuk-heading-s">Shared Drive</h3>
                             <a href="05A-p-drive-files" class="">Connect folder</a>                                
                         </div>
                         <div class="permissions">
-                            <p>This case has not been linked to a folder on the network shared drive. To transfer files, you need to select the folder where materials are stored for this case.</p>
+                            <p>This case has not been linked to a folder on the network Shared Drive. To transfer files, you need to select the folder where materials are stored for this case.</p>
                         </div>
                     {% endif %}
                 {% elseif data['mvp_Case_4'] == 'true' %}
                     {% if data['offCMS_PDrive_files_V2'] %}
                         <div class="title-wrapper">
-                            <h3 class="govuk-heading-s">Shared drive</h3>
+                            <h3 class="govuk-heading-s">Shared Drive</h3>
                         </div>
 
                         <div class="govuk-warning-text" id="character_limit">
@@ -384,17 +384,17 @@
                         <!-- ////////////////////////////// ACCORDIONS - END ////////////////////////////// -->
                     {% else %}
                         <div class="title-wrapper">
-                            <h3 class="govuk-heading-s">Shared drive</h3>
+                            <h3 class="govuk-heading-s">Shared Drive</h3>
                             <a href="05A-p-drive-files" class="">Connect folder</a>                                
                         </div>
                         <div class="permissions">
-                            <p>This case has not been linked to a folder on the network shared drive. To transfer files, you need to select the folder where materials are stored for this case.</p>
+                            <p>This case has not been linked to a folder on the network Shared Drive. To transfer files, you need to select the folder where materials are stored for this case.</p>
                         </div>
                     {% endif %}
                 {% endif %}
             {% else %}
                 <div class="title-wrapper">
-                    <h3 class="govuk-heading-s">Shared drive</h3>
+                    <h3 class="govuk-heading-s">Shared Drive</h3>
                 </div>
 
                 <div class="govuk-warning-text" id="character_limit">
@@ -431,7 +431,7 @@
                         <div class="hods-loading-spinner">
                             <div class="hods-loading-spinner__spinner" aria-live="polite" role="status"></div>
                         </div>
-                        <p>Loading documents from the shared drive...</p>
+                        <p>Loading documents from the Shared Drive...</p>
                     </div>
                 </div>
 
