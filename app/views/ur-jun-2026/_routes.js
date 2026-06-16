@@ -3043,8 +3043,8 @@ router.post('/lcc/materials/case-overview-search-folder', function (req, res) {
 router.post('/lcc/materials/shared-drive', function (req, res) {
     req.session.data.level = req.body['level']
     req.session.data.parentId = req.body['parentId']
-    console.log("Selected level (shared drive):", req.session.data.level)
-    console.log("Selected parent ID (shared drive):", req.session.data.parentId)
+    console.log("Selected level (Shared Drive):", req.session.data.level)
+    console.log("Selected parent ID (Shared Drive):", req.session.data.parentId)
     res.redirect('/ur-jun-2026/lcc/materials/03-case-overview')
 })
 

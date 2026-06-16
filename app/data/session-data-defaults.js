@@ -1519,7 +1519,7 @@ module.exports = {
 
   "parentId": 0,
   "currentFolderId": 0,
-  "breadcrumbs": ['Shared drive > Thunderstruck'],
+  "breadcrumbs": ['Shared Drive > Thunderstruck'],
   "lastdiscard": [],
   "folderId": 0,
 
