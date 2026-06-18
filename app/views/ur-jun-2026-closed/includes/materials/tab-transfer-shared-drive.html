@@ -113,7 +113,7 @@
                 {% if isCurrent %}
                 {{ crumb.name }}
                 {% else %}
-                <form method="post" action="/version-15/B-off-system-MVP/case-overview-folder" style="display:inline;">
+                <form method="post" action="/ur-jun-2026-closed/lcc/materials/case-overview-folder" style="display:inline;">
                     <input type="hidden" name="folderId" value="{{ crumb.id }}">
                     <input type="hidden" name="folderName" value="{{ crumb.name }}">
                     <input type="hidden" name="activeTab" value="tab-1-content">
@@ -129,14 +129,14 @@
     </nav>
 </div>
 
-<div class="govuk-grid-row govuk-!-margin-left-3 transfer-actions-row version-16-transfer-actions-row">
+<div class="govuk-grid-row govuk-!-margin-left-3 transfer-actions-row ur-jun-2026-closed-transfer-actions-row">
     <div class="govuk-grid-column-full">
         <div class="govuk-grid-column-one-half">
             <div class="materials-toolbar govuk-!-margin-top-3 govuk-!-margin-bottom-4">
                 <div class="materials-toolbar__actions">
                     <div class="actions_holder">
                         <div class="moj-button-menu">
-                            <form method="post" action="/version-15/B-off-system-MVP/start-transfer-shared-drive-copy"
+                            <form method="post" action="/ur-jun-2026-closed/lcc/materials/start-transfer-shared-drive-copy"
                                 class="transfer-shared-drive-action-form">
                                 <input type="hidden" name="selected_ids" class="js-transfer-shared-drive-selected-ids" value="">
                                 <button type="submit"
@@ -148,7 +148,7 @@
                             </form>
 
                             <a class="govuk-link govuk-button--link transfer-view-shared-drive"
-                                href="/version-15/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=egress">
+                                href="/ur-jun-2026-closed/lcc/materials/transfer-materials?transferView=egress">
                                 View Egress
                             </a>
                         </div>
@@ -169,12 +169,12 @@
                     </button>
 
                     <div class="hidden_buttons transfer-disconnect-actions" id="transfer_Actions">
-                        <form method="get" action="/version-15/B-off-system-MVP/disconnect-shared-drive">
+                        <form method="get" action="/ur-jun-2026-closed/lcc/materials/disconnect-shared-drive">
                             <button type="submit" class="govuk-button">
                                 Disconnect Shared Drive
                             </button>
                         </form>
-                        <form method="get" action="/version-15/B-off-system-MVP/disconnect-egress">
+                        <form method="get" action="/ur-jun-2026-closed/lcc/materials/disconnect-egress">
                             <button type="submit" class="govuk-button">
                                 Disconnect Egress
                             </button>
@@ -186,7 +186,7 @@
     </div>
 </div>
 
-<div class="materials-aligned version-15-transfer-table transfer-table-panel" id="transfer-shared-drive-table-panel">
+<div class="materials-aligned version-15-transfer-table ur-jun-2026-closed-transfer-table transfer-table-panel" id="transfer-shared-drive-table-panel">
     <div class="materials-table-wrapper">
         <table class="govuk-table sortable" id="transfer_shared_drive_table">
             <colgroup>
@@ -262,7 +262,7 @@
 
                     <td class="govuk-table__cell title_column">
                         <span class="folder-inline-wrapper">
-                            <form method="post" action="/version-15/B-off-system-MVP/case-overview-folder">
+                            <form method="post" action="/ur-jun-2026-closed/lcc/materials/case-overview-folder">
                                 <input type="hidden" name="folderId" value="{{ item.id }}">
                                 <input type="hidden" name="folderName" value="{{ item.name }}">
                                 <input type="hidden" name="activeTab" value="tab-1-content">
@@ -342,7 +342,7 @@
         <div class="materials-toolbar__actions">
             <div class="actions_holder">
                 <div class="moj-button-menu">
-                    <form method="post" action="/version-15/B-off-system-MVP/start-transfer-shared-drive-copy"
+                    <form method="post" action="/ur-jun-2026-closed/lcc/materials/start-transfer-shared-drive-copy"
                         class="transfer-shared-drive-action-form">
                         <input type="hidden" name="selected_ids" class="js-transfer-shared-drive-selected-ids" value="">
                         <button type="submit"
@@ -353,7 +353,7 @@
                     </form>
 
                     <a class="govuk-link govuk-button--link transfer-view-shared-drive"
-                        href="/version-15/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=egress">
+                        href="/ur-jun-2026-closed/lcc/materials/transfer-materials?transferView=egress">
                         View Egress
                     </a>
                 </div>

@@ -1,0 +1,133 @@
+{% extends "layoutCPS-OFF-V11.html" %}
+
+{% block pageTitle %}
+Delete documents – {{ serviceName }} – Prototype
+{% endblock %}
+
+{% block header %}
+{% include "../../includes/banner-OFF-V6.html" %}
+{% endblock %}
+
+{% block beforeContent %}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+
+     <style>
+          .delete-items-details__summary {
+               list-style: none;
+          }
+
+          .delete-items-details__summary::-webkit-details-marker {
+               display: none;
+          }
+
+          .delete-items-details__summary::before {
+               content: "\25BC";
+               color: #1d70b8;
+               display: inline-block;
+               margin-right: 10px;
+          }
+
+          .delete-items-details[open] .delete-items-details__summary::before {
+               content: "\25B2";
+          }
+
+          .delete-items-details__label--hide {
+               display: none;
+          }
+
+          .delete-items-details[open] .delete-items-details__label--view {
+               display: none;
+          }
+
+          .delete-items-details[open] .delete-items-details__label--hide {
+               display: inline;
+          }
+     </style>
+
+     {% macro renderDeleteTreeItems(nodes, prefix='') %}
+          {% for node in nodes %}
+               {% if node.isFolder %}
+                    {% if node.renamedTo %}
+                         {% set folderLabel = node.name ~ ' → ' ~ node.renamedTo %}
+                    {% else %}
+                         {% set folderLabel = node.name %}
+                    {% endif %}
+                    {% if prefix %}
+                         {% set folderPath = prefix ~ ' > ' ~ folderLabel %}
+                    {% else %}
+                         {% set folderPath = folderLabel %}
+                    {% endif %}
+                    <li style="list-style: none; margin-left: -1em; margin-bottom: 6px;">
+                         <span class="icon-new folder"></span>
+                         <strong>{{ folderPath }}</strong>
+                    </li>
+                    {% if node.children and (node.children | length) > 0 %}
+                         {{ renderDeleteTreeItems(node.children, folderPath) }}
+                    {% endif %}
+               {% else %}
+                    <li>{{ node.name }}</li>
+               {% endif %}
+          {% endfor %}
+     {% endmacro %}
+
+     {% macro renderDeleteTree(nodes) %}
+     <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-3 govuk-!-margin-bottom-4">
+          {{ renderDeleteTreeItems(nodes) }}
+     </ul>
+     {% endmacro %}
+
+     <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+               <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+          </div>
+     </div>
+
+     <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+               <form novalidate method="post" action="/ur-jun-2026-closed/lcc/materials/discard-material">
+                    <input type="hidden" name="material_selected" value="{{ data['material_selected'] }}">
+
+                    <div class="govuk-form-group">
+                         <fieldset class="govuk-fieldset" aria-describedby="changeCategory-hint">
+                              <h1 class="govuk-heading-l">Delete files or folders</h1>
+
+                              <p class="govuk-body">You cannot recover files or folders after you delete them.
+                              Deleting a folder will also delete everything inside it.</p>
+                              <p class="govuk-body">If the file or folder is shared, other users will no longer be able
+                                   to access it.</p>
+                              <p class="govuk-body">Are you sure you want to permanently delete these items?</p>
+
+                              {% if data.deleteItemsPreviewTree and (data.deleteItemsPreviewTree | length > 0) %}
+                              {% if data.deleteItemsCount > 5 %}
+                              <details class="govuk-details govuk-!-margin-bottom-4 delete-items-details">
+                                   <summary class="govuk-details__summary delete-items-details__summary">
+                                        <span class="govuk-details__summary-text" style="font-size: 17px;">
+                                             <span class="delete-items-details__label--view">View items</span>
+                                             <span class="delete-items-details__label--hide">Hide items</span>
+                                        </span>
+                                   </summary>
+                                   <div class="govuk-details__text" style="margin-bottom: 0; display: flow-root; padding-top: 2px; padding-bottom: 2px;">
+                                        {{ renderDeleteTree(data.deleteItemsPreviewTree) }}
+                                   </div>
+                              </details>
+                              {% else %}
+                              {{ renderDeleteTree(data.deleteItemsPreviewTree) }}
+                              {% endif %}
+                              {% endif %}
+                         </fieldset>
+                    </div>
+
+                    <div class="govuk-button-group">
+                         <input id="discarding_material_COMPLETED" name="discarding_material_COMPLETED" type="text"
+                              value="true" style="display: none;">
+                         <button class="govuk-button" data-module="govuk-button">Delete items</button>
+                         <a class="govuk-link" href="03-case-overview">Cancel</a>
+                    </div>
+               </form>
+          </div>
+     </div>
+</div>
+{% endblock %}
