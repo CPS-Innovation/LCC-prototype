@@ -1,10 +1,37 @@
 const express = require('express');
 const { editSuspect, chargeDescription, victims } = require('../../data/session-data-defaults.js');
 const router = express.Router();
-const version = 'version-15'
+const version = 'ur-jun-2026-closed'
+
+function getQueryString(req) {
+    return req.url.includes('?') ? `?${req.url.split('?')[1]}` : '';
+}
+
+function redirectLegacyLccPath(req, res) {
+    if (req.path === '/create-case' || req.path.startsWith('/create-case/')) {
+        const registerCasePath = req.path.replace('/create-case', '/register-case');
+        return res.redirect(`/ur-jun-2026-closed/lcc${registerCasePath}${getQueryString(req)}`);
+    }
+
+    res.redirect(`/ur-jun-2026-closed/lcc/materials${req.path}${getQueryString(req)}`);
+}
+
+router.use('/B-off-system-MVP', redirectLegacyLccPath);
+router.use('/materials', redirectLegacyLccPath);
+
+router.use('/lcc', function (req, res, next) {
+    if (req.path === '/materials' || req.path.startsWith('/materials/')) return next();
+    if (req.path === '/register-case' || req.path.startsWith('/register-case/')) return next();
+    if (req.path === '/create-case' || req.path.startsWith('/create-case/')) {
+        const registerCasePath = req.path.replace('/create-case', '/register-case');
+        return res.redirect(`/ur-jun-2026-closed/lcc${registerCasePath}${getQueryString(req)}`);
+    }
+
+    res.redirect(`/ur-jun-2026-closed/lcc/materials${req.path}${getQueryString(req)}`);
+});
 
 function getSafeReturnTo(returnTo) {
-    if (typeof returnTo !== 'string' || !returnTo.startsWith('/version-15/')) {
+    if (typeof returnTo !== 'string' || !returnTo.startsWith('/ur-jun-2026-closed/')) {
         return null;
     }
 
@@ -88,6 +115,7 @@ function trimString(value) {
 function resetCreateCaseSuspectsAndCharges(req) {
     req.session.data.suspectCount = 0;
     req.session.data.suspectDetailsCount = 0;
+    req.session.data.pendingSuspectId = undefined;
     req.session.data.suspectId = [];
     req.session.data.suspectType = [];
     req.session.data.suspectFirstName = [];
@@ -153,6 +181,103 @@ function resetCreateCaseSuspectsAndCharges(req) {
     req.session.data.preCharge = 'No';
 }
 
+const suspectSummaryPath = '/ur-jun-2026-closed/lcc/register-case/03B-suspect-summary';
+
+function commitPendingSuspect(data) {
+    const pendingSuspectId = Number(data.pendingSuspectId);
+
+    if (!Number.isInteger(pendingSuspectId) || pendingSuspectId < 0) {
+        return;
+    }
+
+    if (!Array.isArray(data.suspectId)) {
+        data.suspectId = [];
+    }
+
+    if (!data.suspectId.map(String).includes(String(pendingSuspectId))) {
+        data.suspectId.push(pendingSuspectId);
+    }
+
+    data.suspectCount = Math.max(Number(data.suspectCount || 0), pendingSuspectId + 1);
+    data.suspectDetailsYesNo = 'Yes';
+    data.pendingSuspectId = undefined;
+}
+
+function redirectToSuspectSummary(req, res) {
+    commitPendingSuspect(req.session.data);
+    req.session.data.displaySuspect = 999;
+    req.session.data.editSuspect = 999;
+
+    const returnTo = getCreateCaseReturnTo(req);
+    if (returnTo) {
+        clearCreateCaseReturnTo(req);
+        return res.redirect(returnTo);
+    }
+
+    res.redirect(suspectSummaryPath);
+}
+
+function redirectToSuspectRoute(req, res, route) {
+    if (route === suspectSummaryPath) {
+        return redirectToSuspectSummary(req, res);
+    }
+
+    res.redirect(route);
+}
+
+function hasSuspectDetail(value) {
+    return value !== undefined && value !== null && value !== '';
+}
+
+function firstSuspectDetailsRoute(data, count) {
+    if (
+        hasSuspectDetail(data.suspectDOB[count]) ||
+        hasSuspectDetail(data.suspectDayBirth[count]) ||
+        hasSuspectDetail(data.suspectMonthBirth[count]) ||
+        hasSuspectDetail(data.suspectYearBirth[count])
+    ) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-dob';
+    }
+    if (shouldAskOffenderType(data.suspectOffenderType[count])) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type';
+    }
+    if (hasSuspectDetail(data.suspectGender[count])) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-gender';
+    }
+    if (hasSuspectDetail(data.suspectDisability[count])) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-disability';
+    }
+    if (hasSuspectDetail(data.suspectReligion[count])) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-religion';
+    }
+    if (hasSuspectDetail(data.suspectEthnicity[count])) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-ethnicity';
+    }
+    if (hasSuspectDetail(data.suspectAlias[count])) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-add-alias';
+    }
+    if (hasSuspectDetail(data.suspectSDO[count])) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-sdo';
+    }
+    if (hasSuspectDetail(data.suspectArrestSummons[count])) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons';
+    }
+
+    return suspectSummaryPath;
+}
+
+function selectedSuspectDetail(bodyValue, currentValue, placeholder) {
+    if (bodyValue === undefined) {
+        return undefined;
+    }
+
+    if (hasSuspectDetail(currentValue) && currentValue !== placeholder) {
+        return currentValue;
+    }
+
+    return placeholder;
+}
+
 function getCreateCaseReturnTo(req) {
     return getSafeReturnTo(req.query?.returnTo) ||
         getSafeReturnTo(req.body?.returnTo) ||
@@ -176,100 +301,100 @@ function clearCreateCaseReturnTo(req) {
 }
 
 function nextSuspectDetailsRouteAfterOffenderType(data, count) {
-    if (data.suspectGender[count] != undefined) {
-        return '/version-15/B-off-system-MVP/create-case/03-suspect-details-gender';
+    if (hasSuspectDetail(data.suspectGender[count])) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-gender';
     }
-    if (data.suspectDisability[count] != undefined) {
-        return '/version-15/B-off-system-MVP/create-case/03-suspect-details-disability';
+    if (hasSuspectDetail(data.suspectDisability[count])) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-disability';
     }
-    if (data.suspectReligion[count] != undefined) {
-        return '/version-15/B-off-system-MVP/create-case/03-suspect-details-religion';
+    if (hasSuspectDetail(data.suspectReligion[count])) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-religion';
     }
-    if (data.suspectEthnicity[count] != undefined) {
-        return '/version-15/B-off-system-MVP/create-case/03-suspect-details-ethnicity';
+    if (hasSuspectDetail(data.suspectEthnicity[count])) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-ethnicity';
     }
-    if (data.suspectAlias[count] != undefined) {
-        return '/version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias';
+    if (hasSuspectDetail(data.suspectAlias[count])) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-add-alias';
     }
-    if (data.suspectSDO[count] != undefined) {
-        return '/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo';
+    if (hasSuspectDetail(data.suspectSDO[count])) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-sdo';
     }
-    if (data.suspectArrestSummons[count] != undefined) {
-        return '/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons';
+    if (hasSuspectDetail(data.suspectArrestSummons[count])) {
+        return '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons';
     }
 
-    return '/version-15/B-off-system-MVP/create-case/03B-suspect-summary';
+    return '/ur-jun-2026-closed/lcc/register-case/03B-suspect-summary';
 }
 
 function nextSuspectDetailsRouteAfter(data, count, currentDetail) {
     const remainingRoutes = {
         dob: [
-            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type'],
-            ['gender', () => data.suspectGender[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-gender'],
-            ['disability', () => data.suspectDisability[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-disability'],
-            ['religion', () => data.suspectReligion[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-religion'],
-            ['ethnicity', () => data.suspectEthnicity[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-ethnicity'],
-            ['alias', () => data.suspectAlias[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias'],
-            ['sdo', () => data.suspectSDO[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo'],
-            ['arrestSummons', () => data.suspectArrestSummons[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons']
+            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type'],
+            ['gender', () => hasSuspectDetail(data.suspectGender[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-gender'],
+            ['disability', () => hasSuspectDetail(data.suspectDisability[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-disability'],
+            ['religion', () => hasSuspectDetail(data.suspectReligion[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-religion'],
+            ['ethnicity', () => hasSuspectDetail(data.suspectEthnicity[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-ethnicity'],
+            ['alias', () => hasSuspectDetail(data.suspectAlias[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-add-alias'],
+            ['sdo', () => hasSuspectDetail(data.suspectSDO[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-sdo'],
+            ['arrestSummons', () => hasSuspectDetail(data.suspectArrestSummons[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons']
         ],
         offenderType: [
-            ['gender', () => data.suspectGender[count] === 'Gender', '/version-15/B-off-system-MVP/create-case/03-suspect-details-gender'],
-            ['disability', () => data.suspectDisability[count] === 'Disability', '/version-15/B-off-system-MVP/create-case/03-suspect-details-disability'],
-            ['religion', () => data.suspectReligion[count] === 'Religion', '/version-15/B-off-system-MVP/create-case/03-suspect-details-religion'],
-            ['ethnicity', () => data.suspectEthnicity[count] === 'Ethnicity', '/version-15/B-off-system-MVP/create-case/03-suspect-details-ethnicity'],
-            ['alias', () => data.suspectAlias[count] === 'Alias details', '/version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias'],
-            ['sdo', () => data.suspectSDO[count] === 'Serious Dangerous Offender (SDO)', '/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo'],
-            ['arrestSummons', () => data.suspectArrestSummons[count] === 'Arrest summons', '/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons']
+            ['gender', () => data.suspectGender[count] === 'Gender', '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-gender'],
+            ['disability', () => data.suspectDisability[count] === 'Disability', '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-disability'],
+            ['religion', () => data.suspectReligion[count] === 'Religion', '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-religion'],
+            ['ethnicity', () => data.suspectEthnicity[count] === 'Ethnicity', '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-ethnicity'],
+            ['alias', () => data.suspectAlias[count] === 'Alias details', '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-add-alias'],
+            ['sdo', () => data.suspectSDO[count] === 'Serious Dangerous Offender (SDO)', '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-sdo'],
+            ['arrestSummons', () => data.suspectArrestSummons[count] === 'Arrest summons', '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons']
         ],
         gender: [
-            ['disability', () => data.suspectDisability[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-disability'],
-            ['religion', () => data.suspectReligion[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-religion'],
-            ['ethnicity', () => data.suspectEthnicity[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-ethnicity'],
-            ['alias', () => data.suspectAlias[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias'],
-            ['sdo', () => data.suspectSDO[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo'],
-            ['arrestSummons', () => data.suspectArrestSummons[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons'],
-            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type']
+            ['disability', () => hasSuspectDetail(data.suspectDisability[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-disability'],
+            ['religion', () => hasSuspectDetail(data.suspectReligion[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-religion'],
+            ['ethnicity', () => hasSuspectDetail(data.suspectEthnicity[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-ethnicity'],
+            ['alias', () => hasSuspectDetail(data.suspectAlias[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-add-alias'],
+            ['sdo', () => hasSuspectDetail(data.suspectSDO[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-sdo'],
+            ['arrestSummons', () => hasSuspectDetail(data.suspectArrestSummons[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons'],
+            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type']
         ],
         disability: [
-            ['religion', () => data.suspectReligion[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-religion'],
-            ['ethnicity', () => data.suspectEthnicity[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-ethnicity'],
-            ['alias', () => data.suspectAlias[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias'],
-            ['sdo', () => data.suspectSDO[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo'],
-            ['arrestSummons', () => data.suspectArrestSummons[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons'],
-            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type']
+            ['religion', () => hasSuspectDetail(data.suspectReligion[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-religion'],
+            ['ethnicity', () => hasSuspectDetail(data.suspectEthnicity[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-ethnicity'],
+            ['alias', () => hasSuspectDetail(data.suspectAlias[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-add-alias'],
+            ['sdo', () => hasSuspectDetail(data.suspectSDO[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-sdo'],
+            ['arrestSummons', () => hasSuspectDetail(data.suspectArrestSummons[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons'],
+            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type']
         ],
         religion: [
-            ['ethnicity', () => data.suspectEthnicity[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-ethnicity'],
-            ['alias', () => data.suspectAlias[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias'],
-            ['sdo', () => data.suspectSDO[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo'],
-            ['arrestSummons', () => data.suspectArrestSummons[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons'],
-            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type']
+            ['ethnicity', () => hasSuspectDetail(data.suspectEthnicity[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-ethnicity'],
+            ['alias', () => hasSuspectDetail(data.suspectAlias[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-add-alias'],
+            ['sdo', () => hasSuspectDetail(data.suspectSDO[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-sdo'],
+            ['arrestSummons', () => hasSuspectDetail(data.suspectArrestSummons[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons'],
+            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type']
         ],
         ethnicity: [
-            ['alias', () => data.suspectAlias[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias'],
-            ['sdo', () => data.suspectSDO[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo'],
-            ['arrestSummons', () => data.suspectArrestSummons[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons'],
-            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type']
+            ['alias', () => hasSuspectDetail(data.suspectAlias[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-add-alias'],
+            ['sdo', () => hasSuspectDetail(data.suspectSDO[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-sdo'],
+            ['arrestSummons', () => hasSuspectDetail(data.suspectArrestSummons[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons'],
+            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type']
         ],
         alias: [
-            ['sdo', () => data.suspectSDO[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo'],
-            ['arrestSummons', () => data.suspectArrestSummons[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons'],
-            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type']
+            ['sdo', () => hasSuspectDetail(data.suspectSDO[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-sdo'],
+            ['arrestSummons', () => hasSuspectDetail(data.suspectArrestSummons[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons'],
+            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type']
         ],
         sdo: [
-            ['arrestSummons', () => data.suspectArrestSummons[count] != undefined, '/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons'],
-            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type']
+            ['arrestSummons', () => hasSuspectDetail(data.suspectArrestSummons[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons'],
+            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type']
         ],
         arrestSummons: [
-            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type']
+            ['offenderType', () => shouldAskOffenderType(data.suspectOffenderType[count]), '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type']
         ]
     };
 
     const routes = remainingRoutes[currentDetail] || [];
     const next = routes.find(([, shouldVisit]) => shouldVisit());
 
-    return next ? next[2] : '/version-15/B-off-system-MVP/create-case/03B-suspect-summary';
+    return next ? next[2] : '/ur-jun-2026-closed/lcc/register-case/03B-suspect-summary';
 }
 
 function removeAliasesForCurrentSuspect(data, count) {
@@ -318,7 +443,7 @@ function skipSuspectDetail(req, res, detail) {
         }
     }
 
-    res.redirect(nextSuspectDetailsRouteAfter(data, count, detail));
+    redirectToSuspectRoute(req, res, nextSuspectDetailsRouteAfter(data, count, detail));
 }
 
 // Make session data available in all Nunjucks templates as "data"
@@ -364,7 +489,7 @@ router.use((req, res, next) => {
 
 
 // Register a case - start of journey
-router.post('/B-off-system-MVP/create-case/01-register-case', function (req, res) {
+router.post('/lcc/register-case/01-register-case', function (req, res) {
     const operationNameYesNo = req.body['operation-name-yes-no']
     const suspectDetailsYesNo = req.body['suspect-details-yes-no']
     const operationName = trimString(req.body['operation-name'])
@@ -410,7 +535,7 @@ router.post('/B-off-system-MVP/create-case/01-register-case', function (req, res
     }
 
     if (errorList.length > 0) {
-        return res.render('version-15/B-off-system-MVP/create-case/01-register-case', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/01-register-case', {
             errors,
             errorList
         })
@@ -425,37 +550,38 @@ router.post('/B-off-system-MVP/create-case/01-register-case', function (req, res
         req.session.data.firstHearingDate = req.body['newCase_FirstHearing_Date']
     }
 
-    res.redirect('/version-15/B-off-system-MVP/create-case/02-area')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/02-area')
     // }
     // else {
-    //     res.render('version-15/B-off-system-MVP/create-case/01-register-case', { 
+    //     res.render('ur-jun-2026-closed/lcc/register-case/01-register-case', { 
     //         errors: errors
     //     })
     // }
 })
 
 // Area page
-router.post('/B-off-system-MVP/create-case/02-area', function (req, res) {
+router.post('/lcc/register-case/02-area', function (req, res) {
     const area = (req.body['docType-Area'] || '').trim()
 
     if (!area) {
-        return res.render('version-15/B-off-system-MVP/create-case/02-area', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/02-area', {
             areaError: 'Select a division or area'
         })
     }
 
     req.session.data.area = area
-    res.redirect('/version-15/B-off-system-MVP/create-case/02-case-details')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/02-case-details')
 })
 
 // Case details page
-router.post('/B-off-system-MVP/create-case/02-case-details', function (req, res) {
+router.post('/lcc/register-case/02-case-details', function (req, res) {
     console.log("Case details page submitted")
 
     const URN1 = (req.body['newCase_URN-A'] || '').trim()
     const URN2 = (req.body['newCase_URN-B'] || '').trim()
     const URN3 = (req.body['newCase_URN-C'] || '').trim()
     const URN4 = (req.body['newCase_URN-D'] || '').trim()
+    const caseUrn = `${URN1}${URN2}${URN3}${URN4}`
     const registeringUnit = (req.body['newCase_RegisteringUnit'] || '').trim()
     const WCU = (req.body['newCase_WCU'] || '').trim()
 
@@ -463,6 +589,7 @@ router.post('/B-off-system-MVP/create-case/02-case-details', function (req, res)
     req.session.data.URN2 = URN2
     req.session.data.URN3 = URN3
     req.session.data.URN4 = URN4
+    req.session.data.caseUrn = caseUrn
     req.session.data.registeringUnit = registeringUnit
     req.session.data.WCU = WCU
 
@@ -483,13 +610,13 @@ router.post('/B-off-system-MVP/create-case/02-case-details', function (req, res)
     }
 
     if (Object.keys(errors).length > 0) {
-        return res.render('version-15/B-off-system-MVP/create-case/02-case-details', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/02-case-details', {
             errors
         })
     }
 
     if (req.session.data.suspectDetailsYesNo === 'Yes') {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-add-suspect')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-add-suspect')
     }
     else {
         const valueToRemove = 'Pre-Charge Decision'
@@ -502,13 +629,13 @@ router.post('/B-off-system-MVP/create-case/02-case-details', function (req, res)
         const hasUncharged = suspects.some(id => !charged.includes(id))
         req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
 
-        res.redirect('/version-15/B-off-system-MVP/create-case/06-monitoring-codes')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/06-monitoring-codes')
     }
 })
 
 
 // First hearing details
-router.post('/B-off-system-MVP/create-case/02-first-hearing-details', function (req, res) {
+router.post('/lcc/register-case/02-first-hearing-details', function (req, res) {
     const returnTo = getCreateCaseReturnTo(req)
 
     req.session.data.firstHearingDetailsYesNo = req.body['first-hearing-details']
@@ -533,7 +660,7 @@ router.post('/B-off-system-MVP/create-case/02-first-hearing-details', function (
         return res.redirect(returnTo)
     }
 
-    res.redirect('/version-15/B-off-system-MVP/create-case/06-monitoring-codes')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/06-monitoring-codes')
 
 })
 
@@ -541,12 +668,14 @@ router.post('/B-off-system-MVP/create-case/02-first-hearing-details', function (
 
 // ************************************************** Suspects **************************************************
 // Add suspects
-router.get('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) {
+router.get('/lcc/register-case/03-add-suspect', function (req, res) {
     const data = req.session.data;
     const isEditing = data.editSuspect !== undefined && Number(data.editSuspect) !== 999;
     const count = Number(data.suspectCount || 0);
+    const pendingSuspectId = Number(data.pendingSuspectId);
+    const hasPendingSuspect = Number.isInteger(pendingSuspectId) && pendingSuspectId >= 0;
 
-    if (!isEditing) {
+    if (!isEditing && !hasPendingSuspect) {
         data.editSuspect = 999;
         data.displaySuspect = 999;
         data.suspectType[count] = undefined;
@@ -564,19 +693,31 @@ router.get('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) {
         data.suspectAlias[count] = undefined;
     }
 
-    res.render('version-15/B-off-system-MVP/create-case/03-add-suspect');
+    res.render('ur-jun-2026-closed/lcc/register-case/03-add-suspect');
 })
 
-router.post('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) {
-    count = req.session.data.suspectCount
+router.post('/lcc/register-case/03-add-suspect', function (req, res) {
+    const data = req.session.data
+    const pendingSuspectId = Number(data.pendingSuspectId)
+    const postedSuspectIndex = Number(req.body['suspect-index'])
+    let count = Number(data.suspectCount || 0)
+
+    if (Number.isInteger(postedSuspectIndex) && postedSuspectIndex >= 0) {
+        count = postedSuspectIndex
+    }
+
+    if (Number.isInteger(pendingSuspectId) && pendingSuspectId >= 0) {
+        count = pendingSuspectId
+    }
     const suspectType = req.body['suspect-type']
     const suspectFirstName = trimString(req.body['suspect-person-first-name'])
     const suspectLastName = trimString(req.body['suspect-person-last-name'])
     const suspectCompanyName = trimString(req.body['suspect-company-name'])
 
-    req.session.data.suspectFirstName[count] = suspectFirstName
-    req.session.data.suspectLastName[count] = suspectLastName
-    req.session.data.suspectCompanyName[count] = suspectCompanyName
+    data.pendingSuspectId = count
+    data.suspectFirstName[count] = suspectFirstName
+    data.suspectLastName[count] = suspectLastName
+    data.suspectCompanyName[count] = suspectCompanyName
 
     const errors = {}
     const errorList = []
@@ -614,120 +755,98 @@ router.post('/B-off-system-MVP/create-case/03-add-suspect', function (req, res) 
     }
 
     if (errorList.length > 0) {
-        req.session.data.suspectType[count] = suspectType
+        data.suspectType[count] = suspectType
 
-        return res.render('version-15/B-off-system-MVP/create-case/03-add-suspect', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/03-add-suspect', {
             errors,
             errorList
         })
     }
 
-    req.session.data.suspectType[count] = suspectType
-    req.session.data.suspectId[count] = count
-    req.session.data.aliasTempSuspectId = count
+    data.suspectType[count] = suspectType
+    data.aliasTempSuspectId = count
 
     if (suspectType == 'Person') {
-        req.session.data.suspectFirstName[count] = suspectFirstName
-        req.session.data.suspectLastName[count] = suspectLastName
-        req.session.data.suspectDOB[count] = req.body['suspect-person-dob']
-        req.session.data.suspectGender[count] = req.body['suspect-person-gender']
-        req.session.data.suspectDisability[count] = req.body['suspect-person-disability']
-        req.session.data.suspectReligion[count] = req.body['suspect-person-religion']
-        req.session.data.suspectEthnicity[count] = req.body['suspect-person-ethnicity']
-        req.session.data.suspectSDO[count] = req.body['suspect-person-sdo']
-        req.session.data.suspectArrestSummons[count] = req.body['suspect-person-arrest-summons']
-        req.session.data.suspectOffenderType[count] = req.body['suspect-person-offender-type']
-        req.session.data.suspectAlias[count] = req.body['suspect-person-alias']
-        console.log("Arrest summons:", req.session.data.suspectArrestSummons[count])
-        console.log("Alias:", req.session.data.suspectAlias[count])
-        console.log("SDO:", req.session.data.suspectSDO[count])
+        data.suspectFirstName[count] = suspectFirstName
+        data.suspectLastName[count] = suspectLastName
+        data.suspectDOB[count] = selectedSuspectDetail(req.body['suspect-person-dob'], data.suspectDOB[count], 'Date of birth')
+        data.suspectGender[count] = selectedSuspectDetail(req.body['suspect-person-gender'], data.suspectGender[count], 'Gender')
+        data.suspectDisability[count] = selectedSuspectDetail(req.body['suspect-person-disability'], data.suspectDisability[count], 'Disability')
+        data.suspectReligion[count] = selectedSuspectDetail(req.body['suspect-person-religion'], data.suspectReligion[count], 'Religion')
+        data.suspectEthnicity[count] = selectedSuspectDetail(req.body['suspect-person-ethnicity'], data.suspectEthnicity[count], 'Ethnicity')
+        data.suspectSDO[count] = selectedSuspectDetail(req.body['suspect-person-sdo'], data.suspectSDO[count], 'Serious Dangerous Offender (SDO)')
+        data.suspectArrestSummons[count] = selectedSuspectDetail(req.body['suspect-person-arrest-summons'], data.suspectArrestSummons[count], 'Arrest summons')
+        data.suspectOffenderType[count] = selectedSuspectDetail(req.body['suspect-person-offender-type'], data.suspectOffenderType[count], 'Type of offender')
+        data.suspectAlias[count] = selectedSuspectDetail(req.body['suspect-person-alias'], data.suspectAlias[count], 'Alias details')
+
+        if (data.suspectDOB[count] == undefined) {
+            data.suspectDayBirth[count] = undefined
+            data.suspectMonthBirth[count] = undefined
+            data.suspectYearBirth[count] = undefined
+            if (Array.isArray(data.forceOffenderTypeAfterDob)) {
+                data.forceOffenderTypeAfterDob[count] = false
+            }
+        }
+
+        if (data.suspectAlias[count] == undefined) {
+            removeAliasesForCurrentSuspect(data, count)
+        }
+        console.log("Arrest summons:", data.suspectArrestSummons[count])
+        console.log("Alias:", data.suspectAlias[count])
+        console.log("SDO:", data.suspectSDO[count])
     }
     else {
-        req.session.data.suspectCompanyName[count] = suspectCompanyName
+        data.suspectCompanyName[count] = suspectCompanyName
     }
 
-    req.session.data.suspectDetailsCount = count
-    req.session.data.suspectCount = count + 1
+    data.suspectDetailsCount = count
 
-    if (req.session.data.suspectCount > 0) {
-        req.session.data.suspectDetailsYesNo = 'Yes'
-    }
+    id = data.suspectDetailsCount
 
-    id = req.session.data.suspectDetailsCount
+    redirectToSuspectRoute(req, res, firstSuspectDetailsRoute(data, id))
 
-    if (req.session.data.suspectDOB[id] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-dob')
-    }
-    else if (shouldAskOffenderType(req.session.data.suspectOffenderType[id])) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type')
-    }
-    else if (req.session.data.suspectGender[id] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-gender')
-    }
-    else if (req.session.data.suspectDisability[id] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-disability')
-    }
-    else if (req.session.data.suspectReligion[id] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-religion')
-    }
-    else if (req.session.data.suspectEthnicity[id] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-ethnicity')
-    }
-    else if (req.session.data.suspectAlias[id] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias')
-    }
-    else if (req.session.data.suspectSDO[id] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo')
-    }
-    else if (req.session.data.suspectArrestSummons[id] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
-    }
-    else {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03B-suspect-summary')
-    }
-
-    // res.redirect('/version-15/B-off-system-MVP/create-case/03B-suspect-summary')
+    // redirectToSuspectSummary(req, res)
 })
 
 
 // Suspect details – date of birth
-router.get('/B-off-system-MVP/create-case/03-suspect-details-dob-unknown', function (req, res) {
+router.get('/lcc/register-case/03-suspect-details-dob-unknown', function (req, res) {
     skipSuspectDetail(req, res, 'dob');
 })
 
-router.get('/B-off-system-MVP/create-case/03-suspect-details-gender-unknown', function (req, res) {
+router.get('/lcc/register-case/03-suspect-details-gender-unknown', function (req, res) {
     skipSuspectDetail(req, res, 'gender');
 })
 
-router.get('/B-off-system-MVP/create-case/03-suspect-details-disability-unknown', function (req, res) {
+router.get('/lcc/register-case/03-suspect-details-disability-unknown', function (req, res) {
     skipSuspectDetail(req, res, 'disability');
 })
 
-router.get('/B-off-system-MVP/create-case/03-suspect-details-religion-unknown', function (req, res) {
+router.get('/lcc/register-case/03-suspect-details-religion-unknown', function (req, res) {
     skipSuspectDetail(req, res, 'religion');
 })
 
-router.get('/B-off-system-MVP/create-case/03-suspect-details-ethnicity-unknown', function (req, res) {
+router.get('/lcc/register-case/03-suspect-details-ethnicity-unknown', function (req, res) {
     skipSuspectDetail(req, res, 'ethnicity');
 })
 
-router.get('/B-off-system-MVP/create-case/03-suspect-details-alias-unknown', function (req, res) {
+router.get('/lcc/register-case/03-suspect-details-alias-unknown', function (req, res) {
     skipSuspectDetail(req, res, 'alias');
 })
 
-router.get('/B-off-system-MVP/create-case/03-suspect-details-sdo-unknown', function (req, res) {
+router.get('/lcc/register-case/03-suspect-details-sdo-unknown', function (req, res) {
     skipSuspectDetail(req, res, 'sdo');
 })
 
-router.get('/B-off-system-MVP/create-case/03-suspect-details-arrest-summons-unknown', function (req, res) {
+router.get('/lcc/register-case/03-suspect-details-arrest-summons-unknown', function (req, res) {
     skipSuspectDetail(req, res, 'arrestSummons');
 })
 
-router.get('/B-off-system-MVP/create-case/03-suspect-details-offender-type-unknown', function (req, res) {
+router.get('/lcc/register-case/03-suspect-details-offender-type-unknown', function (req, res) {
     skipSuspectDetail(req, res, 'offenderType');
 })
 
-router.post('/B-off-system-MVP/create-case/03-suspect-details-dob', function (req, res) {
+router.post('/lcc/register-case/03-suspect-details-dob', function (req, res) {
     count = req.session.data.suspectDetailsCount
     const day = trimString(req.body['date-of-birth-day'])
     const month = trimString(req.body['date-of-birth-month'])
@@ -777,7 +896,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-dob', function (re
     }
 
     if (errorList.length > 0) {
-        return res.render('version-15/B-off-system-MVP/create-case/03-suspect-details-dob', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/03-suspect-details-dob', {
             errors,
             errorList
         })
@@ -795,46 +914,46 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-dob', function (re
         }
 
         req.session.data.forceOffenderTypeAfterDob[count] = true
-        return res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type')
+        return res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type')
     }
 
     if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type')
     }
-    else if (req.session.data.suspectGender[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-gender')
+    else if (hasSuspectDetail(req.session.data.suspectGender[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-gender')
     }
-    else if (req.session.data.suspectDisability[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-disability')
+    else if (hasSuspectDetail(req.session.data.suspectDisability[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-disability')
     }
-    else if (req.session.data.suspectReligion[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-religion')
+    else if (hasSuspectDetail(req.session.data.suspectReligion[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-religion')
     }
-    else if (req.session.data.suspectEthnicity[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-ethnicity')
+    else if (hasSuspectDetail(req.session.data.suspectEthnicity[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-ethnicity')
     }
-    else if (req.session.data.suspectAlias[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias')
+    else if (hasSuspectDetail(req.session.data.suspectAlias[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo')
+    else if (hasSuspectDetail(req.session.data.suspectSDO[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
+    else if (hasSuspectDetail(req.session.data.suspectArrestSummons[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons')
     }
     else {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03B-suspect-summary')
+        redirectToSuspectSummary(req, res)
     }
 })
 
 
 // Suspect details – gender
-router.post('/B-off-system-MVP/create-case/03-suspect-details-gender', function (req, res) {
+router.post('/lcc/register-case/03-suspect-details-gender', function (req, res) {
     count = req.session.data.suspectDetailsCount
     const gender = req.body['gender']
 
     if (!gender) {
-        return res.render('version-15/B-off-system-MVP/create-case/03-suspect-details-gender', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/03-suspect-details-gender', {
             errors: {
                 gender: 'Select a gender'
             },
@@ -842,47 +961,47 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-gender', function 
                 text: 'Select a gender',
                 href: '#gender-female',
                 skipText: 'I do not have the gender',
-                skipHref: '/version-15/B-off-system-MVP/create-case/03-suspect-details-gender-unknown'
+                skipHref: '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-gender-unknown'
             }]
         })
     }
 
     req.session.data.suspectGender[count] = gender
 
-    if (req.session.data.suspectDisability[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-disability')
+    if (hasSuspectDetail(req.session.data.suspectDisability[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-disability')
     }
-    else if (req.session.data.suspectReligion[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-religion')
+    else if (hasSuspectDetail(req.session.data.suspectReligion[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-religion')
     }
-    else if (req.session.data.suspectEthnicity[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-ethnicity')
+    else if (hasSuspectDetail(req.session.data.suspectEthnicity[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-ethnicity')
     }
-    else if (req.session.data.suspectAlias[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias')
+    else if (hasSuspectDetail(req.session.data.suspectAlias[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo')
+    else if (hasSuspectDetail(req.session.data.suspectSDO[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
+    else if (hasSuspectDetail(req.session.data.suspectArrestSummons[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons')
     }
     else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type')
     }
     else {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03B-suspect-summary')
+        redirectToSuspectSummary(req, res)
     }
 })
 
 
 // Suspect details – disability
-router.post('/B-off-system-MVP/create-case/03-suspect-details-disability', function (req, res) {
+router.post('/lcc/register-case/03-suspect-details-disability', function (req, res) {
     count = req.session.data.suspectDetailsCount
     const disability = req.body['disability']
 
     if (!disability) {
-        return res.render('version-15/B-off-system-MVP/create-case/03-suspect-details-disability', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/03-suspect-details-disability', {
             errors: {
                 disability: 'Select whether the suspect has a disability'
             },
@@ -890,44 +1009,44 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-disability', funct
                 text: 'Select whether the suspect has a disability',
                 href: '#disability-yes',
                 skipText: 'I do not have disability information',
-                skipHref: '/version-15/B-off-system-MVP/create-case/03-suspect-details-disability-unknown'
+                skipHref: '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-disability-unknown'
             }]
         })
     }
 
     req.session.data.suspectDisability[count] = disability
 
-    if (req.session.data.suspectReligion[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-religion')
+    if (hasSuspectDetail(req.session.data.suspectReligion[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-religion')
     }
-    else if (req.session.data.suspectEthnicity[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-ethnicity')
+    else if (hasSuspectDetail(req.session.data.suspectEthnicity[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-ethnicity')
     }
-    else if (req.session.data.suspectAlias[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias')
+    else if (hasSuspectDetail(req.session.data.suspectAlias[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo')
+    else if (hasSuspectDetail(req.session.data.suspectSDO[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
+    else if (hasSuspectDetail(req.session.data.suspectArrestSummons[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons')
     }
     else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type')
     }
     else {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03B-suspect-summary')
+        redirectToSuspectSummary(req, res)
     }
 })
 
 
 // Suspect details – religion
-router.post('/B-off-system-MVP/create-case/03-suspect-details-religion', function (req, res) {
+router.post('/lcc/register-case/03-suspect-details-religion', function (req, res) {
     count = req.session.data.suspectDetailsCount
     const religion = req.body['religion']
 
     if (!religion) {
-        return res.render('version-15/B-off-system-MVP/create-case/03-suspect-details-religion', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/03-suspect-details-religion', {
             errors: {
                 religion: 'Select the suspect\'s religion'
             },
@@ -935,41 +1054,41 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-religion', functio
                 text: 'Select the suspect\'s religion',
                 href: '#religion-no-religion',
                 skipText: 'I do not have the religion',
-                skipHref: '/version-15/B-off-system-MVP/create-case/03-suspect-details-religion-unknown'
+                skipHref: '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-religion-unknown'
             }]
         })
     }
 
     req.session.data.suspectReligion[count] = religion
 
-    if (req.session.data.suspectEthnicity[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-ethnicity')
+    if (hasSuspectDetail(req.session.data.suspectEthnicity[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-ethnicity')
     }
-    else if (req.session.data.suspectAlias[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias')
+    else if (hasSuspectDetail(req.session.data.suspectAlias[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo')
+    else if (hasSuspectDetail(req.session.data.suspectSDO[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
+    else if (hasSuspectDetail(req.session.data.suspectArrestSummons[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons')
     }
     else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type')
     }
     else {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03B-suspect-summary')
+        redirectToSuspectSummary(req, res)
     }
 })
 
 
 // Suspect details – ethnicity
-router.post('/B-off-system-MVP/create-case/03-suspect-details-ethnicity', function (req, res) {
+router.post('/lcc/register-case/03-suspect-details-ethnicity', function (req, res) {
     count = req.session.data.suspectDetailsCount
     const ethnicity = req.body['ethnicity']
 
     if (!ethnicity) {
-        return res.render('version-15/B-off-system-MVP/create-case/03-suspect-details-ethnicity', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/03-suspect-details-ethnicity', {
             errors: {
                 ethnicity: 'Select the suspect\'s ethnicity'
             },
@@ -977,34 +1096,34 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-ethnicity', functi
                 text: 'Select the suspect\'s ethnicity',
                 href: '#ethnicity-ns',
                 skipText: 'I do not have the ethnicity',
-                skipHref: '/version-15/B-off-system-MVP/create-case/03-suspect-details-ethnicity-unknown'
+                skipHref: '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-ethnicity-unknown'
             }]
         })
     }
 
     req.session.data.suspectEthnicity[count] = ethnicity
 
-    if (req.session.data.suspectAlias[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias')
+    if (hasSuspectDetail(req.session.data.suspectAlias[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-add-alias')
     }
-    else if (req.session.data.suspectSDO[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo')
+    else if (hasSuspectDetail(req.session.data.suspectSDO[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-sdo')
     }
-    else if (req.session.data.suspectArrestSummons[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
+    else if (hasSuspectDetail(req.session.data.suspectArrestSummons[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons')
     }
     else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type')
     }
     else {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03B-suspect-summary')
+        redirectToSuspectSummary(req, res)
     }
 })
 
 
 // Alias section
 // Suspect details – add alias
-router.post('/B-off-system-MVP/create-case/03-suspect-details-add-alias', function (req, res) {
+router.post('/lcc/register-case/03-suspect-details-add-alias', function (req, res) {
     aliasCount = req.session.data.aliasCount
     const aliasFirstName = trimString(req.body['alias-first-name'])
     const aliasLastName = trimString(req.body['alias-last-name'])
@@ -1013,7 +1132,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-add-alias', functi
     req.session.data.aliasLastName[aliasCount] = aliasLastName
 
     if (!aliasLastName) {
-        return res.render('version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/03-suspect-details-add-alias', {
             errors: {
                 aliasLastName: 'Enter a last name. If the person only has one name, enter it here.'
             },
@@ -1021,7 +1140,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-add-alias', functi
                 text: 'Enter last name. If the person only has one name, enter it here.',
                 href: '#alias-last-name',
                 skipText: 'I do not have alias details',
-                skipHref: '/version-15/B-off-system-MVP/create-case/03-suspect-details-alias-unknown'
+                skipHref: '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-alias-unknown'
             }]
         })
     }
@@ -1041,11 +1160,11 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-add-alias', functi
     //    req.session.data.suspectDetailsCount = aliasCount
 
 
-    res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-alias-summary')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-alias-summary')
 })
 
 // Alias summary
-router.post('/B-off-system-MVP/create-case/03-suspect-details-alias-summary', function (req, res) {
+router.post('/lcc/register-case/03-suspect-details-alias-summary', function (req, res) {
     count = req.session.data.suspectDetailsCount
     const addAnother = req.body['add-another']
     const suspectSDO = req.session.data.suspectSDO || []
@@ -1053,7 +1172,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-alias-summary', fu
     const suspectOffenderType = req.session.data.suspectOffenderType || []
 
     if (!addAnother) {
-        return res.render('version-15/B-off-system-MVP/create-case/03-suspect-details-alias-summary', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/03-suspect-details-alias-summary', {
             errors: {
                 addAnother: 'Select whether you need to add another alias'
             },
@@ -1062,26 +1181,26 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-alias-summary', fu
                 text: 'Select whether you need to add another alias',
                 href: '#add-another',
                 skipText: 'I do not have alias details',
-                skipHref: '/version-15/B-off-system-MVP/create-case/03-suspect-details-alias-unknown'
+                skipHref: '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-alias-unknown'
             }]
         })
     }
 
     if (addAnother === 'Yes') {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-add-alias')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-add-alias')
     }
     else {
         if (suspectSDO[count] != undefined) {
-            res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-sdo')
+            res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-sdo')
         }
         else if (suspectArrestSummons[count] != undefined) {
-            res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
+            res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons')
         }
         else if (shouldAskOffenderType(suspectOffenderType[count])) {
-            res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type')
+            res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type')
         }
         else {
-            res.redirect('/version-15/B-off-system-MVP/create-case/03B-suspect-summary')
+            redirectToSuspectSummary(req, res)
         }
     }
 })
@@ -1089,25 +1208,25 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-alias-summary', fu
 
 
 // Suspect details – SDO
-router.post('/B-off-system-MVP/create-case/03-suspect-details-sdo', function (req, res) {
+router.post('/lcc/register-case/03-suspect-details-sdo', function (req, res) {
     count = req.session.data.suspectDetailsCount
 
     req.session.data.suspectSDO[count] = req.body['sdo']
 
-    if (req.session.data.suspectArrestSummons[count] != undefined) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons')
+    if (hasSuspectDetail(req.session.data.suspectArrestSummons[count])) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons')
     }
     else if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type')
     }
     else {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03B-suspect-summary')
+        redirectToSuspectSummary(req, res)
     }
 })
 
 
 // Suspect details – arrest summons
-router.post('/B-off-system-MVP/create-case/03-suspect-details-arrest-summons', function (req, res) {
+router.post('/lcc/register-case/03-suspect-details-arrest-summons', function (req, res) {
     count = req.session.data.suspectDetailsCount
 
     const arrestSummons = (req.body['arrest-summons'] || '').trim()
@@ -1115,27 +1234,27 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-arrest-summons', f
     req.session.data.suspectArrestSummons[count] = arrestSummons
 
     if (!arrestSummons) {
-        return res.render('version-15/B-off-system-MVP/create-case/03-suspect-details-arrest-summons', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/03-suspect-details-arrest-summons', {
             arrestSummonsError: 'Select an Arrest Summons Number (ASN)'
         })
     }
 
     if (shouldAskOffenderType(req.session.data.suspectOffenderType[count])) {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type')
     }
     else {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03B-suspect-summary')
+        redirectToSuspectSummary(req, res)
     }
 })
 
 
 // Suspect details – type of offender
-router.post('/B-off-system-MVP/create-case/03-suspect-details-offender-type', function (req, res) {
+router.post('/lcc/register-case/03-suspect-details-offender-type', function (req, res) {
     count = (req.session.data.suspectDetailsCount)
     const offenderType = req.body['offender-type']
 
     if (!offenderType) {
-        return res.render('version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type', {
             errors: {
                 offenderType: 'Select the type of offender'
             },
@@ -1143,7 +1262,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-offender-type', fu
                 text: 'Select the type of offender',
                 href: '#offender-type-pyo',
                 skipText: 'I do not have the type of offender',
-                skipHref: '/version-15/B-off-system-MVP/create-case/03-suspect-details-offender-type-unknown'
+                skipHref: '/ur-jun-2026-closed/lcc/register-case/03-suspect-details-offender-type-unknown'
             }]
         })
     }
@@ -1166,7 +1285,7 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-offender-type', fu
         req.session.data.forceOffenderTypeAfterDob[count] = false
     }
 
-    res.redirect(nextSuspectDetailsRouteAfterOffenderType(req.session.data, count))
+    redirectToSuspectRoute(req, res, nextSuspectDetailsRouteAfterOffenderType(req.session.data, count))
 })
 
 
@@ -1174,12 +1293,12 @@ router.post('/B-off-system-MVP/create-case/03-suspect-details-offender-type', fu
 
 
 // Suspect summary
-router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function (req, res) {
+router.post('/lcc/register-case/03B-suspect-summary', function (req, res) {
     const returnTo = getCreateCaseReturnTo(req)
     const addAnother = req.body['add-another-suspect']
 
     if (!addAnother) {
-        return res.render('version-15/B-off-system-MVP/create-case/03B-suspect-summary', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/03B-suspect-summary', {
             errors: {
                 addAnother: 'Select whether you need to add another suspect'
             },
@@ -1192,26 +1311,26 @@ router.post('/B-off-system-MVP/create-case/03B-suspect-summary', function (req, 
     }
 
     if (addAnother === 'Yes') {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-add-suspect')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-add-suspect')
     }
     else {
         if (returnTo) {
-            return res.redirect('/version-15/B-off-system-MVP/create-case/04-want-to-add-charges')
+            return res.redirect('/ur-jun-2026-closed/lcc/register-case/04-want-to-add-charges')
         }
 
-        res.redirect('/version-15/B-off-system-MVP/create-case/04-want-to-add-charges')
-        // res.redirect('/version-15/B-off-system-MVP/create-case/06-monitoring-codes') 
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/04-want-to-add-charges')
+        // res.redirect('/ur-jun-2026-closed/lcc/register-case/06-monitoring-codes') 
     }
 })
 
 
-router.post('/B-off-system-MVP/create-case/remove-suspect', function (req, res) {
+router.post('/lcc/register-case/remove-suspect', function (req, res) {
     req.session.data.removeSuspectId = Number(req.body['remove-suspect-id'])
-    res.redirect('/version-15/B-off-system-MVP/create-case/03-remove-suspect')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/03-remove-suspect')
 })
 
 
-router.post('/B-off-system-MVP/create-case/03-remove-suspect', function (req, res) {
+router.post('/lcc/register-case/03-remove-suspect', function (req, res) {
     if (req.body['submit-button'] == 'remove') {
         req.session.data.suspectId.splice(req.session.data.removeSuspectId, 1)
         req.session.data.suspectType.splice(req.session.data.removeSuspectId, 1)
@@ -1241,45 +1360,92 @@ router.post('/B-off-system-MVP/create-case/03-remove-suspect', function (req, re
         }
     }
 
-    res.redirect('/version-15/B-off-system-MVP/create-case/03B-suspect-summary')
+    redirectToSuspectSummary(req, res)
 })
 
 
 
 
 // Edit suspect
-router.post('/B-off-system-MVP/create-case/03-edit-suspect', function (req, res) {
+router.post('/lcc/register-case/03-edit-suspect', function (req, res) {
     console.log("Edit suspect ID:", req.session.data.editSuspect)
     console.log("Display suspect ID:", req.session.data.displaySuspect)
 
+    const data = req.session.data
     var x = Number(req.session.data.editSuspect)
 
     if (req.body['suspect-type'] == 'Person') {
-        req.session.data.suspectFirstName[x] = req.body['suspect-person-first-name']
-        req.session.data.suspectLastName[x] = req.body['suspect-person-last-name']
-        // req.session.data.suspectDOB[x] = req.body['suspect-date-of-birth']
-        req.session.data.suspectDayBirth[x] = req.body['date-of-birth-day']
-        req.session.data.suspectMonthBirth[x] = Number(req.body['date-of-birth-month'])
-        req.session.data.suspectYearBirth[x] = req.body['date-of-birth-year']
+        data.suspectType[x] = req.body['suspect-type']
+        data.suspectFirstName[x] = trimString(req.body['suspect-person-first-name'])
+        data.suspectLastName[x] = trimString(req.body['suspect-person-last-name'])
+        data.suspectCompanyName[x] = ''
+        data.suspectDOB[x] = selectedSuspectDetail(req.body['suspect-person-dob'], data.suspectDOB[x], 'Date of birth')
+        data.suspectGender[x] = selectedSuspectDetail(req.body['suspect-person-gender'], data.suspectGender[x], 'Gender')
+        data.suspectDisability[x] = selectedSuspectDetail(req.body['suspect-person-disability'], data.suspectDisability[x], 'Disability')
+        data.suspectReligion[x] = selectedSuspectDetail(req.body['suspect-person-religion'], data.suspectReligion[x], 'Religion')
+        data.suspectEthnicity[x] = selectedSuspectDetail(req.body['suspect-person-ethnicity'], data.suspectEthnicity[x], 'Ethnicity')
+        data.suspectSDO[x] = selectedSuspectDetail(req.body['suspect-person-sdo'], data.suspectSDO[x], 'Serious Dangerous Offender (SDO)')
+        data.suspectArrestSummons[x] = selectedSuspectDetail(req.body['suspect-person-arrest-summons'], data.suspectArrestSummons[x], 'Arrest summons')
+        data.suspectOffenderType[x] = selectedSuspectDetail(req.body['suspect-person-offender-type'], data.suspectOffenderType[x], 'Type of offender')
+        data.suspectAlias[x] = selectedSuspectDetail(req.body['suspect-person-alias'], data.suspectAlias[x], 'Alias details')
+
+        if (data.suspectDOB[x] == undefined) {
+            data.suspectDayBirth[x] = undefined
+            data.suspectMonthBirth[x] = undefined
+            data.suspectYearBirth[x] = undefined
+            if (Array.isArray(data.forceOffenderTypeAfterDob)) {
+                data.forceOffenderTypeAfterDob[x] = false
+            }
+        }
+
+        if (data.suspectAlias[x] == undefined) {
+            removeAliasesForCurrentSuspect(data, x)
+        }
     }
     else {
-        req.session.data.suspectCompanyName[x] = req.body['suspect-company-name']
+        data.suspectType[x] = req.body['suspect-type']
+        data.suspectCompanyName[x] = trimString(req.body['suspect-company-name'])
+        data.suspectFirstName[x] = ''
+        data.suspectLastName[x] = ''
+        data.suspectDOB[x] = undefined
+        data.suspectDayBirth[x] = undefined
+        data.suspectMonthBirth[x] = undefined
+        data.suspectYearBirth[x] = undefined
+        data.suspectGender[x] = undefined
+        data.suspectDisability[x] = undefined
+        data.suspectReligion[x] = undefined
+        data.suspectEthnicity[x] = undefined
+        data.suspectSDO[x] = undefined
+        data.suspectArrestSummons[x] = undefined
+        data.suspectOffenderType[x] = undefined
+        data.suspectAlias[x] = undefined
+        removeAliasesForCurrentSuspect(data, x)
     }
 
-    req.session.data.displaySuspect = 999
-    req.session.data.editSuspect = 999
+    data.suspectDetailsCount = x
 
-    res.redirect('/version-15/B-off-system-MVP/create-case/03B-suspect-summary')
+    redirectToSuspectRoute(req, res, firstSuspectDetailsRoute(data, x))
 })
 // End of suspect summary
 
+router.get('/lcc/register-case/03-edit-suspect/:id', function (req, res) {
+    const suspectId = Number(req.params.id)
 
-router.post('/B-off-system-MVP/create-case/03-edit-suspect-router', function (req, res) {
+    if (!Number.isInteger(suspectId) || suspectId < 0) {
+        return res.redirect('/ur-jun-2026-closed/lcc/register-case/08-check-answers')
+    }
+
+    req.session.data.editSuspect = suspectId
+    req.session.data.displaySuspect = suspectId + 1
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/03-add-suspect')
+})
+
+router.post('/lcc/register-case/03-edit-suspect-router', function (req, res) {
     req.session.data.editSuspect = Number(req.body['edit-suspect'])
     req.session.data.displaySuspect = Number(req.body['edit-suspect']) + 1
     console.log("Edit suspect ID:", req.session.data.editSuspect)
     console.log("Display suspect ID:", req.session.data.displaySuspect)
-    res.redirect('/version-15/B-off-system-MVP/create-case/03-add-suspect')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/03-add-suspect')
 })
 // End of edit suspect
 
@@ -1290,7 +1456,7 @@ router.post('/B-off-system-MVP/create-case/03-edit-suspect-router', function (re
 // ************************************************** Start of charges **************************************************
 
 // Want to add charges
-router.post('/B-off-system-MVP/create-case/04-want-to-add-charges', function (req, res) {
+router.post('/lcc/register-case/04-want-to-add-charges', function (req, res) {
     const returnTo = getCreateCaseReturnTo(req)
 
     req.session.data.wantToAddCharges = req.body['add-charges']
@@ -1300,10 +1466,10 @@ router.post('/B-off-system-MVP/create-case/04-want-to-add-charges', function (re
         if (req.session.data.suspectCount === 1) {
             req.session.data.chargeSuspectId[0] = 0
             console.log("Charge suspect id:", req.session.data.chargeSuspectId[0])
-            res.redirect('/version-15/B-off-system-MVP/create-case/04-charges-offence-search')
+            res.redirect('/ur-jun-2026-closed/lcc/register-case/04-charges-offence-search')
         }
         else {
-            res.redirect('/version-15/B-off-system-MVP/create-case/04-add-charges-suspect')
+            res.redirect('/ur-jun-2026-closed/lcc/register-case/04-add-charges-suspect')
         }
     }
     else {
@@ -1322,13 +1488,13 @@ router.post('/B-off-system-MVP/create-case/04-want-to-add-charges', function (re
         const hasUncharged = suspects.some(id => !charged.includes(id))
         req.session.data.preCharge = hasUncharged ? 'Yes' : 'No'
 
-        res.redirect('/version-15/B-off-system-MVP/create-case/06-monitoring-codes')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/06-monitoring-codes')
     }
 })
 
 
 // Add charges - select suspect
-router.post('/B-off-system-MVP/create-case/04-add-charges-suspect', function (req, res) {
+router.post('/lcc/register-case/04-add-charges-suspect', function (req, res) {
     count = req.session.data.chargeCount
 
     req.session.data.chargeSuspectId[count] = req.body['suspect-charges']
@@ -1341,14 +1507,14 @@ router.post('/B-off-system-MVP/create-case/04-add-charges-suspect', function (re
     // console.log("Charge suspect id:",req.session.data.chargeSuspectId[count])
 
     if (req.session.data.chargeSuspectId[count] == 'Suspect not listed') {
-        res.redirect('/version-15/B-off-system-MVP/create-case/03-add-suspect')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/03-add-suspect')
     }
     else {
-        res.redirect('/version-15/B-off-system-MVP/create-case/04-charges-offence-search')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/04-charges-offence-search')
     }
 })
 
-router.post('/B-off-system-MVP/create-case/add-another-charge', function (req, res) {
+router.post('/lcc/register-case/add-another-charge', function (req, res) {
     // Preset or reset pre-charge info
     req.session.data.preCharge = 'No'
     console.log("Pre-charge set to:", req.session.data.preCharge)
@@ -1357,14 +1523,14 @@ router.post('/B-off-system-MVP/create-case/add-another-charge', function (req, r
     req.session.data.chargeSuspectId[count] = req.body['add-charge-suspect-id']
     req.session.data.currentSuspectId = req.body['add-charge-suspect-id']
     console.log("Charge suspect id:", req.session.data.chargeSuspectId[count])
-    res.redirect('/version-15/B-off-system-MVP/create-case/04-charges-offence-search')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/04-charges-offence-search')
 })
 
 
 
 
 // Add charges - offence search
-router.post('/B-off-system-MVP/create-case/04-charges-offence-search', function (req, res) {
+router.post('/lcc/register-case/04-charges-offence-search', function (req, res) {
     count = req.session.data.chargeCount
     req.session.data.chargeSearch = req.body['charge-search']
 
@@ -1406,11 +1572,11 @@ router.post('/B-off-system-MVP/create-case/04-charges-offence-search', function 
     }
 
 
-    res.redirect('/version-15/B-off-system-MVP/create-case/04-charges-offence-search-results')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/04-charges-offence-search-results')
 })
 
 // Add charges - offence search results
-router.post('/B-off-system-MVP/create-case/04-charges-offence-search-results', function (req, res) {
+router.post('/lcc/register-case/04-charges-offence-search-results', function (req, res) {
     count = req.session.data.chargeCount
     req.session.data.chargeCode[count] = req.session.data.currentResultsChargeCode[req.body['add-charge']]
     console.log("req.session.data.chargeCode[count]:", req.session.data.chargeCode[count])
@@ -1422,12 +1588,12 @@ router.post('/B-off-system-MVP/create-case/04-charges-offence-search-results', f
     req.session.data.chargeDescription[count] = req.session.data.currentResultsChargeDescription[req.session.data.currentChargeId]
     console.log("req.session.data.chargeDescription[count]:", req.session.data.chargeDescription[count])
 
-    res.redirect('/version-15/B-off-system-MVP/create-case/04-add-charges')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/04-add-charges')
 })
 
 
 // Add charges 
-router.post('/B-off-system-MVP/create-case/04-add-charges', function (req, res) {
+router.post('/lcc/register-case/04-add-charges', function (req, res) {
     count = req.session.data.chargeCount
     console.log("Charge count:", count)
 
@@ -1500,7 +1666,7 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function (req, res) 
     }
 
     if (Object.keys(chargeErrors).length > 0) {
-        return res.render('version-15/B-off-system-MVP/create-case/04-add-charges', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/04-add-charges', {
             chargeErrors
         })
     }
@@ -1511,16 +1677,16 @@ router.post('/B-off-system-MVP/create-case/04-add-charges', function (req, res) 
     // console.log("Grouped:",req.session.data.grouped)
 
     if (req.body['newCharge_Victim_YesNo'] === 'Yes') {
-        res.redirect('/version-15/B-off-system-MVP/create-case/04-add-charges-victim')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/04-add-charges-victim')
     }
     else {
-        res.redirect('/version-15/B-off-system-MVP/create-case/04-charges-summary')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/04-charges-summary')
     }
 
 })
 
 // Charges victim
-router.post('/B-off-system-MVP/create-case/04-add-charges-victim', function (req, res) {
+router.post('/lcc/register-case/04-add-charges-victim', function (req, res) {
     var count = req.session.data.chargeCount - 1
 
     req.session.data.chargeVictimVulnerable[count] = ''
@@ -1573,19 +1739,19 @@ router.post('/B-off-system-MVP/create-case/04-add-charges-victim', function (req
     console.log("Victims:", req.session.data.victims)
     console.log("Charge victim id:", req.session.data.chargeVictimId[count])
 
-    res.redirect('/version-15/B-off-system-MVP/create-case/04-charges-summary')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/04-charges-summary')
 })
 
 
 
 
 // Charges summary
-router.post('/B-off-system-MVP/create-case/04-charges-summary', function (req, res) {
+router.post('/lcc/register-case/04-charges-summary', function (req, res) {
     const returnTo = getCreateCaseReturnTo(req)
     const addAnother = req.body['add-another-charge']
 
     if (!addAnother) {
-        return res.render('version-15/B-off-system-MVP/create-case/04-charges-summary', {
+        return res.render('ur-jun-2026-closed/lcc/register-case/04-charges-summary', {
             grouped: req.session.data.grouped,
             errors: {
                 addAnother: 'Select whether you need to add another charge'
@@ -1599,33 +1765,33 @@ router.post('/B-off-system-MVP/create-case/04-charges-summary', function (req, r
     }
 
     if (addAnother === 'Yes') {
-        res.redirect('/version-15/B-off-system-MVP/create-case/04-add-charges-suspect')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/04-add-charges-suspect')
     }
     else {
         if (returnTo) {
-            return res.redirect('/version-15/B-off-system-MVP/create-case/02-first-hearing-details')
+            return res.redirect('/ur-jun-2026-closed/lcc/register-case/02-first-hearing-details')
         }
 
-        res.redirect('/version-15/B-off-system-MVP/create-case/02-first-hearing-details')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/02-first-hearing-details')
     }
 
 })
 
-router.get('/B-off-system-MVP/create-case/04-charges-summary', function (req, res) {
-    res.render('version-15/B-off-system-MVP/create-case/04-charges-summary', {
+router.get('/lcc/register-case/04-charges-summary', function (req, res) {
+    res.render('ur-jun-2026-closed/lcc/register-case/04-charges-summary', {
         grouped: req.session.data.grouped
     });
 })
 
 
-router.post('/B-off-system-MVP/create-case/remove-charge', function (req, res) {
+router.post('/lcc/register-case/remove-charge', function (req, res) {
     req.session.data.removeChargeId = Number(req.body['remove-charge-id'])
     console.log("Remove charge ID:", req.session.data.removeChargeId)
-    res.redirect('/version-15/B-off-system-MVP/create-case/04-remove-charge')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/04-remove-charge')
 })
 
 
-router.post('/B-off-system-MVP/create-case/04-remove-charge', function (req, res) {
+router.post('/lcc/register-case/04-remove-charge', function (req, res) {
     if (req.body['submit-button'] == 'remove') {
         req.session.data.chargeId.splice(req.session.data.removeChargeId, 1)
         console.log("Charge IDs after removal:", req.session.data.chargeId)
@@ -1646,7 +1812,7 @@ router.post('/B-off-system-MVP/create-case/04-remove-charge', function (req, res
 
     }
 
-    res.redirect('/version-15/B-off-system-MVP/create-case/04-charges-summary')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/04-charges-summary')
 })
 
 
@@ -1655,7 +1821,7 @@ router.post('/B-off-system-MVP/create-case/04-remove-charge', function (req, res
 
 
 // Complexity 
-router.post('/B-off-system-MVP/create-case/05-complexity', function (req, res) {
+router.post('/lcc/register-case/05-complexity', function (req, res) {
     req.session.data.caseComplexity = req.body['newCase_Complexity']
     // req.session.data.caseWeight = req.body['newCase_CaseWeight']
 
@@ -1678,18 +1844,18 @@ router.post('/B-off-system-MVP/create-case/05-complexity', function (req, res) {
     // //    }
 
     // console.log("Pre-charge set to (complexity page):", req.session.data.preCharge)
-    res.redirect('/version-15/B-off-system-MVP/create-case/08-check-answers')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/08-check-answers')
 })
 
 
 // Monitoring codes
-router.post('/B-off-system-MVP/create-case/06-monitoring-codes', function (req, res) {
-    res.redirect('/version-15/B-off-system-MVP/create-case/07-cps-staff')
+router.post('/lcc/register-case/06-monitoring-codes', function (req, res) {
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/07-cps-staff')
 })
 
 
 // CPS and police staff
-router.post('/B-off-system-MVP/create-case/07-cps-staff', function (req, res) {
+router.post('/lcc/register-case/07-cps-staff', function (req, res) {
     console.log("User type:", req.session.data.userType)
     req.session.data.prosecutorCaseworkerYesNo = req.body['prosecutor-caseworker-yes-no']
     req.session.data.prosecutor = req.body['newCase_Prosecutor']
@@ -1702,37 +1868,85 @@ router.post('/B-off-system-MVP/create-case/07-cps-staff', function (req, res) {
     req.session.data.policeUnit = req.body['newCase_Police_Unit']
 
 
-    res.redirect('/version-15/B-off-system-MVP/create-case/08-check-answers')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/08-check-answers')
 
 
     // If user is LCC check if there are materials. If not, go to check your answers.
     // if (req.session.data.userType === 'LCC') {
-    //     res.redirect('/version-15/B-off-system-MVP/create-case/07-want-to-create-folders')
+    //     res.redirect('/ur-jun-2026-closed/lcc/register-case/07-want-to-create-folders')
     // }
     // else {
-    //     res.redirect('/version-15/B-off-system-MVP/create-case/08-check-your-answers') 
+    //     res.redirect('/ur-jun-2026-closed/lcc/register-case/08-check-your-answers') 
     // }    
 })
 
 
+function setRegisterCaseTimestamp(data, key) {
+    if (!data[key]) {
+        data[key] = new Date().toISOString();
+    }
+}
+
+function setRegisterCaseRegistered(data) {
+    data.createCase_H_Complete = 'true';
+    setRegisterCaseTimestamp(data, 'registerCaseRegisteredAt');
+}
+
 // Materials
-router.post('/B-off-system-MVP/create-case/09-confirmation', function (req, res) {
+router.post('/lcc/register-case/071-setup-folders', function (req, res) {
     req.session.data.addMaterials = req.body['add-materials']
     if (req.session.data.addMaterials === 'Yes') {
-        res.redirect('/version-15/B-off-system-MVP/04A-create-or-link-folders')
+        res.redirect('/ur-jun-2026-closed/lcc/materials/04A-create-or-link-folders')
     }
     else {
-        res.redirect('/version-15/B-off-system-MVP/create-case/case-details-placeholder')
-        // res.redirect('/version-15/B-off-system-MVP/03-case-overview')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/08-check-answers')
     }
 })
 
+router.get('/lcc/register-case/09-confirmation', function (req, res) {
+    setRegisterCaseRegistered(req.session.data)
+    res.render('ur-jun-2026-closed/lcc/register-case/09-confirmation')
+})
 
-router.post('/B-off-system-MVP/04A-create-or-link-folders', function (req, res) {
+router.get('/lcc/register-case/09-confirmation.html', function (req, res) {
+    setRegisterCaseRegistered(req.session.data)
+    res.render('ur-jun-2026-closed/lcc/register-case/09-confirmation')
+})
+
+router.post('/lcc/register-case/09-confirmation', function (req, res) {
+    setRegisterCaseRegistered(req.session.data)
+    req.session.data.addMaterials = req.body['add-materials']
+
+    if (req.session.data.addMaterials === 'Yes') {
+        res.redirect('/ur-jun-2026-closed/lcc/materials/04A-create-or-link-folders')
+    }
+    else {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/00-homepage')
+    }
+})
+
+router.get('/lcc/register-case/case-details-placeholder', function (req, res) {
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/08-check-answers')
+})
+
+router.post('/lcc/register-case/case-details-placeholder', function (req, res) {
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/08-check-answers')
+})
+
+
+router.post('/lcc/materials/04A-create-or-link-folders', function (req, res) {
+    req.session.data.newEgressFolder = 0
+    req.session.data.existingEgressFolder = 0
+    req.session.data.newDriveFolder = 0
+    req.session.data.existingDriveFolder = 0
+    req.session.data.egress_file_link = ''
+    req.session.data.pdrive_file_link = ''
+
     if (req.body['egress-folders'] != undefined) {
         if (req.body['egress-folder-options'] === 'Create new Egress folders') {
             req.session.data.newEgressFolder = 1
-            req.session.data.existinEgressFolder = 0
+            req.session.data.existingEgressFolder = 0
+            setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressCreatedAt')
         }
         else if (req.body['egress-folder-options'] === 'Connect Egress folders') {
             req.session.data.existingEgressFolder = 1
@@ -1751,43 +1965,95 @@ router.post('/B-off-system-MVP/04A-create-or-link-folders', function (req, res) 
         }
     }
 
-    if (req.session.data.newEgressFolder === 1) {
-        res.redirect('/version-15/B-off-system-MVP/04A-create-egress-folder')
-    }
-
-    else if (req.session.data.existingEgressFolder === 1) {
-        res.redirect('/version-15/B-off-system-MVP/04A-egress-files')
+    if (req.session.data.existingEgressFolder === 1) {
+        res.redirect('/ur-jun-2026-closed/lcc/materials/04A-egress-files')
     }
 
     else if (req.session.data.existingDriveFolder === 1) {
-        res.redirect('/version-15/B-off-system-MVP/05A-p-drive-files')
+        res.redirect('/ur-jun-2026-closed/lcc/materials/05A-p-drive-files')
     }
 
     else if (req.session.data.newDriveFolder === 1) {
-        res.redirect('/version-15/B-off-system-MVP/05A-create-shared-drive-folder')
+        res.redirect('/ur-jun-2026-closed/lcc/materials/05A-create-shared-drive-folder')
+    }
+
+    else if (req.session.data.newEgressFolder === 1) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/create-both-confirmation')
     }
 
     else {
-        res.redirect('/version-15/B-off-system-MVP/create-case/case-details-placeholder')
-        // res.redirect('/version-15/B-off-system-MVP/03-case-overview')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/create-both-confirmation')
     }
 
 })
 
+router.post('/lcc/materials/05A-create-shared-drive-folder', function (req, res) {
+    req.session.data.sharedDriveTemplate = req.body['shared-drive-template']
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseSharedDriveCreatedAt')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/create-both-confirmation')
+})
 
-
-router.post('/B-off-system-MVP/04A-create-egress-folder', function (req, res) {
-    req.session.data.egressTemplate = req.body['egress-template']
-
+router.post('/lcc/materials/04A-egress-files-connected', function (req, res) {
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressLinkedAt')
     if (req.session.data.newDriveFolder === 1) {
-        res.redirect('/version-15/B-off-system-MVP/05A-create-shared-drive-folder')
+        res.redirect('/ur-jun-2026-closed/lcc/materials/05A-create-shared-drive-folder')
     }
     else if (req.session.data.existingDriveFolder === 1) {
-        res.redirect('/version-15/B-off-system-MVP/05A-p-drive-files')
+        res.redirect('/ur-jun-2026-closed/lcc/materials/05A-p-drive-files')
     }
     else {
-        res.redirect('/version-15/B-off-system-MVP/create-case/case-details-placeholder')
-        // res.redirect('/version-15/B-off-system-MVP/03-case-overview')
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/create-both-confirmation')
+    }
+})
+
+router.post('/lcc/materials/05A-p-drive-files-connected', function (req, res) {
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseSharedDriveLinkedAt')
+    if (req.session.data.existingEgressFolder === 1 && req.session.data.existingDriveFolder === 1) {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/connect-both-confirmation')
+    }
+    else {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/create-both-confirmation')
+    }
+})
+
+router.post('/lcc/materials/05A-create-shared-drive-folder', function (req, res) {
+    req.session.data.sharedDriveTemplate = req.body['shared-drive-template']
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseSharedDriveCreatedAt')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/08-check-answers')
+})
+
+router.post('/lcc/materials/04A-egress-files-connected', function (req, res) {
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressLinkedAt')
+    if (req.session.data.newDriveFolder === 1) {
+        res.redirect('/ur-jun-2026-closed/lcc/materials/05A-create-shared-drive-folder')
+    }
+    else if (req.session.data.existingDriveFolder === 1) {
+        res.redirect('/ur-jun-2026-closed/lcc/materials/05A-p-drive-files')
+    }
+    else {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/08-check-answers')
+    }
+})
+
+router.post('/lcc/materials/05A-p-drive-files-connected', function (req, res) {
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseSharedDriveLinkedAt')
+    res.redirect('/ur-jun-2026-closed/lcc/register-case/08-check-answers')
+})
+
+
+
+router.post('/lcc/materials/04A-create-egress-folder', function (req, res) {
+    req.session.data.egressTemplate = req.body['egress-template']
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressCreatedAt')
+
+    if (req.session.data.newDriveFolder === 1) {
+        res.redirect('/ur-jun-2026-closed/lcc/materials/05A-create-shared-drive-folder')
+    }
+    else if (req.session.data.existingDriveFolder === 1) {
+        res.redirect('/ur-jun-2026-closed/lcc/materials/05A-p-drive-files')
+    }
+    else {
+        res.redirect('/ur-jun-2026-closed/lcc/register-case/create-both-confirmation')
     }
 
 })
@@ -1821,7 +2087,7 @@ router.post('/B-off-system-MVP/04A-create-egress-folder', function (req, res) {
 //     }
 
 // //   console.log("Filter data:", req.session.data)
-//     res.redirect('/version-15/B-off-system-MVP/03-case-overview')
+//     res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview')
 // })
 
 
@@ -1857,6 +2123,7 @@ router.post('/includes/materials/materials-filter', function (req, res) {
 
     const materials = data.materials || [];
     const search = (data.filtersSearch || "").trim().toLowerCase();
+    const sharedDriveRootLabel = getSharedDriveRootLabel(data);
 
     // -------------------------------------------------------------------
     // Build grouped search results (MATCHES BOTH FOLDERS AND FILES)
@@ -1869,7 +2136,7 @@ router.post('/includes/materials/materials-filter', function (req, res) {
         const groups = {};
 
         function getFolderPath(materials, folderId) {
-            // Build "Shared Drive: Thundercat > Case management > Police" etc
+            // Build "Shared Drive: [case name] > Case management > Police" etc
             const parts = [];
             let currentId = folderId;
 
@@ -1887,7 +2154,7 @@ router.post('/includes/materials/materials-filter', function (req, res) {
             }
 
             // Choose your preferred "root" label
-            return parts.length ? `Shared Drive: Thundercat > ${parts.join(' > ')}` : 'Shared Drive: Thundercat';
+            return parts.length ? `${sharedDriveRootLabel} > ${parts.join(' > ')}` : sharedDriveRootLabel;
         }
 
         materials.forEach(item => {
@@ -1943,7 +2210,7 @@ router.post('/includes/materials/materials-filter', function (req, res) {
     console.dir(data.groupedSearchResults, { depth: null });
 
     // Back to case overview, where GET will apply filters + search
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 });
 
 
@@ -1992,10 +2259,23 @@ function formatActivityTimestamp(value) {
     return `${day} at ${time}`;
 }
 
-function getFolderPathLabel(materials, folderId) {
+function getMaterialsCaseName(data = {}) {
+    return trimString(data.operationName) || 'Thundercat';
+}
+
+function getSharedDriveRootLabel(data = {}) {
+    return `Shared Drive: ${getMaterialsCaseName(data)}`;
+}
+
+function getEgressRootLabel(data = {}) {
+    return `Egress: ${getMaterialsCaseName(data)}`;
+}
+
+function getFolderPathLabel(materials, folderId, data = {}) {
     const parts = [];
     let currentId = folderId;
     const seen = new Set();
+    const rootLabel = getSharedDriveRootLabel(data);
 
     while (currentId !== null && currentId !== undefined && !seen.has(String(currentId))) {
         seen.add(String(currentId));
@@ -2005,11 +2285,11 @@ function getFolderPathLabel(materials, folderId) {
         currentId = folder.parentId;
     }
 
-    return parts.length ? `Shared Drive: Thundercat > ${parts.join(' > ')}` : 'Shared Drive: Thundercat';
+    return parts.length ? `${rootLabel} > ${parts.join(' > ')}` : rootLabel;
 }
 
-function getItemPathLabel(materials, item, nameOverride) {
-    const parentPath = getFolderPathLabel(materials, item.parentId);
+function getItemPathLabel(materials, item, nameOverride, data = {}) {
+    const parentPath = getFolderPathLabel(materials, item.parentId, data);
     const itemName = nameOverride || item.name || 'Unnamed item';
     return `${parentPath} > ${itemName}`;
 }
@@ -2032,16 +2312,83 @@ function pushMaterialsActivity(data, entry) {
     });
 }
 
+function getRegisterCaseActivity(data = {}) {
+    const hasRegisteredCase = data.createCase_H_Complete === 'true' || data.createCase_H_Complete === true;
+    if (!hasRegisteredCase) {
+        return {
+            entries: [],
+            lastUpdatedLabel: ''
+        };
+    }
 
-router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
+    setRegisterCaseTimestamp(data, 'registerCaseRegisteredAt');
+    const registerCaseActor = data.urUser;
+
+    const registeredEntry = {
+        title: 'Case registered',
+        timestamp: data.registerCaseRegisteredAt,
+        dateLabel: formatActivityTimestamp(data.registerCaseRegisteredAt),
+        byEmail: registerCaseActor
+    };
+
+    const folderEntries = [];
+
+    if (data.registerCaseEgressCreatedAt) {
+        folderEntries.push({
+            title: 'Egress created for case',
+            timestamp: data.registerCaseEgressCreatedAt,
+            dateLabel: formatActivityTimestamp(data.registerCaseEgressCreatedAt),
+            byEmail: registerCaseActor
+        });
+    }
+
+    if (data.registerCaseSharedDriveCreatedAt) {
+        folderEntries.push({
+            title: 'Shared Drive folder created for case',
+            timestamp: data.registerCaseSharedDriveCreatedAt,
+            dateLabel: formatActivityTimestamp(data.registerCaseSharedDriveCreatedAt),
+            byEmail: registerCaseActor
+        });
+    }
+
+    if (data.registerCaseEgressLinkedAt) {
+        folderEntries.push({
+            title: 'Egress linked to case',
+            timestamp: data.registerCaseEgressLinkedAt,
+            dateLabel: formatActivityTimestamp(data.registerCaseEgressLinkedAt),
+            byEmail: registerCaseActor
+        });
+    }
+
+    if (data.registerCaseSharedDriveLinkedAt) {
+        folderEntries.push({
+            title: 'Shared Drive folder linked to case',
+            timestamp: data.registerCaseSharedDriveLinkedAt,
+            dateLabel: formatActivityTimestamp(data.registerCaseSharedDriveLinkedAt),
+            byEmail: registerCaseActor
+        });
+    }
+
+    folderEntries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    const entries = [...folderEntries, registeredEntry];
+
+    return {
+        entries,
+        lastUpdatedLabel: entries.length ? entries[0].dateLabel : ''
+    };
+}
+
+
+function renderCaseOverviewPage(pageView, activeTab) {
+    return function (req, res) {
     const data = req.session.data;
+    const registerCaseActivity = getRegisterCaseActivity(data);
+    const sharedDriveRootLabel = getSharedDriveRootLabel(data);
+    const egressRootLabel = getEgressRootLabel(data);
     const materials = data.materials || [];
     const pageSizeOptions = [20, 50, 100];
-    const validActiveTabs = ['tab-1-content', 'tab-2-content', 'tab-3-content'];
     const validTransferViews = ['egress', 'shared-drive'];
-    if (validActiveTabs.includes(req.query.activeTab)) {
-        req.session.data.activeTab = req.query.activeTab;
-    }
+    req.session.data.activeTab = activeTab;
     if (validTransferViews.includes(req.query.transferView)) {
         req.session.data.transferView = req.query.transferView;
     }
@@ -2124,7 +2471,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     }
 
     function getTransferEgressBreadcrumbs(folderId) {
-        const rootCrumb = { id: 100, name: 'Egress: Thundercat' };
+        const rootCrumb = { id: 100, name: egressRootLabel };
         const crumbs = [];
         let currentId = Number(folderId);
 
@@ -2204,7 +2551,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const transferSharedDriveFolderId = Number(data.transferSharedDriveFolderId ?? 0);
     const transferSharedDriveItems = utils.getChildren(transferSharedDriveFolderId);
     const transferSharedDriveBreadcrumbs = utils.getBreadcrumbs(transferSharedDriveFolderId).map(crumb => (
-        Number(crumb.id) === 0 ? { ...crumb, name: 'Shared Drive: Thundercat' } : crumb
+        Number(crumb.id) === 0 ? { ...crumb, name: sharedDriveRootLabel } : crumb
     ));
     const transferEgressFolderId = Number(data.transferEgressFolderId ?? 100);
     const transferEgressItems = getTransferEgressChildren(transferEgressFolderId);
@@ -2257,7 +2604,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     }
     // Breadcrumbs unaffected
     const breadcrumbs = utils.getBreadcrumbs(folderId).map(crumb => (
-        Number(crumb.id) === 0 ? { ...crumb, name: 'Shared Drive: Thundercat' } : crumb
+        Number(crumb.id) === 0 ? { ...crumb, name: sharedDriveRootLabel } : crumb
     ));
 
 
@@ -2327,7 +2674,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
             currentId = folder.parentId;
         }
 
-        return parts.length ? `Shared Drive: Thundercat > ${parts.join(' > ')}` : 'Shared Drive: Thundercat';
+        return parts.length ? `${sharedDriveRootLabel} > ${parts.join(' > ')}` : sharedDriveRootLabel;
     }
 
     function buildGroupedSearchResults(materials, search) {
@@ -2494,7 +2841,7 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     // ================================
     // 3. Render page with filtered children
     // ================================
-    res.render('version-15/B-off-system-MVP/03-case-overview', {
+    res.render(`ur-jun-2026-closed/lcc/materials/${pageView}`, {
         materials,
         data,
         children: search ? children : pagination.items,
@@ -2522,7 +2869,8 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         transferSharedDriveBreadcrumbs,
         transferEgressFolderId,
         transferEgressItems,
-        transferEgressBreadcrumbs
+        transferEgressBreadcrumbs,
+        registerCaseActivity
     });
 
     req.session.data.lastRenamedId = null;
@@ -2538,10 +2886,28 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     req.session.data.transferSharedDriveToEgressDestinationId = null;
     req.session.data.transferSharedDriveToEgressDestinationName = null;
     req.session.data.transferSharedDriveToEgressDestinationHref = null;
+    };
+}
+
+router.get('/lcc/materials/03-case-overview', function (req, res) {
+    const target = req.query.activeTab === 'tab-1-content'
+        ? 'transfer-materials'
+        : req.query.activeTab === 'tab-3-content'
+            ? 'activity-log'
+            : 'manage-materials';
+    const query = new URLSearchParams(req.query);
+    query.delete('activeTab');
+    const queryString = query.toString();
+
+    res.redirect(`/ur-jun-2026-closed/lcc/materials/${target}${queryString ? `?${queryString}` : ''}`);
 });
 
+router.get('/lcc/materials/transfer-materials', renderCaseOverviewPage('transfer-materials', 'tab-1-content'));
+router.get('/lcc/materials/manage-materials', renderCaseOverviewPage('manage-materials', 'tab-2-content'));
+router.get('/lcc/materials/activity-log', renderCaseOverviewPage('activity-log', 'tab-3-content'));
 
-router.get('/version-15/manage-materials', function (req, res) {
+
+router.get('/ur-jun-2026-closed/manage-materials', function (req, res) {
     const search = req.session.data['filtersSearch'];
     const materialsData = req.session.data.materials || res.locals.data.materials || [];
     let results = materialsData;
@@ -2556,13 +2922,13 @@ router.get('/version-15/manage-materials', function (req, res) {
         );
     }
 
-    res.render('version-15/manage-materials', {
+    res.render('ur-jun-2026-closed/manage-materials', {
         results    // send filtered list to HTML
     });
 });
 
 
-router.post('/B-off-system-MVP/case-overview-folder', function (req, res) {
+router.post('/lcc/materials/case-overview-folder', function (req, res) {
     const materials = req.session.data.materials || res.locals.data.materials || [];
     let parentFolder = null;
     const validActiveTabs = ['tab-1-content', 'tab-2-content', 'tab-3-content'];
@@ -2604,21 +2970,26 @@ router.post('/B-off-system-MVP/case-overview-folder', function (req, res) {
     }
     req.session.data.filtersSearch = ""
     console.log("Cleared search term", req.session.data.filtersSearch)
-    const transferViewQuery = activeTab === 'tab-1-content' ? `&transferView=${encodeURIComponent(transferView)}` : '';
-    res.redirect(`/version-15/B-off-system-MVP/03-case-overview?activeTab=${encodeURIComponent(activeTab)}${transferViewQuery}`)
+    const targetPage = activeTab === 'tab-1-content'
+        ? 'transfer-materials'
+        : activeTab === 'tab-3-content'
+            ? 'activity-log'
+            : 'manage-materials';
+    const transferViewQuery = activeTab === 'tab-1-content' ? `?transferView=${encodeURIComponent(transferView)}` : '';
+    res.redirect(`/ur-jun-2026-closed/lcc/materials/${targetPage}${transferViewQuery}`)
 })
 
-router.post('/B-off-system-MVP/transfer-egress-folder', function (req, res) {
+router.post('/lcc/materials/transfer-egress-folder', function (req, res) {
     req.session.data.transferEgressFolderId = req.body.folderId || 100;
     req.session.data.transferEgressFolderName = req.body.folderName || '';
     req.session.data.activeTab = 'tab-1-content';
     req.session.data.transferView = 'egress';
 
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=egress');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/transfer-materials?transferView=egress');
 });
 
 
-router.post('/B-off-system-MVP/case-overview-search-folder', function (req, res) {
+router.post('/lcc/materials/case-overview-search-folder', function (req, res) {
     const materials = req.session.data.materials || res.locals.data.materials || [];
 
     // Incoming from form/button
@@ -2665,32 +3036,32 @@ router.post('/B-off-system-MVP/case-overview-search-folder', function (req, res)
 
     console.log("Search results:", req.session.data.folderSearchResults);
 
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 });
 
 
-router.post('/B-off-system-MVP/shared-drive', function (req, res) {
+router.post('/lcc/materials/shared-drive', function (req, res) {
     req.session.data.level = req.body['level']
     req.session.data.parentId = req.body['parentId']
-    console.log("Selected level (shared drive):", req.session.data.level)
-    console.log("Selected parent ID (shared drive):", req.session.data.parentId)
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview')
+    console.log("Selected level (Shared Drive):", req.session.data.level)
+    console.log("Selected parent ID (Shared Drive):", req.session.data.parentId)
+    res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview')
 })
 
 
 
-router.post('/B-off-system-MVP/clear-search', function (req, res) {
+router.post('/lcc/materials/clear-search', function (req, res) {
     req.session.data.filtersSearch = ""
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview')
+    res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview')
 })
 
 
-router.get('/B-off-system-MVP/new-folder', function (req, res) {
+router.get('/lcc/materials/new-folder', function (req, res) {
     console.log("parentId in session:", req.session.data.currentFolder);
-    res.render('version-15/B-off-system-MVP/new-folder');
+    res.render('ur-jun-2026-closed/lcc/materials/new-folder');
 });
 
-router.post('/B-off-system-MVP/new-folder', function (req, res) {
+router.post('/lcc/materials/new-folder', function (req, res) {
     console.log("parentId in session post:", Number(req.session.data.currentFolder));
     console.log("folderId:", req.body.parentFolder);
     let data = req.session.data;
@@ -2705,7 +3076,7 @@ router.post('/B-off-system-MVP/new-folder', function (req, res) {
     console.log("Creating new folder:", newFolderName);
 
     if (!newFolderName) {
-        return res.render('version-15/B-off-system-MVP/new-folder', {
+        return res.render('ur-jun-2026-closed/lcc/materials/new-folder', {
             error: "Enter a folder name"
         });
     }
@@ -2746,25 +3117,25 @@ router.post('/B-off-system-MVP/new-folder', function (req, res) {
         sourceLines: [
             {
                 label: 'New folder:',
-                value: getItemPathLabel(materials, newFolder),
-                href: `/version-15/B-off-system-MVP/03-case-overview?folderId=${newFolder.id}`
+                value: getItemPathLabel(materials, newFolder, null, data),
+                href: `/ur-jun-2026-closed/lcc/materials/manage-materials?folderId=${newFolder.id}`
             }
         ]
     });
 
     // Redirect back to manage materials
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/manage-materials');
 });
 
 
-router.post('/version-15/B-off-system-MVP/case-overview', function (req, res) {
+router.post('/ur-jun-2026-closed/lcc/materials/case-overview', function (req, res) {
     const data = req.session.data;
-    res.render('version-15/B-off-system-MVP/03-case-overview', { materials: data.materials || [], data });
+    res.render('ur-jun-2026-closed/lcc/materials/manage-materials', { materials: data.materials || [], data });
 });
 
 
 
-router.post('/B-off-system-MVP/delete', function (req, res) {
+router.post('/lcc/materials/delete', function (req, res) {
     const selected = req.body.material_selected
         ? [...new Set(req.body.material_selected.split(',').map(s => s.trim()).filter(Boolean))]
         : [];
@@ -2797,7 +3168,7 @@ router.post('/B-off-system-MVP/delete', function (req, res) {
         .filter(item => !toRemove.has(String(item.parentId)))
         .map(item => String(item.id)))];
 
-    res.render('version-15/B-off-system-MVP/delete', {
+    res.render('ur-jun-2026-closed/lcc/materials/delete', {
         data: {
             ...data,
             material_selected: req.body.material_selected || '',
@@ -2808,7 +3179,7 @@ router.post('/B-off-system-MVP/delete', function (req, res) {
 });
 
 // Discard material
-router.post('/B-off-system-MVP/discard-material', function (req, res) {
+router.post('/lcc/materials/discard-material', function (req, res) {
     const selected = req.body.material_selected
         ? [...new Set(req.body.material_selected.split(',').map(s => s.trim()).filter(Boolean))]
         : [];
@@ -2852,7 +3223,7 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
     req.session.data.deleteSuccess = removedItems.length > 0;
 
     if (removedItems.length) {
-        const sourceParents = [...new Set(removedItems.map(item => getFolderPathLabel(materials, item.parentId)))];
+        const sourceParents = [...new Set(removedItems.map(item => getFolderPathLabel(materials, item.parentId, req.session.data)))];
         const sourceParentIds = [...new Set(removedItems.map(item => String(item.parentId ?? 0)))];
 
         pushMaterialsActivity(req.session.data, {
@@ -2864,7 +3235,7 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
                 {
                     label: sourceParents.length === 1 ? 'Location:' : 'Locations:',
                     value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
-                    href: sourceParents.length === 1 ? `/version-15/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
+                    href: sourceParents.length === 1 ? `/ur-jun-2026-closed/lcc/materials/03-case-overview?folderId=${sourceParentIds[0]}` : null
                 }
             ]
         });
@@ -2876,11 +3247,11 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
         date: new Date().toISOString()
     };
 
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 });
 
 
-router.post('/B-off-system-MVP/materials-action', function (req, res) {
+router.post('/lcc/materials/materials-action', function (req, res) {
     const { action, selectedId } = req.body;
 
     if (action !== 'rename') return res.redirect('back');
@@ -2889,12 +3260,12 @@ router.post('/B-off-system-MVP/materials-action', function (req, res) {
     const materials = req.session.data.materials || [];
     const item = materials.find(m => m && (m.id?.toString() === id));
 
-    if (!item) return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    if (!item) return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 
-    return res.render('version-15/B-off-system-MVP/rename', { item });
+    return res.render('ur-jun-2026-closed/lcc/materials/rename', { item });
 });
 
-// router.post('/B-off-system-MVP/materials-action', function (req, res) {
+// router.post('/lcc/materials/materials-action', function (req, res) {
 //     const { action, selectedId, selectedName, selectedIsFolder } = req.body;
 
 //     if (action === 'rename') {
@@ -2902,7 +3273,7 @@ router.post('/B-off-system-MVP/materials-action', function (req, res) {
 //         req.session.data.renameName = selectedName;
 //         req.session.data.renameIsFolder = (selectedIsFolder === 'true');
 
-//         return res.redirect('/version-15/B-off-system-MVP/rename-from-list'); // <-- use your real rename page
+//         return res.redirect('/ur-jun-2026-closed/lcc/materials/rename-from-list'); // <-- use your real rename page
 //     }
 
 //     // handle other actions...
@@ -2911,7 +3282,7 @@ router.post('/B-off-system-MVP/materials-action', function (req, res) {
 
 
 
-// router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
+// router.post('/lcc/materials/rename-from-list', function (req, res) {
 
 //   // Support BOTH old + new forms
 //   const id =
@@ -2927,7 +3298,7 @@ router.post('/B-off-system-MVP/materials-action', function (req, res) {
 
 //   if (!idStr) {
 //     console.log('❌ Rename-from-list: missing ID');
-//     return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+//     return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 //   }
 
 //   const materials = req.session.data.materials || [];
@@ -2935,13 +3306,13 @@ router.post('/B-off-system-MVP/materials-action', function (req, res) {
 
 //   if (!item) {
 //     console.log('❌ Rename-from-list: item not found', idStr);
-//     return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+//     return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 //   }
 
-//   return res.render('version-15/B-off-system-MVP/rename', { item });
+//   return res.render('ur-jun-2026-closed/lcc/materials/rename', { item });
 // });
 
-router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
+router.post('/lcc/materials/rename-from-list', function (req, res) {
     const sessionData = req.session.data || {};
     const materials = sessionData.materials || [];
 
@@ -2952,16 +3323,16 @@ router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
     req.session.data.renameCount = selectedItems.length;
 
     if (!selectedItems.length) {
-        return res.redirect('/B-off-system-MVP/case-overview-folder');
+        return res.redirect('/lcc/materials/case-overview-folder');
     }
 
-    return res.render('version-15/B-off-system-MVP/rename-multiple', {
+    return res.render('ur-jun-2026-closed/lcc/materials/rename-multiple', {
         selectedItems,
         selectedIds: ids
     });
 });
 
-router.post('/B-off-system-MVP/rename-multiple-save', function (req, res) {
+router.post('/lcc/materials/rename-multiple-save', function (req, res) {
     const sessionData = req.session.data || {};
     const materials = sessionData.materials || [];
 
@@ -2991,7 +3362,7 @@ router.post('/B-off-system-MVP/rename-multiple-save', function (req, res) {
     req.session.data.flashRenamedIds = Object.keys(updates).filter(id => updates[id]);
 
     if (renamedEntries.length) {
-        const locationPaths = [...new Set(renamedEntries.map(entry => getFolderPathLabel(materials, entry.item.parentId)))];
+        const locationPaths = [...new Set(renamedEntries.map(entry => getFolderPathLabel(materials, entry.item.parentId, req.session.data)))];
         const locationIds = [...new Set(renamedEntries.map(entry => String(entry.item.parentId ?? 0)))];
         const renameNameMap = Object.fromEntries(
             renamedEntries.map(entry => [
@@ -3018,24 +3389,24 @@ router.post('/B-off-system-MVP/rename-multiple-save', function (req, res) {
                 {
                     label: locationPaths.length === 1 ? 'Location:' : 'Locations:',
                     value: locationPaths.length === 1 ? locationPaths[0] : 'Multiple locations',
-                    href: locationPaths.length === 1 ? `/version-15/B-off-system-MVP/03-case-overview?folderId=${locationIds[0]}` : null
+                    href: locationPaths.length === 1 ? `/ur-jun-2026-closed/lcc/materials/03-case-overview?folderId=${locationIds[0]}` : null
                 }
             ]
         });
     }
 
-    return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 });
 
 
-// router.post('/B-off-system-MVP/rename-from-list', function (req, res) {
+// router.post('/lcc/materials/rename-from-list', function (req, res) {
 //     const id = Number(req.body.material_selected);
 
 //     console.log('Rename-from-list ID:', id);
 
 //     if (!id) {
 //         console.log('❌ Rename-from-list: invalid ID');
-//         return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+//         return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 //     }
 
 //     const materials = req.session.data.materials || [];
@@ -3043,14 +3414,14 @@ router.post('/B-off-system-MVP/rename-multiple-save', function (req, res) {
 
 //     if (!item) {
 //         console.log('❌ Rename-from-list: item not found', id);
-//         return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+//         return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 //     }
 
-//     res.render('version-15/B-off-system-MVP/rename', { item });
+//     res.render('ur-jun-2026-closed/lcc/materials/rename', { item });
 // });
 
 
-router.post('/B-off-system-MVP/rename', function (req, res) {
+router.post('/lcc/materials/rename', function (req, res) {
     console.log('Rename POST body:', req.body);
 
     const data = req.session.data;
@@ -3062,11 +3433,11 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
     const item = materials.find(m => m.id === id);
 
     if (!item) {
-        return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+        return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
     }
 
     if (!newName) {
-        return res.render('version-15/B-off-system-MVP/rename', {
+        return res.render('ur-jun-2026-closed/lcc/materials/rename', {
             item,
             error: 'Enter a name'
         });
@@ -3098,22 +3469,22 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
         sourceLines: [
             {
                 label: 'Location:',
-                value: getFolderPathLabel(materials, item.parentId),
-                href: `/version-15/B-off-system-MVP/03-case-overview?folderId=${item.parentId ?? 0}`
+                value: getFolderPathLabel(materials, item.parentId, req.session.data),
+                href: `/ur-jun-2026-closed/lcc/materials/03-case-overview?folderId=${item.parentId ?? 0}`
             }
         ]
     });
 
     req.session.data.groupedSearchResults = null; // or [] to force rebuild on next render
 
-    return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 });
 
 // -----------------------------------------------------
 // RENAME MATERIAL (page)
 // -----------------------------------------------------
 
-// router.get('/B-off-system-MVP/rename', function (req, res) {
+// router.get('/lcc/materials/rename', function (req, res) {
 //     const data = req.session.data;
 //     const materials = data.materials || [];
 //     const id = Number(req.query.id);
@@ -3121,16 +3492,16 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
 //     const item = materials.find(m => m.id === id);
 
 //     if (!item) {
-//         return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+//         return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 //     }
 
-//     res.render('version-15/B-off-system-MVP/rename', {
+//     res.render('ur-jun-2026-closed/lcc/materials/rename', {
 //         item
 //     });
 // });
 
 
-// router.post('/B-off-system-MVP/rename', function (req, res) {
+// router.post('/lcc/materials/rename', function (req, res) {
 //     const data = req.session.data;
 //     let materials = data.materials || [];
 
@@ -3140,11 +3511,11 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
 //     const item = materials.find(m => m.id === id);
 
 //     if (!item) {
-//         return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+//         return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 //     }
 
 //     if (!newName) {
-//         return res.render('version-15/B-off-system-MVP/rename', {
+//         return res.render('ur-jun-2026-closed/lcc/materials/rename', {
 //             item,
 //             error: "Enter a name"
 //         });
@@ -3169,23 +3540,23 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
 //     const parent = item.parentId || 0;
 
 //     if (parent !== 0) {
-//         return res.redirect(`/version-15/B-off-system-MVP/03-case-overview?folder=${parent}`);
+//         return res.redirect(`/ur-jun-2026-closed/lcc/materials/03-case-overview?folder=${parent}`);
 //     }
 
-//     return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+//     return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 // });
 
 
 
 
-router.post('/B-off-system-MVP/set-materials-mode', function (req, res) {
+router.post('/lcc/materials/set-materials-mode', function (req, res) {
     const mode = req.body.mode;
     const selectedIds = req.body.selected_ids || '';
 
     req.session.data.materialsMode = mode || null;
     req.session.data.materialsSelected = selectedIds;   // <-- THIS LINE IS THE KEY
 
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 });
 
 // Helper: recursively collect ALL descendants of a folder (flat list)
@@ -3279,10 +3650,11 @@ function buildTransferEgressPreviewTree(transferEgress, rootIds) {
         .map(buildNode);
 }
 
-function getTransferEgressPathLabel(transferEgress, folderId) {
+function getTransferEgressPathLabel(transferEgress, folderId, data = {}) {
     const parts = [];
     let currentId = folderId;
     const seen = new Set();
+    const rootLabel = getEgressRootLabel(data);
 
     while (currentId && String(currentId) !== '100' && !seen.has(String(currentId))) {
         seen.add(String(currentId));
@@ -3292,11 +3664,11 @@ function getTransferEgressPathLabel(transferEgress, folderId) {
         currentId = folder.parentId;
     }
 
-    return parts.length ? `Egress: Thundercat > ${parts.join(' > ')}` : 'Egress: Thundercat';
+    return parts.length ? `${rootLabel} > ${parts.join(' > ')}` : rootLabel;
 }
 
 function getTransferEgressFolderHref(folderId) {
-    return `/version-15/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=egress&transferEgressFolderId=${encodeURIComponent(folderId || 100)}`;
+    return `/ur-jun-2026-closed/lcc/materials/transfer-materials?transferView=egress&transferEgressFolderId=${encodeURIComponent(folderId || 100)}`;
 }
 
 function transferEgressToSharedDrive(data, defaultsData, ids, destinationFolderId, shouldMove) {
@@ -3360,7 +3732,7 @@ function transferEgressToSharedDrive(data, defaultsData, ids, destinationFolderI
         const selectedItems = ids
             .map(id => originalTransferEgress.find(item => String(item.id) === String(id)))
             .filter(Boolean);
-        const sourceParents = [...new Set(selectedItems.map(item => getTransferEgressPathLabel(originalTransferEgress, item.parentId)))];
+        const sourceParents = [...new Set(selectedItems.map(item => getTransferEgressPathLabel(originalTransferEgress, item.parentId, data)))];
         const sourceParentIds = [...new Set(selectedItems.map(item => String(item.parentId ?? 100)))];
 
         pushMaterialsActivity(data, {
@@ -3379,8 +3751,8 @@ function transferEgressToSharedDrive(data, defaultsData, ids, destinationFolderI
                 },
                 {
                     label: 'New location:',
-                    value: getFolderPathLabel(materials, destinationFolderId),
-                    href: `/version-15/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=shared-drive&transferSharedDriveFolderId=${destinationFolderId}`
+                    value: getFolderPathLabel(materials, destinationFolderId, data),
+                    href: `/ur-jun-2026-closed/lcc/materials/transfer-materials?transferView=shared-drive&transferSharedDriveFolderId=${destinationFolderId}`
                 }
             ]
         });
@@ -3470,7 +3842,7 @@ function transferSharedDriveToEgress(data, defaultsData, ids, destinationFolderI
     data.transferSharedDriveToEgressList = copiedNames;
     data.transferSharedDriveToEgressPreviewTree = previewTree;
     data.transferSharedDriveToEgressDestinationId = destinationFolderId;
-    data.transferSharedDriveToEgressDestinationName = getTransferEgressPathLabel(transferEgress, destinationFolderId);
+    data.transferSharedDriveToEgressDestinationName = getTransferEgressPathLabel(transferEgress, destinationFolderId, data);
     data.transferSharedDriveToEgressDestinationHref = getTransferEgressFolderHref(destinationFolderId);
     data.transferSharedDriveToEgressCopySuccess = true;
     data.activeTab = 'tab-1-content';
@@ -3480,7 +3852,7 @@ function transferSharedDriveToEgress(data, defaultsData, ids, destinationFolderI
         const selectedItems = ids
             .map(id => originalMaterials.find(item => String(item.id) === String(id)))
             .filter(Boolean);
-        const sourceParents = [...new Set(selectedItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const sourceParents = [...new Set(selectedItems.map(item => getFolderPathLabel(originalMaterials, item.parentId, data)))];
         const sourceParentIds = [...new Set(selectedItems.map(item => String(item.parentId ?? 0)))];
 
         pushMaterialsActivity(data, {
@@ -3495,11 +3867,11 @@ function transferSharedDriveToEgress(data, defaultsData, ids, destinationFolderI
                 {
                     label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
                     value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
-                    href: sourceParents.length === 1 ? `/version-15/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=shared-drive&transferSharedDriveFolderId=${sourceParentIds[0]}` : null
+                    href: sourceParents.length === 1 ? `/ur-jun-2026-closed/lcc/materials/transfer-materials?transferView=shared-drive&transferSharedDriveFolderId=${sourceParentIds[0]}` : null
                 },
                 {
                     label: 'New location:',
-                    value: getTransferEgressPathLabel(transferEgress, destinationFolderId),
+                    value: getTransferEgressPathLabel(transferEgress, destinationFolderId, data),
                     href: getTransferEgressFolderHref(destinationFolderId)
                 }
             ]
@@ -3507,7 +3879,7 @@ function transferSharedDriveToEgress(data, defaultsData, ids, destinationFolderI
     }
 }
 
-router.post('/B-off-system-MVP/copy-material-old', function (req, res) {
+router.post('/lcc/materials/copy-material-old', function (req, res) {
 
     req.session.data.moveSuccess = false;   // Clear move flag
 
@@ -3584,7 +3956,7 @@ router.post('/B-off-system-MVP/copy-material-old', function (req, res) {
         const sourceItems = ids
             .map(id => originalMaterials.find(m => String(m.id) === String(id)))
             .filter(Boolean);
-        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId, data)))];
         const sourceParentIds = [...new Set(sourceItems.map(item => String(item.parentId ?? 0)))];
 
         pushMaterialsActivity(req.session.data, {
@@ -3596,12 +3968,12 @@ router.post('/B-off-system-MVP/copy-material-old', function (req, res) {
                 {
                     label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
                     value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
-                    href: sourceParents.length === 1 ? `/version-15/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
+                    href: sourceParents.length === 1 ? `/ur-jun-2026-closed/lcc/materials/03-case-overview?folderId=${sourceParentIds[0]}` : null
                 },
                 {
                     label: 'New location:',
-                    value: getFolderPathLabel(materials, destinationFolderId),
-                    href: `/version-15/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
+                    value: getFolderPathLabel(materials, destinationFolderId, data),
+                    href: `/ur-jun-2026-closed/lcc/materials/03-case-overview?folderId=${destinationFolderId}`
                 }
             ]
         });
@@ -3611,11 +3983,11 @@ router.post('/B-off-system-MVP/copy-material-old', function (req, res) {
     req.session.data.materialsMode = null;
     req.session.data.materialsSelected = '';
 
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 });
 
 
-router.post('/B-off-system-MVP/start-copy', function (req, res) {
+router.post('/lcc/materials/start-copy', function (req, res) {
     // selected_ids could be "1,2,3" or an array depending on your form
     const ids = req.body.selected_ids
         ? String(req.body.selected_ids).split(',').map(x => String(x).trim()).filter(Boolean)
@@ -3633,10 +4005,10 @@ router.post('/B-off-system-MVP/start-copy', function (req, res) {
         .filter(Boolean);
 
     // Send them to the folder picker page
-    res.redirect('/version-15/B-off-system-MVP/folder-tree-copy');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/folder-tree-copy');
 });
 
-router.post('/B-off-system-MVP/start-transfer-egress-copy', function (req, res) {
+router.post('/lcc/materials/start-transfer-egress-copy', function (req, res) {
     const ids = req.body.selected_ids
         ? String(req.body.selected_ids).split(',').map(x => String(x).trim()).filter(Boolean)
         : [];
@@ -3652,10 +4024,10 @@ router.post('/B-off-system-MVP/start-transfer-egress-copy', function (req, res) 
         .map(id => (transferEgress.find(item => String(item.id) === String(id)) || {}).name)
         .filter(Boolean);
 
-    res.redirect('/version-15/B-off-system-MVP/folder-tree-copy');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/folder-tree-copy');
 });
 
-router.post('/B-off-system-MVP/start-transfer-shared-drive-copy', function (req, res) {
+router.post('/lcc/materials/start-transfer-shared-drive-copy', function (req, res) {
     const ids = req.body.selected_ids
         ? String(req.body.selected_ids).split(',').map(x => String(x).trim()).filter(Boolean)
         : [];
@@ -3668,12 +4040,12 @@ router.post('/B-off-system-MVP/start-transfer-shared-drive-copy', function (req,
         .map(id => (materials.find(item => String(item.id) === String(id)) || {}).name)
         .filter(Boolean);
 
-    res.redirect('/version-15/B-off-system-MVP/folder-tree-egress-copy');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/folder-tree-egress-copy');
 });
 
 
 // start-move 3 February 2026
-router.post('/B-off-system-MVP/start-move', function (req, res) {
+router.post('/lcc/materials/start-move', function (req, res) {
     // selected_ids could be "1,2,3" or an array depending on your form
     const ids = req.body.selected_ids
         ? String(req.body.selected_ids).split(',').map(x => String(x).trim()).filter(Boolean)
@@ -3691,10 +4063,10 @@ router.post('/B-off-system-MVP/start-move', function (req, res) {
         .filter(Boolean);
 
     // Send them to the folder picker page
-    res.redirect('/version-15/B-off-system-MVP/folder-tree-move');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/folder-tree-move');
 });
 
-router.post('/B-off-system-MVP/start-transfer-egress-move', function (req, res) {
+router.post('/lcc/materials/start-transfer-egress-move', function (req, res) {
     const ids = req.body.selected_ids
         ? String(req.body.selected_ids).split(',').map(x => String(x).trim()).filter(Boolean)
         : [];
@@ -3710,11 +4082,11 @@ router.post('/B-off-system-MVP/start-transfer-egress-move', function (req, res) 
         .map(id => (transferEgress.find(item => String(item.id) === String(id)) || {}).name)
         .filter(Boolean);
 
-    res.redirect('/version-15/B-off-system-MVP/folder-tree-move');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/folder-tree-move');
 });
 
 
-router.post('/B-off-system-MVP/copy-material', function (req, res) {
+router.post('/lcc/materials/copy-material', function (req, res) {
 
     req.session.data.moveSuccess = false;
 
@@ -3729,7 +4101,7 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
     if (req.session.data.copySource === 'egress') {
         if (!ids.length || !destinationFolderId) {
             req.session.data.copyError = "Select at least one item and a destination folder";
-            return res.redirect('/version-15/B-off-system-MVP/folder-tree-copy');
+            return res.redirect('/ur-jun-2026-closed/lcc/materials/folder-tree-copy');
         }
 
         transferEgressToSharedDrive(req.session.data, res.locals.data || {}, ids, destinationFolderId, false);
@@ -3739,7 +4111,7 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
         req.session.data.copySelectedNames = [];
         req.session.data.copySelectedCount = 0;
 
-        return res.redirect('/version-15/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=egress');
+        return res.redirect('/ur-jun-2026-closed/lcc/materials/transfer-materials?transferView=egress');
     }
 
     const materials = (req.session.data.materials || res.locals.data.materials || []);
@@ -3749,7 +4121,7 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
     if (!ids.length || !destinationFolderId) {
         // In a prototype, just bounce back with a flag
         req.session.data.copyError = "Select at least one item and a destination folder";
-        return res.redirect('/version-15/B-off-system-MVP/folder-tree-copy');
+        return res.redirect('/ur-jun-2026-closed/lcc/materials/folder-tree-copy');
     }
 
     // Snapshot BEFORE mutation
@@ -3807,7 +4179,7 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
         const sourceItems = ids
             .map(id => originalMaterials.find(m => String(m.id) === String(id)))
             .filter(Boolean);
-        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId, data)))];
         const sourceParentIds = [...new Set(sourceItems.map(item => String(item.parentId ?? 0)))];
 
         pushMaterialsActivity(req.session.data, {
@@ -3819,12 +4191,12 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
                 {
                     label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
                     value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
-                    href: sourceParents.length === 1 ? `/version-15/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
+                    href: sourceParents.length === 1 ? `/ur-jun-2026-closed/lcc/materials/03-case-overview?folderId=${sourceParentIds[0]}` : null
                 },
                 {
                     label: 'New location:',
-                    value: getFolderPathLabel(materials, destinationFolderId),
-                    href: `/version-15/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
+                    value: getFolderPathLabel(materials, destinationFolderId, data),
+                    href: `/ur-jun-2026-closed/lcc/materials/03-case-overview?folderId=${destinationFolderId}`
                 }
             ]
         });
@@ -3839,12 +4211,12 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
     req.session.data.materialsMode = null;
     req.session.data.materialsSelected = '';
 
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 });
 
 
 // move-material 3 February 2026
-router.post('/B-off-system-MVP/move-material', function (req, res) {
+router.post('/lcc/materials/move-material', function (req, res) {
 
     req.session.data.moveSuccess = false;
 
@@ -3859,7 +4231,7 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
     if (req.session.data.moveSource === 'egress') {
         if (!ids.length || !destinationFolderId) {
             req.session.data.moveError = "Select at least one item and a destination folder";
-            return res.redirect('/version-15/B-off-system-MVP/folder-tree-move');
+            return res.redirect('/ur-jun-2026-closed/lcc/materials/folder-tree-move');
         }
 
         transferEgressToSharedDrive(req.session.data, res.locals.data || {}, ids, destinationFolderId, true);
@@ -3869,7 +4241,7 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
         req.session.data.moveSelectedNames = [];
         req.session.data.moveSelectedCount = 0;
 
-        return res.redirect('/version-15/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=egress');
+        return res.redirect('/ur-jun-2026-closed/lcc/materials/transfer-materials?transferView=egress');
     }
 
     const materials = (req.session.data.materials || res.locals.data.materials || []);
@@ -3879,7 +4251,7 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
     if (!ids.length || !destinationFolderId) {
         // In a prototype, just bounce back with a flag
         req.session.data.moveError = "Select at least one item and a destination folder";
-        return res.redirect('/version-15/B-off-system-MVP/folder-tree-move');
+        return res.redirect('/ur-jun-2026-closed/lcc/materials/folder-tree-move');
     }
 
     // Snapshot BEFORE mutation
@@ -3924,7 +4296,7 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
         const sourceItems = ids
             .map(id => originalMaterials.find(m => String(m.id) === String(id)))
             .filter(Boolean);
-        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId, data)))];
         const sourceParentIds = [...new Set(sourceItems.map(item => String(item.parentId ?? 0)))];
 
         pushMaterialsActivity(req.session.data, {
@@ -3936,12 +4308,12 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
                 {
                     label: sourceParents.length === 1 ? 'Original location:' : 'Original locations:',
                     value: sourceParents.length === 1 ? sourceParents[0] : 'Multiple locations',
-                    href: sourceParents.length === 1 ? `/version-15/B-off-system-MVP/03-case-overview?folderId=${sourceParentIds[0]}` : null
+                    href: sourceParents.length === 1 ? `/ur-jun-2026-closed/lcc/materials/03-case-overview?folderId=${sourceParentIds[0]}` : null
                 },
                 {
                     label: 'New location:',
-                    value: getFolderPathLabel(materials, destinationFolderId),
-                    href: `/version-15/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
+                    value: getFolderPathLabel(materials, destinationFolderId, data),
+                    href: `/ur-jun-2026-closed/lcc/materials/03-case-overview?folderId=${destinationFolderId}`
                 }
             ]
         });
@@ -3956,10 +4328,10 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
     req.session.data.materialsMode = null;
     req.session.data.materialsSelected = '';
 
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 });
 
-router.post('/B-off-system-MVP/copy-transfer-shared-drive-to-egress', function (req, res) {
+router.post('/lcc/materials/copy-transfer-shared-drive-to-egress', function (req, res) {
     const ids = Array.isArray(req.session.data.transferSharedDriveCopySelectedIds)
         ? req.session.data.transferSharedDriveCopySelectedIds.map(String)
         : [];
@@ -3967,7 +4339,7 @@ router.post('/B-off-system-MVP/copy-transfer-shared-drive-to-egress', function (
 
     if (!ids.length || !destinationFolderId) {
         req.session.data.copyError = "Select at least one item and a destination folder";
-        return res.redirect('/version-15/B-off-system-MVP/folder-tree-egress-copy');
+        return res.redirect('/ur-jun-2026-closed/lcc/materials/folder-tree-egress-copy');
     }
 
     transferSharedDriveToEgress(req.session.data, res.locals.data || {}, ids, destinationFolderId);
@@ -3976,12 +4348,12 @@ router.post('/B-off-system-MVP/copy-transfer-shared-drive-to-egress', function (
     req.session.data.transferSharedDriveCopySelectedNames = [];
     req.session.data.transferSharedDriveCopySelectedCount = 0;
 
-    return res.redirect('/version-15/B-off-system-MVP/03-case-overview?activeTab=tab-1-content&transferView=shared-drive');
+    return res.redirect('/ur-jun-2026-closed/lcc/materials/transfer-materials?transferView=shared-drive');
 });
 
 
 // Move – 3 February 2026
-// router.post('/B-off-system-MVP/move-material', function (req, res) {
+// router.post('/lcc/materials/move-material', function (req, res) {
 
 //     req.session.data.copySuccess = false;
 
@@ -3998,7 +4370,7 @@ router.post('/B-off-system-MVP/copy-transfer-shared-drive-to-egress', function (
 //     if (!ids.length || !destinationFolderId) {
 //         // In a prototype, just bounce back with a flag
 //         req.session.data.moveError = "Select at least one item and a destination folder";
-//         return res.redirect('/version-15/B-off-system-MVP/folder-tree-move');
+//         return res.redirect('/ur-jun-2026-closed/lcc/materials/folder-tree-move');
 //     }
 
 //     // Snapshot BEFORE mutation
@@ -4061,12 +4433,12 @@ router.post('/B-off-system-MVP/copy-transfer-shared-drive-to-egress', function (
 //     req.session.data.materialsMode = null;
 //     req.session.data.materialsSelected = '';
 
-//     res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+//     res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 // });
 
 
 
-// router.post('/B-off-system-MVP/move-material-old', function (req, res) {
+// router.post('/lcc/materials/move-material-old', function (req, res) {
 
 //     req.session.data.copySuccess = false;  // Clear copy flag
 
@@ -4118,7 +4490,7 @@ router.post('/B-off-system-MVP/copy-transfer-shared-drive-to-egress', function (
 //     req.session.data.materialsMode = null;
 //     req.session.data.materialsSelected = '';
 
-//     res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+//     res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 // });
 
 
@@ -4138,7 +4510,7 @@ router.get('/includes/materials/clear-filters', function (req, res) {
     req.session.data.filtersSearch = null;
 
     // Redirect back to the materials page
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
     // change this to whatever your main materials URL is
 });
 
@@ -4152,13 +4524,13 @@ router.get('/includes/materials/clear-filter', function (req, res) {
         req.session.data[type] = null;
     }
 
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
     // again: use your actual materials page URL
 });
 
 
-// New code for version-15
-router.get('/B-off-system-MVP/folder-tree-copy', function (req, res) {
+// New code for ur-jun-2026-closed
+router.get('/lcc/materials/folder-tree-copy', function (req, res) {
 
     const sessionData = req.session.data || {};
     const defaultsData = res.locals.data || {};
@@ -4217,25 +4589,25 @@ router.get('/B-off-system-MVP/folder-tree-copy', function (req, res) {
 
     const folderTree = roots.map(buildNode);
 
-    res.render('version-15/B-off-system-MVP/folder-tree-copy', {
+    res.render('ur-jun-2026-closed/lcc/materials/folder-tree-copy', {
         folderTree
     });
 });
 
-router.get('/B-off-system-MVP/folder-tree-egress-copy', function (req, res) {
+router.get('/lcc/materials/folder-tree-egress-copy', function (req, res) {
     const sessionData = req.session.data || {};
     const defaultsData = res.locals.data || {};
     const transferEgress = (Array.isArray(sessionData.transferEgress)
         ? sessionData.transferEgress
         : defaultsData.transferEgress || []);
 
-    res.render('version-15/B-off-system-MVP/folder-tree-egress-copy', {
+    res.render('ur-jun-2026-closed/lcc/materials/folder-tree-egress-copy', {
         folderTree: buildEgressFolderTree(transferEgress)
     });
 });
 
 // Move – 3 February 2026
-router.get('/B-off-system-MVP/folder-tree-move', function (req, res) {
+router.get('/lcc/materials/folder-tree-move', function (req, res) {
 
     const sessionData = req.session.data || {};
     const defaultsData = res.locals.data || {};
@@ -4294,7 +4666,7 @@ router.get('/B-off-system-MVP/folder-tree-move', function (req, res) {
 
     const folderTree = roots.map(buildNode);
 
-    res.render('version-15/B-off-system-MVP/folder-tree-move', {
+    res.render('ur-jun-2026-closed/lcc/materials/folder-tree-move', {
         folderTree
     });
 });
@@ -4302,7 +4674,7 @@ router.get('/B-off-system-MVP/folder-tree-move', function (req, res) {
 
 
 //New search at the top of the page
-router.post('/B-off-system-MVP/materials-search', function (req, res) {
+router.post('/lcc/materials/materials-search', function (req, res) {
     const term = (req.body.filtersSearch || '').trim();
 
     // Store in session so 03-case-overview can render search results
@@ -4311,13 +4683,13 @@ router.post('/B-off-system-MVP/materials-search', function (req, res) {
     // Optional: when searching, reset folder context if you want
     // req.session.data.folderId = 0;
 
-    return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 });
 
 
 
 // 4 February 2026
-router.post('/B-off-system-MVP/mark-as-read', function (req, res) {
+router.post('/lcc/materials/mark-as-read', function (req, res) {
     const ids = String(req.body.selected_ids || '')
         .split(',')
         .map(s => s.trim())
@@ -4334,11 +4706,11 @@ router.post('/B-off-system-MVP/mark-as-read', function (req, res) {
 
     req.session.data.materials = materials;
     req.session.data.markReadSuccess = true; // optional banner flag
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 });
 
 
-router.post('/B-off-system-MVP/mark-as-unread', function (req, res) {
+router.post('/lcc/materials/mark-as-unread', function (req, res) {
     const ids = String(req.body.selected_ids || '')
         .split(',')
         .map(s => s.trim())
@@ -4355,7 +4727,7 @@ router.post('/B-off-system-MVP/mark-as-unread', function (req, res) {
 
     req.session.data.materials = materials;
     req.session.data.markUnreadSuccess = true; // optional banner flag
-    res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 });
 
 
@@ -4365,7 +4737,7 @@ router.post('/B-off-system-MVP/mark-as-unread', function (req, res) {
 
 const materialsHelperFactory = require('../../helpers/materials.js');
 
-router.get('/B-off-system-MVP/order-materials', (req, res) => {
+router.get('/lcc/materials/order-materials', (req, res) => {
     const sessionData = req.session.data || {};
     const defaultsData = res.locals.data || {};
 
@@ -4407,7 +4779,7 @@ router.get('/B-off-system-MVP/order-materials', (req, res) => {
     const breadcrumbs = helper.getBreadcrumbs(folderId);
     const children = helper.getChildren(folderId);
 
-    res.render('version-15/B-off-system-MVP/order-materials', {
+    res.render('ur-jun-2026-closed/lcc/materials/order-materials', {
         folderId,
         breadcrumbs,
         children
@@ -4415,7 +4787,7 @@ router.get('/B-off-system-MVP/order-materials', (req, res) => {
 });
 
 
-router.post('/B-off-system-MVP/order-materials', (req, res) => {
+router.post('/lcc/materials/order-materials', (req, res) => {
 
     console.log('✅ POST /order-materials hit', {
         sessionFolderId: req.session.data.folderId,
@@ -4449,7 +4821,7 @@ router.post('/B-off-system-MVP/order-materials', (req, res) => {
             body: req.body
         };
 
-        return res.redirect('/version-15/B-off-system-MVP/order-interrupt');
+        return res.redirect('/ur-jun-2026-closed/lcc/materials/order-interrupt');
     }
     // End of 26 February 2026
 
@@ -4496,28 +4868,28 @@ router.post('/B-off-system-MVP/order-materials', (req, res) => {
     req.session.data.folderId = folderId;
 
 
-    return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 });
 
 
-router.post('/B-off-system-MVP/create-case/cancel-interrupt', (req, res) => {
+router.post('/lcc/register-case/cancel-interrupt', (req, res) => {
     const returnTo = getSafeReturnTo(req.body?.returnTo);
 
     if (req.body['cancel-registration'] == 'Yes, cancel registration') {
-        return res.redirect('/version-15/B-off-system-MVP/create-case/00-homepage');
+        return res.redirect('/ur-jun-2026-closed/lcc/register-case/00-homepage');
     }
     else if (req.body['cancel-registration'] == 'No, go back and continue registration' && returnTo) {
         return res.redirect(returnTo);
     }
 
-    return res.redirect('/version-15/B-off-system-MVP/create-case/00-homepage');
+    return res.redirect('/ur-jun-2026-closed/lcc/register-case/00-homepage');
 });
 
 
-router.post('/B-off-system-MVP/order-interrupt', (req, res) => {
+router.post('/lcc/materials/order-interrupt', (req, res) => {
     const pending = req.session.data.pendingOrderSave;
     if (!pending) {
-        return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+        return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
     }
 
     const folderId = Number(pending.folderId ?? 0);
@@ -4579,16 +4951,16 @@ router.post('/B-off-system-MVP/order-interrupt', (req, res) => {
     // Clean up the delayed save payload
     delete req.session.data.pendingOrderSave;
 
-    return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 });
 
-router.post('/B-off-system-MVP/disconnect-shared-drive', (req, res) => {
+router.post('/lcc/materials/disconnect-shared-drive', (req, res) => {
     const choice = req.body['disconnect-shared-drive-choice'];
     const data = req.session.data;
     req.session.data['disconnect-shared-drive-choice'] = choice;
 
     if (!choice) {
-        return res.render('version-15/B-off-system-MVP/disconnect-shared-drive', {
+        return res.render('ur-jun-2026-closed/lcc/materials/disconnect-shared-drive', {
             disconnectSharedDriveError: 'Select whether you want to disconnect the Shared Drive'
         });
     }
@@ -4599,19 +4971,19 @@ router.post('/B-off-system-MVP/disconnect-shared-drive', (req, res) => {
         pushMaterialsActivity(data, {
             title: 'Shared Drive folder Thunderstruck disconnected from this case'
         });
-        return res.redirect('/version-15/B-off-system-MVP/disconnect-shared-drive-confirmation');
+        return res.redirect('/ur-jun-2026-closed/lcc/materials/disconnect-shared-drive-confirmation');
     }
 
-    return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    return res.redirect('/ur-jun-2026-closed/lcc/materials/03-case-overview');
 });
 
-router.post('/B-off-system-MVP/disconnect-egress', (req, res) => {
+router.post('/lcc/materials/disconnect-egress', (req, res) => {
     const choice = req.body['disconnect-egress-choice'];
     const data = req.session.data;
     req.session.data['disconnect-egress-choice'] = choice;
 
     if (!choice) {
-        return res.render('version-15/B-off-system-MVP/disconnect-egress', {
+        return res.render('ur-jun-2026-closed/lcc/materials/disconnect-egress', {
             disconnectEgressError: 'Select whether you want to disconnect Egress'
         });
     }
@@ -4622,10 +4994,10 @@ router.post('/B-off-system-MVP/disconnect-egress', (req, res) => {
         pushMaterialsActivity(data, {
             title: 'Egress disconnected from this case'
         });
-        return res.redirect('/version-15/B-off-system-MVP/disconnect-egress-confirmation');
+        return res.redirect('/ur-jun-2026-closed/lcc/materials/disconnect-egress-confirmation');
     }
 
-    return res.redirect('/version-15/B-off-system-MVP/03-case-overview');
+    return res.redirect('/ur-jun-2026-closed/lcc/materials/transfer-materials');
 });
 
 module.exports = router
