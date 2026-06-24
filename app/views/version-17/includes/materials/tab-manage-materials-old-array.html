@@ -532,10 +532,6 @@
                     <td class="govuk-table__cell title_column">
                         <div class="openMe">
                             {{ item.name }}
-                            {% if item.unread or item.new %}
-                            <strong class="govuk-tag govuk-tag--blue">Unread</strong>
-                            {% endif %}
-
                             {% if flashRenamedId and (item.id | string) == flashRenamedId %}
                             <strong class="govuk-tag govuk-tag--green">Renamed</strong>
                             {% endif %}

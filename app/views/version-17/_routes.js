@@ -459,27 +459,53 @@ router.use((req, res, next) => {
 
 
 router.use((req, res, next) => {
-    if (!Array.isArray(req.session.data.materialsVersion15)) {
+    if (!Array.isArray(req.session.data.materialsVersion17)) {
         const defaults =
+            res.locals.data.materialsVersion17 ||
             res.locals.data.materialsVersion15 ||
             res.locals.data.materialsVersion13 ||
             res.locals.data.materials ||
             [];
-        req.session.data.materialsVersion15 = JSON.parse(JSON.stringify(defaults));
+        req.session.data.materialsVersion17 = JSON.parse(JSON.stringify(defaults));
+    }
+
+    const hasFileInUseExample = req.session.data.materialsVersion17.some(item =>
+        item &&
+        !item.folder &&
+        item.name === 'File A' &&
+        Number(item.parentId) === 1007
+    );
+
+    if (!hasFileInUseExample) {
+        req.session.data.materialsVersion17.push({
+            id: 'version-17-file-a',
+            name: 'File A',
+            order: '',
+            description: 'This file is currently in use by another user',
+            category: 'Exhibit list - MG12',
+            date: '1 Jul 2024',
+            status: 'Used',
+            new: false,
+            docLink: 'MG00.pdf',
+            previewLink: '/public/files/blank.pdf',
+            parentId: 1007,
+            folder: false,
+            level: 3
+        });
     }
 
     Object.defineProperty(req.session.data, 'materials', {
         get() {
-            return this.materialsVersion15;
+            return this.materialsVersion17;
         },
         set(value) {
-            this.materialsVersion15 = value;
+            this.materialsVersion17 = value;
         },
         configurable: true
     });
 
-    res.locals.data.materialsVersion15 = req.session.data.materialsVersion15;
-    res.locals.data.materials = req.session.data.materialsVersion15;
+    res.locals.data.materialsVersion17 = req.session.data.materialsVersion17;
+    res.locals.data.materials = req.session.data.materialsVersion17;
 
     next();
 });
@@ -2098,13 +2124,6 @@ router.post('/includes/materials/materials-filter', function (req, res) {
     const body = req.body;
 
     // ----------------------------
-    // READ / UNREAD CHECKBOXES
-    // (new pattern: filterUnread + filterRead)
-    // ----------------------------
-    data.filterUnread = body.filterUnread ? 'Unread' : '';
-    data.filterRead = body.filterRead ? 'Read' : '';
-
-    // ----------------------------
     // STATUS CHECKBOXES (multi-select)
     // ----------------------------
     data.filterStatusUsed = body.filterStatusUsed ? 'Used' : '';
@@ -2314,7 +2333,7 @@ function pushMaterialsActivity(data, entry) {
         'deleted',
         'connected',
         'disconnected'
-    ].some(action => title.includes(action));
+    ].some(action => title.includes(action)) && !title.includes('not ');
 
     data.materialsActivityLog.unshift({
         ...createBaseActivityEntry(data),
@@ -2535,24 +2554,51 @@ function renderCaseOverviewPage(pageView, activeTab) {
     const copyPreviewTree = data.copyPreviewTree || [];
     const movePreviewTree = data.movePreviewTree || [];
     const deletePreviewTree = data.deletePreviewTree || [];
+    const renameBlockedLoadingName = data.renameBlockedLoadingName || '';
+    const copyConflictLoading = data.copyConflictLoading === true;
+    const copyConflictPending = data.copyConflictPending === true;
+    const copyConflictMessage = data.copyConflictMessage || null;
+    const copyConflictItems = data.copyConflictItems || [];
+    const moveConflictLoading = data.moveConflictLoading === true;
+    const moveConflictPending = data.moveConflictPending === true;
+    const moveConflictMessage = data.moveConflictMessage || null;
+    const moveConflictItems = data.moveConflictItems || [];
 
     const copyDestinationId = data.copyDestinationId || 0;
     const moveDestinationId = data.moveDestinationId || 0;
-
-    req.session.data.copyDestinationId = null;
-    req.session.data.moveDestinationId = null;
+    const preserveCopyFlash = copyConflictLoading;
+    const preserveMoveFlash = moveConflictLoading;
 
     // Immediately reset so they only show once
-    req.session.data.copySuccess = false;
-    req.session.data.moveSuccess = false;
+    if (!preserveCopyFlash) {
+        req.session.data.copySuccess = false;
+        req.session.data.copyList = [];
+        req.session.data.copyDestinationName = null;
+        req.session.data.copyDestinationId = null;
+        req.session.data.copyPreviewTree = [];
+    }
+    if (!preserveMoveFlash) {
+        req.session.data.moveSuccess = false;
+        req.session.data.moveList = [];
+        req.session.data.moveDestinationName = null;
+        req.session.data.moveDestinationId = null;
+        req.session.data.movePreviewTree = [];
+    }
     req.session.data.deleteSuccess = false;
-    req.session.data.copyList = [];
-    req.session.data.moveList = [];
-    req.session.data.copyDestinationName = null;
-    req.session.data.moveDestinationName = null;
-    req.session.data.copyPreviewTree = [];
-    req.session.data.movePreviewTree = [];
     req.session.data.deletePreviewTree = [];
+    req.session.data.renameBlockedLoadingName = '';
+    req.session.data.copyConflictLoading = false;
+    req.session.data.copyConflictPending = false;
+    if (copyConflictPending) {
+        req.session.data.copyConflictMessage = null;
+        req.session.data.copyConflictItems = [];
+    }
+    req.session.data.moveConflictLoading = false;
+    req.session.data.moveConflictPending = false;
+    if (moveConflictPending) {
+        req.session.data.moveConflictMessage = null;
+        req.session.data.moveConflictItems = [];
+    }
 
     // Helper utils
     const utils = createMaterialsUtils(materials);
@@ -2577,28 +2623,10 @@ function renderCaseOverviewPage(pageView, activeTab) {
     // 2. Apply filters
     // ================================
     const filters = {
-        unread: data.filterUnread ? true : false,
-        read: data.filterRead ? true : false,
         used: data.filterStatusUsed ? true : false,
         unused: data.filterStatusUnused ? true : false,
         none: data.filterStatusNone ? true : false
     };
-
-    // -------------------------
-    // READ / UNREAD FILTERING
-    // -------------------------
-    if (filters.unread && !filters.read) {
-        // unread only
-        children = children.filter(m => m.new === true);
-    }
-
-    if (!filters.unread && filters.read) {
-        // read only
-        children = children.filter(m => m.new === false);
-    }
-
-    // if both checked → no filter
-    // if none checked → no filter
 
     // -------------------------
     // STATUS MULTI-SELECT
@@ -2873,6 +2901,15 @@ function renderCaseOverviewPage(pageView, activeTab) {
         copyPreviewTree,
         movePreviewTree,
         deletePreviewTree,
+        renameBlockedLoadingName,
+        copyConflictLoading,
+        copyConflictPending,
+        copyConflictMessage,
+        copyConflictItems,
+        moveConflictLoading,
+        moveConflictPending,
+        moveConflictMessage,
+        moveConflictItems,
         copyDestinationId,
         moveDestinationId,
         transferSharedDriveFolderId,
@@ -2916,6 +2953,18 @@ router.get('/lcc/materials/03-case-overview', function (req, res) {
 router.get('/lcc/materials/transfer-materials', renderCaseOverviewPage('transfer-materials', 'tab-1-content'));
 router.get('/lcc/materials/manage-materials', renderCaseOverviewPage('manage-materials', 'tab-2-content'));
 router.get('/lcc/materials/activity-log', renderCaseOverviewPage('activity-log', 'tab-3-content'));
+
+router.get('/lcc/materials/copy-conflict-result', function (req, res) {
+    req.session.data.copyConflictLoading = false;
+    req.session.data.copyConflictPending = true;
+    res.redirect('/version-17/lcc/materials/manage-materials');
+});
+
+router.get('/lcc/materials/move-conflict-result', function (req, res) {
+    req.session.data.moveConflictLoading = false;
+    req.session.data.moveConflictPending = true;
+    res.redirect('/version-17/lcc/materials/manage-materials');
+});
 
 
 router.get('/version-17/manage-materials', function (req, res) {
@@ -3356,10 +3405,21 @@ router.post('/lcc/materials/rename-multiple-save', function (req, res) {
     });
 
     const renamedEntries = [];
+    const blockedRenameEntries = [];
 
     materials.forEach(item => {
         const id = String(item.id);
         if (updates[id] !== undefined && updates[id] !== '') {
+            if (
+                item &&
+                !item.folder &&
+                item.name === 'File A' &&
+                Number(item.parentId) === 1007
+            ) {
+                blockedRenameEntries.push(item);
+                return;
+            }
+
             renamedEntries.push({
                 item,
                 oldName: item.name,
@@ -3370,7 +3430,7 @@ router.post('/lcc/materials/rename-multiple-save', function (req, res) {
     });
 
     req.session.data.materials = materials;
-    req.session.data.flashRenamedIds = Object.keys(updates).filter(id => updates[id]);
+    req.session.data.flashRenamedIds = renamedEntries.map(entry => String(entry.item.id));
 
     if (renamedEntries.length) {
         const locationPaths = [...new Set(renamedEntries.map(entry => getFolderPathLabel(materials, entry.item.parentId, req.session.data)))];
@@ -3404,6 +3464,12 @@ router.post('/lcc/materials/rename-multiple-save', function (req, res) {
                 }
             ]
         });
+    }
+
+    if (blockedRenameEntries.length) {
+        req.session.data.renameBlockedLoadingName = blockedRenameEntries.map(item => item.name).join(', ');
+        const blockedFolderId = blockedRenameEntries[0].parentId ?? 0;
+        return res.redirect(`/version-17/lcc/materials/manage-materials?folderId=${encodeURIComponent(blockedFolderId)}`);
     }
 
     return res.redirect('/version-17/lcc/materials/03-case-overview');
@@ -4146,9 +4212,22 @@ router.post('/lcc/materials/copy-material', function (req, res) {
     const destFolder = materials.find(m => String(m.id) === String(destinationFolderId));
     if (destFolder) destinationFolderName = destFolder.name;
 
-    const copyPreviewTree = buildPreviewTree(originalMaterials, ids);
+    const destinationChildren = materials.filter(
+        item => String(item.parentId ?? '') === String(destinationFolderId)
+    );
+    const destinationChildNames = new Set(
+        destinationChildren.map(item => String(item.name || '').trim().toLowerCase())
+    );
+    const conflictingItems = ids
+        .map(id => materials.find(item => String(item.id) === String(id)))
+        .filter(Boolean)
+        .filter(item => destinationChildNames.has(String(item.name || '').trim().toLowerCase()));
+    const conflictingIdSet = new Set(conflictingItems.map(item => String(item.id)));
+    const idsToCopy = ids.filter(id => !conflictingIdSet.has(String(id)));
 
-    ids.forEach(id => {
+    const copyPreviewTree = buildPreviewTree(originalMaterials, idsToCopy);
+
+    idsToCopy.forEach(id => {
         const original = materials.find(m => String(m.id) === id);
         if (!original) return;
 
@@ -4186,10 +4265,10 @@ router.post('/lcc/materials/copy-material', function (req, res) {
     req.session.data.copyList = copiedNames;
     req.session.data.copyDestinationName = destinationFolderName;
     req.session.data.copyPreviewTree = copyPreviewTree;
-    req.session.data.copySuccess = true;
+    req.session.data.copySuccess = copiedNames.length > 0;
 
     if (copiedNames.length) {
-        const sourceItems = ids
+        const sourceItems = idsToCopy
             .map(id => originalMaterials.find(m => String(m.id) === String(id)))
             .filter(Boolean);
         const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId, data)))];
@@ -4213,6 +4292,42 @@ router.post('/lcc/materials/copy-material', function (req, res) {
                 }
             ]
         });
+    }
+
+    if (conflictingItems.length) {
+        const conflictSourceParents = [...new Set(conflictingItems.map(item => getFolderPathLabel(originalMaterials, item.parentId, data)))];
+        const conflictSourceParentIds = [...new Set(conflictingItems.map(item => String(item.parentId ?? 0)))];
+
+        pushMaterialsActivity(req.session.data, {
+            type: 'copy',
+            title: 'Items not copied',
+            description: 'Files with the same name already exist in the destination.',
+            listItems: conflictingItems.map(item => item.name),
+            sourceLines: [
+                {
+                    label: 'From:',
+                    value: conflictSourceParents.length === 1 ? conflictSourceParents[0] : 'Multiple locations',
+                    href: conflictSourceParents.length === 1 ? `/version-17/lcc/materials/manage-materials?folderId=${conflictSourceParentIds[0]}` : null
+                },
+                {
+                    label: 'To:',
+                    value: getFolderPathLabel(materials, destinationFolderId, data),
+                    href: `/version-17/lcc/materials/manage-materials?folderId=${destinationFolderId}`
+                }
+            ]
+        });
+
+        req.session.data.copyConflictLoading = true;
+        req.session.data.copyConflictMessage =
+            conflictingItems.length === 1
+                ? copiedNames.length > 0
+                    ? '1 item with the same name already exists in this location.'
+                    : '1 item with the same name already exists in this location. No items were copied.'
+                : copiedNames.length > 0
+                    ? `${conflictingItems.length} items with the same name already exist in this location.`
+                    : `${conflictingItems.length} items with the same name already exist in this location. No items were copied.`;
+        req.session.data.copyConflictItems = conflictingItems.map(item => item.name);
+        req.session.data.copyDestinationName = destinationFolderName;
     }
 
     // Clear selection state
@@ -4269,17 +4384,29 @@ router.post('/lcc/materials/move-material', function (req, res) {
     }
 
     // Snapshot BEFORE mutation
-    const originalMaterials = [...materials];
-
-    // ✅ Build preview tree BEFORE moving anything (for the success banner)
-    const movePreviewTree = buildPreviewTree(originalMaterials, ids);
+    const originalMaterials = materials.map(item => ({ ...item }));
 
     const movedNames = [];
 
     const destFolder = materials.find(m => String(m.id) === String(destinationFolderId));
     const destinationFolderName = destFolder ? destFolder.name : null;
 
-    ids.forEach(id => {
+    const destinationChildren = materials.filter(
+        item => String(item.parentId ?? '') === String(destinationFolderId)
+    );
+    const destinationChildNames = new Set(
+        destinationChildren.map(item => String(item.name || '').trim().toLowerCase())
+    );
+    const conflictingItems = ids
+        .map(id => materials.find(item => String(item.id) === String(id)))
+        .filter(Boolean)
+        .filter(item => destinationChildNames.has(String(item.name || '').trim().toLowerCase()));
+    const conflictingIdSet = new Set(conflictingItems.map(item => String(item.id)));
+    const idsToMove = ids.filter(id => !conflictingIdSet.has(String(id)));
+
+    const movePreviewTree = buildPreviewTree(originalMaterials, idsToMove);
+
+    idsToMove.forEach(id => {
         const original = materials.find(m => String(m.id) === String(id));
         if (!original) return;
 
@@ -4304,10 +4431,10 @@ router.post('/lcc/materials/move-material', function (req, res) {
     req.session.data.moveList = movedNames;
     req.session.data.moveDestinationName = destinationFolderName;
     req.session.data.movePreviewTree = movePreviewTree;
-    req.session.data.moveSuccess = true;
+    req.session.data.moveSuccess = movedNames.length > 0;
 
     if (movedNames.length) {
-        const sourceItems = ids
+        const sourceItems = idsToMove
             .map(id => originalMaterials.find(m => String(m.id) === String(id)))
             .filter(Boolean);
         const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId, data)))];
@@ -4331,6 +4458,42 @@ router.post('/lcc/materials/move-material', function (req, res) {
                 }
             ]
         });
+    }
+
+    if (conflictingItems.length) {
+        const conflictSourceParents = [...new Set(conflictingItems.map(item => getFolderPathLabel(originalMaterials, item.parentId, data)))];
+        const conflictSourceParentIds = [...new Set(conflictingItems.map(item => String(item.parentId ?? 0)))];
+
+        pushMaterialsActivity(req.session.data, {
+            type: 'move',
+            title: 'Items not moved',
+            description: 'Files with the same name already exist in the destination.',
+            listItems: conflictingItems.map(item => item.name),
+            sourceLines: [
+                {
+                    label: 'From:',
+                    value: conflictSourceParents.length === 1 ? conflictSourceParents[0] : 'Multiple locations',
+                    href: conflictSourceParents.length === 1 ? `/version-17/lcc/materials/manage-materials?folderId=${conflictSourceParentIds[0]}` : null
+                },
+                {
+                    label: 'To:',
+                    value: getFolderPathLabel(materials, destinationFolderId, data),
+                    href: `/version-17/lcc/materials/manage-materials?folderId=${destinationFolderId}`
+                }
+            ]
+        });
+
+        req.session.data.moveConflictLoading = true;
+        req.session.data.moveConflictMessage =
+            conflictingItems.length === 1
+                ? movedNames.length > 0
+                    ? '1 item with the same name already exists in this location.'
+                    : '1 item with the same name already exists in this location. No items were moved.'
+                : movedNames.length > 0
+                    ? `${conflictingItems.length} items with the same name already exist in this location.`
+                    : `${conflictingItems.length} items with the same name already exist in this location. No items were moved.`;
+        req.session.data.moveConflictItems = conflictingItems.map(item => item.name);
+        req.session.data.moveDestinationName = destinationFolderName;
     }
 
     // Clear selection state
@@ -4514,9 +4677,6 @@ router.post('/lcc/materials/copy-transfer-shared-drive-to-egress', function (req
 router.get('/includes/materials/clear-filters', function (req, res) {
 
     // Wipe all filter fields you use
-    req.session.data.filterUnread = null;
-    req.session.data.filterRead = null;
-
     req.session.data.filterStatusUsed = null;
     req.session.data.filterStatusUnused = null;
     req.session.data.filterStatusNone = null;
@@ -4699,51 +4859,6 @@ router.post('/lcc/materials/materials-search', function (req, res) {
 
     return res.redirect('/version-17/lcc/materials/03-case-overview');
 });
-
-
-
-// 4 February 2026
-router.post('/lcc/materials/mark-as-read', function (req, res) {
-    const ids = String(req.body.selected_ids || '')
-        .split(',')
-        .map(s => s.trim())
-        .filter(Boolean);
-
-    const materials = (req.session.data.materials || res.locals.data.materials || []);
-
-    materials.forEach(m => {
-        if (!m || m.folder) return; // only files
-        if (ids.includes(String(m.id))) {
-            m.new = false; // ✅ Mark as read
-        }
-    });
-
-    req.session.data.materials = materials;
-    req.session.data.markReadSuccess = true; // optional banner flag
-    res.redirect('/version-17/lcc/materials/03-case-overview');
-});
-
-
-router.post('/lcc/materials/mark-as-unread', function (req, res) {
-    const ids = String(req.body.selected_ids || '')
-        .split(',')
-        .map(s => s.trim())
-        .filter(Boolean);
-
-    const materials = (req.session.data.materials || res.locals.data.materials || []);
-
-    materials.forEach(m => {
-        if (!m || m.folder) return; // only files
-        if (ids.includes(String(m.id))) {
-            m.new = true; // ✅ Mark as unread
-        }
-    });
-
-    req.session.data.materials = materials;
-    req.session.data.markUnreadSuccess = true; // optional banner flag
-    res.redirect('/version-17/lcc/materials/03-case-overview');
-});
-
 
 
 

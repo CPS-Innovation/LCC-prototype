@@ -139,9 +139,6 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
                         {% endif %}
 
                         </button>
-                        <!-- {% if folder.new == true %}
-                            <strong class="govuk-tag govuk-tag--blue">Unread</strong>
-                        {% endif %} -->
                     </div>
                 </form>
             </td>
@@ -193,18 +190,10 @@ GROUPED SEARCH RESULTS — SINGLE TABLE OUTPUT
                             <div class="material-name">
                                 {{ m.name | highlight(data.filtersSearch) | safe }}
                             </div>
-                            {% if m.new %}
-                            <span class="has-new-tag">
-                                <strong class="govuk-tag govuk-tag--blue">Unread</strong>
-                            </span>
-                            {% endif %}
 
                             {% if flashRenamedIdSafe and m.id is defined and (m.id ~ '') == flashRenamedIdSafe %}
                             <strong class="govuk-tag govuk-tag--green govuk-!-margin-left-1">Renamed</strong>
                             {% endif %}
-                            <!-- {% if folder.new == true %}
-                            <strong class="govuk-tag govuk-tag--blue">Unread</strong>
-                        {% endif %} -->
                         </div>
                     </form>
 
