@@ -11,11 +11,9 @@
 
   <form action="/ur-apr-2026/includes/materials/materials-filter" method="post" novalidate>
     {% if 
-      data['filterUnread'] 
-      or data['filterRead'] 
-      or data['filterStatusUsed'] 
-      or data['filterStatusUnused'] 
-      or data['filterStatusNone'] 
+      data['filterStatusUsed']
+      or data['filterStatusUnused']
+      or data['filterStatusNone']
     %}
 
     <div class="selected-filters-panel">
@@ -24,28 +22,6 @@
         <h3 class="govuk-heading-m">Selected filters</h3>
         <a href="/ur-apr-2026/includes/materials/clear-filters" class="selected-clear-link">Clear</a>
       </div>
-
-      <!-- Unread -->
-      {% if data['filterUnread'] or data['filterRead'] %}
-      <div class="filter-section">
-        <h4 class="govuk-heading-s filter-section-title">Unread materials</h4>
-
-        {% if data['filterUnread'] %}
-        <a href="/ur-apr-2026/includes/materials/clear-filter?type=filterUnread" class="filter-chip">
-          Show unread
-          <span class="chip-remove">×</span>
-        </a>
-        {% endif %}
-
-        {% if data['filterRead'] %}
-        <a href="/ur-apr-2026/includes/materials/clear-filter?type=filterRead" class="filter-chip">
-          Show read
-          <span class="chip-remove">×</span>
-        </a>
-        {% endif %}
-
-      </div>
-      {% endif %}
 
       <!-- Status -->
       {% if data['filterStatusUsed'] or data['filterStatusUnused'] or data['filterStatusNone'] %}
@@ -139,38 +115,6 @@
         </div>
       </div>        
       <!-- <p>debug: {{ data | dump }}</p> -->
-        <!-- Read status -->
-        <div class="govuk-form-group">
-          <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Unread materials</legend>
-            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
-
-              <div class="govuk-checkboxes__item">
-                <input class="govuk-checkboxes__input"
-                      id="filter_materials__Unread"
-                      name="filterUnread"
-                      type="checkbox"
-                      value="Unread"
-                      {% if data['filterUnread'] %}checked{% endif %}>
-                <label class="govuk-label govuk-checkboxes__label"
-                      for="filter_materials__Unread">Show unread</label>
-              </div>
-
-              <div class="govuk-checkboxes__item">
-                <input class="govuk-checkboxes__input"
-                      id="filter_materials__Read"
-                      name="filterRead"
-                      type="checkbox"
-                      value="Read"
-                      {% if data['filterRead'] %}checked{% endif %}>
-                <label class="govuk-label govuk-checkboxes__label"
-                      for="filter_materials__Read">Show read</label>
-              </div>
-
-            </div>
-          </fieldset>
-        </div>
-
         <!-- 2 - Status -->
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset">

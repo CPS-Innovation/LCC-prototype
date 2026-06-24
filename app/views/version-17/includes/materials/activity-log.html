@@ -140,12 +140,12 @@
                 <div class="hods-timeline__item">
                     {% set isTransferEntry = (entry.tag == 'Transfer') or (entry.title == 'Transfer from Egress to Shared Drive') %}
                     {% set entryTitle = entry.title | default('') | lower %}
-                    {% set inferredStatusTag = 'Completed' if ('copied' in entryTitle or 'renamed' in entryTitle or 'moved' in entryTitle or 'deleted' in entryTitle or 'connected' in entryTitle or 'disconnected' in entryTitle) else '' %}
+                    {% set inferredStatusTag = 'Completed' if ('not ' not in entryTitle and ('copied' in entryTitle or 'renamed' in entryTitle or 'moved' in entryTitle or 'deleted' in entryTitle or 'connected' in entryTitle or 'disconnected' in entryTitle)) else '' %}
                     {% set activityStatusTag = entry.statusTag | default(inferredStatusTag) %}
                     {% if entry.tag and not isTransferEntry %}
                     <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">{{ entry.tag }}</strong>
                     {% endif %}
-                    <h2 class="hods-timeline__title"{% if activityStatusTag %} style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;"{% endif %}>
+                    <h2 class="hods-timeline__title"{% if activityStatusTag %} style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;"{% endif %}>
                         <span>{{ entry.title }}</span>
                         {% if activityStatusTag %}
                         <strong class="govuk-tag govuk-tag--green" style="display: inline-block; vertical-align: middle;">
