@@ -45,6 +45,30 @@
             margin-bottom: 0;
         }
 
+        .tab-manage-materials-page .copy-conflict-actions li {
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 1.25;
+        }
+
+        .tab-manage-materials-page .copy-conflict-actions li:last-child {
+            margin-bottom: 0;
+        }
+
+        .tab-manage-materials-page .copy-conflict-message {
+            margin-bottom: 10px;
+        }
+
+        .tab-manage-materials-page .copy-conflict-items li {
+            margin-bottom: 10px;
+            padding: 0;
+            line-height: 1.4;
+        }
+
+        .tab-manage-materials-page .copy-conflict-items li:last-child {
+            margin-bottom: 0;
+        }
+
         #materials_column_2 #materials_Actions.hidden_buttons {
             left: 0;
             right: auto;
@@ -174,7 +198,19 @@
                         {% endif %}
                     </p>
 
-                    <p class="govuk-body">
+                    {% if copyPreviewTree and (copyPreviewTree | length) > 0 %}
+                    <details class="govuk-details govuk-!-margin-bottom-2" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">Show copied items</span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            {{ renderTree(copyPreviewTree) }}
+                        </div>
+                    </details>
+                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-4">
+                    {% endif %}
+
+                    <p class="govuk-body copy-conflict-message">
                         {% if (copyConflictItems | length) == 1 %}
                         1 item could not be copied because an item with the same name already exists in this location.
                         {% else %}
@@ -185,8 +221,7 @@
                     {% endif %}
 
                     {% if copyConflictItems and (copyConflictItems | length > 0) %}
-                    <p class="govuk-body govuk-!-margin-bottom-1"><strong>Existing items:</strong></p>
-                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-3">
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-3 copy-conflict-items">
                         {% for itemName in copyConflictItems %}
                         <li>{{ itemName }}</li>
                         {% endfor %}
@@ -194,21 +229,11 @@
                     {% endif %}
 
                     <p class="govuk-body govuk-!-margin-bottom-0">To continue you can:</p>
-                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-0">
-                        <li class="govuk-!-margin-bottom-0">rename the items you are copying</li>
-                        <li class="govuk-!-margin-bottom-0">choose a different location</li>
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-0 copy-conflict-actions">
+                        <li>rename the items you are copying</li>
+                        <li>choose a different location</li>
                     </ul>
 
-                    {% if copyPreviewTree and (copyPreviewTree | length) > 0 %}
-                    <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
-                        <summary class="govuk-details__summary">
-                            <span class="govuk-details__summary-text">Show copied materials</span>
-                        </summary>
-                        <div class="govuk-details__text">
-                            {{ renderTree(copyPreviewTree) }}
-                        </div>
-                    </details>
-                    {% endif %}
                 </div>
             </div>
             {% else %}

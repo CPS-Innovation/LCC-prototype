@@ -4276,7 +4276,12 @@ router.post('/lcc/materials/copy-material', function (req, res) {
 
         pushMaterialsActivity(req.session.data, {
             type: 'copy',
-            title: 'Items copied',
+            title: conflictingItems.length ? 'Some items were copied successfully' : 'Items copied',
+            ...(conflictingItems.length ? {
+                statusTag: 'Partially completed',
+                statusTagColour: 'orange',
+                conflictListItems: conflictingItems.map(item => item.name)
+            } : {}),
             listItems: copiedNames,
             previewTree: copyPreviewTree,
             sourceLines: [
@@ -4298,24 +4303,26 @@ router.post('/lcc/materials/copy-material', function (req, res) {
         const conflictSourceParents = [...new Set(conflictingItems.map(item => getFolderPathLabel(originalMaterials, item.parentId, data)))];
         const conflictSourceParentIds = [...new Set(conflictingItems.map(item => String(item.parentId ?? 0)))];
 
-        pushMaterialsActivity(req.session.data, {
-            type: 'copy',
-            title: 'Items not copied',
-            description: 'Files with the same name already exist in the destination.',
-            listItems: conflictingItems.map(item => item.name),
-            sourceLines: [
-                {
-                    label: 'From:',
-                    value: conflictSourceParents.length === 1 ? conflictSourceParents[0] : 'Multiple locations',
-                    href: conflictSourceParents.length === 1 ? `/version-17/lcc/materials/manage-materials?folderId=${conflictSourceParentIds[0]}` : null
-                },
-                {
-                    label: 'To:',
-                    value: getFolderPathLabel(materials, destinationFolderId, data),
-                    href: `/version-17/lcc/materials/manage-materials?folderId=${destinationFolderId}`
-                }
-            ]
-        });
+        if (!copiedNames.length) {
+            pushMaterialsActivity(req.session.data, {
+                type: 'copy',
+                title: 'Items not copied',
+                description: 'Files with the same name already exist in the destination.',
+                listItems: conflictingItems.map(item => item.name),
+                sourceLines: [
+                    {
+                        label: 'From:',
+                        value: conflictSourceParents.length === 1 ? conflictSourceParents[0] : 'Multiple locations',
+                        href: conflictSourceParents.length === 1 ? `/version-17/lcc/materials/manage-materials?folderId=${conflictSourceParentIds[0]}` : null
+                    },
+                    {
+                        label: 'To:',
+                        value: getFolderPathLabel(materials, destinationFolderId, data),
+                        href: `/version-17/lcc/materials/manage-materials?folderId=${destinationFolderId}`
+                    }
+                ]
+            });
+        }
 
         req.session.data.copyConflictLoading = true;
         req.session.data.copyConflictMessage =
