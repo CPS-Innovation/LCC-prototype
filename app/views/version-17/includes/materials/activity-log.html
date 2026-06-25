@@ -76,6 +76,12 @@
         padding-top: 8px;
     }
 
+    .materials-activity-partial-copy-divider {
+        clear: both;
+        display: block;
+        width: 100%;
+    }
+
     @media (max-width: 40.0525em) {
         .activity-log-search {
             display: block;
@@ -142,12 +148,19 @@
                     {% set entryTitle = entry.title | default('') | lower %}
                     {% set inferredStatusTag = 'Completed' if ('not ' not in entryTitle and ('copied' in entryTitle or 'renamed' in entryTitle or 'moved' in entryTitle or 'deleted' in entryTitle or 'connected' in entryTitle or 'disconnected' in entryTitle)) else '' %}
                     {% set activityStatusTag = entry.statusTag | default(inferredStatusTag) %}
+                    {% set activityStatusTagColour = entry.statusTagColour | default('green') %}
+                    {% set isPartialCopy = entry.type == 'copy' and entry.conflictListItems and (entry.conflictListItems | length > 0) %}
                     {% if entry.tag and not isTransferEntry %}
                     <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">{{ entry.tag }}</strong>
                     {% endif %}
                     <h2 class="hods-timeline__title"{% if activityStatusTag %} style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;"{% endif %}>
                         <span>{{ entry.title }}</span>
-                        {% if activityStatusTag %}
+                        {% if activityStatusTag and activityStatusTagColour == 'orange' %}
+                        <strong class="govuk-tag govuk-tag--orange" style="display: inline-block; vertical-align: middle;">
+                            {{ activityStatusTag }}
+                        </strong>
+                        {% endif %}
+                        {% if activityStatusTag and activityStatusTagColour != 'orange' %}
                         <strong class="govuk-tag govuk-tag--green" style="display: inline-block; vertical-align: middle;">
                             {{ activityStatusTag }}
                         </strong>
@@ -173,7 +186,39 @@
                         {% endfor %}
                     </div>
                     {% endif %}
-                    {% if entry.listItems and (entry.listItems | length > 0) %}
+                    {% if isPartialCopy %}
+                    <p class="govuk-body govuk-!-margin-bottom-2">
+                        {% if (entry.listItems | length) == 1 %}
+                        1 item was copied successfully.
+                        {% else %}
+                        {{ entry.listItems | length }} items were copied successfully.
+                        {% endif %}
+                    </p>
+                    {% if entry.previewTree and (entry.previewTree | length > 0) %}
+                    <details class="govuk-details govuk-!-margin-bottom-2" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">Show copied items</span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            {{ renderActivityTree(entry.previewTree) }}
+                        </div>
+                    </details>
+                    {% endif %}
+                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-4 materials-activity-partial-copy-divider">
+                    <p class="govuk-body govuk-!-margin-bottom-2">
+                        {% if (entry.conflictListItems | length) == 1 %}
+                        1 item could not be copied.
+                        {% else %}
+                        {{ entry.conflictListItems | length }} items could not be copied.
+                        {% endif %}
+                    </p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        {% for itemName in entry.conflictListItems %}
+                        <li>{{ itemName }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% if not isPartialCopy and entry.listItems and (entry.listItems | length > 0) %}
                     {% set useTree = entry.previewTree and (entry.previewTree | length > 0) %}
                     {% if isTransferEntry or ((entry.type == 'copy' or entry.type == 'move' or entry.type == 'delete' or entry.type == 'rename') and (entry.listItems | length > 5)) %}
                     <details class="govuk-details govuk-!-margin-bottom-2 materials-activity-details">
