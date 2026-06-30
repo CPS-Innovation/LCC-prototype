@@ -82,6 +82,16 @@
         width: 100%;
     }
 
+    .activity-log-results-summary {
+        display: inline-flex;
+        gap: 12px;
+        align-items: baseline;
+    }
+
+    .activity-log-results-summary[hidden] {
+        display: none;
+    }
+
     @media (max-width: 40.0525em) {
         .activity-log-search {
             display: block;
@@ -108,6 +118,10 @@
             </form>
         </div>
         <div class="section-content">
+            <p class="govuk-body activity-log-results-summary" id="activity-log-results-summary" hidden>
+                <span id="activity-log-results-summary-text"></span>
+                <a class="govuk-link" href="/version-17/lcc/materials/activity-log" id="activity-log-clear-search">Clear search</a>
+            </p>
             <p class="govuk-body" id="activity-log-no-results" hidden>No activity log entries match your search.</p>
             <div class="hods-timeline">
                 {% macro renderActivityTreeItems(nodes, prefix='') %}
@@ -146,10 +160,15 @@
                 <div class="hods-timeline__item">
                     {% set isTransferEntry = (entry.tag == 'Transfer') or (entry.title == 'Transfer from Egress to Shared Drive') %}
                     {% set entryTitle = entry.title | default('') | lower %}
-                    {% set inferredStatusTag = 'Completed' if ('not ' not in entryTitle and ('copied' in entryTitle or 'renamed' in entryTitle or 'moved' in entryTitle or 'deleted' in entryTitle or 'connected' in entryTitle or 'disconnected' in entryTitle)) else '' %}
+                    {% set isFailedActivity = ('not ' in entryTitle or 'could not' in entryTitle or 'failed' in entryTitle) and ('copied' in entryTitle or 'renamed' in entryTitle or 'moved' in entryTitle or 'deleted' in entryTitle or 'connected' in entryTitle or 'disconnected' in entryTitle) %}
+                    {% set isCompletedActivity = not isFailedActivity and ('copied' in entryTitle or 'renamed' in entryTitle or 'moved' in entryTitle or 'deleted' in entryTitle or 'connected' in entryTitle or 'disconnected' in entryTitle) %}
+                    {% set inferredStatusTag = 'Failed' if isFailedActivity else ('Completed' if isCompletedActivity else '') %}
+                    {% set inferredStatusTagColour = 'red' if isFailedActivity else 'green' %}
                     {% set activityStatusTag = entry.statusTag | default(inferredStatusTag) %}
-                    {% set activityStatusTagColour = entry.statusTagColour | default('green') %}
+                    {% set activityStatusTagColour = entry.statusTagColour | default(inferredStatusTagColour) %}
                     {% set isPartialCopy = entry.type == 'copy' and entry.conflictListItems and (entry.conflictListItems | length > 0) %}
+                    {% set isPartialMove = entry.type == 'move' and entry.conflictListItems and (entry.conflictListItems | length > 0) %}
+                    {% set isPartialCopyOrMove = isPartialCopy or isPartialMove %}
                     {% if entry.tag and not isTransferEntry %}
                     <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">{{ entry.tag }}</strong>
                     {% endif %}
@@ -160,7 +179,12 @@
                             {{ activityStatusTag }}
                         </strong>
                         {% endif %}
-                        {% if activityStatusTag and activityStatusTagColour != 'orange' %}
+                        {% if activityStatusTag and activityStatusTagColour == 'red' %}
+                        <strong class="govuk-tag govuk-tag--red" style="display: inline-block; vertical-align: middle;">
+                            {{ activityStatusTag }}
+                        </strong>
+                        {% endif %}
+                        {% if activityStatusTag and activityStatusTagColour != 'orange' and activityStatusTagColour != 'red' %}
                         <strong class="govuk-tag govuk-tag--green" style="display: inline-block; vertical-align: middle;">
                             {{ activityStatusTag }}
                         </strong>
@@ -186,30 +210,20 @@
                         {% endfor %}
                     </div>
                     {% endif %}
-                    {% if isPartialCopy %}
-                    <p class="govuk-body govuk-!-margin-bottom-2">
-                        {% if (entry.listItems | length) == 1 %}
-                        1 item was copied successfully.
-                        {% else %}
-                        {{ entry.listItems | length }} items were copied successfully.
-                        {% endif %}
-                    </p>
-                    {% if entry.previewTree and (entry.previewTree | length > 0) %}
-                    <details class="govuk-details govuk-!-margin-bottom-2" data-module="govuk-details">
-                        <summary class="govuk-details__summary">
-                            <span class="govuk-details__summary-text">Show copied items</span>
-                        </summary>
-                        <div class="govuk-details__text">
-                            {{ renderActivityTree(entry.previewTree) }}
-                        </div>
-                    </details>
-                    {% endif %}
-                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-4 materials-activity-partial-copy-divider">
+                    {% if isPartialCopyOrMove %}
                     <p class="govuk-body govuk-!-margin-bottom-2">
                         {% if (entry.conflictListItems | length) == 1 %}
+                        {% if isPartialMove %}
+                        1 item could not be moved.
+                        {% else %}
                         1 item could not be copied.
+                        {% endif %}
+                        {% else %}
+                        {% if isPartialMove %}
+                        {{ entry.conflictListItems | length }} items could not be moved.
                         {% else %}
                         {{ entry.conflictListItems | length }} items could not be copied.
+                        {% endif %}
                         {% endif %}
                     </p>
                     <ul class="govuk-list govuk-list--bullet">
@@ -217,8 +231,38 @@
                         <li>{{ itemName }}</li>
                         {% endfor %}
                     </ul>
+                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-4 materials-activity-partial-copy-divider">
+                    <p class="govuk-body govuk-!-margin-bottom-2">
+                        {% if (entry.listItems | length) == 1 %}
+                        {% if isPartialMove %}
+                        1 item was moved successfully.
+                        {% else %}
+                        1 item was copied successfully.
+                        {% endif %}
+                        {% else %}
+                        {% if isPartialMove %}
+                        {{ entry.listItems | length }} items were moved successfully.
+                        {% else %}
+                        {{ entry.listItems | length }} items were copied successfully.
+                        {% endif %}
+                        {% endif %}
+                    </p>
+                    {% if entry.previewTree and (entry.previewTree | length > 0) %}
+                    <details class="govuk-details govuk-!-margin-bottom-2" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            {% if isPartialMove %}
+                            <span class="govuk-details__summary-text">Show moved items</span>
+                            {% else %}
+                            <span class="govuk-details__summary-text">Show copied items</span>
+                            {% endif %}
+                        </summary>
+                        <div class="govuk-details__text">
+                            {{ renderActivityTree(entry.previewTree) }}
+                        </div>
+                    </details>
                     {% endif %}
-                    {% if not isPartialCopy and entry.listItems and (entry.listItems | length > 0) %}
+                    {% endif %}
+                    {% if not isPartialCopyOrMove and entry.listItems and (entry.listItems | length > 0) %}
                     {% set useTree = entry.previewTree and (entry.previewTree | length > 0) %}
                     {% if isTransferEntry or ((entry.type == 'copy' or entry.type == 'move' or entry.type == 'delete' or entry.type == 'rename') and (entry.listItems | length > 5)) %}
                     <details class="govuk-details govuk-!-margin-bottom-2 materials-activity-details">
@@ -1083,12 +1127,25 @@
 
         var searchForm = searchInput.closest('form');
         var activitySection = searchInput.closest('.section-wrapper');
+        var resultsSummary = activitySection ? activitySection.querySelector('#activity-log-results-summary') : null;
+        var resultsSummaryText = activitySection ? activitySection.querySelector('#activity-log-results-summary-text') : null;
+        var clearSearchLink = activitySection ? activitySection.querySelector('#activity-log-clear-search') : null;
         var noResultsMessage = activitySection ? activitySection.querySelector('#activity-log-no-results') : null;
         var timelineItems = activitySection ? Array.prototype.slice.call(activitySection.querySelectorAll('.hods-timeline__item')) : [];
         var searchTerm = new URLSearchParams(window.location.search).get('activitySearch') || '';
 
+        function escapeHtml(value) {
+            return value
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
         function filterActivityLog(term) {
-            var normalisedTerm = term.trim().toLowerCase();
+            var trimmedTerm = term.trim();
+            var normalisedTerm = trimmedTerm.toLowerCase();
             var visibleCount = 0;
 
             timelineItems.forEach(function (item) {
@@ -1101,8 +1158,16 @@
                 }
             });
 
+            if (resultsSummary) {
+                resultsSummary.hidden = !normalisedTerm;
+            }
+
+            if (resultsSummaryText) {
+                resultsSummaryText.innerHTML = visibleCount + ' ' + (visibleCount === 1 ? 'result' : 'results') + ' for <strong>' + escapeHtml(trimmedTerm) + '</strong>';
+            }
+
             if (noResultsMessage) {
-                noResultsMessage.hidden = !normalisedTerm || visibleCount > 0;
+                noResultsMessage.hidden = true;
             }
         }
 
@@ -1124,6 +1189,19 @@
 
                 window.history.replaceState({}, '', url);
                 filterActivityLog(term);
+            });
+        }
+
+        if (clearSearchLink) {
+            clearSearchLink.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                var url = new URL(window.location.href);
+                url.searchParams.delete('activitySearch');
+                window.history.replaceState({}, '', url);
+
+                searchInput.value = '';
+                filterActivityLog('');
             });
         }
     })();

@@ -2,6 +2,83 @@
 <!-- ///////////////////////////////// TAB 2 - CONTENT - START ///////////////////////////////// -->
 <div class="tab-manage-materials-page">
 
+    <style>
+        .tab-manage-materials-page .govuk-notification-banner,
+        .tab-manage-materials-page .govuk-error-summary,
+        .tab-manage-materials-page .moj-alert {
+            box-sizing: border-box;
+            width: 75%;
+        }
+
+        .tab-manage-materials-page .moj-alert {
+            padding: 20px;
+            border: 5px solid #f47738;
+            background: #ffffff;
+            color: #0b0c0c;
+        }
+
+        .tab-manage-materials-page .moj-alert .govuk-tag {
+            margin-bottom: 15px;
+        }
+
+        .tab-manage-materials-page .moj-alert a,
+        .tab-manage-materials-page .moj-alert a:visited {
+            color: #d54e00;
+        }
+
+        .tab-manage-materials-page .moj-alert a:hover {
+            color: #a83d00;
+        }
+
+        .tab-manage-materials-page .moj-alert a:focus {
+            color: #0b0c0c;
+        }
+
+        .tab-manage-materials-page .moj-alert__heading {
+            margin: 0 0 20px;
+            font-family: "GDS Transport", arial, sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .tab-manage-materials-page .moj-alert__content > :last-child {
+            margin-bottom: 0;
+        }
+
+        .tab-manage-materials-page .copy-conflict-actions li {
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 1.25;
+        }
+
+        .tab-manage-materials-page .copy-conflict-actions li:last-child {
+            margin-bottom: 0;
+        }
+
+        .tab-manage-materials-page .copy-conflict-message {
+            margin-bottom: 10px;
+        }
+
+        .tab-manage-materials-page .copy-conflict-items li {
+            margin-bottom: 10px;
+            padding: 0;
+            line-height: 1.4;
+        }
+
+        .tab-manage-materials-page .copy-conflict-items li:last-child {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 40.0525em) {
+            .tab-manage-materials-page .govuk-notification-banner,
+            .tab-manage-materials-page .govuk-error-summary,
+            .tab-manage-materials-page .moj-alert {
+                width: 100%;
+            }
+        }
+    </style>
+
     {% set searchTerm = data.filtersSearch | default('') %}
     {% set isSearchResults = (searchTerm | trim | length > 0) %}
 
@@ -74,7 +151,199 @@
             </ul>
             {% endmacro %}
 
+            {% if copyConflictPending %}
             {% if copySuccess %}
+            <div role="alert"
+                class="moj-alert moj-alert--warning moj-alert--with-heading govuk-!-margin-bottom-4"
+                aria-label="Warning: Some items could not be copied">
+                <div class="moj-alert__content">
+                    <strong class="govuk-tag govuk-tag--orange">Partially completed</strong>
+                    <h2 class="moj-alert__heading">Some items could not be copied</h2>
+
+                    <p class="govuk-body govuk-!-margin-top-4 copy-conflict-message">
+                        {% if (copyConflictItems | length) == 1 %}
+                        1 item could not be copied because an item with the same name already exists in this location.
+                        {% else %}
+                        {{ copyConflictItems | length }} items could not be copied because items with the same name already exist in this location.
+                        {% endif %}
+                    </p>
+
+                    {% if copyConflictItems and (copyConflictItems | length > 0) %}
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-3 copy-conflict-items">
+                        {% for itemName in copyConflictItems %}
+                        <li>{{ itemName }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                    <p class="govuk-body govuk-!-margin-bottom-0">To continue you can:</p>
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-0 copy-conflict-actions">
+                        <li>rename the items you are copying</li>
+                        <li>choose a different location</li>
+                    </ul>
+
+                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-4">
+
+                    <p class="govuk-body govuk-!-margin-top-4">
+                        {% if (copyList | length) == 1 %}
+                        1 item was copied successfully to
+                        {% else %}
+                        {{ copyList | length }} items were copied successfully to
+                        {% endif %}
+                        {% if copyDestinationName %}
+                        <a class="govuk-link"
+                            href="/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId={{ copyDestinationId }}">
+                            {{ copyDestinationName }}
+                        </a>.
+                        {% else %}
+                        <strong>Shared Drive: Thundercat</strong>.
+                        {% endif %}
+                    </p>
+
+                    {% if copyPreviewTree and (copyPreviewTree | length) > 0 %}
+                    <details class="govuk-details govuk-!-margin-bottom-2" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">Show copied items</span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            {{ renderTree(copyPreviewTree) }}
+                        </div>
+                    </details>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <div class="govuk-error-summary govuk-!-margin-bottom-4" data-module="govuk-error-summary">
+                <div role="alert">
+                    <h2 class="govuk-error-summary__title">Materials were not copied</h2>
+                    <div style="color:#0b0c0c; padding: 0 20px 20px;">
+                        <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-3">
+                            These materials were not copied because items with the same name already exist in this location:
+                        </p>
+                        {% if copyConflictItems and (copyConflictItems | length > 0) %}
+                        <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-3">
+                            {% for itemName in copyConflictItems %}
+                            <li>{{ itemName }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        <p class="govuk-body govuk-!-margin-bottom-0">
+                            Rename the files or choose a different location, then try again.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% elseif moveConflictPending %}
+            {% if moveSuccess %}
+            <div role="alert"
+                class="moj-alert moj-alert--warning moj-alert--with-heading govuk-!-margin-bottom-4"
+                aria-label="Warning: Some items could not be moved">
+                <div class="moj-alert__content">
+                    <strong class="govuk-tag govuk-tag--orange">Partially completed</strong>
+                    <h2 class="moj-alert__heading">Some items could not be moved</h2>
+
+                    <p class="govuk-body govuk-!-margin-top-4 copy-conflict-message">
+                        {% if (moveConflictItems | length) == 1 %}
+                        1 item could not be moved because an item with the same name already exists in this location.
+                        {% else %}
+                        {{ moveConflictItems | length }} items could not be moved because items with the same name already exist in this location.
+                        {% endif %}
+                    </p>
+
+                    {% if moveConflictItems and (moveConflictItems | length > 0) %}
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-3 copy-conflict-items">
+                        {% for itemName in moveConflictItems %}
+                        <li>{{ itemName }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                    <p class="govuk-body govuk-!-margin-bottom-0">To continue you can:</p>
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-0 copy-conflict-actions">
+                        <li>rename the items you are moving</li>
+                        <li>choose a different location</li>
+                    </ul>
+
+                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-4">
+
+                    <p class="govuk-body govuk-!-margin-top-4">
+                        {% if (moveList | length) == 1 %}
+                        1 item was moved successfully to
+                        {% else %}
+                        {{ moveList | length }} items were moved successfully to
+                        {% endif %}
+                        {% if moveDestinationName %}
+                        <a class="govuk-link"
+                            href="/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId={{ moveDestinationId }}">
+                            {{ moveDestinationName }}
+                        </a>.
+                        {% else %}
+                        <strong>Shared Drive: Thundercat</strong>.
+                        {% endif %}
+                    </p>
+
+                    {% if movePreviewTree and (movePreviewTree | length) > 0 %}
+                    <details class="govuk-details govuk-!-margin-bottom-2" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">Show moved items</span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            {{ renderTree(movePreviewTree) }}
+                        </div>
+                    </details>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <div class="govuk-error-summary govuk-!-margin-bottom-4" data-module="govuk-error-summary">
+                <div role="alert">
+                    <h2 class="govuk-error-summary__title">Materials were not moved</h2>
+                    <div style="color:#0b0c0c; padding: 0 20px 20px;">
+                        <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-3">
+                            These materials were not moved because items with the same name already exist in this location:
+                        </p>
+                        {% if moveConflictItems and (moveConflictItems | length > 0) %}
+                        <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-3">
+                            {% for itemName in moveConflictItems %}
+                            <li>{{ itemName }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        <p class="govuk-body govuk-!-margin-bottom-0">
+                            Rename the files or choose a different location, then try again.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% elseif renameBlockedLoadingName %}
+            <div class="govuk-notification-banner materials-notification--white govuk-!-margin-bottom-4"
+                role="status" aria-live="polite" id="rename-blocked-loading-panel">
+                <div class="govuk-notification-banner__content">
+                    <div class="hods-loading-spinner govuk-!-margin-bottom-3" id="rename-blocked-loading-spinner">
+                        <div class="hods-loading-spinner__spinner" aria-hidden="true"></div>
+                    </div>
+                    <h3 class="govuk-notification-banner__heading" id="rename-blocked-loading-heading">Renaming</h3>
+                    <div id="rename-blocked-loading-message"></div>
+                </div>
+            </div>
+            <script>
+                window.setTimeout(function () {
+                    var panel = document.getElementById('rename-blocked-loading-panel');
+                    var spinner = document.getElementById('rename-blocked-loading-spinner');
+                    var heading = document.getElementById('rename-blocked-loading-heading');
+                    var message = document.getElementById('rename-blocked-loading-message');
+
+                    if (panel) panel.setAttribute('role', 'alert');
+                    if (spinner) spinner.style.display = 'none';
+                    if (heading) heading.textContent = 'Material in use';
+                    if (message) {
+                        message.innerHTML = '<p class="govuk-body">Some items cannot be renamed because they are currently in use.</p><p class="govuk-body">The items may be in use by you or someone else working on the case.</p><p class="govuk-body">Close the items if you have them open. If not, wait until the items are no longer being used and try again.</p><ul class="govuk-list govuk-list--bullet"><li>{{ renameBlockedLoadingName }}</li></ul>';
+                    }
+                }, 10000);
+            </script>
+            {% elseif copySuccess %}
             <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white govuk-!-margin-bottom-4"
                 role="alert" data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">

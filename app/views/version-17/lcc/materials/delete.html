@@ -90,15 +90,33 @@ Delete documents – {{ serviceName }} – Prototype
                <form novalidate method="post" action="/version-17/lcc/materials/discard-material">
                     <input type="hidden" name="material_selected" value="{{ data['material_selected'] }}">
 
-                    <div class="govuk-form-group">
-                         <fieldset class="govuk-fieldset" aria-describedby="changeCategory-hint">
-                              <h1 class="govuk-heading-l">Delete files or folders</h1>
+                    {% if data.deleteChoiceError %}
+                    <div class="govuk-error-summary" data-module="govuk-error-summary">
+                         <div role="alert">
+                              <h2 class="govuk-error-summary__title">
+                                   There is a problem
+                              </h2>
+                              <div class="govuk-error-summary__body">
+                                   <ul class="govuk-list govuk-error-summary__list">
+                                        <li>
+                                             <a href="#delete-choice">{{ data.deleteChoiceError }}</a>
+                                        </li>
+                                   </ul>
+                              </div>
+                         </div>
+                    </div>
+                    {% endif %}
 
-                              <p class="govuk-body">You cannot recover files or folders after you delete them.
+                    <div class="govuk-form-group{% if data.deleteChoiceError %} govuk-form-group--error{% endif %}">
+                         <fieldset class="govuk-fieldset" aria-describedby="delete-choice-hint{% if data.deleteChoiceError %} delete-choice-error{% endif %}">
+                              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                   <h1 class="govuk-fieldset__heading">Delete files or folders</h1>
+                              </legend>
+
+                              <p id="delete-choice-hint" class="govuk-body">You cannot recover files or folders after you delete them.
                               Deleting a folder will also delete everything inside it.</p>
                               <p class="govuk-body">If the file or folder is shared, other users will no longer be able
                                    to access it.</p>
-                              <p class="govuk-body">Are you sure you want to permanently delete these items?</p>
 
                               {% if data.deleteItemsPreviewTree and (data.deleteItemsPreviewTree | length > 0) %}
                               {% if data.deleteItemsCount > 5 %}
@@ -117,13 +135,35 @@ Delete documents – {{ serviceName }} – Prototype
                               {{ renderDeleteTree(data.deleteItemsPreviewTree) }}
                               {% endif %}
                               {% endif %}
+
+                              {% if data.deleteChoiceError %}
+                              <p id="delete-choice-error" class="govuk-error-message">
+                                   <span class="govuk-visually-hidden">Error:</span> {{ data.deleteChoiceError }}
+                              </p>
+                              {% endif %}
+                              <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-top-6">Are you sure you want to permanently delete these items?</p>
+
+                              <div class="govuk-radios" data-module="govuk-radios">
+                                   <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="delete-choice" name="delete-choice" type="radio" value="Yes"
+                                             {% if data['delete-choice'] == 'Yes' %}checked{% endif %}>
+                                        <label class="govuk-label govuk-radios__label" for="delete-choice">
+                                             Yes, delete these items
+                                        </label>
+                                   </div>
+                                   <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="delete-choice-2" name="delete-choice" type="radio" value="No"
+                                             {% if data['delete-choice'] == 'No' %}checked{% endif %}>
+                                        <label class="govuk-label govuk-radios__label" for="delete-choice-2">
+                                             No, keep these items
+                                        </label>
+                                   </div>
+                              </div>
                          </fieldset>
                     </div>
 
                     <div class="govuk-button-group">
-                         <input id="discarding_material_COMPLETED" name="discarding_material_COMPLETED" type="text"
-                              value="true" style="display: none;">
-                         <button class="govuk-button" data-module="govuk-button">Delete items</button>
+                         <button class="govuk-button" data-module="govuk-button">Continue</button>
                          <a class="govuk-link" href="03-case-overview">Cancel</a>
                     </div>
                </form>

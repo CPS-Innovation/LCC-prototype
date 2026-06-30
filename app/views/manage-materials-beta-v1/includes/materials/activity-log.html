@@ -42,13 +42,78 @@
     .materials-activity-details[open] .materials-activity-details__label--hide {
         display: inline;
     }
+
+    .activity-log-search {
+        align-items: flex-start;
+        display: flex;
+        gap: 8px;
+        margin-bottom: 0;
+        max-width: 560px;
+        padding: 12px 20px;
+    }
+
+    .activity-log-search .govuk-form-group {
+        display: block !important;
+        flex: 1;
+        float: none !important;
+        margin: 0 !important;
+        width: auto !important;
+    }
+
+    .activity-log-search .govuk-input {
+        height: 40px;
+    }
+
+    .activity-log-search .govuk-button {
+        box-sizing: border-box;
+        height: 40px;
+        line-height: 1;
+        margin-bottom: 0;
+        margin-top: 0;
+        padding-bottom: 8px;
+        padding-top: 8px;
+    }
+
+    .materials-activity-partial-copy-divider {
+        clear: both;
+        display: block;
+        width: 100%;
+    }
+
+    .activity-log-results-summary {
+        display: inline-flex;
+        gap: 12px;
+        align-items: baseline;
+    }
+
+    .activity-log-results-summary[hidden] {
+        display: none;
+    }
+
+    @media (max-width: 40.0525em) {
+        .activity-log-search {
+            display: block;
+        }
+
+        .activity-log-search .govuk-button {
+            margin-top: 10px;
+        }
+    }
 </style>
 
 <div class="section-wrapper">
 
     <section>
         <div class="title-wrapper">
-            <h3 class="govuk-heading-s">Activity</h3>
+            <form class="activity-log-search" method="get" action="/manage-materials-beta-v1/B-off-system-MVP/activity-log">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-visually-hidden" for="activity-log-search">
+                        Search activity log
+                    </label>
+                    <input class="govuk-input" id="activity-log-search" name="activitySearch" type="search" value="{{ data.activitySearch | default('') }}">
+                </div>
+                <button type="submit" class="govuk-button" data-module="govuk-button">Search</button>
+            </form>
 
             <!--             <div class="govuk-form-group search">
                 <label class="govuk-label search-label" for="searchCMS_URN">Search Off System cases</label>
@@ -69,6 +134,11 @@
  -->
         </div>
         <div class="section-content">
+            <p class="govuk-body activity-log-results-summary" id="activity-log-results-summary" hidden>
+                <span id="activity-log-results-summary-text"></span>
+                <a class="govuk-link" href="/manage-materials-beta-v1/B-off-system-MVP/activity-log" id="activity-log-clear-search">Clear search</a>
+            </p>
+            <p class="govuk-body" id="activity-log-no-results" hidden>No activity log entries match your search.</p>
             <div class="hods-timeline">
                 {% macro renderActivityTreeItems(nodes, prefix='') %}
                     {% for node in nodes %}
@@ -104,14 +174,38 @@
 
                 {% for entry in activityLog %}
                 <div class="hods-timeline__item">
-                    {% if entry.tag %}
+                    {% set isTransferEntry = (entry.tag == 'Transfer') or (entry.title == 'Transfer from Egress to Shared Drive') %}
+                    {% set entryTitle = entry.title | default('') | lower %}
+                    {% set isFailedActivity = ('not ' in entryTitle or 'could not' in entryTitle or 'failed' in entryTitle) and ('copied' in entryTitle or 'renamed' in entryTitle or 'moved' in entryTitle or 'deleted' in entryTitle or 'connected' in entryTitle or 'disconnected' in entryTitle) %}
+                    {% set isCompletedActivity = not isFailedActivity and ('copied' in entryTitle or 'renamed' in entryTitle or 'moved' in entryTitle or 'deleted' in entryTitle or 'connected' in entryTitle or 'disconnected' in entryTitle) %}
+                    {% set inferredStatusTag = 'Failed' if isFailedActivity else ('Completed' if isCompletedActivity else '') %}
+                    {% set inferredStatusTagColour = 'red' if isFailedActivity else 'green' %}
+                    {% set activityStatusTag = entry.statusTag | default(inferredStatusTag) %}
+                    {% set activityStatusTagColour = entry.statusTagColour | default(inferredStatusTagColour) %}
+                    {% set isPartialCopy = entry.type == 'copy' and entry.conflictListItems and (entry.conflictListItems | length > 0) %}
+                    {% set isPartialMove = entry.type == 'move' and entry.conflictListItems and (entry.conflictListItems | length > 0) %}
+                    {% set isPartialCopyOrMove = isPartialCopy or isPartialMove %}
+                    {% if entry.tag and not isTransferEntry %}
                     <strong class="govuk-tag govuk-tag--grey" style="display: inline-block;">{{ entry.tag }}</strong>
                     {% endif %}
-                    {% if entry.statusTag %}
-                    <strong class="govuk-tag govuk-tag--green" style="display: inline-block;">{{ entry.statusTag
-                        }}</strong>
-                    {% endif %}
-                    <h2 class="hods-timeline__title">{{ entry.title }}</h2>
+                    <h2 class="hods-timeline__title"{% if activityStatusTag %} style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;"{% endif %}>
+                        <span>{{ entry.title }}</span>
+                        {% if activityStatusTag and activityStatusTagColour == 'orange' %}
+                        <strong class="govuk-tag govuk-tag--orange" style="display: inline-block; vertical-align: middle;">
+                            {{ activityStatusTag }}
+                        </strong>
+                        {% endif %}
+                        {% if activityStatusTag and activityStatusTagColour == 'red' %}
+                        <strong class="govuk-tag govuk-tag--red" style="display: inline-block; vertical-align: middle;">
+                            {{ activityStatusTag }}
+                        </strong>
+                        {% endif %}
+                        {% if activityStatusTag and activityStatusTagColour != 'orange' and activityStatusTagColour != 'red' %}
+                        <strong class="govuk-tag govuk-tag--green" style="display: inline-block; vertical-align: middle;">
+                            {{ activityStatusTag }}
+                        </strong>
+                        {% endif %}
+                    </h2>
                     <div style="clear: both; display: block; margin-top: 4px; margin-bottom: 10px;">
                         <p class="govuk-body-s" style="margin: 0; color: #484949;">{{ entry.dateLabel }} by {{ entry.byEmail }}</p>
                     </div>
@@ -132,7 +226,59 @@
                         {% endfor %}
                     </div>
                     {% endif %}
-                    {% if entry.listItems and (entry.listItems | length > 0) %}
+                    {% if isPartialCopyOrMove %}
+                    <p class="govuk-body govuk-!-margin-bottom-2">
+                        {% if (entry.conflictListItems | length) == 1 %}
+                        {% if isPartialMove %}
+                        1 item could not be moved.
+                        {% else %}
+                        1 item could not be copied.
+                        {% endif %}
+                        {% else %}
+                        {% if isPartialMove %}
+                        {{ entry.conflictListItems | length }} items could not be moved.
+                        {% else %}
+                        {{ entry.conflictListItems | length }} items could not be copied.
+                        {% endif %}
+                        {% endif %}
+                    </p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        {% for itemName in entry.conflictListItems %}
+                        <li>{{ itemName }}</li>
+                        {% endfor %}
+                    </ul>
+                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-4 materials-activity-partial-copy-divider">
+                    <p class="govuk-body govuk-!-margin-bottom-2">
+                        {% if (entry.listItems | length) == 1 %}
+                        {% if isPartialMove %}
+                        1 item was moved successfully.
+                        {% else %}
+                        1 item was copied successfully.
+                        {% endif %}
+                        {% else %}
+                        {% if isPartialMove %}
+                        {{ entry.listItems | length }} items were moved successfully.
+                        {% else %}
+                        {{ entry.listItems | length }} items were copied successfully.
+                        {% endif %}
+                        {% endif %}
+                    </p>
+                    {% if entry.previewTree and (entry.previewTree | length > 0) %}
+                    <details class="govuk-details govuk-!-margin-bottom-2" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            {% if isPartialMove %}
+                            <span class="govuk-details__summary-text">Show moved items</span>
+                            {% else %}
+                            <span class="govuk-details__summary-text">Show copied items</span>
+                            {% endif %}
+                        </summary>
+                        <div class="govuk-details__text">
+                            {{ renderActivityTree(entry.previewTree) }}
+                        </div>
+                    </details>
+                    {% endif %}
+                    {% endif %}
+                    {% if not isPartialCopyOrMove and entry.listItems and (entry.listItems | length > 0) %}
                     {% set useTree = entry.previewTree and (entry.previewTree | length > 0) %}
                     {% if (entry.type == 'copy' or entry.type == 'move' or entry.type == 'delete' or entry.type == 'rename') and (entry.listItems | length > 5) %}
                     <details class="govuk-details govuk-!-margin-bottom-2 materials-activity-details">
@@ -977,3 +1123,93 @@
     </section>
 
 </div>
+
+<script>
+    (function () {
+        var searchInput = document.getElementById('activity-log-search');
+
+        if (!searchInput) {
+            return;
+        }
+
+        var searchForm = searchInput.closest('form');
+        var activitySection = searchInput.closest('.section-wrapper');
+        var resultsSummary = activitySection ? activitySection.querySelector('#activity-log-results-summary') : null;
+        var resultsSummaryText = activitySection ? activitySection.querySelector('#activity-log-results-summary-text') : null;
+        var clearSearchLink = activitySection ? activitySection.querySelector('#activity-log-clear-search') : null;
+        var noResultsMessage = activitySection ? activitySection.querySelector('#activity-log-no-results') : null;
+        var timelineItems = activitySection ? Array.prototype.slice.call(activitySection.querySelectorAll('.hods-timeline__item')) : [];
+        var searchTerm = new URLSearchParams(window.location.search).get('activitySearch') || '';
+
+        function escapeHtml(value) {
+            return value
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function filterActivityLog(term) {
+            var trimmedTerm = term.trim();
+            var normalisedTerm = trimmedTerm.toLowerCase();
+            var visibleCount = 0;
+
+            timelineItems.forEach(function (item) {
+                var itemText = item.textContent.toLowerCase();
+                var matches = !normalisedTerm || itemText.indexOf(normalisedTerm) !== -1;
+                item.style.display = matches ? '' : 'none';
+
+                if (matches) {
+                    visibleCount += 1;
+                }
+            });
+
+            if (resultsSummary) {
+                resultsSummary.hidden = !normalisedTerm;
+            }
+
+            if (resultsSummaryText) {
+                resultsSummaryText.innerHTML = visibleCount + ' ' + (visibleCount === 1 ? 'result' : 'results') + ' for <strong>' + escapeHtml(trimmedTerm) + '</strong>';
+            }
+
+            if (noResultsMessage) {
+                noResultsMessage.hidden = true;
+            }
+        }
+
+        searchInput.value = searchTerm;
+        filterActivityLog(searchTerm);
+
+        if (searchForm) {
+            searchForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                var term = searchInput.value;
+                var url = new URL(window.location.href);
+
+                if (term.trim()) {
+                    url.searchParams.set('activitySearch', term.trim());
+                } else {
+                    url.searchParams.delete('activitySearch');
+                }
+
+                window.history.replaceState({}, '', url);
+                filterActivityLog(term);
+            });
+        }
+
+        if (clearSearchLink) {
+            clearSearchLink.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                var url = new URL(window.location.href);
+                url.searchParams.delete('activitySearch');
+                window.history.replaceState({}, '', url);
+
+                searchInput.value = '';
+                filterActivityLog('');
+            });
+        }
+    })();
+</script>

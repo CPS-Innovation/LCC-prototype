@@ -3244,20 +3244,62 @@ router.post('/lcc/materials/discard-material', function (req, res) {
         ? [...new Set(req.body.material_selected.split(',').map(s => s.trim()).filter(Boolean))]
         : [];
 
+    const deleteChoice = (req.body['delete-choice'] || '').trim();
     const reason = req.body.discarding_material;
 
     const materials = req.session.data.materials || [];
 
-    // If folders should remove descendants too, expand IDs:
-    const toRemove = new Set(selected.map(String));
+    // If nothing selected, just go back safely.
+    if (!selected.length) {
+        return res.redirect('/version-17/lcc/materials/03-case-overview');
+    }
 
-    // Build parent -> children map
+    // Build parent -> children map.
     const byParent = new Map();
     materials.forEach(m => {
         const p = m.parentId ?? null;
         if (!byParent.has(String(p))) byParent.set(String(p), []);
         byParent.get(String(p)).push(String(m.id));
     });
+
+    // Build preview tree from the current selection for rerender/error state.
+    const selectedSet = new Set(selected.map(String));
+    const selectedStack = [...selectedSet];
+    while (selectedStack.length) {
+        const id = selectedStack.pop();
+        const kids = byParent.get(String(id)) || [];
+        kids.forEach(kid => {
+            if (!selectedSet.has(kid)) {
+                selectedSet.add(kid);
+                selectedStack.push(kid);
+            }
+        });
+    }
+
+    const selectedItems = materials.filter(m => selectedSet.has(String(m.id)));
+    const selectedRootIds = [...new Set(selectedItems
+        .filter(item => !selectedSet.has(String(item.parentId)))
+        .map(item => String(item.id)))];
+
+    if (!deleteChoice) {
+        return res.render('version-17/lcc/materials/delete', {
+            data: {
+                ...req.session.data,
+                ...req.body,
+                material_selected: req.body.material_selected || '',
+                deleteItemsPreviewTree: buildPreviewTree(materials, selectedRootIds),
+                deleteItemsCount: selectedItems.length,
+                deleteChoiceError: 'Select whether you want to delete these items'
+            }
+        });
+    }
+
+    if (deleteChoice === 'No') {
+        return res.redirect('/version-17/lcc/materials/03-case-overview');
+    }
+
+    // If folders should remove descendants too, expand IDs.
+    const toRemove = new Set(selected.map(String));
 
     // BFS/DFS down the tree
     const stack = [...toRemove];
@@ -4449,7 +4491,12 @@ router.post('/lcc/materials/move-material', function (req, res) {
 
         pushMaterialsActivity(req.session.data, {
             type: 'move',
-            title: 'Items moved',
+            title: conflictingItems.length ? 'Some items were moved successfully' : 'Items moved',
+            ...(conflictingItems.length ? {
+                statusTag: 'Partially completed',
+                statusTagColour: 'orange',
+                conflictListItems: conflictingItems.map(item => item.name)
+            } : {}),
             listItems: movedNames,
             previewTree: movePreviewTree,
             sourceLines: [
@@ -4471,24 +4518,26 @@ router.post('/lcc/materials/move-material', function (req, res) {
         const conflictSourceParents = [...new Set(conflictingItems.map(item => getFolderPathLabel(originalMaterials, item.parentId, data)))];
         const conflictSourceParentIds = [...new Set(conflictingItems.map(item => String(item.parentId ?? 0)))];
 
-        pushMaterialsActivity(req.session.data, {
-            type: 'move',
-            title: 'Items not moved',
-            description: 'Files with the same name already exist in the destination.',
-            listItems: conflictingItems.map(item => item.name),
-            sourceLines: [
-                {
-                    label: 'From:',
-                    value: conflictSourceParents.length === 1 ? conflictSourceParents[0] : 'Multiple locations',
-                    href: conflictSourceParents.length === 1 ? `/version-17/lcc/materials/manage-materials?folderId=${conflictSourceParentIds[0]}` : null
-                },
-                {
-                    label: 'To:',
-                    value: getFolderPathLabel(materials, destinationFolderId, data),
-                    href: `/version-17/lcc/materials/manage-materials?folderId=${destinationFolderId}`
-                }
-            ]
-        });
+        if (!movedNames.length) {
+            pushMaterialsActivity(req.session.data, {
+                type: 'move',
+                title: 'Items not moved',
+                description: 'Files with the same name already exist in the destination.',
+                listItems: conflictingItems.map(item => item.name),
+                sourceLines: [
+                    {
+                        label: 'From:',
+                        value: conflictSourceParents.length === 1 ? conflictSourceParents[0] : 'Multiple locations',
+                        href: conflictSourceParents.length === 1 ? `/version-17/lcc/materials/manage-materials?folderId=${conflictSourceParentIds[0]}` : null
+                    },
+                    {
+                        label: 'To:',
+                        value: getFolderPathLabel(materials, destinationFolderId, data),
+                        href: `/version-17/lcc/materials/manage-materials?folderId=${destinationFolderId}`
+                    }
+                ]
+            });
+        }
 
         req.session.data.moveConflictLoading = true;
         req.session.data.moveConflictMessage =
