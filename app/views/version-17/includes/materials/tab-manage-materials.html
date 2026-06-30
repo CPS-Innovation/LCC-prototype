@@ -178,10 +178,36 @@
                 class="moj-alert moj-alert--warning moj-alert--with-heading govuk-!-margin-bottom-4"
                 aria-label="Warning: Some items could not be copied">
                 <div class="moj-alert__content">
-                    <strong class="govuk-tag govuk-tag--orange">Partially copied</strong>
+                    <strong class="govuk-tag govuk-tag--orange">Partially completed</strong>
                     <h2 class="moj-alert__heading">Some items could not be copied</h2>
 
                     {% if copySuccess %}
+                    <p class="govuk-body govuk-!-margin-top-4 copy-conflict-message">
+                        {% if (copyConflictItems | length) == 1 %}
+                        1 item could not be copied because an item with the same name already exists in this location.
+                        {% else %}
+                        {{ copyConflictItems | length }} items could not be copied because items with the same name already exist in this location.
+                        {% endif %}
+                    </p>
+
+                    {% endif %}
+
+                    {% if copyConflictItems and (copyConflictItems | length > 0) %}
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-3 copy-conflict-items">
+                        {% for itemName in copyConflictItems %}
+                        <li>{{ itemName }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                    <p class="govuk-body govuk-!-margin-bottom-0">To continue you can:</p>
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-0 copy-conflict-actions">
+                        <li>rename the items you are copying</li>
+                        <li>choose a different location</li>
+                    </ul>
+
+                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-4">
+
                     <p class="govuk-body govuk-!-margin-top-4">
                         {% if (copyList | length) == 1 %}
                         1 item was copied successfully to
@@ -207,32 +233,7 @@
                             {{ renderTree(copyPreviewTree) }}
                         </div>
                     </details>
-                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-4">
                     {% endif %}
-
-                    <p class="govuk-body copy-conflict-message">
-                        {% if (copyConflictItems | length) == 1 %}
-                        1 item could not be copied because an item with the same name already exists in this location.
-                        {% else %}
-                        {{ copyConflictItems | length }} items could not be copied because items with the same names already exist in this location.
-                        {% endif %}
-                    </p>
-
-                    {% endif %}
-
-                    {% if copyConflictItems and (copyConflictItems | length > 0) %}
-                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-3 copy-conflict-items">
-                        {% for itemName in copyConflictItems %}
-                        <li>{{ itemName }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-
-                    <p class="govuk-body govuk-!-margin-bottom-0">To continue you can:</p>
-                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-0 copy-conflict-actions">
-                        <li>rename the items you are copying</li>
-                        <li>choose a different location</li>
-                    </ul>
 
                 </div>
             </div>
@@ -275,8 +276,33 @@
                 class="moj-alert moj-alert--warning moj-alert--with-heading govuk-!-margin-bottom-4"
                 aria-label="Warning: Some items could not be moved">
                 <div class="moj-alert__content">
-                    <strong class="govuk-tag govuk-tag--orange">Partially moved</strong>
+                    <strong class="govuk-tag govuk-tag--orange">Partially completed</strong>
                     <h2 class="moj-alert__heading">Some items could not be moved</h2>
+
+                    <p class="govuk-body govuk-!-margin-top-4 copy-conflict-message">
+                        {% if (moveConflictItems | length) == 1 %}
+                        1 item could not be moved because an item with the same name already exists in this location.
+                        {% else %}
+                        {{ moveConflictItems | length }} items could not be moved because items with the same name already exist in this location.
+                        {% endif %}
+                    </p>
+
+                    {% if moveConflictItems and (moveConflictItems | length > 0) %}
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-3 copy-conflict-items">
+                        {% for itemName in moveConflictItems %}
+                        <li>{{ itemName }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                    <p class="govuk-body govuk-!-margin-bottom-0">To continue you can:</p>
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-0 copy-conflict-actions">
+                        <li>rename the items you are moving</li>
+                        <li>choose a different location</li>
+                    </ul>
+
+                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-4">
+
                     <p class="govuk-body govuk-!-margin-top-4">
                         {% if (moveList | length) == 1 %}
                         1 item was moved successfully to
@@ -293,29 +319,10 @@
                         {% endif %}
                     </p>
 
-                    <p class="govuk-body">
-                        {% if (moveConflictItems | length) == 1 %}
-                        1 item could not be moved because an item with the same name already exists in this location.
-                        {% else %}
-                        {{ moveConflictItems | length }} items could not be moved because items with the same names already exist in this location.
-                        {% endif %}
-                    </p>
-
-                    {% if moveConflictItems and (moveConflictItems | length > 0) %}
-                    <p class="govuk-body govuk-!-margin-bottom-1"><strong>Existing items:</strong></p>
-                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-3">
-                        {% for itemName in moveConflictItems %}
-                        <li>{{ itemName }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-
-                    <p class="govuk-body">Rename the files or choose a different location, then try again.</p>
-
                     {% if movePreviewTree and (movePreviewTree | length) > 0 %}
-                    <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
+                    <details class="govuk-details govuk-!-margin-bottom-2" data-module="govuk-details">
                         <summary class="govuk-details__summary">
-                            <span class="govuk-details__summary-text">Show moved materials</span>
+                            <span class="govuk-details__summary-text">Show moved items</span>
                         </summary>
                         <div class="govuk-details__text">
                             {{ renderTree(movePreviewTree) }}
@@ -370,7 +377,7 @@
                     if (spinner) spinner.style.display = 'none';
                     if (heading) heading.textContent = 'Material in use';
                     if (message) {
-                        message.innerHTML = '<p class="govuk-body">Some materials cannot be renamed because they are in use.</p><p class="govuk-body">Close the items and then try again.</p><ul class="govuk-list govuk-list--bullet"><li>{{ renameBlockedLoadingName }}</li></ul>';
+                        message.innerHTML = '<p class="govuk-body">Some items cannot be renamed because they are currently in use.</p><p class="govuk-body">The items may be in use by you or someone else working on the case.</p><p class="govuk-body">Close the items if you have them open. If not, wait until the items are no longer being used and try again.</p><ul class="govuk-list govuk-list--bullet"><li>{{ renameBlockedLoadingName }}</li></ul>';
                     }
                 }, 10000);
             </script>
@@ -428,26 +435,27 @@
                         The materials have been moved
                     </h3>
 
-                    {% if moveDestinationName %}
                     <p class="govuk-body">
-                        They are in:
+                        {% if (moveList | length) == 1 %}
+                        1 item was moved successfully to
+                        {% else %}
+                        {{ moveList | length }} items were moved successfully to
+                        {% endif %}
+                        {% if moveDestinationName %}
                         <a class="govuk-link"
                             href="/version-17/lcc/materials/manage-materials?folderId={{ moveDestinationId }}">
                             {{ moveDestinationName }}
-                        </a>
+                        </a>.
+                        {% else %}
+                        <strong>Shared Drive: {{ caseName | default('Thundercat') }}</strong>.
+                        {% endif %}
                     </p>
-                    {% else %}
-                    <p class="govuk-body">
-                        They are in:
-                        <strong>Shared Drive: {{ caseName | default('Thundercat') }}</strong>
-                    </p>
-                    {% endif %}
 
                     {% if movePreviewTree and (movePreviewTree | length) > 0 %}
                     <details class="govuk-details govuk-!-margin-top-2" data-module="govuk-details">
                         <summary class="govuk-details__summary">
                             <span class="govuk-details__summary-text">
-                                Show moved materials
+                                Show moved items
                             </span>
                         </summary>
                         <div class="govuk-details__text">

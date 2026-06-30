@@ -18,6 +18,31 @@ router.use((req, res, next) => {
         req.session.data.materialsBetaV1Session = JSON.parse(JSON.stringify(defaults));
     }
 
+    const hasFileAInLawyerWorkingCopies = req.session.data.materialsBetaV1Session.some(item =>
+        item &&
+        !item.folder &&
+        item.name === 'File A' &&
+        Number(item.parentId) === 1007
+    );
+
+    if (!hasFileAInLawyerWorkingCopies) {
+        req.session.data.materialsBetaV1Session.push({
+            id: 'beta-file-a',
+            name: 'File A',
+            order: '',
+            description: 'Summary of the body worn video showing victims injuries',
+            type: 'Exhibit list – MG12',
+            date: '1 Jul 2024',
+            status: 'Used',
+            new: false,
+            docLink: 'MG00.pdf',
+            previewLink: '/public/files/blank.pdf',
+            parentId: 1007,
+            folder: false,
+            level: 3
+        });
+    }
+
     Object.defineProperty(req.session.data, 'materials', {
         get() {
             return this.materialsBetaV1Session;
@@ -1333,9 +1358,14 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     const copySuccess = data.copySuccess === true;
     const moveSuccess = data.moveSuccess === true;
     const deleteSuccess = data.deleteSuccess === true;
+    const copyConflictPending = data.copyConflictPending === true;
+    const moveConflictPending = data.moveConflictPending === true;
 
     const copyList = data.copyList || [];
     const moveList = data.moveList || [];
+    const copyConflictItems = data.copyConflictItems || [];
+    const moveConflictItems = data.moveConflictItems || [];
+    const renameBlockedLoadingName = data.renameBlockedLoadingName || '';
 
     const copyDestinationName = data.copyDestinationName || null;
     const moveDestinationName = data.moveDestinationName || null;
@@ -1354,8 +1384,13 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
     req.session.data.copySuccess = false;
     req.session.data.moveSuccess = false;
     req.session.data.deleteSuccess = false;
+    req.session.data.copyConflictPending = false;
+    req.session.data.moveConflictPending = false;
     req.session.data.copyList = [];
     req.session.data.moveList = [];
+    req.session.data.copyConflictItems = [];
+    req.session.data.moveConflictItems = [];
+    req.session.data.renameBlockedLoadingName = '';
     req.session.data.copyDestinationName = null;
     req.session.data.moveDestinationName = null;
     req.session.data.copyPreviewTree = [];
@@ -1690,8 +1725,13 @@ router.get('/B-off-system-MVP/03-case-overview', function (req, res) {
         copySuccess,
         moveSuccess,
         deleteSuccess,
+        copyConflictPending,
+        moveConflictPending,
         copyList,
         moveList,
+        copyConflictItems,
+        moveConflictItems,
+        renameBlockedLoadingName,
         copyDestinationName,
         moveDestinationName,
         copyPreviewTree,
@@ -1950,21 +1990,62 @@ router.post('/B-off-system-MVP/discard-material', function (req, res) {
         ? [...new Set(req.body.material_selected.split(',').map(s => s.trim()).filter(Boolean))]
         : [];
 
+    const deleteChoice = (req.body['delete-choice'] || '').trim();
     const reason = req.body.discarding_material;
 
-    // SOURCE OF TRUTH (v12)
     const materials = req.session.data.materials || [];
 
-    // If folders should remove descendants too, expand IDs:
-    const toRemove = new Set(selected.map(String));
+    // If nothing selected, just go back safely.
+    if (!selected.length) {
+        return res.redirect('/manage-materials-beta-v1/B-off-system-MVP/03-case-overview');
+    }
 
-    // Build parent -> children map
+    // Build parent -> children map.
     const byParent = new Map();
     materials.forEach(m => {
         const p = m.parentId ?? null;
         if (!byParent.has(String(p))) byParent.set(String(p), []);
         byParent.get(String(p)).push(String(m.id));
     });
+
+    // Build preview tree from the current selection for rerender/error state.
+    const selectedSet = new Set(selected.map(String));
+    const selectedStack = [...selectedSet];
+    while (selectedStack.length) {
+        const id = selectedStack.pop();
+        const kids = byParent.get(String(id)) || [];
+        kids.forEach(kid => {
+            if (!selectedSet.has(kid)) {
+                selectedSet.add(kid);
+                selectedStack.push(kid);
+            }
+        });
+    }
+
+    const selectedItems = materials.filter(m => selectedSet.has(String(m.id)));
+    const selectedRootIds = [...new Set(selectedItems
+        .filter(item => !selectedSet.has(String(item.parentId)))
+        .map(item => String(item.id)))];
+
+    if (!deleteChoice) {
+        return res.render('manage-materials-beta-v1/B-off-system-MVP/delete', {
+            data: {
+                ...req.session.data,
+                ...req.body,
+                material_selected: req.body.material_selected || '',
+                deleteItemsPreviewTree: buildPreviewTree(materials, selectedRootIds),
+                deleteItemsCount: selectedItems.length,
+                deleteChoiceError: 'Select whether you want to delete these items'
+            }
+        });
+    }
+
+    if (deleteChoice === 'No') {
+        return res.redirect('/manage-materials-beta-v1/B-off-system-MVP/03-case-overview');
+    }
+
+    // If folders should remove descendants too, expand IDs:
+    const toRemove = new Set(selected.map(String));
 
     // BFS/DFS down the tree
     const stack = [...toRemove];
@@ -2185,10 +2266,21 @@ router.post('/B-off-system-MVP/rename-multiple-save', function (req, res) {
     });
 
     const renamedEntries = [];
+    const blockedRenameEntries = [];
 
     materials.forEach(item => {
         const id = String(item.id);
         if (updates[id] !== undefined && updates[id] !== '') {
+            if (
+                item &&
+                !item.folder &&
+                item.name === 'File A' &&
+                Number(item.parentId) === 1007
+            ) {
+                blockedRenameEntries.push(item);
+                return;
+            }
+
             renamedEntries.push({
                 item,
                 oldName: item.name,
@@ -2199,7 +2291,7 @@ router.post('/B-off-system-MVP/rename-multiple-save', function (req, res) {
     });
 
     req.session.data.materials = materials;
-    req.session.data.flashRenamedIds = Object.keys(updates).filter(id => updates[id]);
+    req.session.data.flashRenamedIds = renamedEntries.map(entry => String(entry.item.id));
 
     if (renamedEntries.length) {
         const locationPaths = [...new Set(renamedEntries.map(entry => getFolderPathLabel(materials, entry.item.parentId)))];
@@ -2233,6 +2325,12 @@ router.post('/B-off-system-MVP/rename-multiple-save', function (req, res) {
                 }
             ]
         });
+    }
+
+    if (blockedRenameEntries.length) {
+        req.session.data.renameBlockedLoadingName = blockedRenameEntries.map(item => item.name).join(', ');
+        const blockedFolderId = blockedRenameEntries[0].parentId ?? 0;
+        return res.redirect(`/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=${encodeURIComponent(blockedFolderId)}`);
     }
 
     return res.redirect('/manage-materials-beta-v1/B-off-system-MVP/03-case-overview');
@@ -2281,6 +2379,16 @@ router.post('/B-off-system-MVP/rename', function (req, res) {
             item,
             error: 'Enter a name'
         });
+    }
+
+    if (
+        item &&
+        !item.folder &&
+        item.name === 'File A' &&
+        Number(item.parentId) === 1007
+    ) {
+        req.session.data.renameBlockedLoadingName = item.name;
+        return res.redirect(`/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=${encodeURIComponent(item.parentId ?? 0)}`);
     }
 
     const oldName = item.name;
@@ -2604,9 +2712,22 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
     const destFolder = materials.find(m => String(m.id) === String(destinationFolderId));
     if (destFolder) destinationFolderName = destFolder.name;
 
-    const copyPreviewTree = buildPreviewTree(originalMaterials, ids);
+    const destinationChildren = materials.filter(
+        item => String(item.parentId ?? '') === String(destinationFolderId)
+    );
+    const destinationChildNames = new Set(
+        destinationChildren.map(item => String(item.name || '').trim().toLowerCase())
+    );
+    const conflictingItems = ids
+        .map(id => materials.find(item => String(item.id) === String(id)))
+        .filter(Boolean)
+        .filter(item => destinationChildNames.has(String(item.name || '').trim().toLowerCase()));
+    const conflictingIdSet = new Set(conflictingItems.map(item => String(item.id)));
+    const idsToCopy = ids.filter(id => !conflictingIdSet.has(String(id)));
 
-    ids.forEach(id => {
+    const copyPreviewTree = buildPreviewTree(originalMaterials, idsToCopy);
+
+    idsToCopy.forEach(id => {
         const original = materials.find(m => String(m.id) === id);
         if (!original) return;
 
@@ -2644,10 +2765,10 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
     req.session.data.copyList = copiedNames;
     req.session.data.copyDestinationName = destinationFolderName;
     req.session.data.copyPreviewTree = copyPreviewTree;
-    req.session.data.copySuccess = true;
+    req.session.data.copySuccess = copiedNames.length > 0;
 
     if (copiedNames.length) {
-        const sourceItems = ids
+        const sourceItems = idsToCopy
             .map(id => originalMaterials.find(m => String(m.id) === String(id)))
             .filter(Boolean);
         const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
@@ -2655,7 +2776,12 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
 
         pushMaterialsActivity(req.session.data, {
             type: 'copy',
-            title: 'Items copied',
+            title: conflictingItems.length ? 'Some items were copied successfully' : 'Items copied',
+            ...(conflictingItems.length ? {
+                statusTag: 'Partially completed',
+                statusTagColour: 'orange',
+                conflictListItems: conflictingItems.map(item => item.name)
+            } : {}),
             // title: `${copiedNames.length === 1 ? copiedNames[0] : `${copiedNames.length} items`} ${copiedNames.length === 1 ? 'has' : 'have'} been copied to ${destinationFolderName || 'Shared Drive: Thundercat'} on the shared drive`,
             // description: 'Below is a list of documents and folders copied:',
             listItems: copiedNames,
@@ -2673,6 +2799,36 @@ router.post('/B-off-system-MVP/copy-material', function (req, res) {
                 }
             ]
         });
+    }
+
+    if (conflictingItems.length) {
+        const conflictSourceParents = [...new Set(conflictingItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const conflictSourceParentIds = [...new Set(conflictingItems.map(item => String(item.parentId ?? 0)))];
+
+        if (!copiedNames.length) {
+            pushMaterialsActivity(req.session.data, {
+                type: 'copy',
+                title: 'Items not copied',
+                description: 'Files with the same name already exist in the destination.',
+                listItems: conflictingItems.map(item => item.name),
+                sourceLines: [
+                    {
+                        label: 'From:',
+                        value: conflictSourceParents.length === 1 ? conflictSourceParents[0] : 'Multiple locations',
+                        href: conflictSourceParents.length === 1 ? `/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=${conflictSourceParentIds[0]}` : null
+                    },
+                    {
+                        label: 'To:',
+                        value: getFolderPathLabel(materials, destinationFolderId),
+                        href: `/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
+                    }
+                ]
+            });
+        }
+
+        req.session.data.copyConflictPending = true;
+        req.session.data.copyConflictItems = conflictingItems.map(item => item.name);
+        req.session.data.copyDestinationName = destinationFolderName;
     }
 
     // Clear selection state
@@ -2714,15 +2870,28 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
     // Snapshot BEFORE mutation
     const originalMaterials = materials.map(item => ({ ...item }));
 
-    // ✅ Build preview tree BEFORE moving anything (for the success banner)
-    const movePreviewTree = buildPreviewTree(originalMaterials, ids);
-
     const movedNames = [];
 
     const destFolder = materials.find(m => String(m.id) === String(destinationFolderId));
     const destinationFolderName = destFolder ? destFolder.name : null;
 
-    ids.forEach(id => {
+    const destinationChildren = materials.filter(
+        item => String(item.parentId ?? '') === String(destinationFolderId)
+    );
+    const destinationChildNames = new Set(
+        destinationChildren.map(item => String(item.name || '').trim().toLowerCase())
+    );
+    const conflictingItems = ids
+        .map(id => materials.find(item => String(item.id) === String(id)))
+        .filter(Boolean)
+        .filter(item => destinationChildNames.has(String(item.name || '').trim().toLowerCase()));
+    const conflictingIdSet = new Set(conflictingItems.map(item => String(item.id)));
+    const idsToMove = ids.filter(id => !conflictingIdSet.has(String(id)));
+
+    // ✅ Build preview tree BEFORE moving anything (for the success banner)
+    const movePreviewTree = buildPreviewTree(originalMaterials, idsToMove);
+
+    idsToMove.forEach(id => {
         const original = materials.find(m => String(m.id) === String(id));
         if (!original) return;
 
@@ -2747,10 +2916,10 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
     req.session.data.moveList = movedNames;
     req.session.data.moveDestinationName = destinationFolderName;
     req.session.data.movePreviewTree = movePreviewTree;
-    req.session.data.moveSuccess = true;
+    req.session.data.moveSuccess = movedNames.length > 0;
 
     if (movedNames.length) {
-        const sourceItems = ids
+        const sourceItems = idsToMove
             .map(id => originalMaterials.find(m => String(m.id) === String(id)))
             .filter(Boolean);
         const sourceParents = [...new Set(sourceItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
@@ -2758,7 +2927,12 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
 
         pushMaterialsActivity(req.session.data, {
             type: 'move',
-            title: 'Items moved',
+            title: conflictingItems.length ? 'Some items were moved successfully' : 'Items moved',
+            ...(conflictingItems.length ? {
+                statusTag: 'Partially completed',
+                statusTagColour: 'orange',
+                conflictListItems: conflictingItems.map(item => item.name)
+            } : {}),
             // title: `${movedNames.length === 1 ? movedNames[0] : `${movedNames.length} items`} ${movedNames.length === 1 ? 'has' : 'have'} been moved to ${destinationFolderName || 'Shared Drive: Thundercat'} on the shared drive`,
             // description: 'Below is a list of documents and folders moved:',
             listItems: movedNames,
@@ -2776,6 +2950,36 @@ router.post('/B-off-system-MVP/move-material', function (req, res) {
                 }
             ]
         });
+    }
+
+    if (conflictingItems.length) {
+        const conflictSourceParents = [...new Set(conflictingItems.map(item => getFolderPathLabel(originalMaterials, item.parentId)))];
+        const conflictSourceParentIds = [...new Set(conflictingItems.map(item => String(item.parentId ?? 0)))];
+
+        if (!movedNames.length) {
+            pushMaterialsActivity(req.session.data, {
+                type: 'move',
+                title: 'Items not moved',
+                description: 'Files with the same name already exist in the destination.',
+                listItems: conflictingItems.map(item => item.name),
+                sourceLines: [
+                    {
+                        label: 'From:',
+                        value: conflictSourceParents.length === 1 ? conflictSourceParents[0] : 'Multiple locations',
+                        href: conflictSourceParents.length === 1 ? `/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=${conflictSourceParentIds[0]}` : null
+                    },
+                    {
+                        label: 'To:',
+                        value: getFolderPathLabel(materials, destinationFolderId),
+                        href: `/manage-materials-beta-v1/B-off-system-MVP/03-case-overview?folderId=${destinationFolderId}`
+                    }
+                ]
+            });
+        }
+
+        req.session.data.moveConflictPending = true;
+        req.session.data.moveConflictItems = conflictingItems.map(item => item.name);
+        req.session.data.moveDestinationName = destinationFolderName;
     }
 
     // Clear selection state
