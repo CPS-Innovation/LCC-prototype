@@ -1922,7 +1922,7 @@ function setRegisterCaseRegistered(data) {
 router.post('/lcc/register-case/071-setup-folders', function (req, res) {
     req.session.data.addMaterials = req.body['add-materials']
     if (req.session.data.addMaterials === 'Yes') {
-        res.redirect('/version-17/lcc/materials/04A-create-or-link-folders')
+        res.redirect('/version-17/lcc/register-case/10-egress-setup')
     }
     else {
         res.redirect('/version-17/lcc/register-case/08-check-answers')
@@ -1930,25 +1930,120 @@ router.post('/lcc/register-case/071-setup-folders', function (req, res) {
 })
 
 router.get('/lcc/register-case/09-confirmation', function (req, res) {
-    setRegisterCaseRegistered(req.session.data)
-    res.render('version-17/lcc/register-case/09-confirmation')
+    res.redirect('/version-17/lcc/register-case/09-case-registered')
 })
 
 router.get('/lcc/register-case/09-confirmation.html', function (req, res) {
+    res.redirect('/version-17/lcc/register-case/09-case-registered')
+})
+
+router.get('/lcc/register-case/09-case-registered', function (req, res) {
     setRegisterCaseRegistered(req.session.data)
-    res.render('version-17/lcc/register-case/09-confirmation')
+    res.render('version-17/lcc/register-case/09-case-registered')
+})
+
+router.get('/lcc/register-case/09-case-registered.html', function (req, res) {
+    setRegisterCaseRegistered(req.session.data)
+    res.render('version-17/lcc/register-case/09-case-registered')
+})
+
+router.get('/lcc/register-case/10-confirmation', function (req, res) {
+    setRegisterCaseRegistered(req.session.data)
+    res.render('version-17/lcc/register-case/10-confirmation')
+})
+
+router.get('/lcc/register-case/10-confirmation.html', function (req, res) {
+    setRegisterCaseRegistered(req.session.data)
+    res.render('version-17/lcc/register-case/10-confirmation')
 })
 
 router.post('/lcc/register-case/09-confirmation', function (req, res) {
+    res.redirect(307, '/version-17/lcc/register-case/09-case-registered')
+})
+
+router.post('/lcc/register-case/09-case-registered', function (req, res) {
     setRegisterCaseRegistered(req.session.data)
     req.session.data.addMaterials = req.body['add-materials']
 
     if (req.session.data.addMaterials === 'Yes') {
-        res.redirect('/version-17/lcc/materials/04A-create-or-link-folders')
+        res.redirect('/version-17/lcc/register-case/10-egress-setup')
     }
     else {
-        res.redirect('/version-17/lcc/register-case/00-homepage')
+        res.redirect('/version-17/lcc/register-case/10-confirmation')
     }
+})
+
+function redirectRegisterCaseMaterialsConfirmation(req, res) {
+    if (req.session.data.existingEgressFolder === 1 && req.session.data.existingDriveFolder === 1) {
+        res.redirect('/version-17/lcc/register-case/connect-both-confirmation')
+    }
+    else if (req.session.data.newEgressFolder === 1 || req.session.data.existingEgressFolder === 1 || req.session.data.newDriveFolder === 1 || req.session.data.existingDriveFolder === 1) {
+        res.redirect('/version-17/lcc/register-case/create-both-confirmation')
+    }
+    else {
+        res.redirect('/version-17/lcc/register-case/10-confirmation')
+    }
+}
+
+router.post('/lcc/register-case/10-egress-setup', function (req, res) {
+    req.session.data.newEgressFolder = 0
+    req.session.data.existingEgressFolder = 0
+    req.session.data.egress_file_link = ''
+
+    if (req.body['egress-folder-options'] === 'Create new Egress folders') {
+        req.session.data.newEgressFolder = 1
+        setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressCreatedAt')
+        res.redirect('/version-17/lcc/register-case/11-shared-drive-setup')
+    }
+    else if (req.body['egress-folder-options'] === 'Connect Egress folders') {
+        req.session.data.existingEgressFolder = 1
+        res.redirect('/version-17/lcc/register-case/10-egress-files')
+    }
+    else {
+        res.redirect('/version-17/lcc/register-case/11-shared-drive-setup')
+    }
+})
+
+router.post('/lcc/register-case/10-create-egress-folder', function (req, res) {
+    req.session.data.egressTemplate = req.body['egress-template']
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressCreatedAt')
+    res.redirect('/version-17/lcc/register-case/11-shared-drive-setup')
+})
+
+router.post('/lcc/register-case/10-egress-files-connected', function (req, res) {
+    req.session.data.egress_file_link = req.body.egress_file_link
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressLinkedAt')
+    res.redirect('/version-17/lcc/register-case/11-shared-drive-setup')
+})
+
+router.post('/lcc/register-case/11-shared-drive-setup', function (req, res) {
+    req.session.data.newDriveFolder = 0
+    req.session.data.existingDriveFolder = 0
+    req.session.data.pdrive_file_link = ''
+
+    if (req.body['shared-drive-folder-options'] === 'Create new Shared Drive folders') {
+        req.session.data.newDriveFolder = 1
+        res.redirect('/version-17/lcc/register-case/11-create-shared-drive-folder')
+    }
+    else if (req.body['shared-drive-folder-options'] === 'Connect Shared Drive folders') {
+        req.session.data.existingDriveFolder = 1
+        res.redirect('/version-17/lcc/register-case/11-shared-drive-files')
+    }
+    else {
+        redirectRegisterCaseMaterialsConfirmation(req, res)
+    }
+})
+
+router.post('/lcc/register-case/11-create-shared-drive-folder', function (req, res) {
+    req.session.data.sharedDriveTemplate = req.body['shared-drive-template']
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseSharedDriveCreatedAt')
+    redirectRegisterCaseMaterialsConfirmation(req, res)
+})
+
+router.post('/lcc/register-case/11-shared-drive-files-connected', function (req, res) {
+    req.session.data.pdrive_file_link = req.body.pdrive_file_link
+    setRegisterCaseTimestamp(req.session.data, 'registerCaseSharedDriveLinkedAt')
+    redirectRegisterCaseMaterialsConfirmation(req, res)
 })
 
 router.get('/lcc/register-case/case-details-placeholder', function (req, res) {
