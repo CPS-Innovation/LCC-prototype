@@ -1755,7 +1755,7 @@ const createMaterialsUtils = require('../../helpers/materials.js');
 function getActivityActor(data) {
     return {
         name: data['offCMS_Username'] || 'dwight_schrute',
-        email: data['urUser'] || 'usability.testing.session@cps.gov.uk'
+        email: data['urUser'] || 'usability.testing.session@test.gov.uk'
     };
 }
 

@@ -1993,7 +1993,7 @@ router.post('/lcc/register-case/10-egress-setup', function (req, res) {
     if (req.body['egress-folder-options'] === 'Create new Egress folders') {
         req.session.data.newEgressFolder = 1
         setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressCreatedAt')
-        res.redirect('/version-17/lcc/register-case/11-shared-drive-setup')
+        res.redirect('/version-17/lcc/register-case/10-egress-confirmation')
     }
     else if (req.body['egress-folder-options'] === 'Connect Egress folders') {
         req.session.data.existingEgressFolder = 1
@@ -2007,12 +2007,16 @@ router.post('/lcc/register-case/10-egress-setup', function (req, res) {
 router.post('/lcc/register-case/10-create-egress-folder', function (req, res) {
     req.session.data.egressTemplate = req.body['egress-template']
     setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressCreatedAt')
-    res.redirect('/version-17/lcc/register-case/11-shared-drive-setup')
+    res.redirect('/version-17/lcc/register-case/10-egress-confirmation')
 })
 
 router.post('/lcc/register-case/10-egress-files-connected', function (req, res) {
     req.session.data.egress_file_link = req.body.egress_file_link
     setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressLinkedAt')
+    res.redirect('/version-17/lcc/register-case/10-egress-confirmation')
+})
+
+router.post('/lcc/register-case/10-egress-confirmation', function (req, res) {
     res.redirect('/version-17/lcc/register-case/11-shared-drive-setup')
 })
 
@@ -2335,7 +2339,7 @@ const createMaterialsUtils = require('../../helpers/materials.js');
 function getActivityActor(data) {
     return {
         name: data['offCMS_Username'] || 'dwight_schrute',
-        email: data['urUser'] || 'usability.testing.session@cps.gov.uk'
+        email: data['urUser'] || 'usability.testing.session@test.gov.uk'
     };
 }
 

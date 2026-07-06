@@ -15,7 +15,7 @@
         <fieldset class="govuk-fieldset">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
             <h1 class="govuk-fieldset__heading">
-              What do you want to do with Egress?
+              How do you want to use Egress?
             </h1>
           </legend>
 
@@ -30,14 +30,14 @@
             <div class="govuk-radios__item">
               <input class="govuk-radios__input" id="connect-egress" name="egress-folder-options" type="radio" value="Connect Egress folders" {% if data['existingEgressFolder'] == 1 %}checked{% endif %}>
               <label class="govuk-label govuk-radios__label" for="connect-egress">
-                Link Egress
+                Connect an existing Egress case
               </label>
             </div>
 
             <div class="govuk-radios__item">
               <input class="govuk-radios__input" id="skip-egress" name="egress-folder-options" type="radio" value="Do not set up Egress">
               <label class="govuk-label govuk-radios__label" for="skip-egress">
-                Do not set up Egress
+                This case does not need Egress
               </label>
             </div>
           </div>
