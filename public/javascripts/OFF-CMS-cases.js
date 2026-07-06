@@ -1591,7 +1591,7 @@ $(document).ready(function () {
                             <tr class="govuk-table__row">
                                 <th scope="row" class="govuk-table__header">
                                     <a onclick="return openEA();" id="">EIA-Template-V1-2024.docm</a><br>
-                                    <span class="added-by">created by user.name@cps.gov.uk, today at 12:05pm</span><br>
+                                    <span class="added-by">created by user.name@test.gov.uk, today at 12:05pm</span><br>
                                     <strong class="govuk-tag govuk-tag--green govuk-!-margin-top-2">Document</strong>
                                     <strong class="govuk-tag govuk-tag--grey govuk-!-margin-top-2">Version 1</strong>
                                 </th>

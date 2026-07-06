@@ -46,20 +46,20 @@ router.use((req, res, next) => {
 
 function getStaticMaterialsActivityEntries(materials = []) {
     const source = String.raw`Items deleted
-Yesterday at 4:00pm by meredith.palmer@cps.gov.uk
+Yesterday at 4:00pm by meredith.palmer@test.gov.uk
 Location: Shared Drive: Thundercat > 4. Counsel
 • file_0_1.docx
 • file_0_2.docx
 • file_0_3.docx
 
 Items renamed
-Yesterday at 1:45pm by pam.beesly@cps.gov.uk
+Yesterday at 1:45pm by pam.beesly@test.gov.uk
 Location: Shared Drive: Thundercat > 4. Counsel
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 
 Items deleted
-Yesterday at 1:00pm by pam.beesly@cps.gov.uk
+Yesterday at 1:00pm by pam.beesly@test.gov.uk
 Location: Shared Drive: Thundercat > 4. Counsel
 • file_2_1.docx
 • file_2_2.docx
@@ -68,30 +68,30 @@ Location: Shared Drive: Thundercat > 4. Counsel
 • file_2_5.docx
 
 Item deleted
-Yesterday at 12:00pm by dwight_schrute@cps.gov.uk
+Yesterday at 12:00pm by dwight_schrute@test.gov.uk
 Location: Shared Drive: Thundercat > 1. Case management
 • file_3_1.docx
 
 Items renamed
-Yesterday at 11:00am by jordan.ellis@cps.gov.uk
+Yesterday at 11:00am by jordan.ellis@test.gov.uk
 Location: Shared Drive: Thundercat > 15. IDPC
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 
 Items renamed
-Yesterday at 8:45am by sarah.khan@cps.gov.uk
+Yesterday at 8:45am by sarah.khan@test.gov.uk
 Location: Shared Drive: Thundercat > 10. Police
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 • file_3.docx → file_3_v2.docx
 
 Items renamed
-Yesterday at 8:30am by sarah.khan@cps.gov.uk
+Yesterday at 8:30am by sarah.khan@test.gov.uk
 Location: Shared Drive: Thundercat > 3. Experts
 • file_1.docx → file_1_v2.docx
 
 Items not copied
-08 May 2026 at 11.05am by kelly.kapoor@cps.gov.uk
+08 May 2026 at 11.05am by kelly.kapoor@test.gov.uk
 Files with the same name already exist in the destination.
 From: Shared Drive: Thundercat > 6. Disclosure
 To: Shared Drive: Thundercat > 12. Victims and Witnesses
@@ -99,21 +99,21 @@ To: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_7_2.docx
 
 Items moved
-08 May 2026 at 10:45am by pam.beesly@cps.gov.uk
+08 May 2026 at 10:45am by pam.beesly@test.gov.uk
 From: Shared Drive: Thundercat > 5. Correspondence
 To: Shared Drive: Thundercat > 3. Experts
 • file_8_1.docx
 • file_8_2.docx
 
 Items copied
-07 May 2026 at 1:15pm by sarah.khan@cps.gov.uk
+07 May 2026 at 1:15pm by sarah.khan@test.gov.uk
 From: Shared Drive: Thundercat > 3. Experts
 To: Shared Drive: Thundercat > 11. Media
 • file_9_1.docx
 • file_9_2.docx
 
 Items deleted
-06 May 2026 at 4:45pm by meredith.palmer@cps.gov.uk
+06 May 2026 at 4:45pm by meredith.palmer@test.gov.uk
 Location: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_10_1.docx
 • file_10_2.docx
@@ -121,7 +121,7 @@ Location: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_10_4.docx
 
 Items deleted
-05 May 2026 at 1:15pm by sarah.khan@cps.gov.uk
+05 May 2026 at 1:15pm by sarah.khan@test.gov.uk
 Location: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_11_1.docx
 • file_11_2.docx
@@ -130,7 +130,7 @@ Location: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_11_5.docx
 
 Items copied
-04 May 2026 at 3:30pm by oscar.martinez@cps.gov.uk
+04 May 2026 at 3:30pm by oscar.martinez@test.gov.uk
 From: Shared Drive: Thundercat > 6. Disclosure
 To: Shared Drive: Thundercat > 11. Media
 • file_12_1.docx
@@ -138,12 +138,12 @@ To: Shared Drive: Thundercat > 11. Media
 • file_12_3.docx
 
 Items deleted
-04 May 2026 at 11:30am by meredith.palmer@cps.gov.uk
+04 May 2026 at 11:30am by meredith.palmer@test.gov.uk
 Location: Shared Drive: Thundercat > 4. Counsel
 • file_13_1.docx
 
 Items moved
-04 May 2026 at 8:15am by kevin.malone@cps.gov.uk
+04 May 2026 at 8:15am by kevin.malone@test.gov.uk
 From: Shared Drive: Thundercat > 1. Case management
 To: Shared Drive: Thundercat > 6. Disclosure
 • file_14_1.docx
@@ -151,14 +151,14 @@ To: Shared Drive: Thundercat > 6. Disclosure
 • file_14_3.docx
 
 Items moved
-04 May 2026 at 8:00am by sarah.khan@cps.gov.uk
+04 May 2026 at 8:00am by sarah.khan@test.gov.uk
 From: Shared Drive: Thundercat > 15. IDPC
 To: Shared Drive: Thundercat > 7. Finance
 • file_15_1.docx
 • file_15_2.docx
 
 Items copied
-03 May 2026 at 5:00pm by meredith.palmer@cps.gov.uk
+03 May 2026 at 5:00pm by meredith.palmer@test.gov.uk
 From: Shared Drive: Thundercat > 12. Victims and Witnesses
 To: Shared Drive: Thundercat > 14. Magistrates Court
 • file_16_1.docx
@@ -167,18 +167,18 @@ To: Shared Drive: Thundercat > 14. Magistrates Court
 • file_16_4.docx
 
 Items renamed
-03 May 2026 at 9:00am by pam.beesly@cps.gov.uk
+03 May 2026 at 9:00am by pam.beesly@test.gov.uk
 Location: Shared Drive: Thundercat > 6. Disclosure
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 
 Items renamed
-01 May 2026 at 6:30pm by kelly.kapoor@cps.gov.uk
+01 May 2026 at 6:30pm by kelly.kapoor@test.gov.uk
 Location: Shared Drive: Thundercat > 10. Police
 • file_1.docx → file_1_v2.docx
 
 Items deleted
-01 May 2026 at 6:00pm by jordan.ellis@cps.gov.uk
+01 May 2026 at 6:00pm by jordan.ellis@test.gov.uk
 Location: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_19_1.docx
 • file_19_2.docx
@@ -186,13 +186,13 @@ Location: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_19_4.docx
 
 Items renamed
-01 May 2026 at 2:30pm by dwight_schrute@cps.gov.uk
+01 May 2026 at 2:30pm by dwight_schrute@test.gov.uk
 Location: Shared Drive: Thundercat > 11. Media
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 
 Items moved
-01 May 2026 at 1:30pm by dwight_schrute@cps.gov.uk
+01 May 2026 at 1:30pm by dwight_schrute@test.gov.uk
 From: Shared Drive: Thundercat > 4. Counsel
 To: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_21_1.docx
@@ -201,7 +201,7 @@ To: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_21_4.docx
 
 Items deleted
-01 May 2026 at 8:45am by oscar.martinez@cps.gov.uk
+01 May 2026 at 8:45am by oscar.martinez@test.gov.uk
 Location: Shared Drive: Thundercat > 6. Disclosure
 • file_22_1.docx
 • file_22_2.docx
@@ -210,7 +210,7 @@ Location: Shared Drive: Thundercat > 6. Disclosure
 • file_22_5.docx
 
 Items moved
-30 April 2026 at 11:00am by kelly.kapoor@cps.gov.uk
+30 April 2026 at 11:00am by kelly.kapoor@test.gov.uk
 From: Shared Drive: Thundercat > 3. Experts
 To: Shared Drive: Thundercat > 7. Finance
 • file_23_1.docx
@@ -218,7 +218,7 @@ To: Shared Drive: Thundercat > 7. Finance
 • file_23_3.docx
 
 Items moved
-29 April 2026 at 6:30pm by angela.martin@cps.gov.uk
+29 April 2026 at 6:30pm by angela.martin@test.gov.uk
 From: Shared Drive: Thundercat > 10. Police
 To: Shared Drive: Thundercat > 8. Lawyer working copies
 • file_24_1.docx
@@ -228,65 +228,65 @@ To: Shared Drive: Thundercat > 8. Lawyer working copies
 • file_24_5.docx
 
 Items deleted
-29 April 2026 at 2:30pm by meredith.palmer@cps.gov.uk
+29 April 2026 at 2:30pm by meredith.palmer@test.gov.uk
 Location: Shared Drive: Thundercat > 15. IDPC
 • file_25_1.docx
 • file_25_2.docx
 
 Items moved
-28 April 2026 at 4:45pm by jordan.ellis@cps.gov.uk
+28 April 2026 at 4:45pm by jordan.ellis@test.gov.uk
 From: Shared Drive: Thundercat > 7. Finance
 To: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_26_1.docx
 • file_26_2.docx
 
 Items copied
-28 April 2026 at 9:45am by kevin.malone@cps.gov.uk
+28 April 2026 at 9:45am by kevin.malone@test.gov.uk
 From: Shared Drive: Thundercat > 1. Case management
 To: Shared Drive: Thundercat > 11. Media
 • file_27_1.docx
 
 Items copied
-27 April 2026 at 4:30pm by jordan.ellis@cps.gov.uk
+27 April 2026 at 4:30pm by jordan.ellis@test.gov.uk
 From: Shared Drive: Thundercat > 12. Victims and Witnesses
 To: Shared Drive: Thundercat > 8. Lawyer working copies
 • file_28_1.docx
 
 Items moved
-27 April 2026 at 3:45pm by pam.beesly@cps.gov.uk
+27 April 2026 at 3:45pm by pam.beesly@test.gov.uk
 From: Shared Drive: Thundercat > 5. Correspondence
 To: Shared Drive: Thundercat > 9. PO working copies
 • file_29_1.docx
 • file_29_2.docx
 
 Items deleted
-27 April 2026 at 2:15pm by kelly.kapoor@cps.gov.uk
+27 April 2026 at 2:15pm by kelly.kapoor@test.gov.uk
 Location: Shared Drive: Thundercat > 6. Disclosure
 • file_30_1.docx
 • file_30_2.docx
 
 Items deleted
-27 April 2026 at 8:00am by kelly.kapoor@cps.gov.uk
+27 April 2026 at 8:00am by kelly.kapoor@test.gov.uk
 Location: Shared Drive: Thundercat > 1. Case management
 • file_31_1.docx
 • file_31_2.docx
 • file_31_3.docx
 
 Items copied
-24 April 2026 at 12:00pm by meredith.palmer@cps.gov.uk
+24 April 2026 at 12:00pm by meredith.palmer@test.gov.uk
 From: Shared Drive: Thundercat > 14. Magistrates Court
 To: Shared Drive: Thundercat > 5. Correspondence
 • file_32_1.docx
 
 Items moved
-24 April 2026 at 11:30am by jordan.ellis@cps.gov.uk
+24 April 2026 at 11:30am by jordan.ellis@test.gov.uk
 From: Shared Drive: Thundercat > 10. Police
 To: Shared Drive: Thundercat > 1. Case management
 • file_33_1.docx
 • file_33_2.docx
 
 Items renamed
-24 April 2026 at 10:15am by sarah.khan@cps.gov.uk
+24 April 2026 at 10:15am by sarah.khan@test.gov.uk
 Location: Shared Drive: Thundercat > 9. PO working copies
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
@@ -294,7 +294,7 @@ Location: Shared Drive: Thundercat > 9. PO working copies
 • file_4.docx → file_4_v2.docx
 
 Items deleted
-24 April 2026 at 9:45am by dwight_schrute@cps.gov.uk
+24 April 2026 at 9:45am by dwight_schrute@test.gov.uk
 Location: Shared Drive: Thundercat > 7. Finance
 • file_35_1.docx
 • file_35_2.docx
@@ -303,27 +303,27 @@ Location: Shared Drive: Thundercat > 7. Finance
 • file_35_5.docx
 
 Items copied
-23 April 2026 at 7:45pm by jordan.ellis@cps.gov.uk
+23 April 2026 at 7:45pm by jordan.ellis@test.gov.uk
 From: Shared Drive: Thundercat > 12. Victims and Witnesses
 To: Shared Drive: Thundercat > 4. Counsel
 • file_36_1.docx
 • file_36_2.docx
 
 Items moved
-23 April 2026 at 7:00pm by kevin.malone@cps.gov.uk
+23 April 2026 at 7:00pm by kevin.malone@test.gov.uk
 From: Shared Drive: Thundercat > 9. PO working copies
 To: Shared Drive: Thundercat > 11. Media
 • file_37_1.docx
 
 Items moved
-23 April 2026 at 4:15pm by dwight_schrute@cps.gov.uk
+23 April 2026 at 4:15pm by dwight_schrute@test.gov.uk
 From: Shared Drive: Thundercat > 12. Victims and Witnesses
 To: Shared Drive: Thundercat > 10. Police
 • file_38_1.docx
 • file_38_2.docx
 
 Items moved
-23 April 2026 at 3:30pm by oscar.martinez@cps.gov.uk
+23 April 2026 at 3:30pm by oscar.martinez@test.gov.uk
 From: Shared Drive: Thundercat > 9. PO working copies
 To: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_39_1.docx
@@ -331,7 +331,7 @@ To: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_39_3.docx
 
 Items renamed
-23 April at 3:15pm by pam.beesly@cps.gov.uk
+23 April at 3:15pm by pam.beesly@test.gov.uk
 Location: Shared Drive: Thundercat > 15. IDPC
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
@@ -339,19 +339,19 @@ Location: Shared Drive: Thundercat > 15. IDPC
 • file_4.docx → file_4_v2.docx
 
 Items renamed
-23 April 2026 at 2:30pm by kelly.kapoor@cps.gov.uk
+23 April 2026 at 2:30pm by kelly.kapoor@test.gov.uk
 Location: Shared Drive: Thundercat > 12. Victims and Witnesses
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 • file_3.docx → file_3_v2.docx
 
 Items renamed
-23 April 2026 at 2:00pm by oscar.martinez@cps.gov.uk
+23 April 2026 at 2:00pm by oscar.martinez@test.gov.uk
 Location: Shared Drive: Thundercat > 1. Case management
 • file_1.docx → file_1_v2.docx
 
 Items deleted
-23 April 2026 at 1:30pm by oscar.martinez@cps.gov.uk
+23 April 2026 at 1:30pm by oscar.martinez@test.gov.uk
 Location: Shared Drive: Thundercat > 11. Media
 • file_43_1.docx
 • file_43_2.docx
@@ -360,12 +360,12 @@ Location: Shared Drive: Thundercat > 11. Media
 • file_43_5.docx
 
 Items renamed
-22 April 2026 at 4:00pm by jordan.ellis@cps.gov.uk
+22 April 2026 at 4:00pm by jordan.ellis@test.gov.uk
 Location: Shared Drive: Thundercat > 3. Experts
 • file_1.docx → file_1_v2.docx
 
 Items deleted
-22 April 2026 at 3:00pm by jordan.ellis@cps.gov.uk
+22 April 2026 at 3:00pm by jordan.ellis@test.gov.uk
 Location: Shared Drive: Thundercat > 11. Media
 • file_45_1.docx
 • file_45_2.docx
@@ -374,20 +374,20 @@ Location: Shared Drive: Thundercat > 11. Media
 • file_45_5.docx
 
 Items renamed
-22 April 2026 at 2:30pm by kevin.malone@cps.gov.uk
+22 April 2026 at 2:30pm by kevin.malone@test.gov.uk
 Location: Shared Drive: Thundercat > 1. Case management
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 • file_3.docx → file_3_v2.docx
 
 Items deleted
-22 April 2026 at 12:15pm by dwight_schrute@cps.gov.uk
+22 April 2026 at 12:15pm by dwight_schrute@test.gov.uk
 Location: Shared Drive: Thundercat > 1. Case management
 • file_47_1.docx
 • file_47_2.docx
 
 Items deleted
-22 April 2026 at 11:30am by angela.martin@cps.gov.uk
+22 April 2026 at 11:30am by angela.martin@test.gov.uk
 Location: Shared Drive: Thundercat > 9. PO working copies
 • file_48_1.docx
 • file_48_2.docx
@@ -396,20 +396,20 @@ Location: Shared Drive: Thundercat > 9. PO working copies
 • file_48_5.docx
 
 Items moved
-22 April 2026 at 9:00am by kevin.malone@cps.gov.uk
+22 April 2026 at 9:00am by kevin.malone@test.gov.uk
 From: Shared Drive: Thundercat > 14. Magistrates Court
 To: Shared Drive: Thundercat > 6. Disclosure
 • file_49_1.docx
 
 Items deleted
-21 April 2026 at 6:30pm by kelly.kapoor@cps.gov.uk
+21 April 2026 at 6:30pm by kelly.kapoor@test.gov.uk
 Location: Shared Drive: Thundercat > 10. Police
 • file_50_1.docx
 • file_50_2.docx
 • file_50_3.docx
 
 Items deleted
-21 April 2026 at 3:00pm by kevin.malone@cps.gov.uk
+21 April 2026 at 3:00pm by kevin.malone@test.gov.uk
 Location: Shared Drive: Thundercat > 10. Police
 • file_51_1.docx
 • file_51_2.docx
@@ -418,7 +418,7 @@ Location: Shared Drive: Thundercat > 10. Police
 • file_51_5.docx
 
 Items copied
-21 April 2026 at 2:45pm by pam.beesly@cps.gov.uk
+21 April 2026 at 2:45pm by pam.beesly@test.gov.uk
 From: Shared Drive: Thundercat > 14. Magistrates Court
 To: Shared Drive: Thundercat > 4. Counsel
 • file_52_1.docx
@@ -426,7 +426,7 @@ To: Shared Drive: Thundercat > 4. Counsel
 • file_52_3.docx
 
 Items moved
-21 April 2026 at 2:15pm by sarah.khan@cps.gov.uk
+21 April 2026 at 2:15pm by sarah.khan@test.gov.uk
 From: Shared Drive: Thundercat > 6. Disclosure
 To: Shared Drive: Thundercat > 7. Finance
 • file_53_1.docx
@@ -436,13 +436,13 @@ To: Shared Drive: Thundercat > 7. Finance
 • file_53_5.docx
 
 Items renamed
-21 April 2026 at 11:30am by kevin.malone@cps.gov.uk
+21 April 2026 at 11:30am by kevin.malone@test.gov.uk
 Location: Shared Drive: Thundercat > 5. Correspondence
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 
 Items renamed
-21 April 2026 at 11:00am by meredith.palmer@cps.gov.uk
+21 April 2026 at 11:00am by meredith.palmer@test.gov.uk
 Location: Shared Drive: Thundercat > 15. IDPC
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
@@ -450,19 +450,19 @@ Location: Shared Drive: Thundercat > 15. IDPC
 • file_4.docx → file_4_v2.docx
 
 Items renamed
-21 April 2026 at 10:30am by pam.beesly@cps.gov.uk
+21 April 2026 at 10:30am by pam.beesly@test.gov.uk
 Location: Shared Drive: Thundercat > 10. Police
 • file_1.docx → file_1_v2.docx
 • file_2.docx → file_2_v2.docx
 • file_3.docx → file_3_v2.docx
 
 Items renamed
-21 April 2026 at 9:00am by meredith.palmer@cps.gov.uk
+21 April 2026 at 9:00am by meredith.palmer@test.gov.uk
 Location: Shared Drive: Thundercat > 11. Media
 • file_1.docx → file_1_v2.docx
 
 Items copied
-21 April 2026 at 7:15am by oscar.martinez@cps.gov.uk
+21 April 2026 at 7:15am by oscar.martinez@test.gov.uk
 From: Shared Drive: Thundercat > 8. Lawyer working copies
 To: Shared Drive: Thundercat > 7. Finance
 • file_58_1.docx
@@ -470,13 +470,13 @@ To: Shared Drive: Thundercat > 7. Finance
 • file_58_3.docx
 
 Items deleted
-20 April 2026 at 7:15pm by kevin.malone@cps.gov.uk
+20 April 2026 at 7:15pm by kevin.malone@test.gov.uk
 Location: Shared Drive: Thundercat > 4. Counsel
 • file_59_1.docx
 • file_59_2.docx
 
 Items deleted
-21 April 2026 at 5:12pm by creed.bratton@cps.gov.uk
+21 April 2026 at 5:12pm by creed.bratton@test.gov.uk
 Location: Shared Drive: Thundercat > 10. Police
 • budget_summary.xlsx`;
 
@@ -530,7 +530,7 @@ Location: Shared Drive: Thundercat > 10. Police
     entries.push({
         legacyType: 'transferSharedDrive',
         title: 'Transfer from Egress to Shared Drive',
-        dateBy: '22 March 2026 at 12:05pm by usability.testing.session@cps.gov.uk',
+        dateBy: '22 March 2026 at 12:05pm by usability.testing.session@test.gov.uk',
         description: '200 files were transferred.',
         sourceLines: [
             { label: 'Original location:', value: 'Egress > Investigator' },
@@ -540,7 +540,7 @@ Location: Shared Drive: Thundercat > 10. Police
 
     entries.push({
         title: 'Case connected to Egress',
-        dateBy: '22 March 2026 at 9:10am by dwight_schrute@cps.gov.uk',
+        dateBy: '22 March 2026 at 9:10am by dwight_schrute@test.gov.uk',
         description: '',
         sourceLines: [],
         items: []
@@ -548,7 +548,7 @@ Location: Shared Drive: Thundercat > 10. Police
 
     entries.push({
         title: 'Case connected to Shared Drive',
-        dateBy: '22 March 2026 at 9:10am by dwight_schrute@cps.gov.uk',
+        dateBy: '22 March 2026 at 9:10am by dwight_schrute@test.gov.uk',
         description: '',
         sourceLines: [],
         items: []
@@ -556,7 +556,7 @@ Location: Shared Drive: Thundercat > 10. Police
 
     entries.push({
         title: 'Case registered',
-        dateBy: '22 March 2026 at 9:05am by dwight_schrute@cps.gov.uk',
+        dateBy: '22 March 2026 at 9:05am by dwight_schrute@test.gov.uk',
         description: '',
         sourceLines: [],
         items: []
@@ -1735,7 +1735,7 @@ const createMaterialsUtils = require('../../helpers/materials.js');
 function getActivityActor(data) {
     return {
         name: data['offCMS_Username'] || 'dwight_schrute',
-        email: data['urUser'] || 'usability.testing.session@cps.gov.uk'
+        email: data['urUser'] || 'usability.testing.session@test.gov.uk'
     };
 }
 
