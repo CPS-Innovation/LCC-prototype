@@ -15,7 +15,7 @@
         <fieldset class="govuk-fieldset">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
             <h1 class="govuk-fieldset__heading">
-              What do you want to do with the Shared Drive?
+              How do you want to manage the Shared Drive?
             </h1>
           </legend>
 
@@ -30,14 +30,14 @@
             <div class="govuk-radios__item">
               <input class="govuk-radios__input" id="connect-shared-drive" name="shared-drive-folder-options" type="radio" value="Connect Shared Drive folders" {% if data['existingDriveFolder'] == 1 %}checked{% endif %}>
               <label class="govuk-label govuk-radios__label" for="connect-shared-drive">
-                Link Shared Drive folders
+                Connect  existing Shared Drive folders to this case
               </label>
             </div>
 
             <div class="govuk-radios__item">
               <input class="govuk-radios__input" id="skip-shared-drive" name="shared-drive-folder-options" type="radio" value="Do not set up Shared Drive">
               <label class="govuk-label govuk-radios__label" for="skip-shared-drive">
-                Do not set up the Shared Drive
+                Shared Drive folders not needed
               </label>
             </div>
           </div>

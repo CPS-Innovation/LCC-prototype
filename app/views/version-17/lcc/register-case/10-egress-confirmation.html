@@ -13,7 +13,7 @@
       <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-xl">
           {% if data['existingEgressFolder'] == 1 %}
-            Egress linked
+            Egress has been connected
           {% else %}
             Egress created
           {% endif %}
@@ -21,12 +21,12 @@
 
         <p></p>
         {% if data['existingEgressFolder'] == 1 %}
-          <p class="govuk-body">The Egress case {{ data['egress_file_link'] }} has been linked to this case.</p>
+          <p class="govuk-body">The existing Egress {{ data['egress_file_link'] }} has been connected to this case.</p>
         {% else %}
-          <p class="govuk-body">An Egress case has been created.</p>
+          <p class="govuk-body">Egress has been created and connected to this case.</p>
         {% endif %}
 
-        <!-- <p class="govuk-body">You can now set up the Shared Drive.</p> -->
+        <p class="govuk-body">Select Continue to manage the Shared Drive.</p>
 
         <form action="/version-17/lcc/register-case/10-egress-confirmation" method="post" novalidate>
           <button type="submit" class="govuk-button">Continue</button>
