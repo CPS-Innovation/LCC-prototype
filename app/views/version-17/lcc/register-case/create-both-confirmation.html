@@ -13,20 +13,57 @@
       <div class="govuk-grid-column-two-thirds">
         <div class="govuk-panel govuk-panel--confirmation">
           <h1 class="govuk-panel__title">
-            Egress and Shared Drive created
+            Case registered
           </h1>
+          <div class="govuk-panel__body">
+            URN<br><strong>
+              {% if data['URN1'] %}
+              {{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}{{ data['URN4'] }}
+              {% else %}
+              87AA6543226
+              {% endif %}
+            </strong>
+          </div>
         </div>
-        <p class="govuk-body">You have created Egress and the Shared Drive folders successfully.</p>
+        <h2 class="govuk-heading-m">What has been completed</h2>
+        <p class="govuk-body">You have:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>registered the case</li>
+          {% if data['existingEgressFolder'] == 1 %}
+            <li>connected Egress</li>
+          {% endif %}
+          {% if data['newEgressFolder'] == 1 %}
+            <li>created Egress</li>
+          {% endif %}
+          {% if data['existingDriveFolder'] == 1 %}
+            <li>connected a Shared Drive folder</li>
+          {% endif %}
+          {% if data['newDriveFolder'] == 1 %}
+            <li>created a Shared Drive folder</li>
+          {% endif %}
+        </ul>
+        {% if data['newEgressFolder'] == 1 %}
+          <h2 class="govuk-heading-m">What still needs to be done</h2>
+          <p class="govuk-body">Go to Egress to share a link with the investigating authority. When they have uploaded material, you can <a href="../materials/transfer-materials" class="govuk-link">transfer it to the Shared Drive</a>.</p>
+        {% endif %}
         <h2 class="govuk-heading-m">Next steps</h2>
         <p class="govuk-body">You can:</p>
         <ul class="govuk-list govuk-list--bullet">
-          <li><a href="" class="govuk-link">get a link on Egress</a> to share with the investigating authority</li>
+          {% if data['newEgressFolder'] == 1 %}
+            <li>go to <a href="" class="govuk-link">Egress</a> to get a link</li>
+          {% endif %}
+          {% if data['existingDriveFolder'] == 1 %}
+            <li><a href="../materials/manage-materials" class="govuk-link">manage materials and folders on the Shared Drive</a></li>
+          {% endif %}
+          {% if data['existingEgressFolder'] == 1 and data['existingDriveFolder'] == 1 %}
+            <li><a href="../materials/transfer-materials" class="govuk-link">transfer materials between Egress and the Shared Drive</a></li>
+          {% endif %}
           <li><a href="" class="govuk-link">update the case on CMS Classic</a></li>
-          <li><a href="00-homepage" class="govuk-link">view your cases and tasks from the homepage</a></li>
+          <li><a href="00-homepage" class="govuk-link">go back to your cases and tasks</a></li>
         </ul>
-        <p class="govuk-body">Once the investigating authority has uploaded materials to Egress, you can
+        <!-- <p class="govuk-body">Once the investigating authority has uploaded materials to Egress, you can
           <a href="../materials/transfer-materials" class="govuk-link">transfer them to the Shared Drive</a>.
-        </p>
+        </p> -->
 
       </div>
     </div>
