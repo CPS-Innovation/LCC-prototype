@@ -13,10 +13,36 @@
       <div class="govuk-grid-column-two-thirds">
         <div class="govuk-panel govuk-panel--confirmation">
           <h1 class="govuk-panel__title">
-            Egress and Shared Drive linked
+            Case registered
           </h1>
+          <div class="govuk-panel__body">
+            URN<br><strong>
+              {% if data['URN1'] %}
+              {{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}{{ data['URN4'] }}
+              {% else %}
+              87AA6543226
+              {% endif %}
+            </strong>
+          </div>
         </div>
-        <p class="govuk-body">You have linked Egress and the Shared Drive folders successfully.</p>
+        <p class="govuk-body">The case and material storage setup have been completed.</p>
+        <h2 class="govuk-heading-m">What has been completed</h2>
+        <p class="govuk-body">You have:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>registered the case</li>
+          {% if data['existingEgressFolder'] == 1 %}
+            <li>connected Egress</li>
+          {% endif %}
+          {% if data['existingDriveFolder'] == 1 %}
+            <li>connected a Shared Drive folder</li>
+          {% endif %}
+          {% if data['newEgressFolder'] == 1 %}
+            <li>created Egress</li>
+          {% endif %}
+          {% if data['newDriveFolder'] == 1 %}
+            <li>created a Shared Drive folder</li>
+          {% endif %}
+        </ul>
         <h2 class="govuk-heading-m">Next steps</h2>
         <p class="govuk-body">You can:</p>
         <ul class="govuk-list govuk-list--bullet">
