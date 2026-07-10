@@ -44,7 +44,15 @@
         </ul>
         {% if data['newEgressFolder'] == 1 %}
           <h2 class="govuk-heading-m">What still needs to be done</h2>
-          <p class="govuk-body">Go to Egress to share a link with the investigating authority. When they have uploaded material, you can <a href="../materials/transfer-materials" class="govuk-link">transfer it to the Shared Drive</a>.</p>
+          <p class="govuk-body">Go to Egress to share a link with the investigating authority.</p>
+        {% endif %}
+        {% if data['existingEgressFolder'] == 1 and data['existingDriveFolder'] != 1 and data['newDriveFolder'] != 1 %}
+          <h2 class="govuk-heading-m">What still needs to be done</h2>
+          <p class="govuk-body">Create or connect a Shared Drive folder and link it to this case to be able to transfer material.</p>
+        {% endif %}
+        {% if (data['newDriveFolder'] == 1 or data['existingDriveFolder'] == 1) and data['existingEgressFolder'] != 1 and data['newEgressFolder'] != 1 %}
+          <h2 class="govuk-heading-m">What still needs to be done</h2>
+          <p class="govuk-body">Create or connect Egress and link it to this case if you need to transfer material.</p>
         {% endif %}
         <h2 class="govuk-heading-m">Next steps</h2>
         <p class="govuk-body">You can:</p>
@@ -54,6 +62,10 @@
           {% endif %}
           {% if data['existingDriveFolder'] == 1 %}
             <li><a href="../materials/manage-materials" class="govuk-link">manage materials and folders on the Shared Drive</a></li>
+          {% endif %}
+          {% if data['existingEgressFolder'] == 1 and data['newDriveFolder'] == 1 %}
+            <li><a href="../materials/transfer-materials" class="govuk-link">transfer materials between Egress and the Shared Drive</a></li>
+            <li><a href="../materials/manage-materials" class="govuk-link">manage materials on the Shared Drive</a></li>
           {% endif %}
           {% if data['existingEgressFolder'] == 1 and data['existingDriveFolder'] == 1 %}
             <li><a href="../materials/transfer-materials" class="govuk-link">transfer materials between Egress and the Shared Drive</a></li>
