@@ -1957,6 +1957,21 @@ router.get('/lcc/register-case/10-confirmation.html', function (req, res) {
     res.render('version-17/lcc/register-case/10-confirmation')
 })
 
+router.get('/lcc/register-case/12-check-answers', function (req, res) {
+    setRegisterCaseRegistered(req.session.data)
+    res.render('version-17/lcc/register-case/12-check-answers')
+})
+
+router.get('/lcc/register-case/12-check-answers.html', function (req, res) {
+    setRegisterCaseRegistered(req.session.data)
+    res.render('version-17/lcc/register-case/12-check-answers')
+})
+
+router.post('/lcc/register-case/12-check-answers', function (req, res) {
+    setRegisterCaseRegistered(req.session.data)
+    res.redirect('/version-17/lcc/register-case/12-confirmation')
+})
+
 router.get('/lcc/register-case/12-confirmation', function (req, res) {
     setRegisterCaseRegistered(req.session.data)
     res.render('version-17/lcc/register-case/12-confirmation')
@@ -1993,7 +2008,7 @@ router.post('/lcc/register-case/09-case-registered', function (req, res) {
 
 function redirectRegisterCaseMaterialsConfirmation(req, res) {
     if (req.session.data.newEgressFolder === 1 || req.session.data.existingEgressFolder === 1 || req.session.data.newDriveFolder === 1 || req.session.data.existingDriveFolder === 1) {
-        res.redirect('/version-17/lcc/register-case/12-confirmation')
+        res.redirect('/version-17/lcc/register-case/12-check-answers')
     }
     else {
         res.redirect('/version-17/lcc/register-case/10-confirmation')
@@ -2118,11 +2133,11 @@ router.post('/lcc/materials/04A-create-or-link-folders', function (req, res) {
     }
 
     else if (req.session.data.newEgressFolder === 1) {
-        res.redirect('/version-17/lcc/register-case/12-confirmation')
+        res.redirect('/version-17/lcc/register-case/12-check-answers')
     }
 
     else {
-        res.redirect('/version-17/lcc/register-case/12-confirmation')
+        res.redirect('/version-17/lcc/register-case/12-check-answers')
     }
 
 })
@@ -2130,7 +2145,7 @@ router.post('/lcc/materials/04A-create-or-link-folders', function (req, res) {
 router.post('/lcc/materials/05A-create-shared-drive-folder', function (req, res) {
     req.session.data.sharedDriveTemplate = req.body['shared-drive-template']
     setRegisterCaseTimestamp(req.session.data, 'registerCaseSharedDriveCreatedAt')
-    res.redirect('/version-17/lcc/register-case/12-confirmation')
+    res.redirect('/version-17/lcc/register-case/12-check-answers')
 })
 
 router.post('/lcc/materials/04A-egress-files-connected', function (req, res) {
@@ -2142,13 +2157,13 @@ router.post('/lcc/materials/04A-egress-files-connected', function (req, res) {
         res.redirect('/version-17/lcc/materials/05A-p-drive-files')
     }
     else {
-        res.redirect('/version-17/lcc/register-case/12-confirmation')
+        res.redirect('/version-17/lcc/register-case/12-check-answers')
     }
 })
 
 router.post('/lcc/materials/05A-p-drive-files-connected', function (req, res) {
     setRegisterCaseTimestamp(req.session.data, 'registerCaseSharedDriveLinkedAt')
-    res.redirect('/version-17/lcc/register-case/12-confirmation')
+    res.redirect('/version-17/lcc/register-case/12-check-answers')
 })
 
 router.post('/lcc/materials/05A-create-shared-drive-folder', function (req, res) {
@@ -2188,7 +2203,7 @@ router.post('/lcc/materials/04A-create-egress-folder', function (req, res) {
         res.redirect('/version-17/lcc/materials/05A-p-drive-files')
     }
     else {
-        res.redirect('/version-17/lcc/register-case/12-confirmation')
+        res.redirect('/version-17/lcc/register-case/12-check-answers')
     }
 
 })

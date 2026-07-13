@@ -23,14 +23,14 @@
             <div class="govuk-radios__item">
               <input class="govuk-radios__input" id="create-egress" name="egress-folder-options" type="radio" value="Create new Egress folders" {% if data['newEgressFolder'] == 1 %}checked{% endif %}>
               <label class="govuk-label govuk-radios__label" for="create-egress">
-                Create a new Egress for this case
+                Create a new case on Egress
               </label>
             </div>
 
             <div class="govuk-radios__item">
               <input class="govuk-radios__input" id="connect-egress" name="egress-folder-options" type="radio" value="Connect Egress folders" {% if data['existingEgressFolder'] == 1 %}checked{% endif %}>
               <label class="govuk-label govuk-radios__label" for="connect-egress">
-                Connect  an existing Egress to this case
+                Connect  an existing Egress case
               </label>
             </div>
 
