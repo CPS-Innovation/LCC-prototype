@@ -7,6 +7,17 @@
 {% endblock %}
 {% block content %}
 
+{% set caseNameAndUrn %}
+  {% if data['operationName'] %}{{ data['operationName'] }}{% else %}Thundercat{% endif %}
+  {% if data['caseUrn'] %}
+    {{ data['caseUrn'] }}
+  {% elif data['URN1'] %}
+    {{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}{{ data['URN4'] }}
+  {% else %}
+    87AA6543226
+  {% endif %}
+{% endset %}
+
 <div class="govuk-width-container">
   <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
     <div class="govuk-grid-row">
@@ -15,31 +26,42 @@
           <h1 class="govuk-panel__title">
             Case registered
           </h1>
-          <div class="govuk-panel__body">
-            URN<br><strong>
-              {% if data['URN1'] %}
-              {{ data['URN1'] }}{{ data['URN2'] }}{{ data['URN3'] }}{{ data['URN4'] }}
-              {% else %}
-              87AA6543226
-              {% endif %}
-            </strong>
-          </div>
         </div>
         <h2 class="govuk-heading-m">What has been completed</h2>
         <p class="govuk-body">You have:</p>
         <ul class="govuk-list govuk-list--bullet">
-          <li>registered the case</li>
+          <li>
+            registered the case
+            <br>
+            <a href="" class="govuk-link">{{ caseNameAndUrn | trim }}</a>
+          </li>
           {% if data['existingEgressFolder'] == 1 %}
-            <li>connected Egress</li>
+            <li>
+              connected the Egress case
+              <br>
+              <a href="" class="govuk-link">{{ data['egress_file_link'] }}</a>
+            </li>
           {% endif %}
           {% if data['newEgressFolder'] == 1 %}
-            <li>created Egress</li>
+            <li>
+              created the Egress case
+              <br>
+              <a href="" class="govuk-link">{{ caseNameAndUrn | trim }}</a>
+            </li>
           {% endif %}
           {% if data['existingDriveFolder'] == 1 %}
-            <li>connected a Shared Drive folder</li>
+            <li>
+              connected the Shared Drive folder
+              <br>
+              <a href="../materials/manage-materials" class="govuk-link">{{ data['pdrive_file_link'] }}</a>
+            </li>
           {% endif %}
           {% if data['newDriveFolder'] == 1 %}
-            <li>created a Shared Drive folder</li>
+            <li>
+              created the Shared Drive folder
+              <br>
+              <a href="../materials/manage-materials" class="govuk-link">{{ caseNameAndUrn | trim }}</a>
+            </li>
           {% endif %}
         </ul>
         {% if data['newEgressFolder'] == 1 %}
