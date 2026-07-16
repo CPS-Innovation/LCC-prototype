@@ -881,14 +881,13 @@ document.addEventListener("click", (e) => {
           const actionToggle = document.getElementById('bulk-order-actions-toggle');
           const actionMenu = document.getElementById('bulk-order-actions-menu');
           const actionButtons = Array.from(document.querySelectorAll('[data-bulk-order-action]'));
-          const selectionCount = document.getElementById('bulk-order-selection-count');
           const specificPositionControls = document.getElementById('bulk-order-specific-position');
           const positionInput = document.getElementById('bulk-order-position');
           const positionError = document.getElementById('bulk-order-position-error');
           const moveButton = document.getElementById('move-selected-items');
           const status = document.getElementById('bulk-order-status');
 
-          if (!tbody || !selectAll || !actionToggle || !actionMenu || !actionButtons.length || !selectionCount || !specificPositionControls || !positionInput || !positionError || !moveButton || !status) return;
+          if (!tbody || !selectAll || !actionToggle || !actionMenu || !actionButtons.length || !specificPositionControls || !positionInput || !positionError || !moveButton || !status) return;
 
           function getSelectionCheckboxes() {
                return Array.from(tbody.querySelectorAll('.js-order-select'));
@@ -919,8 +918,6 @@ document.addEventListener("click", (e) => {
                const selectedCount = checkboxes.filter(checkbox => checkbox.checked).length;
                const hasSelection = selectedCount > 0;
 
-               selectionCount.hidden = !hasSelection;
-               selectionCount.textContent = `${selectedCount} ${selectedCount === 1 ? 'item' : 'items'} selected`;
                selectAll.checked = checkboxes.length > 0 && selectedCount === checkboxes.length;
                selectAll.indeterminate = selectedCount > 0 && selectedCount < checkboxes.length;
                actionToggle.disabled = !hasSelection;

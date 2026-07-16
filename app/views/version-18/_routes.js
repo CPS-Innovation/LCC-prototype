@@ -5182,7 +5182,7 @@ router.post('/lcc/materials/order-materials', (req, res) => {
     req.session.data.folderId = folderId;
 
 
-    return res.redirect('/version-18/lcc/materials/03-case-overview');
+    return res.redirect(`/version-18/lcc/materials/manage-materials?folderId=${encodeURIComponent(folderId)}`);
 });
 
 
@@ -5265,7 +5265,7 @@ router.post('/lcc/materials/order-interrupt', (req, res) => {
     // Clean up the delayed save payload
     delete req.session.data.pendingOrderSave;
 
-    return res.redirect('/version-18/lcc/materials/03-case-overview');
+    return res.redirect(`/version-18/lcc/materials/manage-materials?folderId=${encodeURIComponent(folderId)}`);
 });
 
 router.post('/lcc/materials/disconnect-shared-drive', (req, res) => {
