@@ -754,6 +754,26 @@ function refreshOrderGutter(tbody) {
      });
 }
 
+const reorderedRowHighlightTimers = new WeakMap();
+
+function highlightReorderedRow(row) {
+     if (!window.location.pathname.startsWith('/version-18/')) return;
+
+     const existingTimer = reorderedRowHighlightTimers.get(row);
+     if (existingTimer) window.clearTimeout(existingTimer);
+
+     row.classList.remove('is-reordered');
+     void row.offsetWidth;
+     row.classList.add('is-reordered');
+
+     const timer = window.setTimeout(() => {
+          row.classList.remove('is-reordered');
+          reorderedRowHighlightTimers.delete(row);
+     }, 1000);
+
+     reorderedRowHighlightTimers.set(row, timer);
+}
+
 
 // 6 February 2026
 document.addEventListener('change', handleOrderInput, true);
@@ -805,6 +825,7 @@ function handleOrderInput(e) {
 
      renumberMainRows(tbody);
      refreshOrderGutter(tbody);
+     highlightReorderedRow(row);
 }
 // End of 6 February 2026
 
@@ -847,7 +868,243 @@ document.addEventListener("click", (e) => {
 
      renumberMainRows(tbody);
      refreshOrderGutter(tbody);
+     highlightReorderedRow(mainRow);
 }, true);
+
+(function setupBulkOrderControls() {
+     if (!window.location.pathname.startsWith('/version-18/lcc/materials/order-materials')) return;
+
+     document.addEventListener('DOMContentLoaded', () => {
+          const table = document.querySelector('#materials_table.is-order-mode');
+          const tbody = table && table.querySelector('tbody');
+          const selectAll = document.getElementById('order-select-all');
+          const actionToggle = document.getElementById('bulk-order-actions-toggle');
+          const actionMenu = document.getElementById('bulk-order-actions-menu');
+          const actionButtons = Array.from(document.querySelectorAll('[data-bulk-order-action]'));
+          const selectionCount = document.getElementById('bulk-order-selection-count');
+          const specificPositionControls = document.getElementById('bulk-order-specific-position');
+          const positionInput = document.getElementById('bulk-order-position');
+          const positionError = document.getElementById('bulk-order-position-error');
+          const moveButton = document.getElementById('move-selected-items');
+          const status = document.getElementById('bulk-order-status');
+
+          if (!tbody || !selectAll || !actionToggle || !actionMenu || !actionButtons.length || !selectionCount || !specificPositionControls || !positionInput || !positionError || !moveButton || !status) return;
+
+          function getSelectionCheckboxes() {
+               return Array.from(tbody.querySelectorAll('.js-order-select'));
+          }
+
+          function getSelectedRows() {
+               return getMainRows(tbody).filter(row => {
+                    const checkbox = row.querySelector('.js-order-select');
+                    return checkbox && checkbox.checked;
+               });
+          }
+
+          function clearPositionError() {
+               positionInput.classList.remove('govuk-input--error');
+               positionInput.removeAttribute('aria-invalid');
+               positionError.hidden = true;
+          }
+
+          function setActionMenuOpen(open) {
+               actionToggle.classList.toggle('active', open);
+               actionToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+               actionMenu.hidden = !open;
+               actionMenu.style.display = open ? 'block' : 'none';
+          }
+
+          function updateBulkControls() {
+               const checkboxes = getSelectionCheckboxes();
+               const selectedCount = checkboxes.filter(checkbox => checkbox.checked).length;
+               const hasSelection = selectedCount > 0;
+
+               selectionCount.hidden = !hasSelection;
+               selectionCount.textContent = `${selectedCount} ${selectedCount === 1 ? 'item' : 'items'} selected`;
+               selectAll.checked = checkboxes.length > 0 && selectedCount === checkboxes.length;
+               selectAll.indeterminate = selectedCount > 0 && selectedCount < checkboxes.length;
+               actionToggle.disabled = !hasSelection;
+               actionToggle.setAttribute('aria-disabled', hasSelection ? 'false' : 'true');
+               actionToggle.classList.toggle('govuk-button--disabled', !hasSelection);
+               actionButtons.forEach(button => {
+                    button.disabled = !hasSelection;
+                    button.classList.toggle('govuk-button--disabled', !hasSelection);
+               });
+
+               if (hasSelection) {
+                    positionInput.max = getMainRows(tbody).length - selectedCount + 1;
+               }
+
+               if (!hasSelection) {
+                    specificPositionControls.hidden = true;
+                    setActionMenuOpen(false);
+                    clearPositionError();
+               }
+          }
+
+          function moveSelectedRows(destination, destinationDescription) {
+               const selectedRows = getSelectedRows();
+               if (!selectedRows.length) return;
+
+               const selectedBlocks = selectedRows.map(getBlock);
+               selectedBlocks.forEach(block => block.forEach(node => node.remove()));
+
+               const remainingRows = getMainRows(tbody);
+               const destinationRow = remainingRows[destination - 1] || null;
+
+               selectedBlocks.forEach(block => {
+                    block.forEach(node => tbody.insertBefore(node, destinationRow));
+               });
+
+               renumberMainRows(tbody);
+               refreshOrderGutter(tbody);
+               selectedRows.forEach(highlightReorderedRow);
+               specificPositionControls.hidden = true;
+               setActionMenuOpen(false);
+               updateBulkControls();
+
+               status.hidden = false;
+               status.textContent = `${selectedRows.length} ${selectedRows.length === 1 ? 'item' : 'items'} moved ${destinationDescription}. Select Save order to save this change.`;
+          }
+
+          selectAll.addEventListener('change', () => {
+               getSelectionCheckboxes().forEach(checkbox => {
+                    checkbox.checked = selectAll.checked;
+               });
+               updateBulkControls();
+          });
+
+          tbody.addEventListener('change', e => {
+               if (!e.target.matches('.js-order-select')) return;
+               updateBulkControls();
+          });
+
+          positionInput.addEventListener('input', clearPositionError);
+          positionInput.addEventListener('keydown', e => {
+               if (e.key !== 'Enter') return;
+               e.preventDefault();
+               moveButton.click();
+          });
+
+          actionToggle.addEventListener('click', e => {
+               e.preventDefault();
+               e.stopPropagation();
+               setActionMenuOpen(actionMenu.hidden);
+          });
+
+          actionMenu.addEventListener('click', e => {
+               const actionButton = e.target.closest('[data-bulk-order-action]');
+               if (!actionButton || actionButton.disabled) return;
+
+               const selectedCount = getSelectedRows().length;
+               const maxPosition = getMainRows(tbody).length - selectedCount + 1;
+               const action = actionButton.dataset.bulkOrderAction;
+
+               if (action === 'specific') {
+                    setActionMenuOpen(false);
+                    specificPositionControls.hidden = false;
+                    positionInput.focus();
+                    return;
+               }
+
+               if (action === 'top') moveSelectedRows(1, 'to the top');
+               if (action === 'middle') moveSelectedRows(Math.ceil(maxPosition / 2), 'to the middle');
+               if (action === 'bottom') moveSelectedRows(maxPosition, 'to the bottom');
+          });
+
+          moveButton.addEventListener('click', () => {
+               const selectedRows = getSelectedRows();
+               if (!selectedRows.length) return;
+
+               const destination = Number(positionInput.value);
+               const maxPosition = getMainRows(tbody).length - selectedRows.length + 1;
+
+               if (!Number.isInteger(destination) || destination < 1 || destination > maxPosition) {
+                    positionInput.classList.add('govuk-input--error');
+                    positionInput.setAttribute('aria-invalid', 'true');
+                    positionError.textContent = `Enter a position between 1 and ${maxPosition}`;
+                    positionError.hidden = false;
+                    positionInput.focus();
+                    return;
+               }
+
+               clearPositionError();
+               moveSelectedRows(destination, `to start at position ${destination}`);
+          });
+
+          document.addEventListener('click', e => {
+               if (!actionMenu.hidden && !e.target.closest('#bulk-order-actions-toggle') && !e.target.closest('#bulk-order-actions-menu')) {
+                    setActionMenuOpen(false);
+               }
+          });
+
+          document.addEventListener('keydown', e => {
+               if (e.key !== 'Escape' || actionMenu.hidden) return;
+               setActionMenuOpen(false);
+               actionToggle.focus();
+          });
+
+          setActionMenuOpen(false);
+          updateBulkControls();
+     });
+})();
+
+(function setupMaterialsOptionsMenus() {
+     if (!window.location.pathname.startsWith('/version-18/lcc/materials/')) return;
+
+     document.addEventListener('DOMContentLoaded', () => {
+          const toggles = Array.from(document.querySelectorAll('.js-materials-options-toggle'));
+          if (!toggles.length) return;
+
+          function setOpen(toggle, open) {
+               const menu = toggle.nextElementSibling;
+               if (!menu || !menu.classList.contains('js-materials-options-menu')) return;
+
+               toggle.classList.toggle('active', open);
+               toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+               menu.hidden = !open;
+               menu.style.display = open ? 'block' : 'none';
+
+               if (open) {
+                    menu.style.left = `${toggle.offsetLeft}px`;
+                    menu.style.right = 'auto';
+               }
+          }
+
+          toggles.forEach((toggle, index) => {
+               const menu = toggle.nextElementSibling;
+               if (!menu || !menu.classList.contains('js-materials-options-menu')) return;
+
+               menu.id = `materials-options-menu-${index + 1}`;
+               toggle.setAttribute('aria-controls', menu.id);
+               setOpen(toggle, false);
+
+               toggle.addEventListener('click', e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const shouldOpen = menu.hidden;
+                    toggles.forEach(otherToggle => setOpen(otherToggle, false));
+                    setOpen(toggle, shouldOpen);
+               });
+          });
+
+          document.addEventListener('click', e => {
+               if (e.target.closest('.js-materials-options-toggle') || e.target.closest('.js-materials-options-menu')) return;
+               toggles.forEach(toggle => setOpen(toggle, false));
+          });
+
+          document.addEventListener('keydown', e => {
+               if (e.key !== 'Escape') return;
+
+               const openToggle = toggles.find(toggle => toggle.getAttribute('aria-expanded') === 'true');
+               if (!openToggle) return;
+
+               setOpen(openToggle, false);
+               openToggle.focus();
+          });
+     });
+})();
 
 document.addEventListener("DOMContentLoaded", () => {
      const table = document.getElementById("materials_table");
@@ -2479,6 +2736,7 @@ function updateActionsUI() {
      const discardBtns = Array.from(document.querySelectorAll('button[id="discardButton"]'));
      const copyBtns = Array.from(document.querySelectorAll('button[id="copyButton"]'));
      const moveBtns = Array.from(document.querySelectorAll('button[id="moveButton"]'));
+     const orderSelectedBtns = Array.from(document.querySelectorAll('button[id="orderSelectedButton"]'));
      const updateBtns = Array.from(document.querySelectorAll('button[id="updateButton"]'));
      const markReadBtns = Array.from(document.querySelectorAll('button[id="markReadButton"]'));
      const markUnreadBtns = Array.from(document.querySelectorAll('button[id="markUnreadButton"]'));
@@ -2493,7 +2751,7 @@ function updateActionsUI() {
      // Discard / Copy / Move: ONE OR MORE
      const multiOK = selected.length > 0;
 
-     [...discardBtns, ...copyBtns, ...moveBtns, ...markReadBtns, ...markUnreadBtns].forEach(btn => {
+     [...discardBtns, ...copyBtns, ...moveBtns, ...orderSelectedBtns, ...markReadBtns, ...markUnreadBtns].forEach(btn => {
           if (!btn) return;
           btn.disabled = !multiOK;
           btn.classList.toggle('govuk-button--disabled', !multiOK);
@@ -2503,6 +2761,7 @@ function updateActionsUI() {
      const ids = selected.map(x => x.id).join(',');
      const copyHidden = Array.from(document.querySelectorAll('input[id="copy_selected_ids"]'));
      const moveHidden = Array.from(document.querySelectorAll('input[id="move_selected_ids"]'));
+     const orderSelectedHidden = Array.from(document.querySelectorAll('input[id="order_selected_ids"]'));
      const markReadHidden = Array.from(document.querySelectorAll('input[id="mark_read_selected_ids"]'));
      const markUnreadHidden = Array.from(document.querySelectorAll('input[id="mark_unread_selected_ids"]'));
      const discardHidden = Array.from(document.querySelectorAll('input[id="material_selected"]'));
@@ -2510,6 +2769,7 @@ function updateActionsUI() {
 
      copyHidden.forEach(input => input.value = ids);
      moveHidden.forEach(input => input.value = ids);
+     orderSelectedHidden.forEach(input => input.value = ids);
      markReadHidden.forEach(input => input.value = ids);
      markUnreadHidden.forEach(input => input.value = ids);
      discardHidden.forEach(input => input.value = ids);

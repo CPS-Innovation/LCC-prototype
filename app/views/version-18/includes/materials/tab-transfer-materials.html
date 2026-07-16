@@ -1,0 +1,13 @@
+<!-- ///////////////////////////////// TAB 1 - CONTENT - START ///////////////////////////////// -->
+<div class="tab-manage-materials-page">
+
+    {% set transferView = data.transferView | default('egress') %}
+
+    {% if transferView == 'shared-drive' %}
+        {% include "./tab-transfer-shared-drive.html" %}
+    {% else %}
+        {% include "./tab-transfer-egress.html" %}
+    {% endif %}
+
+</div>
+<!-- ///////////////////////////////// TAB 1 - CONTENT - END ///////////////////////////////// -->
