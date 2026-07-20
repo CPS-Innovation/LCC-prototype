@@ -3598,6 +3598,10 @@ thead th .govuk-button {
      cursor: pointer;
 }
 
+#materials_table.is-order-mode thead .table-sort {
+     color: govuk-colour("black");
+}
+
 /* Folder name link for folders */
 #materials_table tbody a.folder-link,
 #materials_table tbody a.folder-name,
