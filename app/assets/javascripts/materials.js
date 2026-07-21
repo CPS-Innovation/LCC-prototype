@@ -878,8 +878,8 @@ document.addEventListener("click", (e) => {
           const table = document.querySelector('#materials_table.is-order-mode');
           const tbody = table && table.querySelector('tbody');
           const selectAll = document.getElementById('order-select-all');
-          const actionToggle = document.getElementById('bulk-order-actions-toggle');
-          const actionMenu = document.getElementById('bulk-order-actions-menu');
+          const actionToggles = Array.from(document.querySelectorAll('.js-bulk-order-actions-toggle'));
+          const actionMenus = Array.from(document.querySelectorAll('.js-bulk-order-actions-menu'));
           const actionButtons = Array.from(document.querySelectorAll('[data-bulk-order-action]'));
           const specificPositionControls = document.getElementById('bulk-order-specific-position');
           const positionInput = document.getElementById('bulk-order-position');
@@ -887,7 +887,7 @@ document.addEventListener("click", (e) => {
           const moveButton = document.getElementById('move-selected-items');
           const status = document.getElementById('bulk-order-status');
 
-          if (!tbody || !selectAll || !actionToggle || !actionMenu || !actionButtons.length || !specificPositionControls || !positionInput || !positionError || !moveButton || !status) return;
+          if (!tbody || !selectAll || !actionToggles.length || !actionMenus.length || !actionButtons.length || !specificPositionControls || !positionInput || !positionError || !moveButton || !status) return;
 
           function getSelectionCheckboxes() {
                return Array.from(tbody.querySelectorAll('.js-order-select'));
@@ -906,11 +906,20 @@ document.addEventListener("click", (e) => {
                positionError.hidden = true;
           }
 
-          function setActionMenuOpen(open) {
-               actionToggle.classList.toggle('active', open);
-               actionToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-               actionMenu.hidden = !open;
-               actionMenu.style.display = open ? 'block' : 'none';
+          function setActionMenuOpen(toggle, open) {
+               const menu = document.getElementById(toggle.getAttribute('aria-controls'));
+               if (!menu) return;
+
+               toggle.classList.toggle('active', open);
+               toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+               menu.hidden = !open;
+               menu.style.display = open ? 'block' : 'none';
+               menu.style.left = '0';
+               menu.style.right = 'auto';
+          }
+
+          function closeActionMenus() {
+               actionToggles.forEach(toggle => setActionMenuOpen(toggle, false));
           }
 
           function updateBulkControls() {
@@ -920,9 +929,11 @@ document.addEventListener("click", (e) => {
 
                selectAll.checked = checkboxes.length > 0 && selectedCount === checkboxes.length;
                selectAll.indeterminate = selectedCount > 0 && selectedCount < checkboxes.length;
-               actionToggle.disabled = !hasSelection;
-               actionToggle.setAttribute('aria-disabled', hasSelection ? 'false' : 'true');
-               actionToggle.classList.toggle('govuk-button--disabled', !hasSelection);
+               actionToggles.forEach(toggle => {
+                    toggle.disabled = !hasSelection;
+                    toggle.setAttribute('aria-disabled', hasSelection ? 'false' : 'true');
+                    toggle.classList.toggle('govuk-button--disabled', !hasSelection);
+               });
                actionButtons.forEach(button => {
                     button.disabled = !hasSelection;
                     button.classList.toggle('govuk-button--disabled', !hasSelection);
@@ -934,7 +945,7 @@ document.addEventListener("click", (e) => {
 
                if (!hasSelection) {
                     specificPositionControls.hidden = true;
-                    setActionMenuOpen(false);
+                    closeActionMenus();
                     clearPositionError();
                }
           }
@@ -956,8 +967,12 @@ document.addEventListener("click", (e) => {
                renumberMainRows(tbody);
                refreshOrderGutter(tbody);
                selectedRows.forEach(highlightReorderedRow);
+               selectedRows.forEach(row => {
+                    const checkbox = row.querySelector('.js-order-select');
+                    if (checkbox) checkbox.checked = false;
+               });
                specificPositionControls.hidden = true;
-               setActionMenuOpen(false);
+               closeActionMenus();
                updateBulkControls();
 
                status.hidden = false;
@@ -983,30 +998,38 @@ document.addEventListener("click", (e) => {
                moveButton.click();
           });
 
-          actionToggle.addEventListener('click', e => {
-               e.preventDefault();
-               e.stopPropagation();
-               setActionMenuOpen(actionMenu.hidden);
+          actionToggles.forEach(toggle => {
+               toggle.addEventListener('click', e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const menu = document.getElementById(toggle.getAttribute('aria-controls'));
+                    const shouldOpen = menu && menu.hidden;
+                    closeActionMenus();
+                    setActionMenuOpen(toggle, shouldOpen);
+               });
           });
 
-          actionMenu.addEventListener('click', e => {
-               const actionButton = e.target.closest('[data-bulk-order-action]');
-               if (!actionButton || actionButton.disabled) return;
+          actionMenus.forEach(menu => {
+               menu.addEventListener('click', e => {
+                    const actionButton = e.target.closest('[data-bulk-order-action]');
+                    if (!actionButton || actionButton.disabled) return;
 
-               const selectedCount = getSelectedRows().length;
-               const maxPosition = getMainRows(tbody).length - selectedCount + 1;
-               const action = actionButton.dataset.bulkOrderAction;
+                    const selectedCount = getSelectedRows().length;
+                    const maxPosition = getMainRows(tbody).length - selectedCount + 1;
+                    const action = actionButton.dataset.bulkOrderAction;
 
-               if (action === 'specific') {
-                    setActionMenuOpen(false);
-                    specificPositionControls.hidden = false;
-                    positionInput.focus();
-                    return;
-               }
+                    if (action === 'specific') {
+                         closeActionMenus();
+                         specificPositionControls.hidden = false;
+                         positionInput.focus();
+                         return;
+                    }
 
-               if (action === 'top') moveSelectedRows(1, 'to the top');
-               if (action === 'middle') moveSelectedRows(Math.ceil(maxPosition / 2), 'to the middle');
-               if (action === 'bottom') moveSelectedRows(maxPosition, 'to the bottom');
+                    if (action === 'top') moveSelectedRows(1, 'to the top');
+                    if (action === 'middle') moveSelectedRows(Math.ceil(maxPosition / 2), 'to the middle');
+                    if (action === 'bottom') moveSelectedRows(maxPosition, 'to the bottom');
+               });
           });
 
           moveButton.addEventListener('click', () => {
@@ -1030,18 +1053,21 @@ document.addEventListener("click", (e) => {
           });
 
           document.addEventListener('click', e => {
-               if (!actionMenu.hidden && !e.target.closest('#bulk-order-actions-toggle') && !e.target.closest('#bulk-order-actions-menu')) {
-                    setActionMenuOpen(false);
-               }
+               if (e.target.closest('.js-bulk-order-actions-toggle') || e.target.closest('.js-bulk-order-actions-menu')) return;
+               closeActionMenus();
           });
 
           document.addEventListener('keydown', e => {
-               if (e.key !== 'Escape' || actionMenu.hidden) return;
-               setActionMenuOpen(false);
-               actionToggle.focus();
+               if (e.key !== 'Escape') return;
+
+               const openToggle = actionToggles.find(toggle => toggle.getAttribute('aria-expanded') === 'true');
+               if (!openToggle) return;
+
+               closeActionMenus();
+               openToggle.focus();
           });
 
-          setActionMenuOpen(false);
+          closeActionMenus();
           updateBulkControls();
      });
 })();

@@ -2046,6 +2046,14 @@ router.post('/lcc/register-case/10-egress-files-connected', function (req, res) 
     res.redirect('/version-17/lcc/register-case/10-egress-confirmation')
 })
 
+router.get('/lcc/register-case/10-egress-connection-error', function (req, res) {
+    res.render('version-17/lcc/register-case/10-egress-connection-error')
+})
+
+router.post('/lcc/register-case/10-egress-connection-error', function (req, res) {
+    res.redirect('/version-17/lcc/register-case/11-shared-drive-setup')
+})
+
 router.post('/lcc/register-case/10-egress-confirmation', function (req, res) {
     res.redirect('/version-17/lcc/register-case/11-shared-drive-setup')
 })

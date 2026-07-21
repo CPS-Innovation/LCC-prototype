@@ -1,0 +1,29 @@
+{% extends "layoutCPS-OFF.html" %}
+
+{% block header %}
+{% include "../../includes/banner-OFF-V7.html" %}
+{% endblock %}
+
+{% block beforeContent %}{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">There is a problem</h1>
+        <p></p>
+
+        <p class="govuk-body">This is not something you can fix yourself.</p>
+
+        <p class="govuk-body">Try again later or contact the product team for support on the Teams channel.</p>
+
+        <form action="/version-17/lcc/register-case/10-egress-connection-error" method="post" novalidate>
+          <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+        </form>
+      </div>
+
+    </div>
+  </main>
+</div>
+{% endblock %}
