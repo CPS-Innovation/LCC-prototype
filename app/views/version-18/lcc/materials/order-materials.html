@@ -54,7 +54,7 @@ Rename files or folders – {{ serviceName }} – Prototype
                         <div class="actions_holder">
                             <div class="moj-button-menu">
                                 <button type="button" id="bulk-order-actions-toggle"
-                                    class="govuk-button govuk-button--secondary govuk-button--disabled"
+                                    class="govuk-button govuk-button--secondary govuk-button--disabled js-bulk-order-actions-toggle"
                                     aria-expanded="false" aria-controls="bulk-order-actions-menu"
                                     aria-disabled="true" disabled>
                                     Order materials
@@ -64,7 +64,7 @@ Rename files or folders – {{ serviceName }} – Prototype
                                     </svg>
                                 </button>
 
-                                <div class="hidden_buttons" id="bulk-order-actions-menu" hidden>
+                                <div class="hidden_buttons js-bulk-order-actions-menu" id="bulk-order-actions-menu" hidden>
                                     <button class="govuk-button govuk-button--disabled" type="button"
                                         data-bulk-order-action="specific" disabled>
                                         Move selected to specific position
@@ -336,6 +336,45 @@ Rename files or folders – {{ serviceName }} – Prototype
 
                         </tbody>
                     </table>
+                </div>
+
+                <div class="materials-toolbar govuk-!-margin-top-4 govuk-!-margin-bottom-2">
+                    <div class="materials-toolbar__actions">
+                        <div class="actions_holder">
+                            <div class="moj-button-menu">
+                                <button type="button" id="bulk-order-actions-toggle-bottom"
+                                    class="govuk-button govuk-button--secondary govuk-button--disabled js-bulk-order-actions-toggle"
+                                    aria-expanded="false" aria-controls="bulk-order-actions-menu-bottom"
+                                    aria-disabled="true" disabled>
+                                    Order materials
+                                    <svg width="11" height="5" viewBox="0 0 11 5"
+                                        xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                                        <path d="M5.5 0L11 5L0 5L5.5 0Z" fill="currentColor"></path>
+                                    </svg>
+                                </button>
+
+                                <div class="hidden_buttons js-bulk-order-actions-menu"
+                                    id="bulk-order-actions-menu-bottom" hidden>
+                                    <button class="govuk-button govuk-button--disabled" type="button"
+                                        data-bulk-order-action="specific" disabled>
+                                        Move selected to specific position
+                                    </button>
+                                    <button class="govuk-button govuk-button--disabled" type="button"
+                                        data-bulk-order-action="top" disabled>
+                                        Move selected to the top
+                                    </button>
+                                    <button class="govuk-button govuk-button--disabled" type="button"
+                                        data-bulk-order-action="middle" disabled>
+                                        Move selected to the middle
+                                    </button>
+                                    <button class="govuk-button govuk-button--disabled" type="button"
+                                        data-bulk-order-action="bottom" disabled>
+                                        Move selected to the bottom
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

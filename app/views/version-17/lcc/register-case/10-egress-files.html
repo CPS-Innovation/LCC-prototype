@@ -299,8 +299,7 @@
                     <tr class="govuk-table__row">
                         <td class="govuk-table__cell govuk-!-text-align-left">
                             {% if data['offCMS_Egress_files_V2'] != 'Yes' %}
-                                <form method="post" action="/version-17/lcc/register-case/10-egress-files-connected" id="">  
-                                    <input id="egress_file_link_3" name="egress_file_link" type="text" value="Captain {{ egressSearchTerm }} 27CC9067321" style="display: none;">
+                                <form method="get" action="/version-17/lcc/register-case/10-egress-connection-error">
                                     <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="float: none;">Connect</button>
                                 </form>
                             {% endif %}
