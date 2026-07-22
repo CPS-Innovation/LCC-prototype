@@ -17,6 +17,10 @@
             color: #0b0c0c;
         }
 
+        .tab-manage-materials-page .moj-alert--error {
+            border-color: #d4351c;
+        }
+
         .tab-manage-materials-page .moj-alert .govuk-tag {
             margin-bottom: 15px;
         }
@@ -213,24 +217,25 @@
                 </div>
             </div>
             {% else %}
-            <div class="govuk-error-summary govuk-!-margin-bottom-4" data-module="govuk-error-summary">
-                <div role="alert">
-                    <h2 class="govuk-error-summary__title">Materials were not copied</h2>
-                    <div style="color:#0b0c0c; padding: 0 20px 20px;">
-                        <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-3">
-                            These materials were not copied because items with the same name already exist in this location:
-                        </p>
-                        {% if copyConflictItems and (copyConflictItems | length > 0) %}
-                        <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-3">
-                            {% for itemName in copyConflictItems %}
-                            <li>{{ itemName }}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                        <p class="govuk-body govuk-!-margin-bottom-0">
-                            Rename the files or choose a different location, then try again.
-                        </p>
-                    </div>
+            <div role="alert"
+                class="moj-alert moj-alert--error moj-alert--with-heading govuk-!-margin-bottom-4"
+                aria-label="Failed: Materials were not copied">
+                <div class="moj-alert__content">
+                    <strong class="govuk-tag govuk-tag--red">Failed</strong>
+                    <h2 class="moj-alert__heading">Materials were not copied</h2>
+                    <p class="govuk-body govuk-!-margin-top-4 govuk-!-margin-bottom-1">
+                        These materials were not copied because items with the same name already exist in this location:
+                    </p>
+                    {% if copyConflictItems and (copyConflictItems | length > 0) %}
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-3">
+                        {% for itemName in copyConflictItems %}
+                        <li>{{ itemName }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    <p class="govuk-body govuk-!-margin-bottom-0">
+                        Rename the files or choose a different location, then try again.
+                    </p>
                 </div>
             </div>
             {% endif %}
@@ -296,24 +301,25 @@
                 </div>
             </div>
             {% else %}
-            <div class="govuk-error-summary govuk-!-margin-bottom-4" data-module="govuk-error-summary">
-                <div role="alert">
-                    <h2 class="govuk-error-summary__title">Materials were not moved</h2>
-                    <div style="color:#0b0c0c; padding: 0 20px 20px;">
-                        <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-3">
-                            These materials were not moved because items with the same name already exist in this location:
-                        </p>
-                        {% if moveConflictItems and (moveConflictItems | length > 0) %}
-                        <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-3">
-                            {% for itemName in moveConflictItems %}
-                            <li>{{ itemName }}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                        <p class="govuk-body govuk-!-margin-bottom-0">
-                            Rename the files or choose a different location, then try again.
-                        </p>
-                    </div>
+            <div role="alert"
+                class="moj-alert moj-alert--error moj-alert--with-heading govuk-!-margin-bottom-4"
+                aria-label="Failed: Materials were not moved">
+                <div class="moj-alert__content">
+                    <strong class="govuk-tag govuk-tag--red">Failed</strong>
+                    <h2 class="moj-alert__heading">Materials were not moved</h2>
+                    <p class="govuk-body govuk-!-margin-top-4 govuk-!-margin-bottom-1">
+                        These materials were not moved because items with the same name already exist in this location:
+                    </p>
+                    {% if moveConflictItems and (moveConflictItems | length > 0) %}
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-3">
+                        {% for itemName in moveConflictItems %}
+                        <li>{{ itemName }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    <p class="govuk-body govuk-!-margin-bottom-0">
+                        Rename the files or choose a different location, then try again.
+                    </p>
                 </div>
             </div>
             {% endif %}
