@@ -47,8 +47,8 @@
     "sass": "^1.77.0",
     "sortablejs": "^1.15.6",
     "sync-request": "^6.0.0",
-    "universal-analytics": "^0.4.16",
-    "uuid": "^9.0.1"
+    "universal-analytics": "^0.5.4",
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
     "jest": "^29.7.0",
