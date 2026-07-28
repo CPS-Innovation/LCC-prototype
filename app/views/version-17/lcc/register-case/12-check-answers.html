@@ -18,9 +18,12 @@
   {% endif %}
 {% endset %}
 
+{% set egressWasConnect = data['egressSetupAction'] == 'connect' or (not data['egressSetupAction'] and data['existingEgressFolder'] == 1) %}
+{% set sharedDriveWasConnect = data['sharedDriveSetupAction'] == 'connect' or (not data['sharedDriveSetupAction'] and data['existingDriveFolder'] == 1) %}
+
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <h1 class="govuk-heading-xl">Check your answers before continuing</h1>
+    <h1 class="govuk-heading-xl">Review your case setup before continuing</h1>
 
     <dl class="govuk-summary-list govuk-!-margin-bottom-9">
       <div class="govuk-summary-list__row">
@@ -32,7 +35,13 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Egress case</dt>
         <dd class="govuk-summary-list__value">
-          {% if data['existingEgressFolder'] == 1 %}
+          {% if data['egressSetupFailed'] %}
+            {% if egressWasConnect %}
+              Failed to connect
+            {% else %}
+              Failed to create
+            {% endif %}
+          {% elif data['existingEgressFolder'] == 1 %}
             Connected<br>{{ data['egress_file_link'] }}
           {% elif data['newEgressFolder'] == 1 %}
             Created<br>{{ caseNameAndUrn | trim }}
@@ -41,14 +50,28 @@
           {% endif %}
         </dd>
         <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="10-egress-setup">Change<span class="govuk-visually-hidden"> Egress</span></a>
+          {% if data['egressSetupFailed'] %}
+            {% if egressWasConnect %}
+              <a class="govuk-link govuk-link--no-visited-state" href="10-egress-files">Try again<span class="govuk-visually-hidden"> connecting the Egress case</span></a>
+            {% else %}
+              <a class="govuk-link govuk-link--no-visited-state" href="10-egress-setup">Try again<span class="govuk-visually-hidden"> creating the Egress case</span></a>
+            {% endif %}
+          {% elif data['existingEgressFolder'] == 1 %}
+            <a class="govuk-link govuk-link--no-visited-state" href="10-egress-setup">Change<span class="govuk-visually-hidden"> connected Egress case</span></a>
+          {% endif %}
         </dd>
       </div>
 
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Shared Drive folder</dt>
         <dd class="govuk-summary-list__value">
-          {% if data['existingDriveFolder'] == 1 %}
+          {% if data['sharedDriveSetupFailed'] %}
+            {% if sharedDriveWasConnect %}
+              Failed to connect
+            {% else %}
+              Failed to create
+            {% endif %}
+          {% elif data['existingDriveFolder'] == 1 %}
             Connected<br>Live cases / {{ data['pdrive_file_link'] }}
           {% elif data['newDriveFolder'] == 1 %}
             Created<br>Live cases / {{ caseNameAndUrn | trim }}
@@ -57,7 +80,15 @@
           {% endif %}
         </dd>
         <dd class="govuk-summary-list__actions">
-          <a class="govuk-link govuk-link--no-visited-state" href="11-shared-drive-setup">Change<span class="govuk-visually-hidden"> Shared Drive</span></a>
+          {% if data['sharedDriveSetupFailed'] %}
+            {% if sharedDriveWasConnect %}
+              <a class="govuk-link govuk-link--no-visited-state" href="11-shared-drive-files">Try again<span class="govuk-visually-hidden"> connecting the Shared Drive folder</span></a>
+            {% else %}
+              <a class="govuk-link govuk-link--no-visited-state" href="11-create-shared-drive-folder">Try again<span class="govuk-visually-hidden"> creating the Shared Drive folder</span></a>
+            {% endif %}
+          {% elif data['existingDriveFolder'] == 1 %}
+            <a class="govuk-link govuk-link--no-visited-state" href="11-shared-drive-setup">Change<span class="govuk-visually-hidden"> connected Shared Drive folder</span></a>
+          {% endif %}
         </dd>
       </div>
     </dl>

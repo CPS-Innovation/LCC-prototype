@@ -2019,34 +2019,41 @@ router.post('/lcc/register-case/10-egress-setup', function (req, res) {
     req.session.data.newEgressFolder = 0
     req.session.data.existingEgressFolder = 0
     req.session.data.egress_file_link = ''
+    req.session.data.egressSetupFailed = false
 
     if (req.body['egress-folder-options'] === 'Create new Egress folders') {
+        req.session.data.egressSetupAction = 'create'
         req.session.data.newEgressFolder = 1
         setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressCreatedAt')
         res.redirect('/version-17/lcc/register-case/10-egress-confirmation')
     }
     else if (req.body['egress-folder-options'] === 'Connect Egress folders') {
+        req.session.data.egressSetupAction = 'connect'
         req.session.data.existingEgressFolder = 1
         res.redirect('/version-17/lcc/register-case/10-egress-files')
     }
     else {
+        req.session.data.egressSetupAction = ''
         res.redirect('/version-17/lcc/register-case/11-shared-drive-setup')
     }
 })
 
 router.post('/lcc/register-case/10-create-egress-folder', function (req, res) {
     req.session.data.egressTemplate = req.body['egress-template']
+    req.session.data.egressSetupFailed = false
     setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressCreatedAt')
     res.redirect('/version-17/lcc/register-case/10-egress-confirmation')
 })
 
 router.post('/lcc/register-case/10-egress-files-connected', function (req, res) {
     req.session.data.egress_file_link = req.body.egress_file_link
+    req.session.data.egressSetupFailed = false
     setRegisterCaseTimestamp(req.session.data, 'registerCaseEgressLinkedAt')
     res.redirect('/version-17/lcc/register-case/10-egress-confirmation')
 })
 
 router.get('/lcc/register-case/10-egress-connection-error', function (req, res) {
+    req.session.data.egressSetupFailed = true
     res.render('version-17/lcc/register-case/10-egress-connection-error')
 })
 
@@ -2062,28 +2069,34 @@ router.post('/lcc/register-case/11-shared-drive-setup', function (req, res) {
     req.session.data.newDriveFolder = 0
     req.session.data.existingDriveFolder = 0
     req.session.data.pdrive_file_link = ''
+    req.session.data.sharedDriveSetupFailed = false
 
     if (req.body['shared-drive-folder-options'] === 'Create new Shared Drive folders') {
+        req.session.data.sharedDriveSetupAction = 'create'
         req.session.data.newDriveFolder = 1
         res.redirect('/version-17/lcc/register-case/11-create-shared-drive-folder')
     }
     else if (req.body['shared-drive-folder-options'] === 'Connect Shared Drive folders') {
+        req.session.data.sharedDriveSetupAction = 'connect'
         req.session.data.existingDriveFolder = 1
         res.redirect('/version-17/lcc/register-case/11-shared-drive-files')
     }
     else {
+        req.session.data.sharedDriveSetupAction = ''
         redirectRegisterCaseMaterialsConfirmation(req, res)
     }
 })
 
 router.post('/lcc/register-case/11-create-shared-drive-folder', function (req, res) {
     req.session.data.sharedDriveTemplate = req.body['shared-drive-template']
+    req.session.data.sharedDriveSetupFailed = false
     setRegisterCaseTimestamp(req.session.data, 'registerCaseSharedDriveCreatedAt')
     redirectRegisterCaseMaterialsConfirmation(req, res)
 })
 
 router.post('/lcc/register-case/11-shared-drive-files-connected', function (req, res) {
     req.session.data.pdrive_file_link = req.body.pdrive_file_link
+    req.session.data.sharedDriveSetupFailed = false
     setRegisterCaseTimestamp(req.session.data, 'registerCaseSharedDriveLinkedAt')
     redirectRegisterCaseMaterialsConfirmation(req, res)
 })
