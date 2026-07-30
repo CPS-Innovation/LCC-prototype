@@ -1,0 +1,36 @@
+{% extends "layoutCPS-OFF.html" %}
+
+{% block pageTitle %}
+Unauthorised – {{ serviceName }} – Prototype
+{% endblock %}
+
+{% block header %}
+  {% include "../../includes/banner-OFF-V7.html" %}
+  <style>
+    .cps-create-case-nav {
+      display: none;
+    }
+
+    .cps-create-case-shell {
+      border-bottom: 0;
+    }
+  </style>
+{% endblock %}
+
+{% block beforeContent %}{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">Unauthorised</h1>
+
+          <p class="govuk-body">Your session has timed out.</p>
+
+          <p class="govuk-body">Please close this tab and re-launch the homepage screen from CMS Classic.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
