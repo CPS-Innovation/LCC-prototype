@@ -52,14 +52,14 @@
 }
 
 /* Case Title */
-.govuk-heading-xl {
+.cps-materials-main .govuk-heading-xl {
   margin-bottom: 5px;
   font-size: 32px;
   font-weight: 700;
 }
 
 /* Case Reference */
-.govuk-heading-xl + .govuk-body {
+.cps-materials-main .govuk-heading-xl + .govuk-body {
   color: #505a5f;
   font-size: 16px;
   margin-bottom: 30px;
