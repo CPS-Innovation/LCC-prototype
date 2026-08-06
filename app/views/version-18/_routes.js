@@ -3048,6 +3048,8 @@ function renderCaseOverviewPage(pageView, activeTab) {
     req.session.data.lastRenamedId = null;
     req.session.data.transferEgressCopySuccess = false;
     req.session.data.transferEgressMoveSuccess = false;
+    req.session.data.transferEgressPartialSuccess = false;
+    req.session.data.transferEgressConflictItems = [];
     req.session.data.transferEgressList = [];
     req.session.data.transferEgressPreviewTree = [];
     req.session.data.transferEgressDestinationId = null;
@@ -3920,6 +3922,7 @@ function transferEgressToSharedDrive(data, defaultsData, ids, destinationFolderI
     const originalTransferEgress = transferEgress.map(item => ({ ...item }));
     const previewTree = buildTransferEgressPreviewTree(originalTransferEgress, ids);
     const transferredNames = [];
+    const conflictingNames = [];
     const transferredEgressIds = new Set();
     let nextId = Date.now();
 
@@ -3927,6 +3930,21 @@ function transferEgressToSharedDrive(data, defaultsData, ids, destinationFolderI
     const destinationFolderName = destinationFolder ? destinationFolder.name : null;
 
     function addMaterialFromEgress(item, parentId) {
+        // Prototype scenario: most files in "Counsel only" fail so the
+        // transfer completes partially while the remaining materials succeed.
+        const isCounselOnlyTransferFailure =
+            String(item.parentId) === '2' &&
+            ['120', '121', '122', '123', '124', '125', '126'].includes(String(item.id));
+        const hasNameConflict = materials.some(existing =>
+            String(existing.parentId) === String(parentId) &&
+            String(existing.name || '').trim().toLowerCase() === String(item.name || '').trim().toLowerCase()
+        );
+
+        if (isCounselOnlyTransferFailure || hasNameConflict) {
+            conflictingNames.push(item.name);
+            return;
+        }
+
         const newId = nextId++;
         transferredNames.push(item.name);
         transferredEgressIds.add(String(item.id));
@@ -3955,6 +3973,18 @@ function transferEgressToSharedDrive(data, defaultsData, ids, destinationFolderI
     });
 
     if (shouldMove) {
+        // Keep any source folders that still contain an item which failed to move.
+        originalTransferEgress
+            .filter(item => !transferredEgressIds.has(String(item.id)))
+            .forEach(item => {
+                let parentId = item.parentId;
+                while (parentId !== undefined && parentId !== null) {
+                    transferredEgressIds.delete(String(parentId));
+                    const parent = originalTransferEgress.find(entry => String(entry.id) === String(parentId));
+                    if (!parent) break;
+                    parentId = parent.parentId;
+                }
+            });
         data.transferEgress = transferEgress.filter(item => !transferredEgressIds.has(String(item.id)));
     } else {
         data.transferEgress = transferEgress;
@@ -3965,8 +3995,10 @@ function transferEgressToSharedDrive(data, defaultsData, ids, destinationFolderI
     data.transferEgressPreviewTree = previewTree;
     data.transferEgressDestinationId = destinationFolderId;
     data.transferEgressDestinationName = destinationFolderName;
-    data.transferEgressCopySuccess = !shouldMove;
-    data.transferEgressMoveSuccess = !!shouldMove;
+    data.transferEgressCopySuccess = !shouldMove && transferredNames.length > 0;
+    data.transferEgressMoveSuccess = !!shouldMove && transferredNames.length > 0;
+    data.transferEgressPartialSuccess = conflictingNames.length > 0 && transferredNames.length > 0;
+    data.transferEgressConflictItems = conflictingNames;
     data.activeTab = 'tab-1-content';
     data.transferView = 'egress';
 
@@ -3981,10 +4013,12 @@ function transferEgressToSharedDrive(data, defaultsData, ids, destinationFolderI
         pushMaterialsActivity(data, {
             type: shouldMove ? 'move' : 'copy',
             tag: 'Transfer',
-            statusTag: 'Completed',
+            statusTag: conflictingNames.length ? 'Partially completed' : 'Completed',
+            statusTagColour: conflictingNames.length ? 'orange' : 'green',
             title: 'Transfer from Egress to Shared Drive',
             description: `${transferredNames.length} ${transferredNames.length === 1 ? 'item was' : 'items were'} ${transferAction}`,
             listItems: transferredNames,
+            conflictListItems: conflictingNames,
             previewTree,
             sourceLines: [
                 {
@@ -4003,6 +4037,7 @@ function transferEgressToSharedDrive(data, defaultsData, ids, destinationFolderI
 
     return {
         transferredNames,
+        conflictingNames,
         destinationFolderName,
         previewTree
     };

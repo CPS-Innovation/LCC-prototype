@@ -56,7 +56,39 @@
 </ul>
 {% endmacro %}
 
-{% if data.transferEgressCopySuccess or data.transferEgressMoveSuccess %}
+{% if data.transferEgressPartialSuccess %}
+<div role="alert"
+    class="moj-alert moj-alert--warning moj-alert--with-heading transfer-partial-alert govuk-!-margin-left-3 govuk-!-margin-bottom-4"
+    aria-label="Warning: There is a problem transferring files">
+    <div class="moj-alert__content">
+        <strong class="govuk-tag govuk-tag--orange">Partially completed</strong>
+        <h2 class="moj-alert__heading">There is a problem transferring files</h2>
+
+        <p class="govuk-body govuk-!-margin-top-4 transfer-conflict-message">
+            Some files could not be transfered.
+            <a class="govuk-link" href="/version-18/lcc/materials/transfer-materials?transferView=egress&amp;transferEgressFolderId=2">Try the transfer again</a>.
+        </p>
+
+        <details class="govuk-details govuk-!-margin-bottom-0" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">View items</span>
+            </summary>
+            <div class="govuk-details__text">
+                <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0 transfer-conflict-items">
+                    {% for itemName in data.transferEgressConflictItems %}
+                    <li>{{ itemName }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </details>
+
+        <p class="govuk-body govuk-!-margin-top-2 govuk-!-margin-bottom-0">
+            <a class="govuk-link" href="/version-18/lcc/materials/transfer-materials?transferView=egress&amp;transferEgressFolderId=2">Try the transfer again</a>
+        </p>
+
+    </div>
+</div>
+{% elseif data.transferEgressCopySuccess or data.transferEgressMoveSuccess %}
 <div class="govuk-notification-banner govuk-notification-banner--success materials-notification--white govuk-!-margin-left-3 govuk-!-margin-bottom-4"
     role="alert" data-module="govuk-notification-banner">
     <div class="govuk-notification-banner__header">
