@@ -2552,6 +2552,16 @@ function renderCaseOverviewPage(pageView, activeTab) {
     if (req.query.transferEgressFolderId !== undefined) {
         req.session.data.transferEgressFolderId = Number(req.query.transferEgressFolderId) || 100;
     }
+    if (req.query.retryFailedTransfer === '1') {
+        req.session.data.transferEgressRetryAttempt = true;
+        req.session.data.transferEgressRetryFailedAlert = true;
+        if (!Array.isArray(req.session.data.transferEgressRetryItems) || req.session.data.transferEgressRetryItems.length === 0) {
+            const retryFailureIds = new Set(['120', '121', '122', '123', '124', '125', '126']);
+            req.session.data.transferEgressRetryItems = (req.session.data.transferEgress || [])
+                .filter(item => retryFailureIds.has(String(item.id)))
+                .map(item => item.name);
+        }
+    }
 
     function normalisePageSize(value) {
         const parsed = Number(value);
@@ -3999,6 +4009,13 @@ function transferEgressToSharedDrive(data, defaultsData, ids, destinationFolderI
     data.transferEgressMoveSuccess = !!shouldMove && transferredNames.length > 0;
     data.transferEgressPartialSuccess = conflictingNames.length > 0 && transferredNames.length > 0;
     data.transferEgressConflictItems = conflictingNames;
+    if (conflictingNames.length > 0) {
+        data.transferEgressRetryItems = conflictingNames;
+    }
+    if (data.transferEgressRetryAttempt && conflictingNames.length > 0) {
+        data.transferEgressRetryFailedAlert = true;
+    }
+    data.transferEgressRetryAttempt = false;
     data.activeTab = 'tab-1-content';
     data.transferView = 'egress';
 
@@ -4285,6 +4302,12 @@ router.post('/lcc/materials/start-copy', function (req, res) {
 
     // Send them to the folder picker page
     res.redirect('/version-18/lcc/materials/folder-tree-copy');
+});
+
+router.post('/lcc/materials/dismiss-transfer-retry-alert', function (req, res) {
+    req.session.data.transferEgressRetryFailedAlert = false;
+    req.session.data.transferEgressRetryItems = [];
+    res.redirect('/version-18/lcc/materials/transfer-materials?transferView=egress');
 });
 
 router.post('/lcc/materials/start-transfer-egress-copy', function (req, res) {
